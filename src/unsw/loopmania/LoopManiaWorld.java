@@ -7,6 +7,9 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.items.Sword;
 
 /**
  * A backend world.
