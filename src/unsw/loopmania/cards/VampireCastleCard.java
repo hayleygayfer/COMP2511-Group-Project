@@ -2,6 +2,7 @@ package unsw.loopmania.cards;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Card;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * represents a vampire castle card in the backend game world
