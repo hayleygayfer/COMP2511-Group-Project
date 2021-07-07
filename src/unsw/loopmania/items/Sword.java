@@ -1,5 +1,6 @@
 package unsw.loopmania.items;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.EquippableItem;
 
 /**
@@ -7,7 +8,7 @@ import unsw.loopmania.EquippableItem;
  */
 public class Sword extends EquippableItem {
     // TODO write sword
-    public Sword() {
-        super();
+    public Sword(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        super(x, y);
     }    
 }
