@@ -1,5 +1,6 @@
 package unsw.loopmania.cards;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Card;
 
 /**
@@ -7,7 +8,7 @@ import unsw.loopmania.Card;
  */
 public class VampireCastleCard extends Card {
     // TODO write vampire castle card
-    public VampireCastleCard() {
-        super();
+    public VampireCastleCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        super(x, y);
     }    
 }
