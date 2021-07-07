@@ -8,4 +8,6 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public abstract class Card {
     // TODO = implement other varieties of card than VampireCastleCard
+    public Card(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+    }
 }
