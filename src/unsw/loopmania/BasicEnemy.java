@@ -2,10 +2,12 @@ package unsw.loopmania;
 
 import java.util.Random;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  * a basic form of enemy in the world
  */
-public class BasicEnemy extends MovingEntity {
+public class BasicEnemy extends MovingEntity implements DamageStrategy, DropLootStrategy {
     // TODO = modify this, and add additional forms of enemy
     public BasicEnemy(PathPosition position) {
         super(position);
@@ -24,5 +26,10 @@ public class BasicEnemy extends MovingEntity {
         else if (directionChoice == 1){
             moveDownPath();
         }
+    }
+
+    // This method should be overridden by specific enemies
+    public SimpleIntegerProperty getModifiedDamage(SimpleIntegerProperty baseDamage) {
+        return baseDamage;
     }
 }
