@@ -207,8 +207,8 @@ public class LoopManiaWorld {
      * @param y y coordinate from 0 to height-1
      */
     public void removeUnequippedInventoryItemByCoordinates(int x, int y){
-        Entity item = getUnequippedInventoryItemEntityByCoordinates(x, y);
-        removeUnequippedInventoryItem(item);
+        Item item = getUnequippedInventoryItemEntityByCoordinates(x, y);
+        character.removeItemFromInventory(item);
     }
 
     /**
@@ -235,8 +235,8 @@ public class LoopManiaWorld {
      * @param y y index from 0 to height-1
      * @return unequipped inventory item at the input position
      */
-    private Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y){
-        for (Entity e: unequippedInventoryItems){
+    private Item getUnequippedInventoryItemEntityByCoordinates(int x, int y){
+        for (Item e: character.getInventory()) {
             if ((e.getX() == x) && (e.getY() == y)){
                 return e;
             }
@@ -249,7 +249,7 @@ public class LoopManiaWorld {
      * @param index index from 0 to length-1
      */
     private void removeItemByPositionInUnequippedInventoryItems(int index){
-        Entity item = unequippedInventoryItems.get(index);
+        Entity item = character.getInventory().get(index);
         item.destroy();
         unequippedInventoryItems.remove(index);
     }
