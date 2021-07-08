@@ -8,4 +8,10 @@ public class TowerBuilding extends BattleBuilding {
     public TowerBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
+
+    @Override
+    public void updateCharacterPosition() {
+        // TODO Auto-generated method stub
+        
+    }
 }

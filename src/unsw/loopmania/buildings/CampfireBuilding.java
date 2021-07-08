@@ -8,4 +8,10 @@ public class CampfireBuilding extends BattleBuilding {
     public CampfireBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
+
+    @Override
+    public void updateCharacterPosition() {
+        // TODO Auto-generated method stub
+        
+    }
 }
