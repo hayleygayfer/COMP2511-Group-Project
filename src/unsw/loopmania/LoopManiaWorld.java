@@ -108,7 +108,7 @@ public class LoopManiaWorld {
      * spawns enemies if the conditions warrant it, adds to world
      * @return list of the enemies to be displayed on screen
      */
-    public List<BasicEnemy> possiblySpawnEnemies(){
+    public List<BasicEnemy> possiblySpawnEnemies() {
         // TODO = expand this very basic version
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
