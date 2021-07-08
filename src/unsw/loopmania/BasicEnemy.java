@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * a basic form of enemy in the world
  */
-public class BasicEnemy extends MovingEntity implements DamagyStrategy, DropLootStrategy {
+public class BasicEnemy extends MovingEntity implements DamageStrategy, DropLootStrategy {
     // TODO = modify this, and add additional forms of enemy
     public BasicEnemy(PathPosition position) {
         super(position);
