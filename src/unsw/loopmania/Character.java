@@ -28,15 +28,39 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         return health.get();
     }
 
+    /**
+     * Deducts health
+     */
+    public void loseHealth(double damage) {
+        this.health.subtract(damage);
+    }
+
+    /**
+     * Returns whether or not the character is alive
+     */
+    public boolean isAlive() {
+        return getHealth() > 0;
+    }
+
     public SimpleIntegerProperty health() {
         return health;
     }
 
     public int getDamage() {
+        // will have to make sure that attack item
+        // damage is applied first
         for (Item item : equippedItems) {
 
         }
         return damageStrategy.getModifiedDamage(baseDamage).get();
+    }
+
+    /**
+     * Applies an attack on the enemy, given the amount
+     * of damage you can do
+     */
+    public void attack(BasicEnemy enemy, int damage) {
+        // just apply the attack from every equipped item
     }
     
     /**
@@ -56,14 +80,21 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     /**
      * Equips item from the inventory
      */
-    public void equipItem(Item item) {
+    public void equipItem(EquippableItem item) {
+
+    }
+
+    /**
+     * Uses the item and applies its effect
+     */
+    public void useItem(UsableItem item) {
 
     }
 
     /**
      * Unequips item - moves it to inventory
      */
-    public void unequipItem(Item item) {
+    public void unequipItem(EquippableItem item) {
 
     }
 

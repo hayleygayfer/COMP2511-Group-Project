@@ -9,4 +9,13 @@ public class Armour extends EquippableItem {
     public Armour(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
+
+    /**
+     * Halves the enemy's prospective base damage,
+     */
+    @Override
+    public int getModifiedEnemyDamge(int baseDamage) {
+        // TODO Auto-generated method stub
+        return super.getModifiedEnemyDamge(baseDamage);
+    }
 }
