@@ -15,8 +15,6 @@ public abstract class EncounterBuilding extends StaticEntity implements Characte
         //TODO
     }
 
-    public void encounter (MovingEntity character) {
-
-    }
+    abstract public void encounter (MovingEntity character);
 }
  
