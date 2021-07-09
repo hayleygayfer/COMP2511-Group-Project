@@ -13,8 +13,5 @@ public class Zombie extends BasicEnemy {
         setHealth(1);
     }
 
-    @Override
-    public void move(){
-        super.move();
-    }
+    
 }

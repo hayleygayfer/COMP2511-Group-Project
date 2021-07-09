@@ -31,7 +31,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     public int getDamage() {
-        return damageStrategy.getModifiedDamage(baseDamage).get();
+        return 0;
     }
     
 }
