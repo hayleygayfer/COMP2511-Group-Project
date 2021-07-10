@@ -48,6 +48,8 @@ public class LoopManiaWorld {
     // TODO = expand the range of cards
     private List<Card> cardEntities;
 
+    private List<SpawnEnemyStrategy> spawnEnemyStrategies;
+
     // TODO = expand the range of items
     private List<Entity> unequippedInventoryItems;
 
@@ -330,16 +332,17 @@ public class LoopManiaWorld {
      * @param buildingNodeX x index from 0 to width-1 of building to be added
      * @param buildingNodeY y index from 0 to height-1 of building to be added
      */
-    public VampireCastleBuilding convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+    public Building convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         // start by getting card
         Card card = null;
         for (Card c: cardEntities){
-            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)){
+            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)){ // Check placeable
                 card = c;
                 break;
             }
         }
         
+        // Check for character position, enemy positon, spawn
         // now spawn building
         VampireCastleBuilding newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingEntities.add(newBuilding);
@@ -351,4 +354,21 @@ public class LoopManiaWorld {
 
         return newBuilding;
     }
+
+    /**
+     * Gets spawn enemy strategies
+     * @return List<SpawnEnemyStrategies>
+     */
+    public List<SpawnEnemyStrategy> getSpawnEnemyStrategies() {
+      return spawnEnemyStrategies;
+    }
+
+    /**
+     * Adds a spawn enemy strategy.
+     * @param spawnEnemyStrategy
+     */
+    public void addSpawnEnemyStrategy(SpawnEnemyStrategy spawnEnemyStrategy) {
+
+    }
+
 }
