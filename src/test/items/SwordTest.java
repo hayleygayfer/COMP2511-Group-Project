@@ -67,6 +67,14 @@ public class SwordTest {
     }
 
     @Test
+    public void testPrice() {
+        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        // sword costs 10 gold
+        assertEquals(10, sword.getPrice());
+    }
+
+    @Test
     public void testIsEquippable() {
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Character character = createCharacter();

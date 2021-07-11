@@ -65,6 +65,14 @@ public class StaffTest {
     }
 
     @Test
+    public void testPrice() {
+        Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        // staff costs 10 gold
+        assertEquals(10, staff.getPrice());
+    }
+
+    @Test
     public void testIsEquippable() {
         Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Character character = createCharacter();
@@ -125,6 +133,6 @@ public class StaffTest {
 
     @Test
     public void attackSlug() {
-        // changing to an allied soldier
+        // changing enemy to an allied soldier
     } 
 }

@@ -65,6 +65,14 @@ public class ArmourTest {
     }
 
     @Test
+    public void testPrice() {
+        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        // armour costs 10 gold
+        assertEquals(10, armour.getPrice());
+    }
+
+    @Test
     public void testIsEquippable() {
         Character character = createCharacter();
         Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
