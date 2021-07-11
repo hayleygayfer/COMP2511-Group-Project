@@ -8,6 +8,8 @@ import javafx.beans.property.SimpleIntegerProperty;
  * a basic form of enemy in the world
  */
 public class BasicEnemy extends MovingEntity implements DamageStrategy, DropLootStrategy {
+    private SimpleIntegerProperty health;
+
     // TODO = modify this, and add additional forms of enemy
     public BasicEnemy(PathPosition position) {
         super(position);
@@ -31,5 +33,9 @@ public class BasicEnemy extends MovingEntity implements DamageStrategy, DropLoot
     // This method should be overridden by specific enemies
     public SimpleIntegerProperty getModifiedDamage(SimpleIntegerProperty baseDamage) {
         return baseDamage;
+    }
+
+    public int getHealth() {
+        return health.get();
     }
 }
