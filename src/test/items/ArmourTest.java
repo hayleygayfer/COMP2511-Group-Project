@@ -122,7 +122,7 @@ public class ArmourTest {
 
         int initialHealth = slug.getHealth();
 
-        armour.attack(slug, 0);
+        armour.attack(slug, 10);
 
         assertEquals(initialHealth, slug.getHealth());
     }
