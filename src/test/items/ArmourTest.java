@@ -92,7 +92,7 @@ public class ArmourTest {
         Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         Slug slug = new Slug(new PathPosition(0, createPath()));
 
-        int baseDamage = 10;
+        int baseDamage = 2;
         assertEquals(baseDamage, armour.getModifiedDamage(slug, baseDamage));
     }
 
