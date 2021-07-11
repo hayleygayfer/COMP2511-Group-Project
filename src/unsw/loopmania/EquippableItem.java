@@ -31,7 +31,7 @@ public abstract class EquippableItem extends Item {
      * modified damage based on the properties of
      * this item
      */
-    public int getModifiedEnemyDamge(int baseDamage) {
+    public int getModifiedEnemyDamage(int baseDamage) {
         return baseDamage;
     }
 

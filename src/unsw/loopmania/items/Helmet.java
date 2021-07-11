@@ -23,8 +23,8 @@ public class Helmet extends EquippableItem {
      * Decreases the enemy's damage
      */
     @Override
-    public int getModifiedEnemyDamge(int baseDamage) {
+    public int getModifiedEnemyDamage(int baseDamage) {
         // TODO Auto-generated method stub
-        return super.getModifiedEnemyDamge(baseDamage);
+        return super.getModifiedEnemyDamage(baseDamage);
     }
 }
