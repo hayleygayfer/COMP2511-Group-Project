@@ -245,6 +245,10 @@ public class LoopManiaWorldController {
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
             }
+            List<Gold> newGold = world.possiblySpawnGold();
+            for (Gold gold: newGold) {
+                onLoad(gold);
+            }
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
