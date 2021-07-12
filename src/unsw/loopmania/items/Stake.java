@@ -2,17 +2,22 @@ package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
+import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
 public class Stake extends EquippableItem {
+    private int baseDamage;
+
     // TODO write stake
     public Stake(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        baseDamage = 5;
     }
 
     @Override
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
-        // TODO Auto-generated method stub
-        return super.getModifiedDamage(target, baseDamage);
+        if (target.getClass() == Vampire.class) {
+            return this.baseDamage * 3;
+        } else return baseDamage;
     }
 
     /**

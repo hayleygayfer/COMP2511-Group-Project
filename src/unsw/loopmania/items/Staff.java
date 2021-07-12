@@ -5,9 +5,16 @@ import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Staff extends EquippableItem {
+    private int baseDamage;
+
     // TODO write staff
     public Staff(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        baseDamage = 2;
+    }
+
+    public int getModifiedDamage(MovingEntity target, int baseDamage) {
+        return this.baseDamage;
     }
 
     /**

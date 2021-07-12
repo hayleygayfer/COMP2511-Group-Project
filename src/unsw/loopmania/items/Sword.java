@@ -8,12 +8,12 @@ import unsw.loopmania.MovingEntity;
  * represents an equipped or unequipped sword in the backend world
  */
 public class Sword extends EquippableItem {
-    private int damageBonus;
+    private int baseDamage;
 
     // TODO write sword
     public Sword(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        damageBonus = 10;
+        baseDamage = 10;
     }    
 
     /**
@@ -21,7 +21,7 @@ public class Sword extends EquippableItem {
      * damage based on the properties of this item
      */
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
-        return baseDamage + damageBonus;
+        return this.baseDamage;
     }
 
     /**

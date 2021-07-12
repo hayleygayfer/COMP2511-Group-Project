@@ -5,9 +5,13 @@ import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Helmet extends EquippableItem {
+    private int reducedCharacterDamage;
+    private int reducedEnemyDamage;
     // TODO write helmet
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        reducedCharacterDamage = 1;
+        reducedEnemyDamage = 3;
     }
 
     /**
@@ -16,7 +20,7 @@ public class Helmet extends EquippableItem {
     @Override
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
         // TODO Auto-generated method stub
-        return super.getModifiedDamage(target, baseDamage);
+        return baseDamage - reducedCharacterDamage;
     }
 
     /**
@@ -25,6 +29,6 @@ public class Helmet extends EquippableItem {
     @Override
     public int getModifiedEnemyDamage(int baseDamage) {
         // TODO Auto-generated method stub
-        return super.getModifiedEnemyDamage(baseDamage);
+        return baseDamage - reducedEnemyDamage;
     }
 }

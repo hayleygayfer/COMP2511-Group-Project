@@ -29,6 +29,6 @@ public class Armour extends EquippableItem {
     @Override
     public int getModifiedEnemyDamage(int baseDamage) {
         // TODO Auto-generated method stub
-        return super.getModifiedEnemyDamage(baseDamage);
+        return baseDamage / 2;
     }
 }
