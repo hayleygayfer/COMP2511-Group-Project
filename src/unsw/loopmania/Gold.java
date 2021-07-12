@@ -12,6 +12,6 @@ public class Gold extends StaticEntity {
      * @param Character
      */
     public void collect(Character character) {
-
+        character.addGold(1);
     }
 }

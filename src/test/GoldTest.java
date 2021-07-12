@@ -54,9 +54,7 @@ public class GoldTest {
     }
 
     public LoopManiaWorld createWorld() {
-        LoopManiaWorld world = new LoopManiaWorld(6, 6, createPath());
-
-        return world;
+        return new LoopManiaWorld(6, 6, createPath());
     }
 
     @Test
@@ -102,7 +100,17 @@ public class GoldTest {
 
     @Test
     public void testCollectGold() {
+        Character character = createCharacter();
+        Gold gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
 
+        int initialTotal = character.getGold().get();
+
+        gold.collect(character);
+        assertEquals(initialTotal + 1, character.getGold().get());
+
+        Gold gold2 = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
+        gold2.collect(character);
+        assertEquals(initialTotal + 2, character.getGold().get());
     }
 
 }
