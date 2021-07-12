@@ -351,10 +351,18 @@ public class LoopManiaWorldController {
      * load a building into the GUI
      * @param building
      */
-    private void onLoad(Building building){
+    private void onLoad(Building building) {
         ImageView view = new ImageView(basicBuildingImage);
         addEntity(building, view);
         squares.getChildren().add(view);
+    }
+
+    /**
+     * load a gold card into the GUI
+     * @param gold
+     */
+    private void onLoad(Gold gold) {
+
     }
 
     /**

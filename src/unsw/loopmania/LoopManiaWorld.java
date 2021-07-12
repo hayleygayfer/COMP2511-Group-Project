@@ -124,6 +124,16 @@ public class LoopManiaWorld {
     }
 
     /**
+     * postentially spawns gold at a random position
+     * @return list of new gold pieces to be displayed on screen
+     */
+    public List<Gold> possiblySpawnGold() {
+        List<Gold> spawningGold = new ArrayList<>();
+
+        return spawningGold;
+    }
+
+    /**
      * kill an enemy
      * @param enemy enemy to be killed
      */
