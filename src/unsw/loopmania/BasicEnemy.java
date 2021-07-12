@@ -2,7 +2,6 @@ package unsw.loopmania;
 
 import java.util.Random;
 
-import org.graalvm.compiler.virtual.phases.ea.EffectList.SimpleEffect;
 import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import javafx.beans.property.SimpleIntegerProperty;
