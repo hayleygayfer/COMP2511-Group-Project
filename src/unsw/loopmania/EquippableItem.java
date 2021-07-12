@@ -48,7 +48,7 @@ public abstract class EquippableItem extends Item {
      * Given a target enemy, applies the attack to that enemy
      */
     public void attack(MovingEntity target, int damage) {
-
+        
     }
 
 }
