@@ -122,6 +122,7 @@ public class LoopManiaWorldController {
     private Image basicEnemyImage;
     private Image swordImage;
     private Image basicBuildingImage;
+    private Image goldImage;
 
     /**
      * the image currently being dragged, if there is one, otherwise null.
@@ -172,6 +173,7 @@ public class LoopManiaWorldController {
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
+        goldImage = new Image((new File("src/images/gold_pile.png")).toURI().toString());
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
 
@@ -366,7 +368,11 @@ public class LoopManiaWorldController {
      * @param gold
      */
     private void onLoad(Gold gold) {
+        ImageView view = new ImageView(goldImage);
+        // TODO: add a clickable handler
 
+        addEntity(gold, view);
+        squares.getChildren().add(view);
     }
 
     /**
