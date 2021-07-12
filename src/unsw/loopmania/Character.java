@@ -52,7 +52,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         for (Item item : equippedItems) {
 
         }
-        return damageStrategy.getModifiedDamage(baseDamage).get();
+        return damageStrategy.getModifiedDamage(baseDamage.get());
     }
 
     /**
