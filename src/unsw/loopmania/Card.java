@@ -7,7 +7,20 @@ import javafx.beans.property.SimpleIntegerProperty;
  * which doesn't move
  */
 public abstract class Card extends StaticEntity {
-    // TODO = implement other varieties of card than VampireCastleCard
+
+    /** 
+     * @param x
+     * @param y
+     * Determines whether or not, a location is valid, for a building.
+     * @return boolean
+     */
+    abstract public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y);
+
+    /** 
+     * Generates a building.
+     */
+    abstract public void generateBuilding();
+
     public Card(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
