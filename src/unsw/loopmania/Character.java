@@ -1,7 +1,9 @@
 package unsw.loopmania;
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
+import org.javatuples.Pair;
 
 /**
  * represents the main character in the backend of the game world
@@ -11,6 +13,9 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private List<Item> inventory;
     private List<Item> equippedItems;
 
+    // Position Observers
+    private List<CharacterPositionObserver> observers = new ArrayList<CharacterPositionObserver>();
+
     // damage strategy (what weapon is equipped)
     private DamageStrategy damageStrategy;
     private SimpleIntegerProperty health;
@@ -19,9 +24,13 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     // defence strategy
     private SimpleIntegerProperty baseDefence;
 
+    // Initial position
+    private Pair<Integer, Integer> initialPosition;
+
     // TODO = potentially implement relationships between this class and other classes
     public Character(PathPosition position) {
         super(position);
+        this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
     }
 
     public int getHealth() {
@@ -107,6 +116,39 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public void removeItemFromInventory(Item item) {
 
+    }
+
+    /**
+     * Attach an observer to the character
+     * @param observer The observer to attach.
+     */
+    public void attach(CharacterPositionObserver observer) {
+        this.observers.add(observer);
+    }
+
+    /**
+     * Detach an observer to the character
+     * @param observer The observer to attach.
+     */
+    public void detach(CharacterPositionObserver observer) {
+        this.observers.remove(observer);
+    }
+
+    /**
+     * Updates observers of character position
+     */
+    public void updateObservers() {
+        for (CharacterPositionObserver observer : observers) {
+            observer.encounter(this);
+        }
+    }
+
+    /**
+     * Determines whether or not the character is at the heros castle.
+     * @return boolean indicating whether or not the character is at the castle.
+     */
+    public boolean isAtHerosCastle() {
+        return (getPosition().getPositionPair().equals(initialPosition));
     }
 
 }

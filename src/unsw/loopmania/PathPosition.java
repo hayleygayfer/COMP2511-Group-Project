@@ -67,4 +67,17 @@ public class PathPosition{
     public SimpleIntegerProperty getY(){
         return y;
     }
+
+    public int getXValue(){
+        return x.getValue();
+    }
+
+    public int getYValue(){
+        return y.getValue();
+    }
+
+    public Pair<Integer, Integer> getPositionPair() {
+        return new Pair<Integer, Integer>(getX().getValue(), getY().getValue());
+    }
+
 }

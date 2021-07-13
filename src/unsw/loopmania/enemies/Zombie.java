@@ -1,5 +1,8 @@
 package unsw.loopmania.enemies;
 
+import java.io.File;
+
+import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.PathPosition;
 
@@ -16,5 +19,12 @@ public class Zombie extends BasicEnemy {
     @Override
     public void move(){
         super.move();
+    }
+
+    /**
+     * Renders the image of the zombie.
+     */
+    public Image render() {
+        return new Image((new File("src/images/slug.png")).toURI().toString());
     }
 }
