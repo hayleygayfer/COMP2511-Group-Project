@@ -7,4 +7,13 @@ public class Shield extends EquippableItem {
     public Shield(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
+
+    /**
+     * Chances of critical vampire attacks are reduced by 60%
+     */
+    @Override
+    public double getModifiedCriticalChance(double baseCriticalChance) {
+        // TODO Auto-generated method stub
+        return super.getModifiedCriticalChance(baseCriticalChance);
+    }
 }
