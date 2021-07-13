@@ -24,10 +24,15 @@ public class HerosCastleMenu {
         items.add(newItem);
     }
 
-    public void purchaseItem(Character character, Item item) {
-        if (items.contains(item) /* && character has enough gold */ ) {
-            character.addItemToInventory(item);
-            items.remove(item);
+    public boolean purchaseItem(Character character, Item item) {
+        if (items.contains(item)) {
+            if (character.getGold().get() >= item.getPrice()) {
+                character.addItemToInventory(item);
+                character.deductGold(item.getPrice());
+                items.remove(item);
+                return true;
+            }
         }
+        return false;
     }
 }

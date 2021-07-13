@@ -74,6 +74,10 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         inventory.add(item);
     }
 
+    public void addItemsToInventory(List<Item> items) {
+        inventory.addAll(items);
+    }
+
     /**
      * Returns the items in the inventory
      */
@@ -99,7 +103,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * Unequips item - moves it to inventory
      */
     public void unequipItem(EquippableItem item) {
-
+        equippedItems.remove(item);
+        inventory.add(item);
     }
 
     public List<Item> getEquippedItems() {
@@ -110,7 +115,11 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * 
      */
     public void removeItemFromInventory(Item item) {
+        inventory.remove(item);
+    }
 
+    public void removeItemByIndex(int index) {
+        inventory.remove(index);
     }
 
     public SimpleIntegerProperty getGold() {

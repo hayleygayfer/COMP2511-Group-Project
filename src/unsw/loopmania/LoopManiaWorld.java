@@ -50,9 +50,6 @@ public class LoopManiaWorld {
 
     private List<SpawnEnemyStrategy> spawnEnemyStrategies;
 
-    // TODO = expand the range of items
-    private List<Entity> unequippedInventoryItems;
-
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
 
@@ -75,7 +72,6 @@ public class LoopManiaWorld {
         character = null;
         enemies = new ArrayList<>();
         cardEntities = new ArrayList<>();
-        unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
     }
@@ -146,6 +142,8 @@ public class LoopManiaWorld {
      * @param enemy enemy to be killed
      */
     private void killEnemy(BasicEnemy enemy){
+        List<Item> itemDrops = enemy.getItemDrops();
+        character.addItemsToInventory(itemDrops);
         enemy.destroy();
         enemies.remove(enemy);
     }
@@ -217,7 +215,7 @@ public class LoopManiaWorld {
         
         // now we insert the new sword, as we know we have at least made a slot available...
         Sword sword = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-        unequippedInventoryItems.add(sword);
+        character.addItemToInventory(sword);
         return sword;
     }
 
@@ -245,7 +243,7 @@ public class LoopManiaWorld {
      */
     private void removeUnequippedInventoryItem(Entity item){
         item.destroy();
-        unequippedInventoryItems.remove(item);
+        character.removeItemFromInventory((Item) item);
     }
 
     /**
@@ -271,7 +269,7 @@ public class LoopManiaWorld {
     private void removeItemByPositionInUnequippedInventoryItems(int index){
         Entity item = character.getInventory().get(index);
         item.destroy();
-        unequippedInventoryItems.remove(index);
+        character.removeItemByIndex(index);
     }
 
     /**
