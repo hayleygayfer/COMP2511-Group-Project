@@ -1,8 +1,6 @@
 package test;
 
 import java.util.List;
-
-
 import java.util.ArrayList;
 import org.javatuples.Pair;
 
