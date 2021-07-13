@@ -67,7 +67,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * Adds an item to the character's inventory
      */
     public void addItemToInventory(Item item) {
-
+        inventory.add(item);
     }
 
     /**
@@ -81,7 +81,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * Equips item from the inventory
      */
     public void equipItem(EquippableItem item) {
-
+        
     }
 
     /**

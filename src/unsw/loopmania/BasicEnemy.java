@@ -3,8 +3,11 @@ package unsw.loopmania;
 import java.util.Random;
 
 import org.junit.jupiter.api.DisplayNameGenerator.Simple;
-
+import java.util.List;
+import java.util.ArrayList;
+import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
+import java.util.Random;
 
 /**
  * a basic form of enemy in the world
@@ -13,6 +16,7 @@ public class BasicEnemy extends MovingEntity implements DamageStrategy, DropLoot
     private SimpleIntegerProperty health;
     private SimpleIntegerProperty baseDamage;
     private SimpleIntegerProperty battleRadius;
+    private List<Pair<Item, Double>> dropChances;
 
     // TODO = modify this, and add additional forms of enemy
     public BasicEnemy(PathPosition position) {
@@ -83,5 +87,26 @@ public class BasicEnemy extends MovingEntity implements DamageStrategy, DropLoot
 
     public int getBattleRadius() {
         return battleRadius.get();
+    }
+
+    // drop chances
+
+    public void setDroppableItems(List<Pair<Item, Double>> dropChances) {
+        this.dropChances = dropChances;
+    }
+
+    public List<Item> getItemDrops() {
+        Random chance = new Random(System.currentTimeMillis());
+        List<Item> droppedItems = new ArrayList<Item>();
+
+        // For each possible drop generate a random number to see if it actually drops
+        for (int i = 0; i < dropChances.size(); i++) {
+            Double percentChance = chance.nextDouble();
+            if (percentChance <= dropChances.get(i).getValue1()) {
+                droppedItems.add(dropChances.get(i).getValue0());
+            }
+        }
+        
+        return droppedItems;
     }
 }
