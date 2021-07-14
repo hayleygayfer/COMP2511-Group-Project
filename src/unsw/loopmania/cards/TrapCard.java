@@ -3,6 +3,8 @@ package unsw.loopmania.cards;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Card;
 import unsw.loopmania.Building;
+import java.util.List;
+import org.javatuples.Pair;
 
 public class TrapCard extends Card {
 
@@ -10,7 +12,7 @@ public class TrapCard extends Card {
         super(x, y);
     }
 
-    public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+    public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
         // TODO Auto-generated method stub
         return false;
     }

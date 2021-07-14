@@ -1,5 +1,7 @@
 package unsw.loopmania;
 
+import java.util.List;
+import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
@@ -14,7 +16,7 @@ public abstract class Card extends StaticEntity {
      * Determines whether or not, a location is valid, for a building.
      * @return boolean
      */
-    abstract public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y);
+    abstract public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path);
 
     /** 
      * Generates a building.
