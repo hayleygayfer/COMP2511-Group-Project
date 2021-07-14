@@ -102,6 +102,15 @@ public class LoopManiaWorldController {
     private GridPane equippedItems;
 
     @FXML
+    private GridPane equippedArmour;
+
+    @FXML
+    private GridPane equippedShield; 
+
+    @FXML
+    private GridPane equippedWeapon;
+
+    @FXML
     private GridPane unequippedInventory;
 
     @FXML
