@@ -1,6 +1,7 @@
 package unsw.loopmania;
 
 import java.util.List;
+import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
@@ -26,6 +27,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     public Character(PathPosition position) {
         super(position);
         this.gold = new SimpleIntegerProperty(0);
+        inventory = new ArrayList<Item>();
+        equippedItems = new ArrayList<Item>();
     }
 
     public int getHealth() {
