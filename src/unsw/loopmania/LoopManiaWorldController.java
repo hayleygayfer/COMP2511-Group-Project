@@ -190,6 +190,10 @@ public class LoopManiaWorldController {
         gridPaneNodeSetOnDragExited = new EnumMap<DRAGGABLE_TYPE, EventHandler<DragEvent>>(DRAGGABLE_TYPE.class);
     }
 
+    public LoopManiaWorld getWorld() {
+        return world;
+    }
+
     @FXML
     public void initialize() {
         // TODO = load more images/entities during initialization
@@ -244,6 +248,9 @@ public class LoopManiaWorldController {
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             world.runTickMoves();
+            if (this.world.getGameCycle() > 20) {
+                terminate();
+            }
             List<BasicEnemy> defeatedEnemies = world.runBattles();
             for (BasicEnemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
@@ -631,11 +638,11 @@ public class LoopManiaWorldController {
         case SPACE:
             if (isPaused){
                 startTimer();
-                pauseButton.setText("Start");
+                pauseButton.setText("Pause");
             }
             else{
                 pause();
-                pauseButton.setText("Pause");
+                pauseButton.setText("Start");
             }
             break;
         default:
@@ -665,10 +672,10 @@ public class LoopManiaWorldController {
     @FXML
     private void pauseGame() throws IOException{
         if (isPaused) {
-            pauseButton.setText("Start");
+            pauseButton.setText("Pause");
             startTimer();
         } else {
-            pauseButton.setText("Pause");
+            pauseButton.setText("Start");
             pause();
         }
     }

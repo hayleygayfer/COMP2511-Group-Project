@@ -45,7 +45,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private int gameCycle = -1;
+    private int gameCycle = 0;
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -320,7 +320,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public void encounter(Character character) {
 
         if (character.isAtHerosCastle()) {
-            // TODO: Set heros castle state.
+            iterateGamecycle();
         }
     }
 
