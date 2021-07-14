@@ -6,6 +6,7 @@ import java.util.List;
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 
+import javafx.scene.control.Button;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -625,9 +626,11 @@ public class LoopManiaWorldController {
         case SPACE:
             if (isPaused){
                 startTimer();
+                pauseButton.setText("Start");
             }
             else{
                 pause();
+                pauseButton.setText("Pause");
             }
             break;
         default:
@@ -649,6 +652,20 @@ public class LoopManiaWorldController {
         // TODO = possibly set other menu switchers
         pause();
         mainMenuSwitcher.switchMenu();
+    }
+
+    @FXML
+    Button pauseButton;
+
+    @FXML
+    private void pauseGame() throws IOException{
+        if (isPaused) {
+            pauseButton.setText("Start");
+            startTimer();
+        } else {
+            pauseButton.setText("Pause");
+            pause();
+        }
     }
 
     /**
