@@ -26,11 +26,14 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     // Initial position
     private Pair<Integer, Integer> initialPosition;
+    // gold
+    private SimpleIntegerProperty gold;
 
     // TODO = potentially implement relationships between this class and other classes
     public Character(PathPosition position) {
         super(position);
         this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
+        this.gold = new SimpleIntegerProperty(0);
     }
 
     public int getHealth() {
@@ -149,6 +152,24 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public boolean isAtHerosCastle() {
         return (getPosition().getPositionPair().equals(initialPosition));
+    public SimpleIntegerProperty getGold() {
+        return gold;
+    }
+
+    /**
+     * Deducts the cost of something from the total amount of gold this character has
+     * @param cost
+     */
+    public void deductGold(int cost) {
+        this.gold.set(this.gold.get() - cost);
+    }
+
+    /**
+     * Adds the amount of gold to the total amount of gold this character has
+     * @param amount
+     */
+    public void addGold(int amount) {
+        this.gold.set(this.gold.get() + amount);
     }
 
 }

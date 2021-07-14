@@ -132,6 +132,24 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
+     * potentially spawns gold at a random position
+     * @return list of new gold pieces to be displayed on screen
+     */
+    public List<Gold> possiblySpawnGold() {
+        List<Gold> spawningGold = new ArrayList<>();
+
+        Random random = new Random();
+        if (random.nextInt(100) < 10) {
+            Pair<Integer, Integer> spawnPosition = orderedPath.get(random.nextInt(orderedPath.size()));
+            Gold gold = new Gold(new SimpleIntegerProperty(spawnPosition.getValue0()), new SimpleIntegerProperty(spawnPosition.getValue1()));
+            spawningGold.add(gold);
+            addEntity(gold);
+        }
+
+        return spawningGold;
+    }
+
+    /**
      * kill an enemy
      * @param enemy enemy to be killed
      */

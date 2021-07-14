@@ -2,6 +2,8 @@ package unsw.loopmania.cards;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Card;
+import unsw.loopmania.Building;
+
 
 public class ZombiePitCard extends Card {
 
@@ -14,8 +16,8 @@ public class ZombiePitCard extends Card {
         return false;
     }
 
-    public void generateBuilding() {
+    public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         // TODO Auto-generated method stub
-        
+        return null;
     }   
 }

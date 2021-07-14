@@ -1,7 +1,7 @@
 package unsw.loopmania;
 
 public interface EnemyPositionSubject {
-  public void attach(EnemyPositionSubject observer);
-  public void detach(EnemyPositionSubject observer);
+  public void attach(EnemyPositionObserver observer);
+  public void detach(EnemyPositionObserver observer);
   public void updateObservers();
 }
