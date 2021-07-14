@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
 import unsw.loopmania.Gold;
@@ -77,6 +78,7 @@ public class GoldTest {
         world.runTickMoves();
 
         assertEquals(initialTotal + 1, character.getGold().get());
+        assertFalse(gold.shouldExist().get());
     }
 
     @Test
@@ -93,5 +95,6 @@ public class GoldTest {
         world.runTickMoves();
 
         assertEquals(initialTotal, character.getGold().get());
+        assertTrue(gold.shouldExist().get());
     }
 }
