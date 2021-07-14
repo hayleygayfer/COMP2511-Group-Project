@@ -18,7 +18,21 @@
    <!-- HBox is used to stack items horizontally left to right -->
    <HBox>
       <!-- VBox is used to stack items vertically top to bottom -->
-      <VBox>
+      <VBox fx:id="heroCastle">
+         <Button text="Resume" onAction="#resumeGameFromShop"/>
+         <GridPane fx:id="shopItems" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+               <columnConstraints>
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
+               <children>
+                  
+               </children>
+            </GridPane>
+      </VBox>
+      <VBox fx:id="gameMap">
          <children>
              <!-- squares contains the path, buildings, character, and enemies -->
             <GridPane fx:id="squares" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">

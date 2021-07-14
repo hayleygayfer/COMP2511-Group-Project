@@ -2,13 +2,16 @@ package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.Character;
+import unsw.loopmania.PurchaseItem;
 
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
-public class Armour extends EquippableItem {
-    
+public class Armour extends EquippableItem implements PurchaseItem {
+
     // TODO write armour
     public Armour(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
@@ -29,6 +32,14 @@ public class Armour extends EquippableItem {
     @Override
     public int getModifiedEnemyDamage(int baseDamage) {
         // TODO Auto-generated method stub
-        return super.getModifiedEnemyDamage(baseDamage);
+        return baseDamage / 2;
+    }
+
+    public SimpleIntegerProperty getPrice() {
+        return new SimpleIntegerProperty(5);
+    }
+
+    public SimpleStringProperty getDescription() {
+        return new SimpleStringProperty("Armour");
     }
 }

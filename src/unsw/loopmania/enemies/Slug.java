@@ -8,6 +8,12 @@ import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.Item;
+import unsw.loopmania.items.Sword;
+
+import java.util.List;
+import java.util.ArrayList;
+import org.javatuples.Pair;
 
 public class Slug extends BasicEnemy {
 
@@ -20,6 +26,8 @@ public class Slug extends BasicEnemy {
         setBattleRadius(1);
         setHealth(10);
         setSupportRadius(1);
+        List<Pair<Item, Double>> droppableItems = new ArrayList<Pair<Item, Double>>();
+        setDroppableItems(droppableItems);
     }
 
     /**
