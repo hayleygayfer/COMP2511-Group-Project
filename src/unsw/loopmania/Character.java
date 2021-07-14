@@ -152,6 +152,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public boolean isAtHerosCastle() {
         return (getPosition().getPositionPair().equals(initialPosition));
+    }
+    
     public SimpleIntegerProperty getGold() {
         return gold;
     }

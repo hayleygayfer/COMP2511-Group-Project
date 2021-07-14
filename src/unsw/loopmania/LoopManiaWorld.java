@@ -124,7 +124,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
         if (pos != null){
             int indexInPath = orderedPath.indexOf(pos);
-            Vampire enemy = new Vampire(new PathPosition(indexInPath, orderedPath));
+            Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
