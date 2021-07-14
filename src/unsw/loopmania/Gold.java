@@ -13,16 +13,8 @@ public class Gold extends StaticEntity implements CharacterPositionObserver {
      */
     public void encounter(Character character) {
         if (character.getX() == this.getX() && character.getY() == this.getY()) {
-            collect(character);
+            character.addGold(1);
             this.destroy();
         }
-    }
-
-    /**
-     * When gold is collected, add the corresponding value to the character's total gold
-     * @param Character
-     */
-    public void collect(Character character) {
-        character.addGold(1);
     }
 }
