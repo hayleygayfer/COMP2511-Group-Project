@@ -42,6 +42,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     private Character character;
 
+    /**
+     * cycles - the current game cycle
+     */
+    private int gameCycle = -1;
+
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
     // TODO = expand the range of enemies
@@ -384,6 +389,21 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public void addSpawnEnemyStrategy(SpawnEnemyStrategy spawnEnemyStrategy) {
 
+    }
+
+    /**
+     * iterates cycle
+     */
+    public void iterateGamecycle() {
+        this.gameCycle += 1;
+    }
+
+    /**
+     * Gets game cycle
+     * @return cycle
+     */
+    public int getGameCycle() {
+        return this.gameCycle;
     }
 
 }
