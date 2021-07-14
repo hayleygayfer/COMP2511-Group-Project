@@ -424,4 +424,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return this.gameCycle;
     }
 
+    /**
+     * Gets ordered path
+     */
+    public List<Pair<Integer, Integer>> getPath() {
+        return this.orderedPath;
+    }
+
 }
