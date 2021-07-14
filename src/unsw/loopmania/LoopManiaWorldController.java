@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -24,13 +25,17 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Button;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.items.Sword;
+
+import org.javatuples.Pair;
 
 import java.util.EnumMap;
 
@@ -75,6 +80,18 @@ enum DRAGGABLE_TYPE{
 public class LoopManiaWorldController {
 
     /**
+     * container for all hero castle menu components
+     */
+    @FXML
+    private VBox heroCastle;
+
+    /**
+     * container for all game map components
+     */
+    @FXML 
+    private VBox gameMap;
+
+    /**
      * squares gridpane includes path images, enemies, character, empty grass, buildings
      */
     @FXML
@@ -85,6 +102,12 @@ public class LoopManiaWorldController {
      */
     @FXML
     private GridPane cards;
+
+    /**
+     * shopItems gridPane includes shop items
+     */
+    @FXML
+    private GridPane shopItems;
 
     /**
      * anchorPaneRoot is the "background". It is useful since anchorPaneRoot stretches over the entire game world,
@@ -123,6 +146,12 @@ public class LoopManiaWorldController {
     private Image swordImage;
     private Image basicBuildingImage;
     private Image goldImage;
+    private Image helmetImage;
+    private Image armourImage;
+    private Image staffImage;
+    private Image stakeImage;
+    private Image healthPotionImage;
+    private Image shieldImage;
 
     /**
      * the image currently being dragged, if there is one, otherwise null.
@@ -172,6 +201,12 @@ public class LoopManiaWorldController {
         vampireCastleCardImage = new Image((new File("src/images/vampire_castle_card.png")).toURI().toString());
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
+        armourImage = new Image((new File("src/images/armour.png")).toURI().toString());
+        healthPotionImage = new Image((new File("src/images/basic_healthPotion.png")).toURI().toString());
+        staffImage = new Image((new File("src/images/staff.png")).toURI().toString());
+        stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
+        shieldImage = new Image((new File("src/images/shield.png")).toURI().toString());
         basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
         goldImage = new Image((new File("src/images/gold_pile.png")).toURI().toString());
         currentlyDraggedImage = null;
@@ -222,6 +257,44 @@ public class LoopManiaWorldController {
             }
         }
 
+        // add the starting heros castle shop items
+
+        // helmet
+        ImageView helmetView = new ImageView(helmetImage);
+        shopItems.add(helmetView, 0, 0);
+        Button buyHelmet = new Button("Buy");
+        shopItems.add(buyHelmet, 0, 1);
+
+        // armour
+        ImageView armourView = new ImageView(armourImage);
+        shopItems.add(armourView, 0, 2);
+        Button buyArmour = new Button("Buy");
+        shopItems.add(buyArmour, 0, 3);
+
+        // shield
+        ImageView shieldView = new ImageView(shieldImage);
+        shopItems.add(shieldView, 0, 4);
+        Button buyShield = new Button("Buy");
+        shopItems.add(buyShield, 0, 5);
+
+        // staff
+        ImageView staffView = new ImageView(staffImage);
+        shopItems.add(staffView, 1, 0);
+        Button buyStaff = new Button("Buy");
+        shopItems.add(buyStaff, 1, 1);
+
+        // stake
+        ImageView stakeView = new ImageView(stakeImage);
+        shopItems.add(stakeView, 1, 2);
+        Button buyStake = new Button("Buy");
+        shopItems.add(buyStake, 1, 3);
+
+        // sword
+        ImageView swordView = new ImageView(swordImage);
+        shopItems.add(swordView, 1, 4);
+        Button buySword = new Button("Buy");
+        shopItems.add(buySword, 1, 5);
+
         // create the draggable icon
         draggedEntity = new DragIcon();
         draggedEntity.setVisible(false);
@@ -269,6 +342,15 @@ public class LoopManiaWorldController {
 
     public void terminate(){
         pause();
+    }
+
+    public void resumeGameFromShop(ActionEvent e) {
+        heroCastle.setVisible(false);
+        gameMap.setVisible(true);
+    }
+
+    public void purchaseItemFromShop(Item item) {
+
     }
 
     /**
