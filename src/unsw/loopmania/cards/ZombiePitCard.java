@@ -11,7 +11,7 @@ public class ZombiePitCard extends Card {
         super(x, y);
     }
 
-    public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+    public boolean isValidPosition(Integer x, Integer y, List<Pair<Integer, Integer>> path) {
         // TODO Auto-generated method stub
         return false;
     }
