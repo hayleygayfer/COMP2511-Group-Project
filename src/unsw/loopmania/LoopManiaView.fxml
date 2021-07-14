@@ -114,6 +114,7 @@
 
             <!-- clicking this button returns the human player to the main menu -->
             <Button text="Exit to Main Menu" onAction="#switchToMainMenu"/>
+            <Button fx:id="pauseButton" text="Pause" onAction="#pauseGame"/>
          </children>
       </VBox>
    </HBox>
