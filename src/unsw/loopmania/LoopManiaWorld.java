@@ -142,8 +142,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         if (random.nextInt(100) < 10) {
             Pair<Integer, Integer> spawnPosition = orderedPath.get(random.nextInt(orderedPath.size()));
             Gold gold = new Gold(new SimpleIntegerProperty(spawnPosition.getValue0()), new SimpleIntegerProperty(spawnPosition.getValue1()));
+
             spawningGold.add(gold);
             addEntity(gold);
+            character.attach(gold);
         }
 
         return spawningGold;

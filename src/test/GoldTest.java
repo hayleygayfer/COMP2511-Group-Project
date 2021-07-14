@@ -1,9 +1,6 @@
 package test;
 
 import java.util.List;
-
-
-import java.util.ArrayList;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -12,50 +9,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
 import unsw.loopmania.Gold;
-import unsw.loopmania.PathPosition;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
 
 public class GoldTest {
-    /**
-     * Creates the path for testing
-     * just a 5x5 square loop
-     */
-    public List<Pair<Integer, Integer>> createPath() {
-        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-
-        // add top horizontal
-        for (int i = 0; i < 5; i++) {
-            orderedPath.add(Pair.with(0, i));
-        }
-        // add right side down
-        for (int i = 1; i < 5; i++) {
-            orderedPath.add(Pair.with(i, 4));
-        }
-        // add bottom horizontal
-        for (int i = 4; i >= 0; i--) {
-            orderedPath.add(Pair.with(4, i));
-        }
-        // add left side up
-        for (int i = 4; i >= 0; i--) {
-            orderedPath.add(Pair.with(i, 0));
-        }
-
-        return orderedPath;
-    }
-
-    public Character createCharacter() {
-        return new Character(new PathPosition(0, createPath()));
-    }
-
-    public LoopManiaWorld createWorld() {
-        return new LoopManiaWorld(6, 6, createPath());
-    }
 
     @Test
     public void testConstructor() {
@@ -68,7 +29,9 @@ public class GoldTest {
 
     @Test
     public void testSpawnFrequency() {
-        LoopManiaWorld world = createWorld();
+        LoopManiaWorld world = TestHelper.createWorld();
+        Character character = TestHelper.createCharacter();
+        world.setCharacter(character);
         // spawns approximately 10% of the time
         int spawns = 0;
         for (int i = 0; i < 1000; i++) {
@@ -83,8 +46,10 @@ public class GoldTest {
 
     @Test
     public void testSpawnPositions() {
-        LoopManiaWorld world = createWorld();
-        List<Pair<Integer, Integer>> path = createPath();
+        LoopManiaWorld world = TestHelper.createWorld();
+        Character character = TestHelper.createCharacter();
+        world.setCharacter(character);
+        List<Pair<Integer, Integer>> path = TestHelper.createPath();
 
         // always spawns on a path tile
         for (int i = 0; i < 100; i++) {
@@ -99,18 +64,34 @@ public class GoldTest {
     }
 
     @Test
-    public void testCollectGold() {
-        Character character = createCharacter();
-        Gold gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
+    public void testCharacterMovesOverGold() {
+        LoopManiaWorld world = TestHelper.createWorld();
+        Character character = TestHelper.createCharacter();
+        world.setCharacter(character);
 
-        int initialTotal = character.getGold().get();
+        Gold gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1)); 
+        character.attach(gold);
 
-        gold.collect(character);
+        int initialTotal = character.getGold().get(); 
+
+        world.runTickMoves();
+
         assertEquals(initialTotal + 1, character.getGold().get());
-
-        Gold gold2 = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
-        gold2.collect(character);
-        assertEquals(initialTotal + 2, character.getGold().get());
     }
 
+    @Test
+    public void testCharacterDoesntReachGold() {
+        LoopManiaWorld world = TestHelper.createWorld();
+        Character character = TestHelper.createCharacter();
+        world.setCharacter(character);
+
+        Gold gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(2)); 
+        character.attach(gold);
+
+        int initialTotal = character.getGold().get(); 
+
+        world.runTickMoves();
+
+        assertEquals(initialTotal, character.getGold().get());
+    }
 }
