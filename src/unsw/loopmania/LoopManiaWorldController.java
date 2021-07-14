@@ -268,7 +268,7 @@ public class LoopManiaWorldController {
         timeline.stop();
     }
 
-    public void terminate(){
+    public void terminate() {
         pause();
     }
 
