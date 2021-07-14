@@ -117,6 +117,11 @@
                   </HBox>
                </children>
             </VBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Equipped Items">
+               <font>
+                  <Font name="Avenir Next Bold" size="14.0" />
+               </font>
+            </Text>
             <!-- equippedItems contains the equipment equipped by the character in special slots -->
             <!-- TODO = extend this to have slots for equipping armour, shields, helmets, and any other equippable items -->
             <GridPane fx:id="equippedItems" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
@@ -149,6 +154,11 @@
                   </ImageView>
                </children>
             </GridPane>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inventory">
+               <font>
+                  <Font name="Avenir Next Bold" size="14.0" />
+               </font>
+            </Text>
 
             <!-- unequippedInventory is for unequipped items, which can be dragged into the equipped inventory -->
             <GridPane fx:id="unequippedInventory" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
