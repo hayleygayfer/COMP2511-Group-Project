@@ -9,6 +9,8 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.enemies.Slug;
+import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.items.Sword;
 
 /**
@@ -17,7 +19,7 @@ import unsw.loopmania.items.Sword;
  * A world can contain many entities, each occupy a square. More than one
  * entity can occupy the same square.
  */
-public class LoopManiaWorld {
+public class LoopManiaWorld implements CharacterPositionObserver {
     // TODO = add additional backend functionality
 
     public static final int unequippedInventoryWidth = 4;
@@ -39,6 +41,11 @@ public class LoopManiaWorld {
     private List<Entity> nonSpecifiedEntities;
 
     private Character character;
+
+    /**
+     * cycles - the current game cycle
+     */
+    private int gameCycle = -1;
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -90,6 +97,7 @@ public class LoopManiaWorld {
      */
     public void setCharacter(Character character) {
         this.character = character;
+        character.attach(this);
     }
 
     /**
@@ -112,7 +120,7 @@ public class LoopManiaWorld {
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
         if (pos != null){
             int indexInPath = orderedPath.indexOf(pos);
-            BasicEnemy enemy = new BasicEnemy(new PathPosition(indexInPath, orderedPath));
+            Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
@@ -158,8 +166,9 @@ public class LoopManiaWorld {
         for (BasicEnemy e: enemies){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
-            if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < 4){
-                // fight...
+            if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
+                // TODO: Setup Battle
+                // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
                 defeatedEnemies.add(e);
             }
         }
@@ -234,6 +243,7 @@ public class LoopManiaWorld {
      */
     public void runTickMoves(){
         character.moveDownPath();
+        character.updateObservers();
         moveBasicEnemies();
     }
 
@@ -302,6 +312,17 @@ public class LoopManiaWorld {
     }
 
     /**
+     * Observe character movements
+     * @param Character the character to observe
+     */
+    public void encounter(Character character) {
+
+        if (character.isAtHerosCastle()) {
+            // TODO: Set heros castle state.
+        }
+    }
+
+    /**
      * move all enemies
      */
     private void moveBasicEnemies() {
@@ -316,7 +337,6 @@ public class LoopManiaWorld {
      * @return null if random choice is that wont be spawning an enemy or it isn't possible, or random coordinate pair if should go ahead
      */
     private Pair<Integer, Integer> possiblyGetBasicEnemySpawnPosition(){
-        // TODO = modify this
         
         // has a chance spawning a basic enemy on a tile the character isn't on or immediately before or after (currently space required = 2)...
         Random rand = new Random();
@@ -385,6 +405,21 @@ public class LoopManiaWorld {
      */
     public void addSpawnEnemyStrategy(SpawnEnemyStrategy spawnEnemyStrategy) {
 
+    }
+
+    /**
+     * iterates cycle
+     */
+    public void iterateGamecycle() {
+        this.gameCycle += 1;
+    }
+
+    /**
+     * Gets game cycle
+     * @return cycle
+     */
+    public int getGameCycle() {
+        return this.gameCycle;
     }
 
 }

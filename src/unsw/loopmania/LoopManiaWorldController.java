@@ -142,7 +142,9 @@ public class LoopManiaWorldController {
     private Timeline timeline;
 
     private Image vampireCastleCardImage;
-    private Image basicEnemyImage;
+    private Image slugEnemyImage;
+    private Image vampireEnemyImage;
+    private Image zombieEnemyImage;
     private Image swordImage;
     private Image basicBuildingImage;
     private Image goldImage;
@@ -198,8 +200,10 @@ public class LoopManiaWorldController {
     public LoopManiaWorldController(LoopManiaWorld world, List<ImageView> initialEntities) {
         this.world = world;
         entityImages = new ArrayList<>(initialEntities);
-        vampireCastleCardImage = new Image((new File("src/images/vampire_castle_card.png")).toURI().toString());
-        basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
+        vampireCastleCardImage = new Image((new File("src/images/vampire.png")).toURI().toString());
+        slugEnemyImage = new Image((new File("src/images/zombie.png")).toURI().toString());
+        vampireEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
+        zombieEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
         armourImage = new Image((new File("src/images/armour.png")).toURI().toString());
@@ -430,7 +434,8 @@ public class LoopManiaWorldController {
      * @param enemy
      */
     private void onLoad(BasicEnemy enemy) {
-        ImageView view = new ImageView(basicEnemyImage);
+        // Determine which image to load in.
+        ImageView view = new ImageView(enemy.render());
         addEntity(enemy, view);
         squares.getChildren().add(view);
     }
