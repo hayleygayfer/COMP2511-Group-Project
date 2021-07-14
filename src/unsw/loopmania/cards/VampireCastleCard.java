@@ -3,6 +3,8 @@ package unsw.loopmania.cards;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Building;
 import unsw.loopmania.Card;
+import java.util.List;
+import org.javatuples.Pair;
 
 /**
  * represents a vampire castle card in the backend game world
@@ -13,7 +15,7 @@ public class VampireCastleCard extends Card {
         
     }
 
-    public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+    public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
         // TODO Auto-generated method stub
         return false;
     }
