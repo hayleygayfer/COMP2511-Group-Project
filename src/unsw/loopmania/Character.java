@@ -3,6 +3,7 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
+
 import org.javatuples.Pair;
 
 /**
@@ -28,16 +29,28 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private Pair<Integer, Integer> initialPosition;
     // gold
     private SimpleIntegerProperty gold;
+    // XP
+    private SimpleIntegerProperty xp;
 
     // TODO = potentially implement relationships between this class and other classes
     public Character(PathPosition position) {
         super(position);
         this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
         this.gold = new SimpleIntegerProperty(0);
+        this.xp = new SimpleIntegerProperty(0);
+        this.health = new SimpleIntegerProperty(50);
+    }
+
+    public SimpleIntegerProperty getXpProperty() {
+        return xp;
     }
 
     public int getHealth() {
         return health.get();
+    }
+
+    public SimpleIntegerProperty getHealthProperty() {
+        return health;
     }
 
     /**

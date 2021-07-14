@@ -45,7 +45,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private int gameCycle = -1;
+    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(-1); 
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -102,6 +102,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public void setCharacter(Character character) {
         this.character = character;
         character.attach(this);
+    }
+
+    /**
+     * Allows the controller to access stats from the character
+     * @return character in the world
+     * @pre the character has been set in the world
+     */
+    public Character getCharacter() {
+        return character;
     }
 
     /**
@@ -415,14 +424,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * iterates cycle
      */
     public void iterateGamecycle() {
-        this.gameCycle += 1;
+        this.gameCycle.set(this.gameCycle.get() + 1);
     }
 
     /**
-     * Gets game cycle
+     * Gets game cycle as an integer
      * @return cycle
      */
     public int getGameCycle() {
+        return this.gameCycle.get();
+    }
+
+    /**
+     * Gets game cycle as a SimpleIntegerProperty
+     * @return cycle
+     */
+    public SimpleIntegerProperty getGameCycleProperty() {
         return this.gameCycle;
     }
 
