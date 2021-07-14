@@ -1,18 +1,29 @@
 package unsw.loopmania;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
 
 /**
  * a basic form of enemy in the world
  */
-public class BasicEnemy extends MovingEntity implements DamageStrategy, DropLootStrategy {
-    private SimpleIntegerProperty health;
-    private SimpleIntegerProperty baseDamage;
-    private SimpleIntegerProperty battleRadius;
+public abstract class BasicEnemy extends MovingEntity implements DamageStrategy, DropLootStrategy, EnemyPositionSubject {
+    
+    // Enemy stats
+    private SimpleIntegerProperty health = new SimpleIntegerProperty();
+    private SimpleIntegerProperty baseDamage = new SimpleIntegerProperty();
+    private SimpleIntegerProperty battleRadius = new SimpleIntegerProperty();
+    private SimpleIntegerProperty supportRadius = new SimpleIntegerProperty();
+
+    private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
+
+    // Abstract methods
+    public abstract Image render();
 
     // TODO = modify this, and add additional forms of enemy
     public BasicEnemy(PathPosition position) {
@@ -84,4 +95,34 @@ public class BasicEnemy extends MovingEntity implements DamageStrategy, DropLoot
     public int getBattleRadius() {
         return battleRadius.get();
     }
+
+    // support radius
+    public SimpleIntegerProperty supportRadius() {
+        return supportRadius;
+    }
+
+    public void setSupportRadius(int supportRadius) {
+        this.supportRadius.set(supportRadius);
+    }
+
+    public int getSupportRadius() {
+        return supportRadius.get();
+    }
+
+    // Enemy Position Subjet
+    public void attach(EnemyPositionObserver observer) {
+        observers.add(observer);
+    }
+
+    public void detach(EnemyPositionObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void updateObservers() {
+        for (EnemyPositionObserver observer : observers) {
+            observer.encounter(this);
+        }
+    }
+    
+
 }

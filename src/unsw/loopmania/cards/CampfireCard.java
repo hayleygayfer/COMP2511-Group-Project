@@ -1,5 +1,8 @@
 package unsw.loopmania.cards;
 
+import java.util.List;
+import org.javatuples.Pair;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Card;
 import unsw.loopmania.Building;
@@ -10,7 +13,7 @@ public class CampfireCard extends Card {
         super(x, y);
     }
     
-    public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+    public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
         // TODO Auto-generated method stub
         return false;
     }
