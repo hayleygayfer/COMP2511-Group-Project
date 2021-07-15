@@ -23,7 +23,7 @@ public class Slug extends BasicEnemy {
     public Slug(PathPosition position) {
         super(position);
         setDamage(3);
-        setBattleRadius(1);
+        setBattleRadius(2);
         setHealth(10);
         setSupportRadius(1);
         List<Pair<Item, Double>> droppableItems = new ArrayList<Pair<Item, Double>>();
