@@ -20,7 +20,5 @@ public class ZombiePitBuildingTest {
       // Tests that generate enemy generates a BasicEnemy of type Zombie.
       assertTrue(generatedEnemy instanceof Zombie);
 
-      // TODO: Test for correct placement.
-
     }
 }
