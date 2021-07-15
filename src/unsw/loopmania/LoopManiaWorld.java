@@ -58,7 +58,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     private List<SpawnEnemyStrategy> spawnEnemyStrategies;
 
     // TODO = expand the range of buildings
-    private List<VampireCastleBuilding> buildingEntities;
+    private List<Building> buildingEntities;
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
@@ -133,6 +133,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
+        // TODO = spawn from buildings
+
         return spawningEnemies;
     }
 
