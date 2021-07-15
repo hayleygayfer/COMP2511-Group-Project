@@ -45,7 +45,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(-1); 
+    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(0); 
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
