@@ -322,6 +322,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         }
     }
 
+    public boolean characterAtHerosCastle() {
+        return character.isAtHerosCastle();
+    }
+
     /**
      * move all enemies
      */

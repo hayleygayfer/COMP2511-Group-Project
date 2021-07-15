@@ -304,6 +304,15 @@ public class LoopManiaWorldController {
         Button buySword = new Button("Buy");
         shopItems.add(buySword, 1, 5);
 
+        heroCastle.setPrefWidth(320);
+
+        // bind the game states layout to their visibility
+        heroCastle.managedProperty().bind(heroCastle.visibleProperty());
+        gameMap.managedProperty().bind(gameMap.visibleProperty());
+
+        // heros castle menu not visible in the beginning
+        heroCastle.setVisible(false);
+
         // create the draggable icon
         draggedEntity = new DragIcon();
         draggedEntity.setVisible(false);
@@ -324,6 +333,13 @@ public class LoopManiaWorldController {
             if (this.world.getGameCycle() > 20) {
                 terminate();
             }
+            // check if character is at heros castle
+            if (this.world.characterAtHerosCastle()) {
+                heroCastle.setVisible(true);
+                gameMap.setVisible(false);
+                pause();
+            }
+
             List<BasicEnemy> defeatedEnemies = world.runBattles();
             for (BasicEnemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
@@ -359,6 +375,7 @@ public class LoopManiaWorldController {
     public void resumeGameFromShop(ActionEvent e) {
         heroCastle.setVisible(false);
         gameMap.setVisible(true);
+        startTimer();
     }
 
     public void purchaseItemFromShop(Item item) {
