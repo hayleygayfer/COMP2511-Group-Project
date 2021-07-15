@@ -329,7 +329,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public void encounter(Character character) {
 
         if (character.isAtHerosCastle()) {
-            // TODO: Set heros castle state.
+            iterateGamecycle();
         }
     }
 

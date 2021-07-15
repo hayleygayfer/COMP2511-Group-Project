@@ -268,7 +268,8 @@
             </GridPane>
 
             <!-- clicking this button returns the human player to the main menu -->
-            <Button onAction="#switchToMainMenu" text="Exit to Main Menu" />
+            <Button text="Exit to Main Menu" onAction="#switchToMainMenu"/>
+            <Button fx:id="pauseButton" text="Pause" onAction="#pauseGame"/>
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
