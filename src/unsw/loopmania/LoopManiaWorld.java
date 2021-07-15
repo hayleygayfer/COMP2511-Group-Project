@@ -45,7 +45,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private int gameCycle = 0;
+    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(-1); 
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -110,11 +110,12 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
-     * get the character
-     * @return the character
+     * Allows the controller to access stats from the character
+     * @return character in the world
+     * @pre the character has been set in the world
      */
     public Character getCharacter() {
-        return this.character;
+        return character;
     }
 
     /**
@@ -155,8 +156,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         if (random.nextInt(100) < 10) {
             Pair<Integer, Integer> spawnPosition = orderedPath.get(random.nextInt(orderedPath.size()));
             Gold gold = new Gold(new SimpleIntegerProperty(spawnPosition.getValue0()), new SimpleIntegerProperty(spawnPosition.getValue1()));
+
             spawningGold.add(gold);
             addEntity(gold);
+            character.attach(gold);
         }
 
         return spawningGold;
@@ -432,14 +435,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * iterates cycle
      */
     public void iterateGamecycle() {
-        this.gameCycle += 1;
+        this.gameCycle.set(this.gameCycle.get() + 1);
     }
 
     /**
-     * Gets game cycle
+     * Gets game cycle as an integer
      * @return cycle
      */
     public int getGameCycle() {
+        return this.gameCycle.get();
+    }
+
+    /**
+     * Gets game cycle as a SimpleIntegerProperty
+     * @return cycle
+     */
+    public SimpleIntegerProperty getGameCycleProperty() {
         return this.gameCycle;
     }
 

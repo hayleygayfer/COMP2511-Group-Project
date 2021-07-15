@@ -31,8 +31,10 @@ import javafx.scene.control.Button;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.items.Sword;
@@ -130,7 +132,28 @@ public class LoopManiaWorldController {
     private GridPane equippedItems;
 
     @FXML
+    private GridPane equippedArmour;
+
+    @FXML
+    private GridPane equippedShield; 
+
+    @FXML
+    private GridPane equippedWeapon;
+
+    @FXML
     private GridPane unequippedInventory;
+
+    @FXML
+    private Text cycleDisplay;
+
+    @FXML
+    private Text healthDisplay;
+
+    @FXML
+    private Text goldDisplay;
+
+    @FXML
+    private Text xpDisplay;
 
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
@@ -356,6 +379,12 @@ public class LoopManiaWorldController {
         draggedEntity.setVisible(false);
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
+
+        // make bindings for stats
+        cycleDisplay.textProperty().bindBidirectional(world.getGameCycleProperty(), new NumberStringConverter());
+        healthDisplay.textProperty().bindBidirectional(world.getCharacter().getHealthProperty(), new NumberStringConverter());
+        goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
+        xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
     }
 
     /**
