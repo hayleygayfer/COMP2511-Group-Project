@@ -65,6 +65,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     private List<Pair<Integer, Integer>> orderedPath;
 
+    // THIS IS HERE TEMPORARILY, SHOULD BE MOVED OUT LATER
+    private HerosCastleMenu shopMenu;
+
     /**
      * create the world (constructor)
      * 
@@ -81,6 +84,12 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         cardEntities = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        shopMenu = new HerosCastleMenu();
+    }
+
+    // TODO: move heros castle into state
+    public HerosCastleMenu getHerosCastleMenu() {
+        return shopMenu;
     }
 
     public int getWidth() {
@@ -98,6 +107,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public void setCharacter(Character character) {
         this.character = character;
         character.attach(this);
+    }
+
+    /**
+     * get the character
+     * @return the character
+     */
+    public Character getCharacter() {
+        return this.character;
     }
 
     /**

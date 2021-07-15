@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PurchaseItem;
+import javafx.scene.image.Image;
+import java.io.File;
 
 /**
  * represents an equipped or unequipped sword in the backend world
@@ -41,5 +43,10 @@ public class Sword extends EquippableItem implements PurchaseItem {
 
     public SimpleStringProperty getDescription() {
         return new SimpleStringProperty("Sword");
+    }
+
+    @Override
+    public Image getImage() {
+        return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
 }

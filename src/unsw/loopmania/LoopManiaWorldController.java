@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import javafx.scene.control.Button;
 import javafx.animation.Animation;
@@ -35,6 +36,11 @@ import javafx.util.Duration;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.Helmet;
+import unsw.loopmania.items.Stake;
+import unsw.loopmania.items.Staff;
+import unsw.loopmania.items.Armour;
+import unsw.loopmania.items.Shield;
 
 import org.javatuples.Pair;
 
@@ -268,40 +274,72 @@ public class LoopManiaWorldController {
 
         // add the starting heros castle shop items
 
+        // THIS NEEDS REFACTORING
+
         // helmet
         ImageView helmetView = new ImageView(helmetImage);
         shopItems.add(helmetView, 0, 0);
         Button buyHelmet = new Button("Buy");
+        buyHelmet.setOnAction(e -> { 
+            Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
+            Helmet helmet = new Helmet(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
+            purchaseItemFromShop(helmet); 
+        });
         shopItems.add(buyHelmet, 0, 1);
 
         // armour
         ImageView armourView = new ImageView(armourImage);
         shopItems.add(armourView, 0, 2);
         Button buyArmour = new Button("Buy");
+        buyArmour.setOnAction(e -> { 
+            Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
+            Armour armour = new Armour(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
+            purchaseItemFromShop(armour); 
+        });
         shopItems.add(buyArmour, 0, 3);
 
         // shield
         ImageView shieldView = new ImageView(shieldImage);
         shopItems.add(shieldView, 0, 4);
         Button buyShield = new Button("Buy");
+        buyShield.setOnAction(e -> { 
+            Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
+            Shield shield = new Shield(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
+            purchaseItemFromShop(shield); 
+        });
         shopItems.add(buyShield, 0, 5);
 
         // staff
         ImageView staffView = new ImageView(staffImage);
         shopItems.add(staffView, 1, 0);
         Button buyStaff = new Button("Buy");
+        buyStaff.setOnAction(e -> { 
+            Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
+            Staff staff = new Staff(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
+            purchaseItemFromShop(staff); 
+        });
         shopItems.add(buyStaff, 1, 1);
 
         // stake
         ImageView stakeView = new ImageView(stakeImage);
         shopItems.add(stakeView, 1, 2);
         Button buyStake = new Button("Buy");
+        buyStake.setOnAction(e -> { 
+            Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
+            Stake stake = new Stake(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
+            purchaseItemFromShop(stake); 
+        });
         shopItems.add(buyStake, 1, 3);
 
         // sword
         ImageView swordView = new ImageView(swordImage);
         shopItems.add(swordView, 1, 4);
         Button buySword = new Button("Buy");
+        buySword.setOnAction(e -> { 
+            Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
+            Sword sword = new Sword(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
+            purchaseItemFromShop(sword); 
+        });
         shopItems.add(buySword, 1, 5);
 
         heroCastle.setPrefWidth(320);
@@ -378,8 +416,10 @@ public class LoopManiaWorldController {
         startTimer();
     }
 
-    public void purchaseItemFromShop(Item item) {
-
+    public void purchaseItemFromShop(PurchaseItem item) {
+        if (world.getHerosCastleMenu().purchaseItem(world.getCharacter(), item)) {
+            onLoad((Item) item);
+        }
     }
 
     /**
@@ -442,15 +482,15 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a sword into the GUI.
+     * load an item into the GUI.
      * Particularly, we must connect to the drag detection event handler,
      * and load the image into the unequippedInventory GridPane.
      * @param sword
      */
-    private void onLoad(Sword sword) {
-        ImageView view = new ImageView(swordImage);
+    private void onLoad(Item item) {
+        ImageView view = new ImageView(item.getImage());
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
-        addEntity(sword, view);
+        addEntity(item, view);
         unequippedInventory.getChildren().add(view);
     }
 

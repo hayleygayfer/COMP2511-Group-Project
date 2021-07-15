@@ -4,6 +4,8 @@ import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.Character;
 import unsw.loopmania.PurchaseItem;
+import javafx.scene.image.Image;
+import java.io.File;
 
 import java.util.List;
 
@@ -41,5 +43,10 @@ public class Armour extends EquippableItem implements PurchaseItem {
 
     public SimpleStringProperty getDescription() {
         return new SimpleStringProperty("Armour");
+    }
+
+    @Override
+    public Image getImage() {
+        return new Image((new File("src/images/armour.png")).toURI().toString());
     }
 }

@@ -6,6 +6,8 @@ import unsw.loopmania.PurchaseItem;
 import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
+import java.io.File;
 
 public class Stake extends EquippableItem implements PurchaseItem {
     private int baseDamage;
@@ -38,5 +40,10 @@ public class Stake extends EquippableItem implements PurchaseItem {
 
     public SimpleStringProperty getDescription() {
         return new SimpleStringProperty("Stake");
+    }
+
+    @Override
+    public Image getImage() {
+        return new Image((new File("src/images/stake.png")).toURI().toString());
     }
 }

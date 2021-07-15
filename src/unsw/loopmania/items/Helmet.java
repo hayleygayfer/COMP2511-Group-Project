@@ -5,6 +5,8 @@ import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PurchaseItem;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
+import java.io.File;
 
 public class Helmet extends EquippableItem implements PurchaseItem {
     private int reducedCharacterDamage;
@@ -41,5 +43,10 @@ public class Helmet extends EquippableItem implements PurchaseItem {
 
     public SimpleStringProperty getDescription() {
         return new SimpleStringProperty("Helmet");
+    }
+
+    @Override
+    public Image getImage() {
+        return new Image((new File("src/images/helmet.png")).toURI().toString());
     }
 }
