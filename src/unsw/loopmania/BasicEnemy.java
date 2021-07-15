@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.jupiter.api.DisplayNameGenerator.Simple;
-
+import java.util.List;
+import java.util.ArrayList;
+import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
+import java.util.Random;
 
 /**
  * a basic form of enemy in the world
@@ -21,6 +24,7 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
     private SimpleIntegerProperty supportRadius = new SimpleIntegerProperty();
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
+    private List<Pair<Item, Double>> dropChances;
 
     // Abstract methods
     public abstract Image render();
@@ -123,6 +127,23 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
             observer.encounter(this);
         }
     }
-    
 
+    public void setDroppableItems(List<Pair<Item, Double>> dropChances) {
+        this.dropChances = dropChances;
+    }
+
+    public List<Item> getItemDrops() {
+        Random chance = new Random(System.currentTimeMillis());
+        List<Item> droppedItems = new ArrayList<Item>();
+
+        // For each possible drop generate a random number to see if it actually drops
+        for (int i = 0; i < dropChances.size(); i++) {
+            Double percentChance = chance.nextDouble();
+            if (percentChance <= dropChances.get(i).getValue1()) {
+                droppedItems.add(dropChances.get(i).getValue0());
+            }
+        }
+        
+        return droppedItems;
+    }
 }

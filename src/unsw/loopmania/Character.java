@@ -2,7 +2,9 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
+
 import org.javatuples.Pair;
 
 /**
@@ -28,16 +30,30 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private Pair<Integer, Integer> initialPosition;
     // gold
     private SimpleIntegerProperty gold;
+    // XP
+    private SimpleIntegerProperty xp;
 
     // TODO = potentially implement relationships between this class and other classes
     public Character(PathPosition position) {
         super(position);
         this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
         this.gold = new SimpleIntegerProperty(0);
+        this.xp = new SimpleIntegerProperty(0);
+        this.health = new SimpleIntegerProperty(50);
+        inventory = new ArrayList<Item>();
+        equippedItems = new ArrayList<Item>();
+    }
+
+    public SimpleIntegerProperty getXpProperty() {
+        return xp;
     }
 
     public int getHealth() {
         return health.get();
+    }
+
+    public SimpleIntegerProperty getHealthProperty() {
+        return health;
     }
 
     /**
@@ -79,7 +95,11 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * Adds an item to the character's inventory
      */
     public void addItemToInventory(Item item) {
+        inventory.add(item);
+    }
 
+    public void addItemsToInventory(List<Item> items) {
+        inventory.addAll(items);
     }
 
     /**
@@ -93,7 +113,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * Equips item from the inventory
      */
     public void equipItem(EquippableItem item) {
-
+        
     }
 
     /**
@@ -107,7 +127,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * Unequips item - moves it to inventory
      */
     public void unequipItem(EquippableItem item) {
-
+        equippedItems.remove(item);
+        inventory.add(item);
     }
 
     public List<Item> getEquippedItems() {
@@ -118,7 +139,11 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * 
      */
     public void removeItemFromInventory(Item item) {
+        inventory.remove(item);
+    }
 
+    public void removeItemByIndex(int index) {
+        inventory.remove(index);
     }
 
     /**

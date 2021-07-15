@@ -45,7 +45,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private int gameCycle = 0;
+    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(-1); 
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -56,9 +56,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     private List<Card> cardEntities;
 
     private List<SpawnEnemyStrategy> spawnEnemyStrategies;
-
-    // TODO = expand the range of items
-    private List<Entity> unequippedInventoryItems;
 
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
@@ -82,7 +79,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         character = null;
         enemies = new ArrayList<>();
         cardEntities = new ArrayList<>();
-        unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
     }
@@ -102,6 +98,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public void setCharacter(Character character) {
         this.character = character;
         character.attach(this);
+    }
+
+    /**
+     * Allows the controller to access stats from the character
+     * @return character in the world
+     * @pre the character has been set in the world
+     */
+    public Character getCharacter() {
+        return character;
     }
 
     /**
@@ -142,8 +147,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         if (random.nextInt(100) < 10) {
             Pair<Integer, Integer> spawnPosition = orderedPath.get(random.nextInt(orderedPath.size()));
             Gold gold = new Gold(new SimpleIntegerProperty(spawnPosition.getValue0()), new SimpleIntegerProperty(spawnPosition.getValue1()));
+
             spawningGold.add(gold);
             addEntity(gold);
+            character.attach(gold);
         }
 
         return spawningGold;
@@ -154,6 +161,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @param enemy enemy to be killed
      */
     private void killEnemy(BasicEnemy enemy){
+        List<Item> itemDrops = enemy.getItemDrops();
+        character.addItemsToInventory(itemDrops);
         enemy.destroy();
         enemies.remove(enemy);
     }
@@ -226,7 +235,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         
         // now we insert the new sword, as we know we have at least made a slot available...
         Sword sword = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-        unequippedInventoryItems.add(sword);
+        character.addItemToInventory(sword);
         return sword;
     }
 
@@ -255,7 +264,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     private void removeUnequippedInventoryItem(Entity item){
         item.destroy();
-        unequippedInventoryItems.remove(item);
+        character.removeItemFromInventory((Item) item);
     }
 
     /**
@@ -281,14 +290,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     private void removeItemByPositionInUnequippedInventoryItems(int index){
         Entity item = character.getInventory().get(index);
         item.destroy();
-        unequippedInventoryItems.remove(index);
+        character.removeItemByIndex(index);
     }
 
     /**
      * get the first pair of x,y coordinates which don't have any items in it in the unequipped inventory
      * @return x,y coordinate pair
      */
-    private Pair<Integer, Integer> getFirstAvailableSlotForItem(){
+    public Pair<Integer, Integer> getFirstAvailableSlotForItem(){
         // first available slot for an item...
         // IMPORTANT - have to check by y then x, since trying to find first available slot defined by looking row by row
         for (int y=0; y<unequippedInventoryHeight; y++){
@@ -413,14 +422,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * iterates cycle
      */
     public void iterateGamecycle() {
-        this.gameCycle += 1;
+        this.gameCycle.set(this.gameCycle.get() + 1);
     }
 
     /**
-     * Gets game cycle
+     * Gets game cycle as an integer
      * @return cycle
      */
     public int getGameCycle() {
+        return this.gameCycle.get();
+    }
+
+    /**
+     * Gets game cycle as a SimpleIntegerProperty
+     * @return cycle
+     */
+    public SimpleIntegerProperty getGameCycleProperty() {
         return this.gameCycle;
     }
 

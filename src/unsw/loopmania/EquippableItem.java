@@ -3,8 +3,8 @@ package unsw.loopmania;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.StringProperty;
 public abstract class EquippableItem extends Item {
-
 
     public EquippableItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
@@ -48,7 +48,6 @@ public abstract class EquippableItem extends Item {
      * Given a target enemy, applies the attack to that enemy
      */
     public void attack(MovingEntity target, int damage) {
-
+        
     }
-
 }

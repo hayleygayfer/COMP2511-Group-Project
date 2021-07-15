@@ -67,7 +67,7 @@ public class HealthPotionTest {
         HealthPotion potion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         // potion costs 8 gold
-        assertEquals(8, potion.getPrice());
+        assertEquals(8, potion.getPrice().get());
     }
     
     @Test
