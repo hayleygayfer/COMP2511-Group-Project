@@ -12,7 +12,7 @@ public class Gold extends StaticEntity implements CharacterPositionObserver {
      * @param Character
      */
     public void encounter(Character character) {
-        if (character.getX() == this.getX() && character.getY() == this.getY()) {
+        if (character.getX() == this.getX() && character.getY() == this.getY() && this.shouldExist().get()) {
             character.addGold(1);
             this.destroy();
         }
