@@ -3,6 +3,7 @@ package unsw.loopmania.items;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.Character;
+import unsw.loopmania.itemTypes.ArmourType;
 import javafx.scene.image.Image;
 import java.io.File;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Armour extends EquippableItem {
+public class Armour extends EquippableItem implements ArmourType {
 
     // TODO write armour
     public Armour(SimpleIntegerProperty x, SimpleIntegerProperty y) {

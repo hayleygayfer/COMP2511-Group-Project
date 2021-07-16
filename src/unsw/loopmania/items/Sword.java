@@ -2,6 +2,7 @@ package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
 import javafx.scene.image.Image;
@@ -10,7 +11,7 @@ import java.io.File;
 /**
  * represents an equipped or unequipped sword in the backend world
  */
-public class Sword extends EquippableItem {
+public class Sword extends EquippableItem implements WeaponType {
     private int baseDamage;
 
     // TODO write sword

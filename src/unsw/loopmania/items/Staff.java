@@ -4,9 +4,10 @@ import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import unsw.loopmania.itemTypes.WeaponType;
 import javafx.scene.image.Image;
 import java.io.File;
-public class Staff extends EquippableItem {
+public class Staff extends EquippableItem implements WeaponType {
     private int baseDamage;
 
     // TODO write staff

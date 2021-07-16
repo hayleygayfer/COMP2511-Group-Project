@@ -51,6 +51,9 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Armour;
 import unsw.loopmania.items.Shield;
+import unsw.loopmania.itemTypes.ShieldType;
+import unsw.loopmania.itemTypes.ArmourType;
+import unsw.loopmania.itemTypes.WeaponType;
 
 import org.javatuples.Pair;
 
@@ -519,7 +522,13 @@ public class LoopManiaWorldController {
      */
     private void onLoad(Item item) {
         ImageView view = new ImageView(item.getImage());
-        addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
+        if (item instanceof ArmourType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour);
+        } else if (item instanceof WeaponType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon);
+        } else if (item instanceof ShieldType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
+        }
         addEntity(item, view);
         unequippedInventory.getChildren().add(view);
     }

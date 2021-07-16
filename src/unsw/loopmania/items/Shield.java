@@ -3,9 +3,10 @@ package unsw.loopmania.items;
 import unsw.loopmania.EquippableItem;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import unsw.loopmania.itemTypes.ShieldType;
 import javafx.scene.image.Image;
 import java.io.File;
-public class Shield extends EquippableItem {
+public class Shield extends EquippableItem implements ShieldType {
     private double reducedEnemyCriticalChance;
 
     // TODO write shield

@@ -5,10 +5,11 @@ import unsw.loopmania.MovingEntity;
 import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import unsw.loopmania.itemTypes.WeaponType;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class Stake extends EquippableItem {
+public class Stake extends EquippableItem implements WeaponType {
     private int baseDamage;
 
     // TODO write stake
