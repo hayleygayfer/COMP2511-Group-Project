@@ -26,8 +26,6 @@ public class Battle {
         while (character.isAlive() && enemy.isAlive()) {
           character.attack(enemy);
           enemy.attack(character);
-          System.out.println("Character: " + character.getBattleHealth() + " vs " + "Enemy: " + enemy.getHealth());
-
         }
       }
       character.resetHealth();
