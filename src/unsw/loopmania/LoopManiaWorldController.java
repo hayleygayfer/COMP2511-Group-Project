@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
+import javafx.beans.property.SimpleIntegerProperty;
 
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -31,12 +33,27 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.geometry.Insets;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.util.Duration;
+import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.Helmet;
+import unsw.loopmania.items.Stake;
+import unsw.loopmania.items.Staff;
+import unsw.loopmania.items.Armour;
+import unsw.loopmania.items.Shield;
+import unsw.loopmania.itemTypes.ShieldType;
+import unsw.loopmania.itemTypes.ArmourType;
+import unsw.loopmania.itemTypes.WeaponType;
 
 import org.javatuples.Pair;
 
@@ -291,41 +308,21 @@ public class LoopManiaWorldController {
 
         // add the starting heros castle shop items
 
-        // helmet
-        ImageView helmetView = new ImageView(helmetImage);
-        shopItems.add(helmetView, 0, 0);
-        Button buyHelmet = new Button("Buy");
-        shopItems.add(buyHelmet, 0, 1);
+        List<ShopItem> itemMenu = world.getHerosCastleMenu().getItems();
+        for (int i = 0; i < itemMenu.size(); i++) {
+            VBox newTag = loadShopTag(itemMenu.get(i));
+            if (i < 3) shopItems.add(newTag, 0, i);
+            else shopItems.add(newTag, 1, i - 3);
+        }
 
-        // armour
-        ImageView armourView = new ImageView(armourImage);
-        shopItems.add(armourView, 0, 2);
-        Button buyArmour = new Button("Buy");
-        shopItems.add(buyArmour, 0, 3);
+        heroCastle.setPrefWidth(320);
 
-        // shield
-        ImageView shieldView = new ImageView(shieldImage);
-        shopItems.add(shieldView, 0, 4);
-        Button buyShield = new Button("Buy");
-        shopItems.add(buyShield, 0, 5);
+        // bind the game states layout to their visibility
+        heroCastle.managedProperty().bind(heroCastle.visibleProperty());
+        gameMap.managedProperty().bind(gameMap.visibleProperty());
 
-        // staff
-        ImageView staffView = new ImageView(staffImage);
-        shopItems.add(staffView, 1, 0);
-        Button buyStaff = new Button("Buy");
-        shopItems.add(buyStaff, 1, 1);
-
-        // stake
-        ImageView stakeView = new ImageView(stakeImage);
-        shopItems.add(stakeView, 1, 2);
-        Button buyStake = new Button("Buy");
-        shopItems.add(buyStake, 1, 3);
-
-        // sword
-        ImageView swordView = new ImageView(swordImage);
-        shopItems.add(swordView, 1, 4);
-        Button buySword = new Button("Buy");
-        shopItems.add(buySword, 1, 5);
+        // heros castle menu not visible in the beginning
+        heroCastle.setVisible(false);
 
         // create the draggable icon
         draggedEntity = new DragIcon();
@@ -353,6 +350,14 @@ public class LoopManiaWorldController {
             if (this.world.getGameCycle() > 20) {
                 terminate();
             }
+            // check if character is at heros castle
+            if (this.world.characterAtHerosCastle()) {
+                heroCastle.setVisible(true);
+                gameMap.setVisible(false);
+                pauseButton.setText("Start");
+                pause();
+            }
+
             List<BasicEnemy> defeatedEnemies = world.runBattles();
             for (BasicEnemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
@@ -385,13 +390,69 @@ public class LoopManiaWorldController {
         pause();
     }
 
-    public void resumeGameFromShop(ActionEvent e) {
+    public void resumeGameFromShop() {
         heroCastle.setVisible(false);
         gameMap.setVisible(true);
     }
 
-    public void purchaseItemFromShop(Item item) {
+    public void purchaseItemFromShop(ShopItem item) {
+        Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
+        Item purchasedItem = world.getHerosCastleMenu().purchaseItem(world.getCharacter(), item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
+        if (!purchasedItem.equals(null)) {
+            onLoad(purchasedItem);
+        }
+    }
 
+    public VBox loadShopTag(ShopItem item) {
+        VBox shopItem = new VBox();
+        shopItem.setStyle("-fx-padding: 8;" + 
+        "-fx-border-style: solid inside;" + 
+        "-fx-border-width: 1;" +
+        "-fx-border-insets: 3;" + 
+        "-fx-border-color: grey;" +
+        "-fx-background-color: white;");
+
+        HBox imgRow = new HBox();
+        imgRow.setPadding(new Insets(3));
+        imgRow.setPrefHeight(110);
+
+        VBox nameDescription = new VBox();
+
+        HBox priceRow = new HBox();
+        priceRow.setPadding(new Insets(3));
+        // add name of item
+        Label name = new Label(item.name().get());
+        name.setStyle("-fx-font-weight: bold");
+        nameDescription.getChildren().add(name);
+        // add item description
+        Label description = new Label(item.description().get());
+        description.setWrapText(true);
+        description.setPrefWidth(100);
+        nameDescription.getChildren().add(description);
+        // add item image
+        ImageView itemView = new ImageView(item.getImage());
+
+        // create image row
+        imgRow.getChildren().add(nameDescription);
+        imgRow.getChildren().add(itemView);
+
+        shopItem.getChildren().add(imgRow);
+
+        // add item price
+        Label price = new Label("$" + item.price().get());
+        price.setPrefWidth(95);
+        priceRow.getChildren().add(price);
+        // add buy button
+        Button buyItem = new Button("Buy");
+        buyItem.setOnAction(e -> { 
+            purchaseItemFromShop(item); 
+        });
+        buyItem.disableProperty().bind(world.getCharacter().getGold().lessThan(item.price()));
+        priceRow.getChildren().add(buyItem);
+
+        shopItem.getChildren().add(priceRow);
+
+        return shopItem;
     }
 
     /**
@@ -454,15 +515,21 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a sword into the GUI.
+     * load an item into the GUI.
      * Particularly, we must connect to the drag detection event handler,
      * and load the image into the unequippedInventory GridPane.
      * @param sword
      */
-    private void onLoad(Sword sword) {
-        ImageView view = new ImageView(swordImage);
-        addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
-        addEntity(sword, view);
+    private void onLoad(Item item) {
+        ImageView view = new ImageView(item.getImage());
+        if (item instanceof ArmourType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour);
+        } else if (item instanceof WeaponType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon);
+        } else if (item instanceof ShieldType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
+        }
+        addEntity(item, view);
         unequippedInventory.getChildren().add(view);
     }
 
@@ -662,10 +729,10 @@ public class LoopManiaWorldController {
                 draggedEntity.relocateToPoint(new Point2D(event.getSceneX(), event.getSceneY()));
                 switch (draggableType){
                     case CARD:
-                        draggedEntity.setImage(vampireCastleCardImage);
+                        draggedEntity.setImage(view.getImage());
                         break;
                     case ITEM:
-                        draggedEntity.setImage(swordImage);
+                        draggedEntity.setImage(view.getImage());
                         break;
                     default:
                         break;
@@ -750,6 +817,9 @@ public class LoopManiaWorldController {
             if (isPaused){
                 startTimer();
                 pauseButton.setText("Pause");
+                if (heroCastle.isVisible()) {
+                    resumeGameFromShop();
+                }
             }
             else{
                 pause();
@@ -781,9 +851,12 @@ public class LoopManiaWorldController {
     Button pauseButton;
 
     @FXML
-    private void pauseGame() throws IOException{
+    private void pauseGame() throws IOException {
         if (isPaused) {
             pauseButton.setText("Pause");
+            if (heroCastle.isVisible()) {
+                resumeGameFromShop();
+            }
             startTimer();
         } else {
             pauseButton.setText("Start");
