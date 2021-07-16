@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
+import java.io.File;
 
 import org.javatuples.Pair;
 
@@ -42,6 +44,10 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.health = new SimpleIntegerProperty(50);
         inventory = new ArrayList<Item>();
         equippedItems = new ArrayList<Item>();
+    }
+
+    public Image render() {
+        return new Image((new File("src/images/human_new.png")).toURI().toString());
     }
 
     public SimpleIntegerProperty getXpProperty() {

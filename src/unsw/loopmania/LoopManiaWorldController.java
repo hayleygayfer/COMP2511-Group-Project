@@ -335,6 +335,10 @@ public class LoopManiaWorldController {
         healthDisplay.textProperty().bindBidirectional(world.getCharacter().getHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
+
+        // TODO remove when done testing
+        loadCard();
+        loadCard();
     }
 
     /**
@@ -467,12 +471,11 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a vampire card from the world, and pair it with an image in the GUI
+     * load a card from the world, and pair it with an image in the GUI
      */
-    private void loadVampireCard() {
-        // TODO = load more types of card
-        VampireCastleCard vampireCastleCard = world.loadVampireCard();
-        onLoad(vampireCastleCard);
+    private void loadCard() {
+        Card card = world.loadCard();
+        onLoad(card);
     }
 
     /**
@@ -494,7 +497,7 @@ public class LoopManiaWorldController {
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
         loadSword();
-        loadVampireCard();
+        loadCard();
     }
 
     /**
@@ -504,7 +507,7 @@ public class LoopManiaWorldController {
      * @param Card
      */
     private void onLoad(Card card) {
-        ImageView view = new ImageView(vampireCastleCardImage);
+        ImageView view = new ImageView(card.render());
 
         // FROM https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
         // note target setOnDragOver and setOnDragEntered defined in initialize method
@@ -521,7 +524,7 @@ public class LoopManiaWorldController {
      * @param sword
      */
     private void onLoad(Item item) {
-        ImageView view = new ImageView(item.getImage());
+        ImageView view = new ImageView(item.render());
         if (item instanceof ArmourType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour);
         } else if (item instanceof WeaponType) {
@@ -549,7 +552,7 @@ public class LoopManiaWorldController {
      * @param building
      */
     private void onLoad(Building building) {
-        ImageView view = new ImageView(basicBuildingImage);
+        ImageView view = new ImageView(building.render());
         addEntity(building, view);
         squares.getChildren().add(view);
     }
@@ -559,9 +562,7 @@ public class LoopManiaWorldController {
      * @param gold
      */
     private void onLoad(Gold gold) {
-        ImageView view = new ImageView(goldImage);
-        // TODO: add a clickable handler
-
+        ImageView view = new ImageView(gold.render());
         addEntity(gold, view);
         squares.getChildren().add(view);
     }
@@ -584,6 +585,7 @@ public class LoopManiaWorldController {
                  *you might want to design the application so dropping at an invalid location drops at the most recent valid location hovered over,
                  * or simply allow the card/item to return to its slot (the latter is easier, as you won't have to store the last valid drop location!)
                  */
+                boolean validDrop = false;
                 if (currentlyDraggedType == draggableType){
                     // problem = event is drop completed is false when should be true...
                     // https://bugs.openjdk.java.net/browse/JDK-8117019
@@ -607,26 +609,34 @@ public class LoopManiaWorldController {
                         switch (draggableType){
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
-                                // TODO = spawn a building here of different types
-                                Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                onLoad(newBuilding);
-                                break;
+                                if (canBuildByCoordinates(nodeX, nodeY, x, y)) {
+                                    Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                    onLoad(newBuilding);
+                                    validDrop = true;
+                                }
+                               break;
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
+                                validDrop = true;
                                 break;
                             default:
                                 break;
                         }
-                        
+                        if (!validDrop) {
+                            currentlyDraggedImage.setVisible(true);
+                        }
+
                         draggedEntity.setVisible(false);
                         draggedEntity.setMouseTransparent(false);
                         // remove drag event handlers before setting currently dragged image to null
+                        removeDraggableDragEventHandlers(draggableType, targetGridPane);
                         currentlyDraggedImage = null;
                         currentlyDraggedType = null;
                         printThreadingNotes("DRAG DROPPED ON GRIDPANE HANDLED");
+                       
                     }
                 }
                 event.setDropCompleted(true);
@@ -693,6 +703,10 @@ public class LoopManiaWorldController {
         return world.convertCardToBuildingByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
     }
 
+    private boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        return world.canBuildByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
+    }
+
     /**
      * remove an item from the unequipped inventory by its x and y coordinates in the unequipped inventory gridpane
      * @param nodeX x coordinate from 0 to unequippedInventoryWidth-1
@@ -753,13 +767,22 @@ public class LoopManiaWorldController {
                     // events for entering and exiting are attached to squares children because that impacts opacity change
                     // these do not affect visibility of original image...
                     // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
+                    
                     gridPaneNodeSetOnDragEntered.put(draggableType, new EventHandler<DragEvent>() {
-                        // TODO = be more selective about whether highlighting changes - if it cannot be dropped in the location, the location shouldn't be highlighted!
+                        Integer cIndex = GridPane.getColumnIndex(n);
+                        Integer rIndex = GridPane.getRowIndex(n);
+                        int x = cIndex == null ? 0 : cIndex;
+                        int y = rIndex == null ? 0 : rIndex;
+                        //Places at 0,0 - will need to take coordinates once that is implemented
+
+                        int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
+                        int nodeY = GridPane.getRowIndex(currentlyDraggedImage);
+
                         public void handle(DragEvent event) {
-                            if (currentlyDraggedType == draggableType){
+                            if (currentlyDraggedType == draggableType) {
                             //The drag-and-drop gesture entered the target
                             //show the user that it is an actual gesture target
-                                if(event.getGestureSource() != n && event.getDragboard().hasImage()){
+                                if(event.getGestureSource() != n && event.getDragboard().hasImage() && canBuildByCoordinates(nodeX, nodeY, x, y)){
                                     n.setOpacity(0.7);
                                 }
                             }
@@ -767,9 +790,8 @@ public class LoopManiaWorldController {
                         }
                     });
                     gridPaneNodeSetOnDragExited.put(draggableType, new EventHandler<DragEvent>() {
-                        // TODO = since being more selective about whether highlighting changes, you could program the game so if the new highlight location is invalid the highlighting doesn't change, or leave this as-is
                         public void handle(DragEvent event) {
-                            if (currentlyDraggedType == draggableType){
+                            if (currentlyDraggedType == draggableType) {
                                 n.setOpacity(1);
                             }
                 

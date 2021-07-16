@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.items.Sword;
@@ -58,7 +59,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     private List<SpawnEnemyStrategy> spawnEnemyStrategies;
 
     // TODO = expand the range of buildings
-    private List<VampireCastleBuilding> buildingEntities;
+    private List<Building> buildingEntities;
+
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
@@ -84,6 +86,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         cardEntities = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        spawnEnemyStrategies = new ArrayList<>();
         shopMenu = new HerosCastleMenu();
     }
 
@@ -98,6 +101,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     public int getHeight() {
         return height;
+    }
+
+    public List<Pair<Integer, Integer>> getPath() {
+        return orderedPath;
     }
 
     /**
@@ -142,6 +149,17 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
+        // spawn from buildings
+        if (character.isAtHerosCastle()) {
+            for (SpawnEnemyStrategy spawnEnemyStrategy : spawnEnemyStrategies) {
+                BasicEnemy newEnemy = spawnEnemyStrategy.possiblySpawnEnemy(orderedPath, gameCycle.get());
+                if (newEnemy != null) {
+                    enemies.add(newEnemy);
+                    spawningEnemies.add(newEnemy);
+                }
+            }
+        }
+
         return spawningEnemies;
     }
 
@@ -205,15 +223,24 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * spawn a card in the world and return the card entity
      * @return a card to be spawned in the controller as a JavaFX node
      */
-    public VampireCastleCard loadVampireCard(){
+    public Card loadCard () {
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()){
             // TODO = give some cash/experience/item rewards for the discarding of the oldest card
             removeCard(0);
         }
-        VampireCastleCard vampireCastleCard = new VampireCastleCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
-        cardEntities.add(vampireCastleCard);
-        return vampireCastleCard;
+        SimpleIntegerProperty posX = new SimpleIntegerProperty(cardEntities.size());
+        SimpleIntegerProperty posY = new SimpleIntegerProperty(0);
+        // pick a random card
+        List<Card> potentialCards = new ArrayList<>();
+        potentialCards.add(new VampireCastleCard(posX, posY));
+        potentialCards.add(new ZombiePitCard(posX, posY));
+
+        Random random = new Random();
+        Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));
+
+        cardEntities.add(newCard);
+        return newCard;
     }
 
     /**
@@ -391,12 +418,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @param cardNodeY y index from 0 to height-1 of card to be removed
      * @param buildingNodeX x index from 0 to width-1 of building to be added
      * @param buildingNodeY y index from 0 to height-1 of building to be added
+     * @pre the position of the building to be added is a valid position
      */
     public Building convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        System.out.println(String.format("From (%d, %d) to (%d, %d)", cardNodeX, cardNodeY, buildingNodeX, buildingNodeY));
         // start by getting card
         Card card = null;
         for (Card c: cardEntities){
-            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)){ // Check placeable
+            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)) { // Check placeable
                 card = c;
                 break;
             }
@@ -404,8 +433,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         
         // Check for character position, enemy positon, spawn
         // now spawn building
-        VampireCastleBuilding newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
+        Building newBuilding = card.generateBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingEntities.add(newBuilding);
+        spawnEnemyStrategies.add(newBuilding);
 
         // destroy the card
         card.destroy();
@@ -415,21 +445,21 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return newBuilding;
     }
 
-    /**
-     * Gets spawn enemy strategies
-     * @return List<SpawnEnemyStrategies>
-     */
-    public List<SpawnEnemyStrategy> getSpawnEnemyStrategies() {
-      return spawnEnemyStrategies;
+    public boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        Card card = null;
+        for (Card c: cardEntities){
+            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)) { // Check placeable
+                card = c;
+                break;
+            }
+        } 
+
+        if (card != null) {
+            return card.isValidPosition(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY), orderedPath);
+        }
+        return false;
     }
 
-    /**
-     * Adds a spawn enemy strategy.
-     * @param spawnEnemyStrategy
-     */
-    public void addSpawnEnemyStrategy(SpawnEnemyStrategy spawnEnemyStrategy) {
-
-    }
 
     /**
      * iterates cycle

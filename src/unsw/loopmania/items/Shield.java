@@ -24,7 +24,7 @@ public class Shield extends EquippableItem implements ShieldType {
     }
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/shield.png")).toURI().toString());
     }
 }
