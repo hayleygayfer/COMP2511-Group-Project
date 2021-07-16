@@ -2,14 +2,13 @@ package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
-import unsw.loopmania.PurchaseItem;
 import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class Stake extends EquippableItem implements PurchaseItem {
+public class Stake extends EquippableItem {
     private int baseDamage;
 
     // TODO write stake
@@ -32,14 +31,6 @@ public class Stake extends EquippableItem implements PurchaseItem {
     public void attack(MovingEntity target, int damage) {
         // TODO Auto-generated method stub
         super.attack(target, damage);
-    }
-
-    public SimpleIntegerProperty getPrice() {
-        return new SimpleIntegerProperty(5);
-    }
-
-    public SimpleStringProperty getDescription() {
-        return new SimpleStringProperty("Stake");
     }
 
     @Override

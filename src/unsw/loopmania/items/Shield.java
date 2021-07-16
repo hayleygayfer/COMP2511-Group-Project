@@ -1,12 +1,11 @@
 package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
-import unsw.loopmania.PurchaseItem;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
-public class Shield extends EquippableItem implements PurchaseItem {
+public class Shield extends EquippableItem {
     private double reducedEnemyCriticalChance;
 
     // TODO write shield
@@ -21,14 +20,6 @@ public class Shield extends EquippableItem implements PurchaseItem {
     @Override
     public double getModifiedCriticalChance(double baseCriticalChance) {
         return baseCriticalChance * reducedEnemyCriticalChance;
-    }
-
-    public SimpleIntegerProperty getPrice() {
-        return new SimpleIntegerProperty(5);
-    }
-
-    public SimpleStringProperty getDescription() {
-        return new SimpleStringProperty("Shield");
     }
 
     @Override
