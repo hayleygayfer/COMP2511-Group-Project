@@ -1,5 +1,9 @@
 package unsw.loopmania.buildings;
 
+import java.util.List;
+
+import org.javatuples.Pair;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Building;
 import unsw.loopmania.SpawnEnemyStrategy;
@@ -16,8 +20,9 @@ public class VampireCastleBuilding extends Building implements SpawnEnemyStrateg
 
     /**
      * Spawns Vampire
+     * @pre character is currently at hero's castle 
      */
-    public Vampire spawnEnemy() {
+    public Vampire possiblySpawnEnemy(List<Pair<Integer, Integer>> orderedPath, int gameCycle) {
         return null;
     }
 }

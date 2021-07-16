@@ -41,6 +41,8 @@ public class TestHelper {
     }
 
     public static LoopManiaWorld createWorld() {
-        return new LoopManiaWorld(6, 6, createPath());
+        LoopManiaWorld world = new LoopManiaWorld(6, 6, createPath());
+        world.setCharacter(createCharacter());
+        return world;
     }
 }

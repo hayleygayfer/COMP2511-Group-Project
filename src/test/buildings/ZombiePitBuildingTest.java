@@ -2,23 +2,32 @@ package test.buildings;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import javafx.beans.property.SimpleIntegerProperty;
+import java.util.List;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import test.TestHelper;
+
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
-import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.buildings.ZombiePitBuilding;
 import unsw.loopmania.enemies.Zombie;
 
 public class ZombiePitBuildingTest {
     @Test
-    public void testSpawnEnemy(){
+    public void testSpawnEveryCycle() {
+        List<Pair<Integer, Integer>> path = TestHelper.createPath();
+        ZombiePitBuilding pit = new ZombiePitBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
 
-      ZombiePitBuilding building = new ZombiePitBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-      BasicEnemy generatedEnemy = building.spawnEnemy();
-      
-      // Tests that generate enemy generates a BasicEnemy of type Zombie.
-      assertTrue(generatedEnemy instanceof Zombie);
+        for (int i = 0; i < 10; i++) {
+            Zombie zombie = pit.possiblySpawnEnemy(path, i);
+            assertTrue(zombie instanceof Zombie);
+
+            Pair<Integer, Integer> zombiePos = new Pair<Integer, Integer>(zombie.getX(), zombie.getY());
+            assertTrue(path.contains(zombiePos));
+        }
+
+        // should we also check that it never spawns on hero's castle?
 
     }
 }

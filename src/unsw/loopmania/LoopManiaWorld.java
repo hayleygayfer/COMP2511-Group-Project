@@ -60,6 +60,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     // TODO = expand the range of buildings
     private List<Building> buildingEntities;
 
+
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
      */

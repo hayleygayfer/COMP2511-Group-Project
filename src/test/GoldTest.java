@@ -31,8 +31,6 @@ public class GoldTest {
     @Test
     public void testSpawnFrequency() {
         LoopManiaWorld world = TestHelper.createWorld();
-        Character character = TestHelper.createCharacter();
-        world.setCharacter(character);
         // spawns approximately 10% of the time
         int spawns = 0;
         for (int i = 0; i < 1000; i++) {
@@ -48,8 +46,6 @@ public class GoldTest {
     @Test
     public void testSpawnPositions() {
         LoopManiaWorld world = TestHelper.createWorld();
-        Character character = TestHelper.createCharacter();
-        world.setCharacter(character);
         List<Pair<Integer, Integer>> path = TestHelper.createPath();
 
         // always spawns on a path tile
