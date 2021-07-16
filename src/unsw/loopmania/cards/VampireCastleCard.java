@@ -3,6 +3,8 @@ package unsw.loopmania.cards;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Building;
 import unsw.loopmania.Card;
+import unsw.loopmania.buildings.VampireCastleBuilding;
+
 import java.util.List;
 import org.javatuples.Pair;
 import javafx.scene.image.Image;
@@ -35,9 +37,15 @@ public class VampireCastleCard extends Card {
         return adjacentPathTiles.size() > 0;
     }
 
+    /**
+     * Generates a vampire castle building from this card at the supplied position
+     * @param x x coordinate of spawn position
+     * @param y y coordinate of spawn position
+     * @return the generated building
+     * @pre the supplied position is a valid spawn position
+     */
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        // TODO Auto-generated method stub
-        return null;
+        return new VampireCastleBuilding(x, y);
     }   
 
     public Image render() {

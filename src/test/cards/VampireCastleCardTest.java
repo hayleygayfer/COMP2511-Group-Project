@@ -8,8 +8,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
-import java.util.ArrayList;
 import java.util.List;
+
+import unsw.loopmania.Building;
 import unsw.loopmania.LoopManiaWorld;
 import test.TestHelper;
 import unsw.loopmania.cards.VampireCastleCard;
@@ -21,10 +22,13 @@ public class VampireCastleCardTest {
     @Test
     public void testGenerateBuilding(){
         VampireCastleCard card = new VampireCastleCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        VampireCastleBuilding building = new VampireCastleBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
 
         // Tests that the building is generated at the given coordinates.
-        assertEquals(card.generateBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1)), building);
+        Building generatedBuilding = card.generateBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+
+        assertTrue(generatedBuilding instanceof VampireCastleBuilding);
+        assertEquals(1, generatedBuilding.getX());
+        assertEquals(1, generatedBuilding.getY());
     }
 
     @Test
