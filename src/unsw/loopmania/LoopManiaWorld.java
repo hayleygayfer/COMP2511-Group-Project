@@ -425,7 +425,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         // start by getting card
         Card card = null;
         for (Card c: cardEntities){
-            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)){ // Check placeable
+            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)) { // Check placeable
                 card = c;
                 break;
             }
@@ -443,6 +443,21 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         shiftCardsDownFromXCoordinate(cardNodeX);
 
         return newBuilding;
+    }
+
+    public boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        Card card = null;
+        for (Card c: cardEntities){
+            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)) { // Check placeable
+                card = c;
+                break;
+            }
+        } 
+
+        if (card != null) {
+            return card.isValidPosition(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY), orderedPath);
+        }
+        return false;
     }
 
     /**

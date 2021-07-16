@@ -16,9 +16,9 @@ import java.io.File;
 /**
  * a basic form of building in the world
  */
-public class VampireCastleBuilding extends Building implements SpawnEnemyStrategy {
+public class VampireCastleBuilding extends Building {
     public VampireCastleBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(y, y);
+        super(x, y);
     }
 
     /**
@@ -41,6 +41,6 @@ public class VampireCastleBuilding extends Building implements SpawnEnemyStrateg
     }
 
     public Image render() {
-        return new Image((new File("src/images/vampire_castle_building_transparent.png")).toURI().toString());
+        return new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
     }
 }
