@@ -19,10 +19,20 @@ public class VampireCastleCard extends Card {
 
     /**
      * Position is valid if it is adjacent to a path tile and is not a path tile itself
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     * @return whether the card can be placed at the given position
      */
     public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
-        // TODO Auto-generated method stub
-        return false;
+        Pair<Integer, Integer> position = new Pair<Integer, Integer>(x.get(), y.get());
+        // can't place on a path tile
+        if (path.contains(position)) {
+            return false;
+        }
+        // check that there is an adjacent path tile
+        List<Pair<Integer, Integer>> adjacentPathTiles = getAdjacentSquares(x.get(), y.get());
+        adjacentPathTiles.removeIf(p -> !path.contains(p));
+        return adjacentPathTiles.size() > 0;
     }
 
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {

@@ -41,19 +41,19 @@ public class TestHelper {
 
         // add top horizontal
         for (int i = start; i < size; i++) {
-        orderedPath.add(Pair.with(i, start));
+            orderedPath.add(Pair.with(i, start));
         }
         // add right side down
         for (int i = start + 1; i < size; i++) {
-        orderedPath.add(Pair.with(size - 1, i));
+            orderedPath.add(Pair.with(size - 1, i));
         }
         // add bottom horizontal
         for (int i = (size-2); i >= start; i--) {
-        orderedPath.add(Pair.with(i, size-1));
+            orderedPath.add(Pair.with(i, size-1));
         }
         // add left side up
         for (int i = (size-2); i > start; i--) {
-        orderedPath.add(Pair.with(start, i));
+            orderedPath.add(Pair.with(start, i));
         }
         return orderedPath;
     }
