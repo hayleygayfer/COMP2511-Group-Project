@@ -1,5 +1,6 @@
 package test.buildings;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -25,9 +26,7 @@ public class ZombiePitBuildingTest {
 
             Pair<Integer, Integer> zombiePos = new Pair<Integer, Integer>(zombie.getX(), zombie.getY());
             assertTrue(path.contains(zombiePos));
+            assertNotEquals(0, path.indexOf(zombiePos));
         }
-
-        // should we also check that it never spawns on hero's castle?
-
     }
 }

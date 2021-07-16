@@ -1,6 +1,7 @@
 package test.buildings;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -11,8 +12,6 @@ import test.TestHelper;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
-import unsw.loopmania.BasicEnemy;
-import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.enemies.Vampire;
 
@@ -28,7 +27,10 @@ public class VampireCastleBuildingTest {
         assertTrue(vamp instanceof Vampire);
 
         Pair<Integer, Integer> vampPos = new Pair<Integer, Integer>(vamp.getX(), vamp.getY());
+        // check that it's on a path tile
         assertTrue(path.contains(vampPos));
+        // check that it's not at hero's castle
+        assertNotEquals(0, path.indexOf(vampPos));
     }
 
     @Test
@@ -41,7 +43,10 @@ public class VampireCastleBuildingTest {
         assertTrue(vamp instanceof Vampire);
 
         Pair<Integer, Integer> vampPos = new Pair<Integer, Integer>(vamp.getX(), vamp.getY());
+        // check that it's on a path tile
         assertTrue(path.contains(vampPos));
+        // check that it's not at hero's castle
+        assertNotEquals(0, path.indexOf(vampPos));
     }
 
     @Test
