@@ -31,7 +31,7 @@ public class Staff extends EquippableItem implements WeaponType {
     }
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/staff.png")).toURI().toString());
     }
 }

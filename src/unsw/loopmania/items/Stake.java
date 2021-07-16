@@ -35,7 +35,7 @@ public class Stake extends EquippableItem implements WeaponType {
     }
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/stake.png")).toURI().toString());
     }
 }

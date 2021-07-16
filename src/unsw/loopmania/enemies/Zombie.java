@@ -31,7 +31,7 @@ public class Zombie extends BasicEnemy {
      * Renders the image of the zombie.
      */
     public Image render() {
-        return new Image((new File("src/images/slug.png")).toURI().toString());
+        return new Image((new File("src/images/zombie.png")).toURI().toString());
     }
 
         /**

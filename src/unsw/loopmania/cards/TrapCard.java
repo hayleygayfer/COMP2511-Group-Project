@@ -5,6 +5,8 @@ import unsw.loopmania.Card;
 import unsw.loopmania.Building;
 import java.util.List;
 import org.javatuples.Pair;
+import javafx.scene.image.Image;
+import java.io.File;
 
 public class TrapCard extends Card {
 
@@ -21,4 +23,8 @@ public class TrapCard extends Card {
         // TODO Auto-generated method stub
         return null;
     }   
+
+    public Image render() {
+        return new Image((new File("src/images/trap_card.png")).toURI().toString());
+    }
 }

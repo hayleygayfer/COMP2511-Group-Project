@@ -1,6 +1,8 @@
 package unsw.loopmania;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.image.Image;
+import java.io.File;
 
 /**
  * this class represents a path tile.
@@ -54,5 +56,9 @@ public class PathTile extends StaticEntity {
 
     public PathTile(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+    }
+
+    public Image render() {
+        return new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
     }
 }

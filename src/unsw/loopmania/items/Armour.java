@@ -38,7 +38,7 @@ public class Armour extends EquippableItem implements ArmourType {
     }
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/armour.png")).toURI().toString());
     }
 }
