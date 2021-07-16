@@ -9,11 +9,13 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class StakeShopItem extends ShopItem {
+    private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
     public StakeShopItem() {
-        this.description = new SimpleStringProperty("Stake");
+        this.name = new SimpleStringProperty("Stake");
+        this.description = new SimpleStringProperty("Lower Damage, but very high damage against Vampires.");
         this.price = new SimpleIntegerProperty(5);
     }
 
@@ -28,6 +30,10 @@ public class StakeShopItem extends ShopItem {
 
     public SimpleIntegerProperty price() {
         return price;
+    }
+
+    public SimpleStringProperty name() {
+        return name;
     }
 
     public Image getImage() {

@@ -33,8 +33,15 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.geometry.Insets;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.util.Duration;
+import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
@@ -301,7 +308,8 @@ public class LoopManiaWorldController {
         List<ShopItem> itemMenu = world.getHerosCastleMenu().getItems();
         for (int i = 0; i < itemMenu.size(); i++) {
             VBox newTag = loadShopTag(itemMenu.get(i));
-            shopItems.add(newTag, 0, i);
+            if (i < 3) shopItems.add(newTag, 0, i);
+            else shopItems.add(newTag, 1, i - 3);
         }
 
         heroCastle.setPrefWidth(320);
@@ -394,13 +402,50 @@ public class LoopManiaWorldController {
 
     public VBox loadShopTag(ShopItem item) {
         VBox shopItem = new VBox();
+        shopItem.setStyle("-fx-padding: 8;" + 
+        "-fx-border-style: solid inside;" + 
+        "-fx-border-width: 1;" +
+        "-fx-border-insets: 3;" + 
+        "-fx-border-color: grey;" +
+        "-fx-background-color: white;");
+
+        HBox imgRow = new HBox();
+        imgRow.setPadding(new Insets(3));
+
+        VBox nameDescription = new VBox();
+
+        HBox priceRow = new HBox();
+        priceRow.setPadding(new Insets(3));
+        // add name of item
+        Label name = new Label(item.name().get());
+        name.setStyle("-fx-font-weight: bold");
+        nameDescription.getChildren().add(name);
+        // add item description
+        Label description = new Label(item.description().get());
+        description.setWrapText(true);
+        description.setPrefWidth(100);
+        nameDescription.getChildren().add(description);
+        // add item image
         ImageView itemView = new ImageView(item.getImage());
-        shopItem.getChildren().add(itemView);
+
+        // create image row
+        imgRow.getChildren().add(nameDescription);
+        imgRow.getChildren().add(itemView);
+
+        shopItem.getChildren().add(imgRow);
+
+        // add item price
+        Label price = new Label("$" + item.price().get());
+        price.setPrefWidth(95);
+        priceRow.getChildren().add(price);
+        // add buy button
         Button buyItem = new Button("Buy");
         buyItem.setOnAction(e -> { 
             purchaseItemFromShop(item); 
         });
-        shopItem.getChildren().add(buyItem);
+        priceRow.getChildren().add(buyItem);
+
+        shopItem.getChildren().add(priceRow);
 
         return shopItem;
     }

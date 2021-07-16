@@ -9,11 +9,13 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class ShieldShopItem extends ShopItem {
+    private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
     public ShieldShopItem() {
-        this.description = new SimpleStringProperty("Shield");
+        this.name = new SimpleStringProperty("Shield");
+        this.description = new SimpleStringProperty("Critical Vampire attacks have a 60% lower chance of occuring.");
         this.price = new SimpleIntegerProperty(5);
     }
 
@@ -24,6 +26,10 @@ public class ShieldShopItem extends ShopItem {
 
     public SimpleStringProperty description() {
         return description;
+    }
+
+    public SimpleStringProperty name() {
+        return name;
     }
 
     public SimpleIntegerProperty price() {

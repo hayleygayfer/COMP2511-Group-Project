@@ -9,11 +9,13 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class HelmetShopItem extends ShopItem {
+    private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
     public HelmetShopItem() {
-        this.description = new SimpleStringProperty("Helmet");
+        this.name = new SimpleStringProperty("Helmet");
+        this.description = new SimpleStringProperty("Enemy damage is reduced, but character damage is also reduced.");
         this.price = new SimpleIntegerProperty(5);
     }
 
@@ -24,6 +26,10 @@ public class HelmetShopItem extends ShopItem {
 
     public SimpleStringProperty description() {
         return description;
+    }
+
+    public SimpleStringProperty name() {
+        return name;
     }
 
     public SimpleIntegerProperty price() {

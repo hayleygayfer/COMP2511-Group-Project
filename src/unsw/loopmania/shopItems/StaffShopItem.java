@@ -9,11 +9,13 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class StaffShopItem extends ShopItem {
+    private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
     public StaffShopItem() {
-        this.description = new SimpleStringProperty("Staff");
+        this.name = new SimpleStringProperty("Staff");
+        this.description = new SimpleStringProperty("Very low damage, but can randomly inflict a trance on Enemies to turn them into Allied Soldiers");
         this.price = new SimpleIntegerProperty(5);
     }
 
@@ -24,6 +26,10 @@ public class StaffShopItem extends ShopItem {
 
     public SimpleStringProperty description() {
         return description;
+    }
+
+    public SimpleStringProperty name() {
+        return name;
     }
 
     public SimpleIntegerProperty price() {
