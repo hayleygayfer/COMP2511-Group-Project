@@ -460,21 +460,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return false;
     }
 
-    /**
-     * Gets spawn enemy strategies
-     * @return List<SpawnEnemyStrategies>
-     */
-    public List<SpawnEnemyStrategy> getSpawnEnemyStrategies() {
-      return spawnEnemyStrategies;
-    }
-
-    /**
-     * Adds a spawn enemy strategy.
-     * @param spawnEnemyStrategy
-     */
-    public void addSpawnEnemyStrategy(SpawnEnemyStrategy spawnEnemyStrategy) {
-
-    }
 
     /**
      * iterates cycle
