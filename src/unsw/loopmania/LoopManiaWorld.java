@@ -45,7 +45,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(0); 
+    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(-1); 
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -65,6 +65,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     private List<Pair<Integer, Integer>> orderedPath;
 
+    // THIS IS HERE TEMPORARILY, SHOULD BE MOVED OUT LATER
+    private HerosCastleMenu shopMenu;
+
     /**
      * create the world (constructor)
      * 
@@ -81,6 +84,12 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         cardEntities = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        shopMenu = new HerosCastleMenu();
+    }
+
+    // TODO: move heros castle into state
+    public HerosCastleMenu getHerosCastleMenu() {
+        return shopMenu;
     }
 
     public int getWidth() {
@@ -339,6 +348,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         if (character.isAtHerosCastle()) {
             iterateGamecycle();
         }
+    }
+
+    public boolean characterAtHerosCastle() {
+        return character.isAtHerosCastle();
     }
 
     /**

@@ -4,11 +4,13 @@ import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
-import unsw.loopmania.PurchaseItem;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import unsw.loopmania.itemTypes.WeaponType;
+import javafx.scene.image.Image;
+import java.io.File;
 
-public class Staff extends EquippableItem implements PurchaseItem, CustomAttackStrategy{
+public class Staff extends EquippableItem implements CustomAttackStrategy, WeaponType{
+
     private int baseDamage;
 
     // TODO write staff
@@ -29,11 +31,8 @@ public class Staff extends EquippableItem implements PurchaseItem, CustomAttackS
         System.out.println("inflict trance");
     }
 
-    public SimpleIntegerProperty getPrice() {
-        return new SimpleIntegerProperty(5);
-    }
-
-    public SimpleStringProperty getDescription() {
-        return new SimpleStringProperty("Staff");
+    @Override
+    public Image getImage() {
+        return new Image((new File("src/images/staff.png")).toURI().toString());
     }
 }

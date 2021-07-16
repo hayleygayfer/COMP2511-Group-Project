@@ -3,13 +3,13 @@ package unsw.loopmania.items;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
-import unsw.loopmania.MovingEntity;
-import unsw.loopmania.PurchaseItem;
-import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import unsw.loopmania.itemTypes.WeaponType;
+import javafx.scene.image.Image;
+import java.io.File;
 
-public class Stake extends EquippableItem implements PurchaseItem, CustomAttackStrategy {
+public class Stake extends EquippableItem implements WeaponType, CustomAttackStrategy {
+    // private int baseDamage;
 
     // TODO write stake
     public Stake(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -20,11 +20,8 @@ public class Stake extends EquippableItem implements PurchaseItem, CustomAttackS
         System.out.println("inflict extra damage to vampires");
     }    
 
-    public SimpleIntegerProperty getPrice() {
-        return new SimpleIntegerProperty(5);
-    }
-
-    public SimpleStringProperty getDescription() {
-        return new SimpleStringProperty("Stake");
+    @Override
+    public Image getImage() {
+        return new Image((new File("src/images/stake.png")).toURI().toString());
     }
 }

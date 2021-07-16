@@ -163,7 +163,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * Equips item from the inventory
      */
     public void equipItem(EquippableItem item) {
-        
+        inventory.remove(item);
+        equippedItems.add(item);
     }
 
     /**

@@ -1,7 +1,7 @@
 package test.cards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import unsw.loopmania.LoopManiaWorld;
 
-import unsw.loopmania.cards.ZombiePitCard;
-import unsw.loopmania.buildings.ZombiePitBuilding;
+import unsw.loopmania.cards.VillageCard;
+import unsw.loopmania.buildings.VillageBuilding;
 
-public class ZombiePitCardTest {
+public class VillageCardTest {
     
     /**
      * @author Angeni
@@ -53,36 +53,34 @@ public class ZombiePitCardTest {
     
     @Test
     public void testGenerateBuilding(){
-        ZombiePitCard card = new ZombiePitCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        ZombiePitBuilding building = new ZombiePitBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        VillageCard card = new VillageCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        VillageBuilding building = new VillageBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
 
         // Tests that the building is generated at the given coordinates.
         assertEquals(card.generateBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1)), building);
     }
 
     @Test
-    public void testValidPosition() {
+    public void testInvalidPosition() {
         LoopManiaWorld world = createWorld();
-        List<Pair<Integer, Integer>> adjacentPath = createSquarePath(5, 1); // Valid Positions
+        List<Pair<Integer, Integer>> adjacentPath = createSquarePath(5, 1); // Invalid Positions
 
-        ZombiePitCard card = new ZombiePitCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        VillageCard card = new VillageCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        // Tests that all adjacent pairs are valid
+        // Tests that all non path tiles are invalid
         for (Pair<Integer, Integer> position: adjacentPath) {
-            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
         }
     }
 
 
-    public void testInvalidPosition() {
+    public void testValidPosition() {
         LoopManiaWorld world = createWorld();
-        List<Pair<Integer, Integer>> nonAdjacentPath = createSquarePath(4, 2); // Valid Positions
+        VillageCard card = new VillageCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        ZombiePitCard card = new ZombiePitCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-
-        // Tests that all non adjacent pairs are invalid
-        for (Pair<Integer, Integer> position: nonAdjacentPath) {
-            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+        // Tests that all path tiles are valid
+        for (Pair<Integer, Integer> position: world.getPath()) {
+            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
         }
     }
 }

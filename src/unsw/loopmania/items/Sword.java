@@ -2,14 +2,17 @@ package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.EquippableItem;
-import unsw.loopmania.PurchaseItem;
 import unsw.loopmania.Character;
+import unsw.loopmania.MovingEntity;
+import javafx.scene.image.Image;
+import java.io.File;
 
 /**
  * represents an equipped or unequipped sword in the backend world
  */
-public class Sword extends EquippableItem implements PurchaseItem {
+public class Sword extends EquippableItem implements WeaponType {
     private int damage;
 
     public Sword(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -22,11 +25,8 @@ public class Sword extends EquippableItem implements PurchaseItem {
         character.setBattleDamage(character.getBattleDamage() + damage);
     }
 
-    public SimpleIntegerProperty getPrice() {
-        return new SimpleIntegerProperty(10);
-    }
-
-    public SimpleStringProperty getDescription() {
-        return new SimpleStringProperty("Sword");
+    @Override
+    public Image getImage() {
+        return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
 }

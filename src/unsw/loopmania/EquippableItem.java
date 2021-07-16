@@ -4,6 +4,8 @@ import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
+import java.io.File;
 public abstract class EquippableItem extends Item {
 
     public EquippableItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -58,5 +60,10 @@ public abstract class EquippableItem extends Item {
      */
     public void affect(Character character) {
         return;
+    }
+
+    @Override
+    public Image getImage() {
+        return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
 }
