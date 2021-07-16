@@ -16,7 +16,7 @@ public class HelmetShopItem extends ShopItem {
     public HelmetShopItem() {
         this.name = new SimpleStringProperty("Helmet");
         this.description = new SimpleStringProperty("Enemy damage is reduced, but character damage is also reduced.");
-        this.price = new SimpleIntegerProperty(5);
+        this.price = new SimpleIntegerProperty(15);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {

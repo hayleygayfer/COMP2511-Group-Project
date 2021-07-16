@@ -16,7 +16,7 @@ public class StaffShopItem extends ShopItem {
     public StaffShopItem() {
         this.name = new SimpleStringProperty("Staff");
         this.description = new SimpleStringProperty("Very low damage, but can randomly inflict a trance on Enemies to turn them into Allied Soldiers");
-        this.price = new SimpleIntegerProperty(5);
+        this.price = new SimpleIntegerProperty(20);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {

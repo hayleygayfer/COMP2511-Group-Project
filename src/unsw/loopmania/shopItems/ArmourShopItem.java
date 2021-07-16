@@ -12,11 +12,11 @@ public class ArmourShopItem extends ShopItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
-    
+
     public ArmourShopItem() {
         this.name = new SimpleStringProperty("Armour");
         this.description = new SimpleStringProperty("Enemy Damage is halved.");
-        this.price = new SimpleIntegerProperty(5);
+        this.price = new SimpleIntegerProperty(20);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {

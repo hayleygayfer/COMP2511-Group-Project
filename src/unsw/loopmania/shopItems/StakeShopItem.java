@@ -16,7 +16,7 @@ public class StakeShopItem extends ShopItem {
     public StakeShopItem() {
         this.name = new SimpleStringProperty("Stake");
         this.description = new SimpleStringProperty("Lower Damage, but very high damage against Vampires.");
-        this.price = new SimpleIntegerProperty(5);
+        this.price = new SimpleIntegerProperty(15);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {

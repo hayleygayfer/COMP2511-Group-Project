@@ -16,7 +16,7 @@ public class ShieldShopItem extends ShopItem {
     public ShieldShopItem() {
         this.name = new SimpleStringProperty("Shield");
         this.description = new SimpleStringProperty("Critical Vampire attacks have a 60% lower chance of occuring.");
-        this.price = new SimpleIntegerProperty(5);
+        this.price = new SimpleIntegerProperty(10);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
