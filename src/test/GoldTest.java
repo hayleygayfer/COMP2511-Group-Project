@@ -30,7 +30,7 @@ public class GoldTest {
 
     @Test
     public void testSpawnFrequency() {
-        LoopManiaWorld world = TestHelper.createWorld();
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createPath());
         // spawns approximately 10% of the time
         int spawns = 0;
         for (int i = 0; i < 1000; i++) {
@@ -45,8 +45,8 @@ public class GoldTest {
 
     @Test
     public void testSpawnPositions() {
-        LoopManiaWorld world = TestHelper.createWorld();
         List<Pair<Integer, Integer>> path = TestHelper.createPath();
+        LoopManiaWorld world = TestHelper.createWorld(path);
 
         // always spawns on a path tile
         for (int i = 0; i < 100; i++) {
@@ -62,9 +62,8 @@ public class GoldTest {
 
     @Test
     public void testCharacterMovesOverGold() {
-        LoopManiaWorld world = TestHelper.createWorld();
-        Character character = TestHelper.createCharacter();
-        world.setCharacter(character);
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createPath());
+        Character character = world.getCharacter();
 
         Gold gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1)); 
         character.attach(gold);
@@ -79,9 +78,8 @@ public class GoldTest {
 
     @Test
     public void testCharacterDoesntReachGold() {
-        LoopManiaWorld world = TestHelper.createWorld();
-        Character character = TestHelper.createCharacter();
-        world.setCharacter(character);
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createPath());
+        Character character = world.getCharacter();
 
         Gold gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(2)); 
         character.attach(gold);

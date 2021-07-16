@@ -36,13 +36,36 @@ public class TestHelper {
         return orderedPath;
     }
 
-    public static Character createCharacter() {
-        return new Character(new PathPosition(0, createPath()));
+    public static List<Pair<Integer, Integer>> createSquarePath(int size, int start) {
+        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+
+        // add top horizontal
+        for (int i = start; i < size; i++) {
+        orderedPath.add(Pair.with(i, start));
+        }
+        // add right side down
+        for (int i = start + 1; i < size; i++) {
+        orderedPath.add(Pair.with(size - 1, i));
+        }
+        // add bottom horizontal
+        for (int i = (size-2); i >= start; i--) {
+        orderedPath.add(Pair.with(i, size-1));
+        }
+        // add left side up
+        for (int i = (size-2); i > start; i--) {
+        orderedPath.add(Pair.with(start, i));
+        }
+        return orderedPath;
     }
 
-    public static LoopManiaWorld createWorld() {
-        LoopManiaWorld world = new LoopManiaWorld(6, 6, createPath());
-        world.setCharacter(createCharacter());
+    public static Character createCharacter(List<Pair<Integer, Integer>> path) {
+        return new Character(new PathPosition(0, path));
+    }
+
+    public static LoopManiaWorld createWorld(List<Pair<Integer, Integer>> path) {
+        LoopManiaWorld world = new LoopManiaWorld(6, 6, path);
+        world.setCharacter(createCharacter(path));
         return world;
     }
+
 }

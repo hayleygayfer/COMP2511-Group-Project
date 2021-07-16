@@ -10,46 +10,12 @@ import org.javatuples.Pair;
 import java.util.ArrayList;
 import java.util.List;
 import unsw.loopmania.LoopManiaWorld;
+import test.TestHelper;
 
 import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.buildings.ZombiePitBuilding;
 
 public class ZombiePitCardTest {
-    
-    /**
-     * @author Angeni
-     * Creates the path for testing
-     * just a 5x5 square loop
-     */
-    public List<Pair<Integer, Integer>> createSquarePath(int size, int start) {
-        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-
-        // add top horizontal
-        for (int i = start; i < size; i++) {
-        orderedPath.add(Pair.with(i, start));
-        }
-        // add right side down
-        for (int i = start + 1; i < size; i++) {
-        orderedPath.add(Pair.with(size - 1, i));
-        }
-        // add bottom horizontal
-        for (int i = (size-2); i >= start; i--) {
-        orderedPath.add(Pair.with(i, size-1));
-        }
-        // add left side up
-        for (int i = (size-2); i > start; i--) {
-        orderedPath.add(Pair.with(start, i));
-        }
-        return orderedPath;
-    }
-
-    /**
-     * @author Angeni
-     * @return LoopManiaWorld object
-     */
-    public LoopManiaWorld createWorld() {
-        return new LoopManiaWorld(6, 6, createSquarePath(6, 0));
-    }
     
     @Test
     public void testGenerateBuilding(){
@@ -62,8 +28,8 @@ public class ZombiePitCardTest {
 
     @Test
     public void testValidPosition() {
-        LoopManiaWorld world = createWorld();
-        List<Pair<Integer, Integer>> adjacentPath = createSquarePath(5, 1); // Valid Positions
+        List<Pair<Integer, Integer>> adjacentPath = TestHelper.createSquarePath(5, 1); // Valid Positions
+        LoopManiaWorld world = TestHelper.createWorld(adjacentPath);
 
         ZombiePitCard card = new ZombiePitCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
@@ -73,10 +39,10 @@ public class ZombiePitCardTest {
         }
     }
 
-
+    @Test
     public void testInvalidPosition() {
-        LoopManiaWorld world = createWorld();
-        List<Pair<Integer, Integer>> nonAdjacentPath = createSquarePath(4, 2); // Valid Positions
+        List<Pair<Integer, Integer>> nonAdjacentPath = TestHelper.createSquarePath(4, 2); // Valid Positions
+        LoopManiaWorld world = TestHelper.createWorld(nonAdjacentPath);
 
         ZombiePitCard card = new ZombiePitCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 

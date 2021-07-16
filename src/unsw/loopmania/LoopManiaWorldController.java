@@ -338,6 +338,8 @@ public class LoopManiaWorldController {
         healthDisplay.textProperty().bindBidirectional(world.getCharacter().getHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
+
+        loadVampireCard();
     }
 
     /**
@@ -443,7 +445,7 @@ public class LoopManiaWorldController {
      * @param Card
      */
     private void onLoad(Card card) {
-        ImageView view = new ImageView(vampireCastleCardImage);
+        ImageView view = new ImageView(card.render());
 
         // FROM https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
         // note target setOnDragOver and setOnDragEntered defined in initialize method
@@ -460,7 +462,7 @@ public class LoopManiaWorldController {
      * @param sword
      */
     private void onLoad(Sword sword) {
-        ImageView view = new ImageView(swordImage);
+        ImageView view = new ImageView(sword.render());
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
         addEntity(sword, view);
         unequippedInventory.getChildren().add(view);
@@ -482,7 +484,7 @@ public class LoopManiaWorldController {
      * @param building
      */
     private void onLoad(Building building) {
-        ImageView view = new ImageView(basicBuildingImage);
+        ImageView view = new ImageView(building.render());
         addEntity(building, view);
         squares.getChildren().add(view);
     }
@@ -492,9 +494,7 @@ public class LoopManiaWorldController {
      * @param gold
      */
     private void onLoad(Gold gold) {
-        ImageView view = new ImageView(goldImage);
-        // TODO: add a clickable handler
-
+        ImageView view = new ImageView(gold.render());
         addEntity(gold, view);
         squares.getChildren().add(view);
     }

@@ -10,6 +10,8 @@ import unsw.loopmania.Building;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.SpawnEnemyStrategy;
 import unsw.loopmania.enemies.Vampire;
+import javafx.scene.image.Image;
+import java.io.File;
 
 /**
  * a basic form of building in the world
@@ -37,5 +39,9 @@ public class VampireCastleBuilding extends Building implements SpawnEnemyStrateg
             return new Vampire(new PathPosition(orderedPath.indexOf(spawnTile), orderedPath));
         }
         return null;
+    }
+
+    public Image render() {
+        return new Image((new File("src/images/vampire_castle_building_transparent.png")).toURI().toString());
     }
 }

@@ -8,11 +8,10 @@ import unsw.loopmania.SpawnEnemyStrategy;
 import unsw.loopmania.enemies.Zombie;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.Building;
-import unsw.loopmania.Character;
-import unsw.loopmania.CharacterPositionObserver;
+import javafx.scene.image.Image;
+import java.io.File;
 
 public class ZombiePitBuilding extends Building implements SpawnEnemyStrategy {
-    // TODO write zombie pit building
     public ZombiePitBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
@@ -31,5 +30,9 @@ public class ZombiePitBuilding extends Building implements SpawnEnemyStrategy {
         Pair<Integer, Integer> spawnTile = adjacentPathTiles.get(random.nextInt(adjacentPathTiles.size()));
 
         return new Zombie(new PathPosition(orderedPath.indexOf(spawnTile), orderedPath));
+    }
+
+    public Image render() {
+        return new Image((new File("src/images/zombie_pit.png")).toURI().toString());
     }
 }
