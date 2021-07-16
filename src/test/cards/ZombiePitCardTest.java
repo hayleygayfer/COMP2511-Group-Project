@@ -2,6 +2,7 @@ package test.cards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -48,7 +49,7 @@ public class ZombiePitCardTest {
 
         // Tests that all non adjacent pairs are invalid
         for (Pair<Integer, Integer> position: nonAdjacentPath) {
-            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
         }
     }
 }

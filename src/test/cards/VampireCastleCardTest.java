@@ -2,6 +2,7 @@ package test.cards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -13,6 +14,7 @@ import unsw.loopmania.LoopManiaWorld;
 import test.TestHelper;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.buildings.VampireCastleBuilding;
+
 
 public class VampireCastleCardTest {
     
@@ -38,7 +40,7 @@ public class VampireCastleCardTest {
         }
     }
 
-
+    @Test
     public void testInvalidPosition() {
         List<Pair<Integer, Integer>> nonAdjacentPath = TestHelper.createSquarePath(4, 2); // Valid Positions
         LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
@@ -47,7 +49,7 @@ public class VampireCastleCardTest {
 
         // Tests that all non adjacent pairs are invalid
         for (Pair<Integer, Integer> position: nonAdjacentPath) {
-            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
         }
     }
 }
