@@ -13,15 +13,25 @@ public class Battle {
   }
 
   public void runBattle() {
-    // for (EquippableItem item : character.getEquippedItems()) {
-    //   item.modify(character);
-    //   for (BasicEnemy enemy : enemies) {
-    //     item.modify(enemy;)
-    //   }
-    // }
-    while (character.isAlive() && !enemies.isEmpty()) {
-      // Character attack
-      // All enemies attac;
+    // Initial set up for character
+    for (EquippableItem item : character.getEquippedItems()) {
+      item.affect(character);
+    }
+    while (character.isAlive()) {
+      for (BasicEnemy enemy : enemies) {
+        // Initial set up for each enemy
+        for (EquippableItem item : character.getEquippedItems()) {
+          item.affect(enemy);
+        }
+        while (character.isAlive() && enemy.isAlive()) {
+          character.attack(enemy);
+          enemy.attack(character);
+          System.out.println("Character: " + character.getBattleHealth() + " vs " + "Enemy: " + enemy.getHealth());
+
+        }
+      }
+      character.resetHealth();
+      break;
     }
   }
 }

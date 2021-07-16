@@ -1,12 +1,14 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.BasicEnemy;
+import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PurchaseItem;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Staff extends EquippableItem implements PurchaseItem {
+public class Staff extends EquippableItem implements PurchaseItem, CustomAttackStrategy{
     private int baseDamage;
 
     // TODO write staff
@@ -23,10 +25,8 @@ public class Staff extends EquippableItem implements PurchaseItem {
      * Applies damage to target
      * Also has a chance of applying trance
      */
-    @Override
-    public void attack(MovingEntity target, int damage) {
-        // TODO Auto-generated method stub
-        super.attack(target, damage);
+    public void attack(BasicEnemy enemy) {
+        System.out.println("inflict trance");
     }
 
     public SimpleIntegerProperty getPrice() {

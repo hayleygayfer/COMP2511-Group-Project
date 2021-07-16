@@ -1,5 +1,7 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.BasicEnemy;
+import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PurchaseItem;
@@ -7,30 +9,16 @@ import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Stake extends EquippableItem implements PurchaseItem {
-    private int baseDamage;
+public class Stake extends EquippableItem implements PurchaseItem, CustomAttackStrategy {
 
     // TODO write stake
     public Stake(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        baseDamage = 5;
     }
 
-    @Override
-    public int getModifiedDamage(MovingEntity target, int baseDamage) {
-        if (target.getClass() == Vampire.class) {
-            return this.baseDamage * 3;
-        } else return baseDamage;
-    }
-
-    /**
-     * Applies damage to the target
-     */
-    @Override
-    public void attack(MovingEntity target, int damage) {
-        // TODO Auto-generated method stub
-        super.attack(target, damage);
-    }
+    public void attack(BasicEnemy enemy) {
+        System.out.println("inflict extra damage to vampires");
+    }    
 
     public SimpleIntegerProperty getPrice() {
         return new SimpleIntegerProperty(5);

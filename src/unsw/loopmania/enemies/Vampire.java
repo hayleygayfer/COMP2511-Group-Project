@@ -12,6 +12,8 @@ import unsw.loopmania.EnemyPositionObserver;
 public class Vampire extends BasicEnemy {
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
+    private double criticalHitChance = 0;
+
 
     // TODO write vampire
     public Vampire(PathPosition position) {
@@ -19,6 +21,14 @@ public class Vampire extends BasicEnemy {
         setDamage(1);
         setBattleRadius(1);
         setHealth(1);
+    }
+
+    /**
+     * Sets critical hit chance
+     * @param criticalHitChance The new critical hit chance
+     */
+    public void setCriticalHitChance(double criticalHitChance) {
+      this.criticalHitChance = criticalHitChance;
     }
 
     /**

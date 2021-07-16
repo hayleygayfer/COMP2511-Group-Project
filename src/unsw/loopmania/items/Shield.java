@@ -1,7 +1,9 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.PurchaseItem;
+import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 public class Shield extends EquippableItem implements PurchaseItem {
@@ -19,6 +21,17 @@ public class Shield extends EquippableItem implements PurchaseItem {
     @Override
     public double getModifiedCriticalChance(double baseCriticalChance) {
         return baseCriticalChance * reducedEnemyCriticalChance;
+    }
+
+    /**
+     * Reduces chance of critical vampire attacks by 60%
+     * @param enemy The enemy to affect
+     */
+    public void affect(BasicEnemy enemy) {
+        if (enemy instanceof Vampire) {
+            Vampire vampire = (Vampire) enemy;
+            vampire.setCriticalHitChance(reducedEnemyCriticalChance);
+        }
     }
 
     public SimpleIntegerProperty getPrice() {

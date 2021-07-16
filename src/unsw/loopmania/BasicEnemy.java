@@ -15,11 +15,11 @@ import java.util.Random;
 /**
  * a basic form of enemy in the world
  */
-public abstract class BasicEnemy extends MovingEntity implements DamageStrategy, DropLootStrategy, EnemyPositionSubject {
+public abstract class BasicEnemy extends MovingEntity implements DropLootStrategy, EnemyPositionSubject {
     
     // Enemy stats
     private SimpleIntegerProperty health = new SimpleIntegerProperty();
-    private SimpleIntegerProperty baseDamage = new SimpleIntegerProperty();
+    private SimpleIntegerProperty damage = new SimpleIntegerProperty();
     private SimpleIntegerProperty battleRadius = new SimpleIntegerProperty();
     private SimpleIntegerProperty supportRadius = new SimpleIntegerProperty();
 
@@ -51,21 +51,16 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
 
     // damage
 
-    // This method should be overridden by specific enemies
-    public int getModifiedDamage(int baseDamage) {
-        return baseDamage;
-    }
-
     public int getDamage() {
-        return baseDamage.get();
+        return damage.get();
     }
 
-    public SimpleIntegerProperty damage() {
-        return baseDamage;
+    public SimpleIntegerProperty getDamageProperty() {
+        return damage;
     }
 
     public void setDamage(int damage) {
-        baseDamage.set(damage);
+        this.damage.set(damage);
     }
 
     // health
@@ -80,10 +75,6 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
 
     public int getHealth() {
         return health.get();
-    }
-
-    public void removeHealthPoints(int healthRemoved) {
-        health.add(-healthRemoved);
     }
 
     // battle radius
@@ -145,5 +136,13 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
         }
         
         return droppedItems;
+    }
+
+    public void attack(Character character) {
+        character.setBattleHealth(character.getBattleHealth() - getDamage());
+    }
+
+    public boolean isAlive() {
+        return (getHealth() > 0);
     }
 }

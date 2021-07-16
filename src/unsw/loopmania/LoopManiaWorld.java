@@ -178,14 +178,13 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
             if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
-                System.out.println("hello");
                 // TODO: Setup Battle
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
                 List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
                 enemiesEncountered.add(e);
                 Battle battle = new Battle(character, enemiesEncountered);
                 battle.runBattle();
-                if (character.getHealth() > 0) {
+                if (character.getBaseHealth() > 0) {
                     defeatedEnemies.add(e);
                 } else {
                     // Finish Game

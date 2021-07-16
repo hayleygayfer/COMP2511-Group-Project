@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import org.hamcrest.core.IsInstanceOf;
 import org.javatuples.Pair;
 
 /**
@@ -13,18 +14,17 @@ import org.javatuples.Pair;
 public class Character extends MovingEntity implements CharacterPositionSubject {
     // inventory > list of items
     private List<Item> inventory;
-    private List<Item> equippedItems;
+    private List<EquippableItem> equippedItems;
 
     // Position Observers
     private List<CharacterPositionObserver> observers = new ArrayList<CharacterPositionObserver>();
 
-    // damage strategy (what weapon is equipped)
-    private DamageStrategy damageStrategy;
-    private SimpleIntegerProperty health;
+    // Base & Battle Damage & Health
     private SimpleIntegerProperty baseDamage;
+    private SimpleIntegerProperty baseHealth;
+    private SimpleIntegerProperty battleDamage;
+    private SimpleIntegerProperty battleHealth;
 
-    // defence strategy
-    private SimpleIntegerProperty baseDefence;
 
     // Initial position
     private Pair<Integer, Integer> initialPosition;
@@ -39,48 +39,98 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
         this.gold = new SimpleIntegerProperty(0);
         this.xp = new SimpleIntegerProperty(0);
-        this.health = new SimpleIntegerProperty(50);
+        this.baseHealth = new SimpleIntegerProperty(50);
+        this.battleHealth = new SimpleIntegerProperty(50);
+        this.baseDamage = new SimpleIntegerProperty(5);
+        this.battleDamage = new SimpleIntegerProperty(5);
         inventory = new ArrayList<Item>();
-        equippedItems = new ArrayList<Item>();
+        equippedItems = new ArrayList<EquippableItem>();
     }
 
     public SimpleIntegerProperty getXpProperty() {
         return xp;
     }
 
-    public int getHealth() {
-        return health.get();
-    }
-
-    public SimpleIntegerProperty getHealthProperty() {
-        return health;
+    /**
+     * Base Health Getter
+     * @return baseHealth int
+     */
+    public int getBaseHealth() {
+        return baseHealth.get();
     }
 
     /**
-     * Deducts health
+     * Base Health Property Getter
+     * @return baseHealth int
      */
-    public void loseHealth(double damage) {
-        this.health.subtract(damage);
+    public SimpleIntegerProperty getBaseHealthProperty() {
+        return baseHealth;
+    }
+
+    /**
+     * Battle Health Getter
+     * @param damage
+     */
+    public int getBattleHealth() {
+        return baseHealth.get();
+    }
+
+    /**
+     * Battle Health Setter
+     * @param damage
+     */
+    public void setBattleHealth(int health) {
+        battleHealth.set(health);
+    }
+
+    /**
+     * Base Health Setter
+     * @param damage
+     */
+    public void setBaseHealth(int health) {
+        baseHealth.set(health);
+    }
+
+    /**
+     * Resets health after a battle
+     */
+    public void resetHealth() {
+        if (getBaseHealth() > getBattleHealth()) {
+            setBaseHealth(getBattleHealth());
+        } else {
+            setBattleHealth(getBaseHealth());
+        }
+    }
+
+    /**
+     * Base Damage Getter
+     * @return
+     */
+    public int getBaseDamage() {
+        return baseDamage.get();
+    }
+
+    /**
+     * Battle Damage Getter
+     * @param damage
+     */
+    public int getBattleDamage() {
+        return baseDamage.get();
+    }
+
+    /**
+     * Battle Damage Setter
+     * @param damage
+     */
+    public void setBattleDamage(int damage) {
+        baseDamage.set(damage);
     }
 
     /**
      * Returns whether or not the character is alive
      */
     public boolean isAlive() {
-        return getHealth() > 0;
-    }
-
-    public SimpleIntegerProperty health() {
-        return health;
-    }
-
-    public int getDamage() {
-        // will have to make sure that attack item
-        // damage is applied first
-        for (Item item : equippedItems) {
-
-        }
-        return damageStrategy.getModifiedDamage(baseDamage.get());
+        return getBattleHealth() > 0;
     }
 
     /**
@@ -131,7 +181,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         inventory.add(item);
     }
 
-    public List<Item> getEquippedItems() {
+    public List<EquippableItem> getEquippedItems() {
         return equippedItems;
     }
 
@@ -199,4 +249,19 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.gold.set(this.gold.get() + amount);
     }
 
+    /**
+     * Attack
+     * @param enemy
+     */
+    public void attack(BasicEnemy enemy) {
+        for (EquippableItem item : getEquippedItems()) {
+            if (item instanceof CustomAttackStrategy) {
+                CustomAttackStrategy customAttackStrategy = (CustomAttackStrategy) item;
+                customAttackStrategy.attack(enemy);
+                return;
+            }
+        }
+        System.out.println("BATTLE DAMAGE = " + getBattleDamage());
+        enemy.setHealth(enemy.getHealth() - getBattleDamage());
+    }
 }

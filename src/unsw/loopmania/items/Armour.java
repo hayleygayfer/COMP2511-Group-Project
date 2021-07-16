@@ -2,10 +2,13 @@ package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Character;
 import unsw.loopmania.PurchaseItem;
 
 import java.util.List;
+
+import org.hamcrest.core.IsInstanceOf;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,6 +36,15 @@ public class Armour extends EquippableItem implements PurchaseItem {
     public int getModifiedEnemyDamage(int baseDamage) {
         // TODO Auto-generated method stub
         return baseDamage / 2;
+    }
+
+    /**
+     * Halves the enemy attack damage,
+     * @param enemy the enemy to affect
+     */
+    @Override
+    public void affect(BasicEnemy enemy) {
+        enemy.setDamage(enemy.getDamage() / 2);
     }
 
     public SimpleIntegerProperty getPrice() {

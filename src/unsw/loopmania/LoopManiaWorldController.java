@@ -166,9 +166,7 @@ public class LoopManiaWorldController {
     private Timeline timeline;
 
     private Image vampireCastleCardImage;
-    private Image slugEnemyImage;
-    private Image vampireEnemyImage;
-    private Image zombieEnemyImage;
+
     private Image swordImage;
     private Image basicBuildingImage;
     private Image goldImage;
@@ -225,9 +223,6 @@ public class LoopManiaWorldController {
         this.world = world;
         entityImages = new ArrayList<>(initialEntities);
         vampireCastleCardImage = new Image((new File("src/images/vampire.png")).toURI().toString());
-        slugEnemyImage = new Image((new File("src/images/zombie.png")).toURI().toString());
-        vampireEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
-        zombieEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
         armourImage = new Image((new File("src/images/armour.png")).toURI().toString());
@@ -335,7 +330,7 @@ public class LoopManiaWorldController {
 
         // make bindings for stats
         cycleDisplay.textProperty().bindBidirectional(world.getGameCycleProperty(), new NumberStringConverter());
-        healthDisplay.textProperty().bindBidirectional(world.getCharacter().getHealthProperty(), new NumberStringConverter());
+        healthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
     }

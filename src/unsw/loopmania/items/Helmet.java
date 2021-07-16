@@ -1,5 +1,6 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PurchaseItem;
@@ -33,6 +34,15 @@ public class Helmet extends EquippableItem implements PurchaseItem {
     public int getModifiedEnemyDamage(int baseDamage) {
         // TODO Auto-generated method stub
         return baseDamage - reducedEnemyDamage;
+    }
+
+    /**
+     * Decreases the enemy's damage by a scalar value
+     * @param enemy. The enemy to affect.
+     */
+    @Override
+    public void affect(BasicEnemy enemy) {
+        enemy.setDamage(enemy.getDamage() - reducedEnemyDamage);
     }
 
     public SimpleIntegerProperty getPrice() {
