@@ -46,7 +46,7 @@ public class VampireCastleCardTest {
 
     @Test
     public void testInvalidPosition() {
-        List<Pair<Integer, Integer>> nonAdjacentPath = TestHelper.createSquarePath(4, 2); // Valid Positions
+        List<Pair<Integer, Integer>> nonAdjacentPath = TestHelper.createSquarePath(4, 2); // invalid Positions
         LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
 
         VampireCastleCard card = new VampireCastleCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));

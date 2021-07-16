@@ -38,6 +38,12 @@ public abstract class StaticEntity extends Entity {
         return y().get();
     }
     
+    /**
+     * Gets the squares adjacent to the given position, whether or not they're actually within bounds
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     * @return list of adjacent square
+     */
     public List<Pair<Integer, Integer>> getAdjacentSquares(int x, int y) {
         List<Pair<Integer, Integer>> adjacentSquares = new ArrayList<>();
 

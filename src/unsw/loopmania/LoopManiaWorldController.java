@@ -339,7 +339,8 @@ public class LoopManiaWorldController {
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
-        loadVampireCard();
+        loadCard();
+        loadCard();
     }
 
     /**
@@ -408,12 +409,12 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a vampire card from the world, and pair it with an image in the GUI
+     * load a card from the world, and pair it with an image in the GUI
      */
-    private void loadVampireCard() {
+    private void loadCard() {
         // TODO = load more types of card
-        VampireCastleCard vampireCastleCard = world.loadVampireCard();
-        onLoad(vampireCastleCard);
+        Card card = world.loadCard();
+        onLoad(card);
     }
 
     /**
@@ -435,7 +436,7 @@ public class LoopManiaWorldController {
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
         loadSword();
-        loadVampireCard();
+        loadCard();
     }
 
     /**
@@ -540,7 +541,7 @@ public class LoopManiaWorldController {
                         switch (draggableType){
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
-                                // TODO = spawn a building here of different types
+                                // spawn a building here of different types
                                 Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 onLoad(newBuilding);
                                 break;
@@ -701,6 +702,7 @@ public class LoopManiaWorldController {
                     });
                     gridPaneNodeSetOnDragExited.put(draggableType, new EventHandler<DragEvent>() {
                         // TODO = since being more selective about whether highlighting changes, you could program the game so if the new highlight location is invalid the highlighting doesn't change, or leave this as-is
+                        // TODO = replaces the card back in the card section
                         public void handle(DragEvent event) {
                             if (currentlyDraggedType == draggableType){
                                 n.setOpacity(1);
