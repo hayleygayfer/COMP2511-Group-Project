@@ -46,7 +46,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(0); 
+    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(-1); 
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -67,6 +67,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     private List<Pair<Integer, Integer>> orderedPath;
 
+    // THIS IS HERE TEMPORARILY, SHOULD BE MOVED OUT LATER
+    private HerosCastleMenu shopMenu;
+
     /**
      * create the world (constructor)
      * 
@@ -81,10 +84,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         character = null;
         enemies = new ArrayList<>();
         cardEntities = new ArrayList<>();
-        // for testing purposes
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         spawnEnemyStrategies = new ArrayList<>();
+        shopMenu = new HerosCastleMenu();
+    }
+
+    // TODO: move heros castle into state
+    public HerosCastleMenu getHerosCastleMenu() {
+        return shopMenu;
     }
 
     public int getWidth() {
@@ -93,6 +101,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     public int getHeight() {
         return height;
+    }
+
+    public List<Pair<Integer, Integer>> getPath() {
+        return orderedPath;
     }
 
     /**
@@ -357,6 +369,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         }
     }
 
+    public boolean characterAtHerosCastle() {
+        return character.isAtHerosCastle();
+    }
+
     /**
      * move all enemies
      */
@@ -466,13 +482,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public SimpleIntegerProperty getGameCycleProperty() {
         return this.gameCycle;
-    }
-
-    /**
-     * Gets ordered path
-     */
-    public List<Pair<Integer, Integer>> getPath() {
-        return this.orderedPath;
     }
 
 }
