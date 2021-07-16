@@ -351,6 +351,7 @@ public class LoopManiaWorldController {
             if (this.world.characterAtHerosCastle()) {
                 heroCastle.setVisible(true);
                 gameMap.setVisible(false);
+                pauseButton.setText("Start");
                 pause();
             }
 
@@ -386,10 +387,9 @@ public class LoopManiaWorldController {
         pause();
     }
 
-    public void resumeGameFromShop(ActionEvent e) {
+    public void resumeGameFromShop() {
         heroCastle.setVisible(false);
         gameMap.setVisible(true);
-        startTimer();
     }
 
     public void purchaseItemFromShop(ShopItem item) {
@@ -411,6 +411,7 @@ public class LoopManiaWorldController {
 
         HBox imgRow = new HBox();
         imgRow.setPadding(new Insets(3));
+        imgRow.setPrefHeight(110);
 
         VBox nameDescription = new VBox();
 
@@ -443,6 +444,7 @@ public class LoopManiaWorldController {
         buyItem.setOnAction(e -> { 
             purchaseItemFromShop(item); 
         });
+        buyItem.disableProperty().bind(world.getCharacter().getGold().lessThan(item.price()));
         priceRow.getChildren().add(buyItem);
 
         shopItem.getChildren().add(priceRow);
@@ -806,6 +808,9 @@ public class LoopManiaWorldController {
             if (isPaused){
                 startTimer();
                 pauseButton.setText("Pause");
+                if (heroCastle.isVisible()) {
+                    resumeGameFromShop();
+                }
             }
             else{
                 pause();
@@ -837,9 +842,12 @@ public class LoopManiaWorldController {
     Button pauseButton;
 
     @FXML
-    private void pauseGame() throws IOException{
+    private void pauseGame() throws IOException {
         if (isPaused) {
             pauseButton.setText("Pause");
+            if (heroCastle.isVisible()) {
+                resumeGameFromShop();
+            }
             startTimer();
         } else {
             pauseButton.setText("Start");

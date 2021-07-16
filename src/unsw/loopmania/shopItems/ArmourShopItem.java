@@ -12,8 +12,7 @@ public class ArmourShopItem extends ShopItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
-
-
+    
     public ArmourShopItem() {
         this.name = new SimpleStringProperty("Armour");
         this.description = new SimpleStringProperty("Enemy Damage is halved.");
