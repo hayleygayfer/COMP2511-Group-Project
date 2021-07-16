@@ -21,7 +21,7 @@ public class ZombiePitBuilding extends Building implements SpawnEnemyStrategy {
      * @pre the character is currently at hero's castle
      */
     public Zombie possiblySpawnEnemy(List<Pair<Integer, Integer>> orderedPath, int gameCycle) {
-        List<Pair<Integer, Integer>> adjacentPathTiles = getAdjacentSquares();
+        List<Pair<Integer, Integer>> adjacentPathTiles = getAdjacentSquares(getX(), getY());
         adjacentPathTiles.removeIf(p -> !orderedPath.contains(p));
         // remove hero's castle tile
         adjacentPathTiles.removeIf(p -> orderedPath.indexOf(p) == 0);

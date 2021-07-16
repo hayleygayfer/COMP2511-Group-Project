@@ -28,7 +28,7 @@ public class VampireCastleBuilding extends Building implements SpawnEnemyStrateg
      */
     public Vampire possiblySpawnEnemy(List<Pair<Integer, Integer>> orderedPath, int gameCycle) {
         if (gameCycle % 5 == 0) {
-            List<Pair<Integer, Integer>> adjacentPathTiles = getAdjacentSquares();
+            List<Pair<Integer, Integer>> adjacentPathTiles = getAdjacentSquares(getX(), getY());
             adjacentPathTiles.removeIf(p -> !orderedPath.contains(p));
             // remove hero's castle tile
             adjacentPathTiles.removeIf(p -> orderedPath.indexOf(p) == 0);

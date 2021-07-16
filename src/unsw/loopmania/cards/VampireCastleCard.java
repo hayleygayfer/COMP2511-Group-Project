@@ -17,6 +17,9 @@ public class VampireCastleCard extends Card {
         
     }
 
+    /**
+     * Position is valid if it is adjacent to a path tile and is not a path tile itself
+     */
     public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
         // TODO Auto-generated method stub
         return false;
