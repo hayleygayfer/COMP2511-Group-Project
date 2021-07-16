@@ -80,8 +80,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         character = null;
         enemies = new ArrayList<>();
         cardEntities = new ArrayList<>();
+        // for testing purposes
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        spawnEnemyStrategies = new ArrayList<>();
     }
 
     public int getWidth() {
@@ -134,7 +136,16 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
-        // TODO = spawn from buildings
+        // spawn from buildings
+        if (character.isAtHerosCastle()) {
+            for (SpawnEnemyStrategy spawnEnemyStrategy : spawnEnemyStrategies) {
+                BasicEnemy newEnemy = spawnEnemyStrategy.possiblySpawnEnemy(orderedPath, gameCycle.get());
+                if (newEnemy != null) {
+                    enemies.add(newEnemy);
+                    spawningEnemies.add(newEnemy);
+                }
+            }
+        }
 
         return spawningEnemies;
     }
@@ -396,6 +407,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         // now spawn building
         VampireCastleBuilding newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingEntities.add(newBuilding);
+        if (newBuilding instanceof SpawnEnemyStrategy) {
+            spawnEnemyStrategies.add(newBuilding);
+        }
 
         // destroy the card
         card.destroy();
