@@ -769,7 +769,7 @@ public class LoopManiaWorldController {
                     gridPaneNodeSetOnDragExited.put(draggableType, new EventHandler<DragEvent>() {
                         // TODO = since being more selective about whether highlighting changes, you could program the game so if the new highlight location is invalid the highlighting doesn't change, or leave this as-is
                         public void handle(DragEvent event) {
-                            if (currentlyDraggedType == draggableType){
+                            if (currentlyDraggedType == draggableType) {
                                 n.setOpacity(1);
                             }
                 
