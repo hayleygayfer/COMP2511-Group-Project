@@ -16,7 +16,7 @@ import java.io.File;
 /**
  * a basic form of building in the world
  */
-public class VampireCastleBuilding extends Building {
+public class VampireCastleBuilding extends Building implements SpawnEnemyStrategy {
     public VampireCastleBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }

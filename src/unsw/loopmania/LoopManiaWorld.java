@@ -293,8 +293,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         SimpleIntegerProperty posY = new SimpleIntegerProperty(0);
         // pick a random card
         List<Card> potentialCards = new ArrayList<>();
-        //potentialCards.add(new VampireCastleCard(posX, posY));
-        //potentialCards.add(new ZombiePitCard(posX, posY));
+        potentialCards.add(new VampireCastleCard(posX, posY));
+        potentialCards.add(new ZombiePitCard(posX, posY));
         potentialCards.add(new VillageCard(posX, posY));
 
         Random random = new Random();
@@ -495,10 +495,12 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         // now spawn building
         Building newBuilding = card.generateBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingEntities.add(newBuilding);
-        spawnEnemyStrategies.add(newBuilding);
+        if (newBuilding instanceof SpawnEnemyStrategy) {
+            spawnEnemyStrategies.add((SpawnEnemyStrategy) newBuilding);
+        }
 
         if (newBuilding instanceof CharacterPositionObserver) {
-            character.attach(newBuilding);
+            character.attach((CharacterPositionObserver) newBuilding);
         }
 
         // destroy the card

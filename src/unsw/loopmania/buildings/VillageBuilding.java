@@ -7,7 +7,7 @@ import unsw.loopmania.Character;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class VillageBuilding extends Building {
+public class VillageBuilding extends Building implements CharacterPositionObserver {
     public VillageBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
