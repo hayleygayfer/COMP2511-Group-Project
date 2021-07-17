@@ -11,16 +11,31 @@ import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
 import java.util.List;
 
-import unsw.loopmania.Building;
-import unsw.loopmania.LoopManiaWorld;
 
+import unsw.loopmania.Building;
+import unsw.loopmania.Card;
+import unsw.loopmania.Entity;
+import unsw.loopmania.LoopManiaWorld;
+import unsw.loopmania.StaticEntity;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.buildings.VillageBuilding;
 
 public class VillageCardTest {
+    @Test
+    public void testConstructor() {
+        Card card = new VillageCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1)); 
+
+        assertTrue(card instanceof VillageCard);
+        assertTrue(card instanceof Card);
+        assertTrue(card instanceof StaticEntity);
+        assertTrue(card instanceof Entity);
+
+        assertEquals(0, card.getX());
+        assertEquals(1, card.getY());
+    }
     
     @Test
-    public void testGenerateBuilding(){
+    public void testGenerateBuilding() {
         VillageCard card = new VillageCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         Building building = card.generateBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
