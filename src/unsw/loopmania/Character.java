@@ -55,7 +55,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     public void addXp(int experiencePoints) {
-        xp.add(experiencePoints);
+        xp.set(this.xp.get() + experiencePoints);
     }
 
     public int getHealth() {

@@ -206,6 +206,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return itemInstances;
     }
 
+    public void getGoldAndXpDrops(BasicEnemy enemy) {
+        enemy.getXPAndGold(character);
+    }
+
     // GET CARD DROPS FROM ENEMY
     public List<Card> defeatedEnemyCardDrops(BasicEnemy enemy) {
         List<GenerateCard> cardDrops = enemy.getCardDrops();

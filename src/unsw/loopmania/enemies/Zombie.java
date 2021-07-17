@@ -27,19 +27,19 @@ public class Zombie extends BasicEnemy {
     public Zombie(PathPosition position) {
         super(position);
         setDamage(1);
-        setBattleRadius(1);
+        setBattleRadius(2);
         setHealth(1);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new StaffGenerateItem(), 0.50));
-        droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.20));
+        droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.2));
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
         droppableCards.add(new Pair<GenerateCard, Double>(new TowerGenerateCard(), 0.50));
         setDroppableCards(droppableCards);
         // xp and gold
-        setMaxGoldGained(new SimpleIntegerProperty(4));
-        setExperienceGained(new SimpleIntegerProperty(10));
+        setMaxGoldGained(4);
+        setExperienceGained(10);
     }
 
     @Override

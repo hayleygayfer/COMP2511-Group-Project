@@ -507,7 +507,7 @@ public class LoopManiaWorldController {
         for (int i = 0; i < cardsToLoad.size(); i++) {
             onLoad(cardsToLoad.get(i));
         }
-        enemy.getXPAndGold(world.getCharacter());
+        world.getGoldAndXpDrops(enemy);
     }
 
     /**

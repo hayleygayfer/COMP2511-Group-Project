@@ -65,14 +65,6 @@ public class HelmetTest {
     }
 
     @Test
-    public void testPrice() {
-        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-
-        // helmet costs 10 gold
-        assertEquals(10, helmet.getPrice());
-    }
-
-    @Test
     public void testIsEquippable() {
         Character character = createCharacter();
         Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 

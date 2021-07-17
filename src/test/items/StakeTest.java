@@ -67,14 +67,6 @@ public class StakeTest {
     }
 
     @Test
-    public void testPrice() {
-        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-
-        // stake costs 10 gold
-        assertEquals(10, stake.getPrice());
-    }
-
-    @Test
     public void testIsEquippable() {
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Character character = createCharacter();

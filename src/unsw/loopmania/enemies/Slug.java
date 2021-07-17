@@ -30,21 +30,21 @@ public class Slug extends BasicEnemy {
     public Slug(PathPosition position) {
         super(position);
         setDamage(3);
-        setBattleRadius(1);
+        setBattleRadius(2);
         setHealth(10);
         setSupportRadius(1);
         // item drops
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new SwordGenerateItem(), 0.50));
-        droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.20));
+        droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.2));
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
         droppableCards.add(new Pair<GenerateCard, Double>(new BarracksGenerateCard(), 0.50));
         setDroppableCards(droppableCards);
         // xp and gold
-        setMaxGoldGained(new SimpleIntegerProperty(2));
-        setExperienceGained(new SimpleIntegerProperty(5));
+        setMaxGoldGained(2);
+        setExperienceGained(5);
     }
 
     /**

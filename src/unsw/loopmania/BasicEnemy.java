@@ -132,12 +132,12 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
         }
     }
 
-    public void setExperienceGained(SimpleIntegerProperty xp) {
-        this.experienceGained = xp;
+    public void setExperienceGained(int xp) {
+        this.experienceGained.set(xp);
     }
 
-    public void setMaxGoldGained(SimpleIntegerProperty gold) {
-        this.maxGoldGained = gold;
+    public void setMaxGoldGained(int gold) {
+        this.maxGoldGained.set(gold);
     }
 
     public void getXPAndGold(Character character) {

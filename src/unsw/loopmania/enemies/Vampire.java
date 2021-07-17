@@ -28,12 +28,12 @@ public class Vampire extends BasicEnemy {
     public Vampire(PathPosition position) {
         super(position);
         setDamage(1);
-        setBattleRadius(1);
+        setBattleRadius(2);
         setHealth(1);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new StakeGenerateItem(), 0.50));
         droppableItems.add(new Pair<GenerateItem, Double>(new ShieldGenerateItem(), 0.50));
-        droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.20));
+        droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.2));
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
@@ -41,8 +41,8 @@ public class Vampire extends BasicEnemy {
         droppableCards.add(new Pair<GenerateCard, Double>(new CampfireGenerateCard(), 0.50));
         setDroppableCards(droppableCards);
         // xp and gold
-        setMaxGoldGained(new SimpleIntegerProperty(8));
-        setExperienceGained(new SimpleIntegerProperty(20));
+        setMaxGoldGained(8);
+        setExperienceGained(20);
     }
 
     /**
