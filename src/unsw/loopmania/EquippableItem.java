@@ -3,7 +3,6 @@ package unsw.loopmania;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 public abstract class EquippableItem extends Item {
@@ -47,10 +46,19 @@ public abstract class EquippableItem extends Item {
     }
 
     /**
-     * Given a target enemy, applies the attack to that enemy
+     * Given a target enemy, applies the affect to that enemy
+     * @param enemy The enemy to affect
      */
-    public void attack(MovingEntity target, int damage) {
-        
+    public void affect(BasicEnemy enemy) {
+        return;
+    }
+
+    /**
+     * Given a character, applies the affect to the character
+     * @param character The character to affect.
+     */
+    public void affect(Character character) {
+        return;
     }
 
     @Override

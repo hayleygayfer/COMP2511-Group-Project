@@ -1,9 +1,6 @@
 package unsw.loopmania;
 
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
-
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 

@@ -1,9 +1,7 @@
 package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.Character;
-import unsw.loopmania.CharacterPositionObserver;
 import unsw.loopmania.UsableItem;
 import javafx.scene.image.Image;
 import java.io.File;
@@ -21,7 +19,7 @@ public class HealthPotion extends UsableItem {
      */
     @Override
     public void applyEffect(Character character) {
-        character.setHealth(character.getBaseHealth());
+        character.setModifiedHealth(character.getBaseHealth());
     }
 
     @Override

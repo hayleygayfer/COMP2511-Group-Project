@@ -71,6 +71,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     // THIS IS HERE TEMPORARILY, SHOULD BE MOVED OUT LATER
     private HerosCastleMenu shopMenu;
 
+    // Current Battle object
+    Battle currentBattle;
+
     /**
      * create the world (constructor)
      * 
@@ -263,7 +266,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
                 // TODO: Setup Battle
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
-                defeatedEnemies.add(e);
+                List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
+                enemiesEncountered.add(e);
+                setCurrentBattle(new Battle(character, enemiesEncountered));
+                if (character.getBaseHealth() > 0) {
+                    defeatedEnemies.add(e);
+                } else {
+                    // Finish Game
+                }
             }
         }
         for (BasicEnemy e: defeatedEnemies){
@@ -273,6 +283,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             killEnemy(e);
         }
         return defeatedEnemies;
+    }
+
+    /**
+     * Sets current battle
+     * @return
+     */
+    public void setCurrentBattle(Battle battle) {
+        this.currentBattle = battle;
     }
 
     /**
@@ -374,6 +392,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets the current battle object
+     * @return currentBattle
+     */
+    public Battle getCurrentBattle() {
+      return currentBattle;
     }
 
     /**

@@ -1,13 +1,16 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.BasicEnemy;
+import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.itemTypes.WeaponType;
 import javafx.scene.image.Image;
 import java.io.File;
-public class Staff extends EquippableItem implements WeaponType {
+
+public class Staff extends EquippableItem implements CustomAttackStrategy, WeaponType{
+
     private int baseDamage;
 
     // TODO write staff
@@ -25,10 +28,8 @@ public class Staff extends EquippableItem implements WeaponType {
      * Applies damage to target
      * Also has a chance of applying trance
      */
-    @Override
-    public void attack(MovingEntity target, int damage) {
-        // TODO Auto-generated method stub
-        super.attack(target, damage);
+    public void attack(BasicEnemy enemy) {
+        System.out.println("inflict trance");
     }
 
     @Override

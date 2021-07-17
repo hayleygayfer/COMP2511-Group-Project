@@ -1,7 +1,7 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
-import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.itemTypes.HelmetType;
@@ -9,33 +9,29 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class Helmet extends EquippableItem implements HelmetType {
-    private int reducedCharacterDamage;
     private int reducedEnemyDamage;
 
-    // TODO write helmet
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        reducedCharacterDamage = 1;
         reducedEnemyDamage = 3;
         setSellPrice(15);
     }
 
     /**
-     * Decreases your damage
+     * Decreases the enemy's damage by a scalar value
+     * @param enemy. The enemy to affect.
      */
     @Override
-    public int getModifiedDamage(MovingEntity target, int baseDamage) {
-        // TODO Auto-generated method stub
-        return baseDamage - reducedCharacterDamage;
+    public void affect(BasicEnemy enemy) {
+        enemy.setDamage(enemy.getDamage() - reducedEnemyDamage);
     }
 
-    /**
-     * Decreases the enemy's damage
-     */
-    @Override
-    public int getModifiedEnemyDamage(int baseDamage) {
-        // TODO Auto-generated method stub
-        return baseDamage - reducedEnemyDamage;
+    public SimpleIntegerProperty getPrice() {
+        return new SimpleIntegerProperty(5);
+    }
+
+    public SimpleStringProperty getDescription() {
+        return new SimpleStringProperty("Helmet");
     }
 
     @Override
