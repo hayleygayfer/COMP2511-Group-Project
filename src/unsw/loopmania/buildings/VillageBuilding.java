@@ -13,6 +13,12 @@ public class VillageBuilding extends Building implements CharacterPositionObserv
         super(x, y);
     }
     
+    /**
+     * When a character steps on the same tile, they gain 10 health points
+     * @param character
+     * @pre the character is not null
+     * @post the character has not been modified in any other way except its health points
+     */
     public void encounter(Character character) {
 
     }

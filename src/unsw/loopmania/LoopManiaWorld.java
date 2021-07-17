@@ -480,7 +480,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @pre the position of the building to be added is a valid position
      */
     public Building convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
-        System.out.println(String.format("From (%d, %d) to (%d, %d)", cardNodeX, cardNodeY, buildingNodeX, buildingNodeY));
         // start by getting card
         Card card = null;
         for (Card c: cardEntities){
