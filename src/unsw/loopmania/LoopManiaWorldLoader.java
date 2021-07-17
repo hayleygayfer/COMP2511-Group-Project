@@ -156,7 +156,7 @@ public abstract class LoopManiaWorldLoader {
         switch (goal) {
             case "experience":
                 int quantity = currentJson.getInt("quantity");
-
+            
             case "cycle":
 
             case "gold":
