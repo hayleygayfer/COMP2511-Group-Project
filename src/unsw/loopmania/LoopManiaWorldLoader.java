@@ -43,6 +43,7 @@ public abstract class LoopManiaWorldLoader {
 
         LoopManiaWorld world = new LoopManiaWorld(width, height, orderedPath);
 
+
         JSONArray jsonEntities = json.getJSONArray("entities");
 
         // load non-path entities later so that they're shown on-top
@@ -146,6 +147,24 @@ public abstract class LoopManiaWorldLoader {
         }
         onLoad(starting, connections.get(connections.size() - 1), connections.get(0));
         return orderedPath;
+    }
+
+    public void loadGoal(LoopManiaWorld world, JSONObject currentJson) {
+        String goal = currentJson.getString("goal");
+        switch (goal) {
+            case "experience":
+                int quantity = currentJson.getInt("quantity");
+                
+            case "cycle":
+
+            case "gold":
+
+            case "AND":
+            
+            case "OR":
+
+        }
+
     }
 
     public abstract void onLoad(Character character);

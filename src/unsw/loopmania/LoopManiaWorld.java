@@ -71,6 +71,12 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     private HerosCastleMenu shopMenu;
 
     /**
+     * This gets read in from JSON 
+     * Gets set in the loader 
+     */
+    private Goal gameGoal;
+
+    /**
      * create the world (constructor)
      * 
      * @param width width of world in number of cells
@@ -105,6 +111,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     public List<Pair<Integer, Integer>> getPath() {
         return orderedPath;
+    }
+
+    public Goal getGameGoal() {
+        return gameGoal;
+    }
+
+    public void setGameGoal(Goal gameGoal) {
+        this.gameGoal = gameGoal;
     }
 
     /**
