@@ -98,6 +98,16 @@
                               <Font name="Avenir Book" size="14.0" />
                            </font>
                         </Text>
+                        <Text fill="#df1515" strokeType="OUTSIDE" strokeWidth="0.0" text=" / ">
+                           <font>
+                              <Font name="Avenir Book" size="14.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="baseHealthDisplay" fill="#df1515" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                           <font>
+                              <Font name="Avenir Book" size="14.0" />
+                           </font>
+                        </Text>
                      </children>
                   </HBox>
                   <HBox>

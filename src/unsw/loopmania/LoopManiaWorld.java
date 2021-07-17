@@ -199,8 +199,17 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
         for (int i = 0; i < itemDrops.size(); i++) {
             Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
-            Item newDrop = itemDrops.get(i).createItem(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
-            itemInstances.add(newDrop);
+            int x = coords.getValue0() + i;
+            int y = coords.getValue1();
+            if (x > 3) {
+                x = 0;
+                y += 1;
+            }
+            
+            if (!(x > 3 && y == 3)) {
+                Item newDrop = itemDrops.get(i).createItem(new SimpleIntegerProperty(x), new SimpleIntegerProperty(y));
+                itemInstances.add(newDrop);
+            }
         }
         character.addItemsToInventory(itemInstances);
         return itemInstances;

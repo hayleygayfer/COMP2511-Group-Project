@@ -51,6 +51,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Armour;
 import unsw.loopmania.items.Shield;
+import unsw.loopmania.UsableItem;
 import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
@@ -163,6 +164,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private Text healthDisplay;
+
+    @FXML
+    private Text baseHealthDisplay;
 
     @FXML
     private Text goldDisplay;
@@ -337,6 +341,7 @@ public class LoopManiaWorldController {
         // make bindings for stats
         cycleDisplay.textProperty().bindBidirectional(world.getGameCycleProperty(), new NumberStringConverter());
         healthDisplay.textProperty().bindBidirectional(world.getCharacter().getHealthProperty(), new NumberStringConverter());
+        baseHealthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
@@ -543,6 +548,15 @@ public class LoopManiaWorldController {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
         } else if (item instanceof HelmetType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
+        } else if (item instanceof UsableItem) {
+            view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    item.applyEffect(world.getCharacter());
+                    event.consume();
+                    item.destroy();
+                }
+           });
         }
         addEntity(item, view);
         unequippedInventory.getChildren().add(view);

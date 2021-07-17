@@ -19,7 +19,7 @@ public class HealthPotion extends UsableItem {
      */
     @Override
     public void applyEffect(Character character) {
-        super.applyEffect(character);
+        character.setHealth(character.getBaseHealth());
     }
 
     @Override

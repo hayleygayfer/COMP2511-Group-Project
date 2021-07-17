@@ -15,4 +15,8 @@ public class Item extends StaticEntity {
     public Image render() {
         return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
+
+    public void applyEffect(Character character) {
+
+    }
 }
