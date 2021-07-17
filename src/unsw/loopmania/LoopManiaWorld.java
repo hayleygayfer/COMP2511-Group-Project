@@ -236,8 +236,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
         for (int i = 0; i < cardDrops.size(); i++) {
             // if adding more cards than have, remove the first card...
-            if (cardEntities.size() >= getWidth()){
-                // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+            // TODO after testing, change 2 to getWidth()
+            if (cardEntities.size() >= 2){
+                character.addGold(10);
+                character.addXp(10);
                 removeCard(0);
             }
             SimpleIntegerProperty x = new SimpleIntegerProperty(cardEntities.size());
