@@ -51,6 +51,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
+import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.items.Sword;
@@ -386,7 +387,8 @@ public class LoopManiaWorldController {
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             world.runTickMoves();
-            if (this.world.getGameCycle() > 20) {
+
+            if (evaluate(world.getGameGoal())) {
                 terminate();
             }
             // check if character is at heros castle
@@ -463,6 +465,11 @@ public class LoopManiaWorldController {
     public void resumeGameFromShop() {
         heroCastle.setVisible(false);
         gameMap.setVisible(true);
+    }
+
+    public boolean evaluate(Goal expression) {
+        // Return the expression evaluated
+        return expression.metGoal(this.getWorld());
     }
 
     public void purchaseItemFromShop(GenerateItem item) {

@@ -7,6 +7,7 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.ZombiePitCard;
@@ -75,6 +76,12 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     Battle currentBattle;
 
     /**
+     * This gets read in from JSON 
+     * Gets set in the loader 
+     */
+    private Goal gameGoal;
+
+    /**
      * create the world (constructor)
      * 
      * @param width width of world in number of cells
@@ -109,6 +116,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     public List<Pair<Integer, Integer>> getPath() {
         return orderedPath;
+    }
+
+    public Goal getGameGoal() {
+        return gameGoal;
+    }
+
+    public void setGameGoal(Goal gameGoal) {
+        this.gameGoal = gameGoal;
     }
 
     /**
@@ -557,6 +572,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public int getGameCycle() {
         return this.gameCycle.get();
+    }
+
+
+    /**
+     * 
+     * @param gameCycle
+     */
+    public void setGameCycle(SimpleIntegerProperty gameCycle) {
+        this.gameCycle = gameCycle;
     }
 
     /**
