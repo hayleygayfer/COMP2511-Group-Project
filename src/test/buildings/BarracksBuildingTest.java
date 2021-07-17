@@ -60,5 +60,4 @@ public class BarracksBuildingTest {
         // no new soldier
         assertEquals(0, character.getAlliedSoldiers().size());
     }
-    
 }
