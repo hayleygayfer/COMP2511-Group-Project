@@ -8,8 +8,11 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class Item extends StaticEntity {
+    private SimpleIntegerProperty sellPrice;
+
     public Item(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        this.sellPrice = new SimpleIntegerProperty(1);
     }
 
     public Image render() {
@@ -18,5 +21,13 @@ public class Item extends StaticEntity {
 
     public void applyEffect(Character character) {
 
+    }
+
+    public void setSellPrice(int price) {
+        sellPrice.set(price);
+    }
+
+    public SimpleIntegerProperty getSellPrice() {
+        return sellPrice;
     }
 }

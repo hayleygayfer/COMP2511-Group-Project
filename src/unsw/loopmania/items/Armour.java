@@ -17,6 +17,7 @@ public class Armour extends EquippableItem implements ArmourType {
     // TODO write armour
     public Armour(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        setSellPrice(20);
     }
 
     /**

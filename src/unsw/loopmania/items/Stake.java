@@ -16,6 +16,7 @@ public class Stake extends EquippableItem implements WeaponType {
     public Stake(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         baseDamage = 5;
+        setSellPrice(15);
     }
 
     @Override
