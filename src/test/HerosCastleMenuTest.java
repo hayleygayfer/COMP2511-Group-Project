@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,12 +19,21 @@ import unsw.loopmania.Character;
 import unsw.loopmania.Gold;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.StaticEntity;
+import unsw.loopmania.generateItems.StakeGenerateItem;
+import unsw.loopmania.generateItems.SwordGenerateItem;
+import unsw.loopmania.generateItems.ShieldGenerateItem;
+import unsw.loopmania.generateItems.StaffGenerateItem;
+import unsw.loopmania.generateItems.ArmourGenerateItem;
+import unsw.loopmania.generateItems.HealthPotionGenerateItem;
+import unsw.loopmania.generateItems.TheOneRingGenerateItem;
+import unsw.loopmania.generateItems.HelmetGenerateItem;
 import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.HerosCastleMenu;
 import unsw.loopmania.Item;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.HealthPotion;
+import unsw.loopmania.GenerateItem;
 
 public class HerosCastleMenuTest {
     public List<Pair<Integer, Integer>> createPath() {
@@ -64,20 +74,20 @@ public class HerosCastleMenuTest {
         assertTrue(menu instanceof HerosCastleMenu);
     }
 
-    @Test
-    public void testAddItemsToMenu() {
-        HerosCastleMenu menu = new HerosCastleMenu();
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        HealthPotion healthPotion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-    }
-
     @Test 
     public void testPurchaseItem() {
         Character character = createCharacter();
 
         HerosCastleMenu menu = new HerosCastleMenu();
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        HealthPotion healthPotion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        character.addGold(10);
+
+        SwordGenerateItem menuSword = new SwordGenerateItem();
+    
+        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        assertTrue(character.getInventory().contains(purchasedItem));
+        assertEquals(0, character.getGold().get());
     }
 
     @Test
@@ -85,7 +95,45 @@ public class HerosCastleMenuTest {
         Character character = createCharacter();
 
         HerosCastleMenu menu = new HerosCastleMenu();
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        HealthPotion healthPotion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        character.addGold(5);
+        
+        SwordGenerateItem menuSword = new SwordGenerateItem();
+    
+        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        assertFalse(character.getInventory().contains(purchasedItem));
+        assertEquals(5, character.getGold().get());
+    }
+
+    @Test
+    public void testSellItem() {
+        Character character = createCharacter();
+
+        HerosCastleMenu menu = new HerosCastleMenu();
+
+        character.addGold(10);
+        
+        SwordGenerateItem menuSword = new SwordGenerateItem();
+    
+        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        assertTrue(character.getInventory().contains(purchasedItem));
+        assertEquals(0, character.getGold().get());
+
+        menu.sellItem(character, purchasedItem);
+
+        assertFalse(character.getInventory().contains(purchasedItem));
+        assertEquals(10, character.getGold().get());
+    }
+
+    @Test 
+    public void testAddShopItem() {
+        HerosCastleMenu menu = new HerosCastleMenu();
+        
+        TheOneRingGenerateItem menuTheOneRing = new TheOneRingGenerateItem();
+
+        menu.addItem(menuTheOneRing);
+        assertTrue(menu.hasItem(menuTheOneRing));
     }
 }
