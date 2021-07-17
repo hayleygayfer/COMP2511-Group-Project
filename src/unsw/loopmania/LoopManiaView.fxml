@@ -24,6 +24,11 @@
       <!-- VBox is used to stack items vertically top to bottom -->
       <ScrollPane fx:id="heroCastle">
          <VBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tip: Click on an item in your Inventory to sell it">
+               <font>
+                  <Font name="Avenir Book" size="14.0" />
+               </font>
+            </Text>
             <GridPane fx:id="shopItems" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
                   <columnConstraints>
                      <ColumnConstraints />
