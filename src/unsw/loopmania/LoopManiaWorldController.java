@@ -54,6 +54,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
+import unsw.loopmania.itemTypes.HelmetType;
 
 import org.javatuples.Pair;
 
@@ -150,6 +151,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private GridPane equippedWeapon;
+
+    @FXML
+    private GridPane equippedHelmet;
 
     @FXML
     private GridPane unequippedInventory;
@@ -503,6 +507,7 @@ public class LoopManiaWorldController {
         for (int i = 0; i < cardsToLoad.size(); i++) {
             onLoad(cardsToLoad.get(i));
         }
+        enemy.getXPAndGold(world.getCharacter());
     }
 
     /**
@@ -536,6 +541,8 @@ public class LoopManiaWorldController {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon);
         } else if (item instanceof ShieldType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
+        } else if (item instanceof HelmetType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
         }
         addEntity(item, view);
         unequippedInventory.getChildren().add(view);

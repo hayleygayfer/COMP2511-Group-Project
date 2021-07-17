@@ -220,6 +220,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             SimpleIntegerProperty x = new SimpleIntegerProperty(cardEntities.size());
             SimpleIntegerProperty y = new SimpleIntegerProperty(0);
             Card newCard = cardDrops.get(i).createCard(x, y);
+            cardEntities.add(newCard);
             cardInstances.add(newCard);
         }
 

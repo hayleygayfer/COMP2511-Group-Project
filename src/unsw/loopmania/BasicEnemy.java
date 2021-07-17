@@ -27,6 +27,9 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
     private List<Pair<GenerateItem, Double>> dropItemChances;
     private List<Pair<GenerateCard, Double>> dropCardChances;
 
+    private SimpleIntegerProperty experienceGained = new SimpleIntegerProperty();
+    private SimpleIntegerProperty maxGoldGained = new SimpleIntegerProperty();
+
     // Abstract methods
     public abstract Image render();
 
@@ -127,6 +130,21 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
         for (EnemyPositionObserver observer : observers) {
             observer.encounter(this);
         }
+    }
+
+    public void setExperienceGained(SimpleIntegerProperty xp) {
+        this.experienceGained = xp;
+    }
+
+    public void setMaxGoldGained(SimpleIntegerProperty gold) {
+        this.maxGoldGained = gold;
+    }
+
+    public void getXPAndGold(Character character) {
+        Random chance = new Random(System.currentTimeMillis());
+        int goldAmount = chance.nextInt(maxGoldGained.get());
+        character.addGold(goldAmount);
+        character.addXp(experienceGained.get());
     }
 
     public void setDroppableItems(List<Pair<GenerateItem, Double>> dropItemChances) {

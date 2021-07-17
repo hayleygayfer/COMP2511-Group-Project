@@ -4,11 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
 import unsw.loopmania.generateCards.TowerGenerateCard;
+import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.generateItems.StaffGenerateItem;
 import unsw.loopmania.EnemyPositionObserver;
@@ -28,11 +31,15 @@ public class Zombie extends BasicEnemy {
         setHealth(1);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new StaffGenerateItem(), 0.50));
+        droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.20));
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
         droppableCards.add(new Pair<GenerateCard, Double>(new TowerGenerateCard(), 0.50));
         setDroppableCards(droppableCards);
+        // xp and gold
+        setMaxGoldGained(new SimpleIntegerProperty(4));
+        setExperienceGained(new SimpleIntegerProperty(10));
     }
 
     @Override
