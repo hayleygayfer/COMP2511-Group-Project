@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class VillageBuilding extends Building implements CharacterPositionObserver {
-    // TODO write village building
     public VillageBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
@@ -20,7 +19,9 @@ public class VillageBuilding extends Building implements CharacterPositionObserv
      * @post the character has not been modified in any other way except its health points
      */
     public void encounter(Character character) {
-
+        if (character.getX() == getX() && character.getY() == getY()) {
+            character.gainHealth(10);
+        }
     }
 
     public Image render() {

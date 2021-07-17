@@ -36,6 +36,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     // XP
     private SimpleIntegerProperty xp;
 
+
     // TODO = potentially implement relationships between this class and other classes
     public Character(PathPosition position) {
         super(position);
@@ -66,6 +67,15 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     public void setHealth(int health) {
         this.health.set(health);
+    }
+
+    /**
+     * Increases health by given amount, but without exceeding baseHealth
+     * @param increase
+     * @post health <= baseHealth
+     */
+    public void gainHealth(int increase) {
+        this.health.set(Math.min(baseHealth.get(), health.get() + increase));
     }
 
     public int getBaseHealth() {
