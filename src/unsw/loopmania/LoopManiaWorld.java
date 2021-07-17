@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
@@ -237,7 +238,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         for (int i = 0; i < cardDrops.size(); i++) {
             // if adding more cards than have, remove the first card...
             // TODO after testing, change 2 to getWidth()
-            if (cardEntities.size() >= 2){
+            if (cardEntities.size() >= getWidth()){
                 character.addGold(10);
                 character.addXp(10);
                 removeCard(0);
@@ -292,8 +293,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         SimpleIntegerProperty posY = new SimpleIntegerProperty(0);
         // pick a random card
         List<Card> potentialCards = new ArrayList<>();
-        potentialCards.add(new VampireCastleCard(posX, posY));
-        potentialCards.add(new ZombiePitCard(posX, posY));
+        //potentialCards.add(new VampireCastleCard(posX, posY));
+        //potentialCards.add(new ZombiePitCard(posX, posY));
+        potentialCards.add(new VillageCard(posX, posY));
 
         Random random = new Random();
         Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));
@@ -494,6 +496,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         Building newBuilding = card.generateBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingEntities.add(newBuilding);
         spawnEnemyStrategies.add(newBuilding);
+
+        if (newBuilding instanceof CharacterPositionObserver) {
+            character.attach(newBuilding);
+        }
 
         // destroy the card
         card.destroy();
