@@ -195,7 +195,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                 List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
                 enemiesEncountered.add(e);
                 setCurrentBattle(new Battle(character, enemiesEncountered));
-                currentBattle.runBattle();
                 if (character.getBaseHealth() > 0) {
                     defeatedEnemies.add(e);
                 } else {

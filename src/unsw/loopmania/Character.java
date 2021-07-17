@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.items.Sword;
 
 import org.hamcrest.core.IsInstanceOf;
 import org.javatuples.Pair;
@@ -41,10 +42,11 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.xp = new SimpleIntegerProperty(0);
         this.baseHealth = new SimpleIntegerProperty(50);
         this.battleHealth = new SimpleIntegerProperty(50);
-        this.baseDamage = new SimpleIntegerProperty(5);
+        this.baseDamage = new SimpleIntegerProperty(1);
         this.battleDamage = new SimpleIntegerProperty(5);
         inventory = new ArrayList<Item>();
         equippedItems = new ArrayList<EquippableItem>();
+        equippedItems.add(new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)));
     }
 
     public SimpleIntegerProperty getXpProperty() {
@@ -72,7 +74,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @param damage
      */
     public int getBattleHealth() {
-        return baseHealth.get();
+        return battleHealth.get();
     }
 
     /**

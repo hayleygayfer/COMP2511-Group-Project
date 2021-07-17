@@ -3,6 +3,8 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Action;
+
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -61,6 +63,7 @@ import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
 
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import java.util.EnumMap;
 
@@ -118,6 +121,12 @@ public class LoopManiaWorldController {
 
     @FXML
     private Button finishBattleButton;
+
+    @FXML
+    private Text enemyBattleHealth;
+
+    @FXML
+    private Text characterBattleHealth;
 
     /**
      * container for all hero castle menu components
@@ -387,11 +396,32 @@ public class LoopManiaWorldController {
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
                 battle.setVisible(true);
-                finishBattleButton.visibleProperty().bindBidirectional(world.getCurrentBattle().getIsFinished());
-                pauseButton.setText("Start");
                 gameMap.setVisible(false);
-                animateBattle(world.getCurrentBattle());
+                finishBattleButton.setVisible(false);
                 pause();
+                SequentialTransition battleSequence = new SequentialTransition();
+                List<Triplet<Integer, Integer, BasicEnemy>> frames = world.getCurrentBattle().runBattle();
+                enemyBattle.setImage(frames.get(0).getValue2().render());
+                characterBattleHealth.setText(frames.get(0).getValue0().toString());
+                enemyBattleHealth.setText(frames.get(0).getValue1().toString());
+                for (int i = 1; i < (frames.size()); i++) {
+                    battleSequence.getChildren().add(animateBattleFrame(frames.get(i)));
+                }
+                battleSequence.setCycleCount(1);
+                battleSequence.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        characterBattleHealth.setText(frames.get(frames.size() - 1).getValue0().toString());
+                        enemyBattleHealth.setText(frames.get(frames.size() - 1).getValue1().toString());
+                        world.getCurrentBattle().resetCharacter();
+                        if (!world.getCurrentBattle().wonBattle()) {
+                            mainMenuSwitcher.switchMenu();
+                        } else {
+                            finishBattleButton.setVisible(true);
+                        }
+                    }
+                });
+                battleSequence.play();
             }
 
             List<BasicEnemy> defeatedEnemies = world.runBattles();
@@ -986,7 +1016,7 @@ public class LoopManiaWorldController {
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
-    public void animateBattle(Battle battle) {
+    public ParallelTransition animateBattleFrame(Triplet<Integer, Integer, BasicEnemy> frame) {
         ParallelTransition ptr = new ParallelTransition();
         //Duration = 2.5 seconds
         Duration duration = Duration.millis(250);
@@ -997,7 +1027,7 @@ public class LoopManiaWorldController {
         transitionHero.setCycleCount(2);
 
         SequentialTransition heroSequence = new SequentialTransition(transitionHero, new PauseTransition(Duration.millis(350)));
-        heroSequence.setCycleCount(10);
+        heroSequence.setCycleCount(1);
 
         TranslateTransition transitionEnemy = new TranslateTransition(duration, enemyBattle);
         transitionEnemy.setByX(-50);
@@ -1005,10 +1035,19 @@ public class LoopManiaWorldController {
         transitionEnemy.setCycleCount(2);
 
         SequentialTransition enemySequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionEnemy);
-        enemySequence.setCycleCount(10);
+        enemySequence.setCycleCount(1);
 
         ptr.getChildren().addAll(heroSequence, enemySequence);
-        ptr.play();
+        ptr.setCycleCount(1);
+        ptr.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                characterBattleHealth.setText(frame.getValue0().toString());
+                enemyBattleHealth.setText(frame.getValue1().toString());
+                enemyBattle.setImage(frame.getValue2().render());
+            }
+        });
+        return ptr;
     }
 
     @FXML
