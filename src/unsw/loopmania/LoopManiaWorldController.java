@@ -11,7 +11,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -19,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.shape.Circle;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -98,6 +103,21 @@ enum DRAGGABLE_TYPE{
  *     This is run on the JavaFX application thread when it has enough time.
  */
 public class LoopManiaWorldController {
+
+    /**
+     * container for all battle interactions
+     */
+    @FXML
+    private HBox battle;
+
+    @FXML
+    private ImageView heroBattle;
+
+    @FXML
+    private ImageView enemyBattle;
+
+    @FXML
+    private Button finishBattleButton;
 
     /**
      * container for all hero castle menu components
@@ -240,6 +260,7 @@ public class LoopManiaWorldController {
         this.world = world;
         entityImages = new ArrayList<>(initialEntities);
         vampireCastleCardImage = new Image((new File("src/images/vampire.png")).toURI().toString());
+
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
         armourImage = new Image((new File("src/images/armour.png")).toURI().toString());
@@ -271,6 +292,12 @@ public class LoopManiaWorldController {
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
+
+        // heroBattle = new ImageView(new Image((new File("src/images/human_new.png")).toURI().toString()));
+        Image test = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        enemyBattle.setImage(test);
+        enemyBattle.setFitHeight(25);
+        enemyBattle.setFitWidth(25);
 
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {
@@ -311,13 +338,17 @@ public class LoopManiaWorldController {
         }
 
         heroCastle.setPrefWidth(320);
+        battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
+        battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
 
         // bind the game states layout to their visibility
         heroCastle.managedProperty().bind(heroCastle.visibleProperty());
         gameMap.managedProperty().bind(gameMap.visibleProperty());
+        battle.managedProperty().bind(battle.visibleProperty());
 
         // heros castle menu not visible in the beginning
         heroCastle.setVisible(false);
+        battle.setVisible(false);
 
         // create the draggable icon
         draggedEntity = new DragIcon();
@@ -350,6 +381,16 @@ public class LoopManiaWorldController {
                 heroCastle.setVisible(true);
                 gameMap.setVisible(false);
                 pauseButton.setText("Start");
+                pause();
+            }
+            
+            // check if character is in a battle
+            if (this.world.getCurrentBattle() != null) {
+                battle.setVisible(true);
+                finishBattleButton.visibleProperty().bindBidirectional(world.getCurrentBattle().getIsFinished());
+                pauseButton.setText("Start");
+                gameMap.setVisible(false);
+                animateBattle(world.getCurrentBattle());
                 pause();
             }
 
@@ -943,5 +984,38 @@ public class LoopManiaWorldController {
         System.out.println("current method = "+currentMethodLabel);
         System.out.println("In application thread? = "+Platform.isFxApplicationThread());
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
+    }
+
+    public void animateBattle(Battle battle) {
+        ParallelTransition ptr = new ParallelTransition();
+        //Duration = 2.5 seconds
+        Duration duration = Duration.millis(250);
+        //Create new translate transition
+        TranslateTransition transitionHero = new TranslateTransition(duration, heroBattle);
+        transitionHero.setByX(50);
+        transitionHero.setAutoReverse(true);
+        transitionHero.setCycleCount(2);
+
+        SequentialTransition heroSequence = new SequentialTransition(transitionHero, new PauseTransition(Duration.millis(350)));
+        heroSequence.setCycleCount(10);
+
+        TranslateTransition transitionEnemy = new TranslateTransition(duration, enemyBattle);
+        transitionEnemy.setByX(-50);
+        transitionEnemy.setAutoReverse(true);
+        transitionEnemy.setCycleCount(2);
+
+        SequentialTransition enemySequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionEnemy);
+        enemySequence.setCycleCount(10);
+
+        ptr.getChildren().addAll(heroSequence, enemySequence);
+        ptr.play();
+    }
+
+    @FXML
+    private void onFinishBattleButton(ActionEvent event) {
+        battle.setVisible(false);
+        gameMap.setVisible(true);
+        world.setCurrentBattle(null);
+        startTimer();
     }
 }
