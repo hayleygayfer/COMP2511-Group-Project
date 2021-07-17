@@ -2,7 +2,7 @@ package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
-import unsw.loopmania.Character;
+import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.itemTypes.ArmourType;
 import javafx.scene.image.Image;
 import java.io.File;
@@ -17,6 +17,7 @@ public class Armour extends EquippableItem implements ArmourType {
     // TODO write armour
     public Armour(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        setSellPrice(20);
     }
 
     /**
@@ -29,14 +30,22 @@ public class Armour extends EquippableItem implements ArmourType {
     }
 
     /**
-     * Halves the enemy's prospective base damage,
+     * Halves the enemy attack damage,
+     * @param enemy the enemy to affect
      */
     @Override
-    public int getModifiedEnemyDamage(int baseDamage) {
-        // TODO Auto-generated method stub
-        return baseDamage / 2;
+    public void affect(BasicEnemy enemy) {
+        enemy.setDamage(enemy.getDamage() / 2);
     }
 
+    public SimpleIntegerProperty getPrice() {
+        return new SimpleIntegerProperty(5);
+    }
+
+    public SimpleStringProperty getDescription() {
+        return new SimpleStringProperty("Armour");
+    }
+    
     @Override
     public Image render() {
         return new Image((new File("src/images/armour.png")).toURI().toString());

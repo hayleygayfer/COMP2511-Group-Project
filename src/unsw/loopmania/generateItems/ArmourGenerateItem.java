@@ -1,19 +1,19 @@
-package unsw.loopmania.shopItems;
+package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
-import unsw.loopmania.ShopItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Armour;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class ArmourShopItem extends ShopItem {
+public class ArmourGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
-    public ArmourShopItem() {
+    public ArmourGenerateItem() {
         this.name = new SimpleStringProperty("Armour");
         this.description = new SimpleStringProperty("Enemy Damage is halved.");
         this.price = new SimpleIntegerProperty(20);

@@ -1,27 +1,27 @@
-package unsw.loopmania.shopItems;
+package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
-import unsw.loopmania.ShopItem;
-import unsw.loopmania.items.Staff;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.items.TheOneRing;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class StaffShopItem extends ShopItem {
+public class TheOneRingGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
-    public StaffShopItem() {
-        this.name = new SimpleStringProperty("Staff");
-        this.description = new SimpleStringProperty("Very low damage, but can randomly inflict a trance on Enemies to turn them into Allied Soldiers");
-        this.price = new SimpleIntegerProperty(20);
+    public TheOneRingGenerateItem() {
+        this.name = new SimpleStringProperty("The One Ring");
+        this.description = new SimpleStringProperty("Player Respawns with full health one time.");
+        this.price = new SimpleIntegerProperty(50);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        Item newStaff = new Staff(x, y);
-        return newStaff;
+        Item newTheOneRing = new TheOneRing(x, y);
+        return newTheOneRing;
     }
 
     public SimpleStringProperty description() {
@@ -37,7 +37,6 @@ public class StaffShopItem extends ShopItem {
     }
 
     public Image getImage() {
-        return new Image((new File("src/images/staff.png")).toURI().toString());
+        return new Image((new File("src/images/the_one_ring.png")).toURI().toString());
     }
-
 }

@@ -14,6 +14,7 @@ import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.HealthPotion;
 
 /**
  * A backend world.
@@ -70,6 +71,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     // THIS IS HERE TEMPORARILY, SHOULD BE MOVED OUT LATER
     private HerosCastleMenu shopMenu;
+
+    // Current Battle object
+    Battle currentBattle;
 
     /**
      * This gets read in from JSON 
@@ -198,15 +202,70 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return spawningGold;
     }
 
+    public void sellItem(Item item) {
+        shopMenu.sellItem(character, item);
+    }
+
+    public void removeItemWhenUsed(Item item) {
+        item.destroy();
+        character.removeItemFromInventory(item);
+    }
+
     /**
      * kill an enemy
      * @param enemy enemy to be killed
      */
     private void killEnemy(BasicEnemy enemy){
-        List<Item> itemDrops = enemy.getItemDrops();
-        character.addItemsToInventory(itemDrops);
         enemy.destroy();
         enemies.remove(enemy);
+    }
+
+    // GET ITEM DROPS FROM ENEMY
+    public List<Item> defeatedEnemyItemDrops(BasicEnemy enemy) {
+        List<GenerateItem> itemDrops = enemy.getItemDrops();
+        List<Item> itemInstances = new ArrayList<Item>();
+
+        for (int i = 0; i < itemDrops.size(); i++) {
+            Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
+            int x = coords.getValue0() + i;
+            int y = coords.getValue1();
+            if (x > 3) {
+                x = 0;
+                y += 1;
+            }
+            
+            if (!(x > 3 && y == 3)) {
+                Item newDrop = itemDrops.get(i).createItem(new SimpleIntegerProperty(x), new SimpleIntegerProperty(y));
+                itemInstances.add(newDrop);
+            }
+        }
+        character.addItemsToInventory(itemInstances);
+        return itemInstances;
+    }
+
+    public void getGoldAndXpDrops(BasicEnemy enemy) {
+        enemy.getXPAndGold(character);
+    }
+
+    // GET CARD DROPS FROM ENEMY
+    public List<Card> defeatedEnemyCardDrops(BasicEnemy enemy) {
+        List<GenerateCard> cardDrops = enemy.getCardDrops();
+        List<Card> cardInstances = new ArrayList<Card>();
+
+        for (int i = 0; i < cardDrops.size(); i++) {
+            // if adding more cards than have, remove the first card...
+            if (cardEntities.size() >= getWidth()){
+                // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+                removeCard(0);
+            }
+            SimpleIntegerProperty x = new SimpleIntegerProperty(cardEntities.size());
+            SimpleIntegerProperty y = new SimpleIntegerProperty(0);
+            Card newCard = cardDrops.get(i).createCard(x, y);
+            cardEntities.add(newCard);
+            cardInstances.add(newCard);
+        }
+
+        return cardInstances;
     }
 
     /**
@@ -222,7 +281,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
                 // TODO: Setup Battle
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
-                defeatedEnemies.add(e);
+                List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
+                enemiesEncountered.add(e);
+                setCurrentBattle(new Battle(character, enemiesEncountered));
+                if (character.getBaseHealth() > 0) {
+                    defeatedEnemies.add(e);
+                } else {
+                    // Finish Game
+                }
             }
         }
         for (BasicEnemy e: defeatedEnemies){
@@ -235,13 +301,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
+     * Sets current battle
+     * @return
+     */
+    public void setCurrentBattle(Battle battle) {
+        this.currentBattle = battle;
+    }
+
+    /**
      * spawn a card in the world and return the card entity
      * @return a card to be spawned in the controller as a JavaFX node
      */
     public Card loadCard () {
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()){
-            // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+            character.addGold(5);
+            character.addXp(5);
             removeCard(0);
         }
         SimpleIntegerProperty posX = new SimpleIntegerProperty(cardEntities.size());
@@ -332,6 +407,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets the current battle object
+     * @return currentBattle
+     */
+    public Battle getCurrentBattle() {
+      return currentBattle;
     }
 
     /**

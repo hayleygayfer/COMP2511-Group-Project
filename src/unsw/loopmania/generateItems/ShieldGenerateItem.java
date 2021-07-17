@@ -1,19 +1,19 @@
-package unsw.loopmania.shopItems;
+package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
-import unsw.loopmania.ShopItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Shield;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class ShieldShopItem extends ShopItem {
+public class ShieldGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
-    public ShieldShopItem() {
+    public ShieldGenerateItem() {
         this.name = new SimpleStringProperty("Shield");
         this.description = new SimpleStringProperty("Critical Vampire attacks have a 60% lower chance of occuring.");
         this.price = new SimpleIntegerProperty(10);

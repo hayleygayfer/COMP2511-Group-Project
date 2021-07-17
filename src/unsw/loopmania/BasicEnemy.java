@@ -4,27 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
-import java.util.List;
-import java.util.ArrayList;
 import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import java.util.Random;
 
 /**
  * a basic form of enemy in the world
  */
-public abstract class BasicEnemy extends MovingEntity implements DamageStrategy, DropLootStrategy, EnemyPositionSubject {
+public abstract class BasicEnemy extends MovingEntity implements DropLootStrategy, EnemyPositionSubject {
     
     // Enemy stats
     private SimpleIntegerProperty health = new SimpleIntegerProperty();
-    private SimpleIntegerProperty baseDamage = new SimpleIntegerProperty();
+    private SimpleIntegerProperty damage = new SimpleIntegerProperty();
     private SimpleIntegerProperty battleRadius = new SimpleIntegerProperty();
     private SimpleIntegerProperty supportRadius = new SimpleIntegerProperty();
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
-    private List<Pair<Item, Double>> dropChances;
+    private List<Pair<GenerateItem, Double>> dropItemChances;
+    private List<Pair<GenerateCard, Double>> dropCardChances;
+
+    private SimpleIntegerProperty experienceGained = new SimpleIntegerProperty();
+    private SimpleIntegerProperty maxGoldGained = new SimpleIntegerProperty();
 
     // Abstract methods
     public abstract Image render();
@@ -51,21 +51,16 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
 
     // damage
 
-    // This method should be overridden by specific enemies
-    public int getModifiedDamage(int baseDamage) {
-        return baseDamage;
-    }
-
     public int getDamage() {
-        return baseDamage.get();
+        return damage.get();
     }
 
-    public SimpleIntegerProperty damage() {
-        return baseDamage;
+    public SimpleIntegerProperty getDamageProperty() {
+        return damage;
     }
 
     public void setDamage(int damage) {
-        baseDamage.set(damage);
+        this.damage.set(damage);
     }
 
     // health
@@ -80,10 +75,6 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
 
     public int getHealth() {
         return health.get();
-    }
-
-    public void removeHealthPoints(int healthRemoved) {
-        health.add(-healthRemoved);
     }
 
     // battle radius
@@ -128,22 +119,64 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
         }
     }
 
-    public void setDroppableItems(List<Pair<Item, Double>> dropChances) {
-        this.dropChances = dropChances;
+    public void setExperienceGained(int xp) {
+        this.experienceGained.set(xp);
     }
 
-    public List<Item> getItemDrops() {
+    public void setMaxGoldGained(int gold) {
+        this.maxGoldGained.set(gold);
+    }
+
+    public void getXPAndGold(Character character) {
         Random chance = new Random(System.currentTimeMillis());
-        List<Item> droppedItems = new ArrayList<Item>();
+        int goldAmount = chance.nextInt(maxGoldGained.get());
+        character.addGold(goldAmount);
+        character.addXp(experienceGained.get());
+    }
+
+    public void setDroppableItems(List<Pair<GenerateItem, Double>> dropItemChances) {
+        this.dropItemChances = dropItemChances;
+    }
+
+    public void setDroppableCards(List<Pair<GenerateCard, Double>> dropCardChances) {
+        this.dropCardChances = dropCardChances;
+    } 
+
+    public List<GenerateItem> getItemDrops() {
+        Random chance = new Random(System.currentTimeMillis());
+        List<GenerateItem> droppedItems = new ArrayList<GenerateItem>();
 
         // For each possible drop generate a random number to see if it actually drops
-        for (int i = 0; i < dropChances.size(); i++) {
+        for (int i = 0; i < dropItemChances.size(); i++) {
             Double percentChance = chance.nextDouble();
-            if (percentChance <= dropChances.get(i).getValue1()) {
-                droppedItems.add(dropChances.get(i).getValue0());
+            if (percentChance <= dropItemChances.get(i).getValue1()) {
+                droppedItems.add(dropItemChances.get(i).getValue0());
             }
         }
         
         return droppedItems;
+    }
+
+    public void attack(Character character) {
+        character.setModifiedHealth(character.getModifiedHealth() - getDamage());
+    }
+
+    public boolean isAlive() {
+        return (getHealth() > 0);
+    }
+
+    public List<GenerateCard> getCardDrops() {
+        Random chance = new Random(System.currentTimeMillis());
+        List<GenerateCard> droppedCards = new ArrayList<GenerateCard>();
+
+        // For each possible drop generate a random number to see if it actually drops
+        for (int i = 0; i < dropCardChances.size(); i++) {
+            Double percentChance = chance.nextDouble();
+            if (percentChance <= dropCardChances.get(i).getValue1()) {
+                droppedCards.add(dropCardChances.get(i).getValue0());
+            }
+        }
+        
+        return droppedCards;
     }
 }
