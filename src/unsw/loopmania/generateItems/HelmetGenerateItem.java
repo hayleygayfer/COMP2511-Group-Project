@@ -1,27 +1,27 @@
-package unsw.loopmania.shopItems;
+package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
-import unsw.loopmania.ShopItem;
-import unsw.loopmania.items.Armour;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.items.Helmet;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class ArmourShopItem extends ShopItem {
+public class HelmetGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
-    public ArmourShopItem() {
-        this.name = new SimpleStringProperty("Armour");
-        this.description = new SimpleStringProperty("Enemy Damage is halved.");
-        this.price = new SimpleIntegerProperty(20);
+    public HelmetGenerateItem() {
+        this.name = new SimpleStringProperty("Helmet");
+        this.description = new SimpleStringProperty("Enemy damage is reduced, but character damage is also reduced.");
+        this.price = new SimpleIntegerProperty(15);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        Item newArmour = new Armour(x, y);
-        return newArmour;
+        Item newHelmet = new Helmet(x, y);
+        return newHelmet;
     }
 
     public SimpleStringProperty description() {
@@ -37,7 +37,7 @@ public class ArmourShopItem extends ShopItem {
     }
 
     public Image getImage() {
-        return new Image((new File("src/images/armour.png")).toURI().toString());
+        return new Image((new File("src/images/helmet.png")).toURI().toString());
     }
 
 }

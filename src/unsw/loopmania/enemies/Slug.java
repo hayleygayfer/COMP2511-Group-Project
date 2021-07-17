@@ -8,7 +8,11 @@ import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.generateItems.SwordGenerateItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.GenerateCard;
+import unsw.loopmania.generateCards.BarracksGenerateCard;
 import unsw.loopmania.items.Sword;
 
 import java.util.List;
@@ -26,8 +30,14 @@ public class Slug extends BasicEnemy {
         setBattleRadius(1);
         setHealth(10);
         setSupportRadius(1);
-        List<Pair<Item, Double>> droppableItems = new ArrayList<Pair<Item, Double>>();
+        // item drops
+        List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
+        droppableItems.add(new Pair<GenerateItem, Double>(new SwordGenerateItem(), 0.50));
         setDroppableItems(droppableItems);
+        // card drops
+        List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
+        droppableCards.add(new Pair<GenerateCard, Double>(new BarracksGenerateCard(), 0.50));
+        setDroppableCards(droppableCards);
     }
 
     /**
