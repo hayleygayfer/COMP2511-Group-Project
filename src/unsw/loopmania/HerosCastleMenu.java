@@ -3,34 +3,33 @@ package unsw.loopmania;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
-
-import unsw.loopmania.shopItems.SwordShopItem;
-import unsw.loopmania.shopItems.StakeShopItem;
-import unsw.loopmania.shopItems.StaffShopItem;
-import unsw.loopmania.shopItems.ShieldShopItem;
-import unsw.loopmania.shopItems.ArmourShopItem;
-import unsw.loopmania.shopItems.HelmetShopItem;
+import unsw.loopmania.generateItems.ArmourGenerateItem;
+import unsw.loopmania.generateItems.HelmetGenerateItem;
+import unsw.loopmania.generateItems.ShieldGenerateItem;
+import unsw.loopmania.generateItems.StaffGenerateItem;
+import unsw.loopmania.generateItems.StakeGenerateItem;
+import unsw.loopmania.generateItems.SwordGenerateItem;
 
 import java.util.ArrayList;
 
 public class HerosCastleMenu {
-    private List<ShopItem> items;
+    private List<GenerateItem> items;
 
     public HerosCastleMenu() {
-        items = new ArrayList<ShopItem>();
-        items.add(new SwordShopItem());
-        items.add(new StaffShopItem());
-        items.add(new StakeShopItem());
-        items.add(new HelmetShopItem());
-        items.add(new ArmourShopItem());
-        items.add(new ShieldShopItem());
+        items = new ArrayList<GenerateItem>();
+        items.add(new SwordGenerateItem());
+        items.add(new StaffGenerateItem());
+        items.add(new StakeGenerateItem());
+        items.add(new HelmetGenerateItem());
+        items.add(new ArmourGenerateItem());
+        items.add(new ShieldGenerateItem());
     }   
 
     /**
      * return a list of all items in the shop
      * @return
      */
-    public List<ShopItem> getItems() {
+    public List<GenerateItem> getItems() {
         return items;
     }
 
@@ -38,15 +37,15 @@ public class HerosCastleMenu {
      * Add a new item to the shop
      * @param newItem
      */
-    public void addItem(ShopItem newItem) {
+    public void addItem(GenerateItem newItem) {
         items.add(newItem);
     }
 
-    public boolean hasItem(ShopItem item) {
+    public boolean hasItem(GenerateItem item) {
         return items.contains(item);
     }
 
-    public Item purchaseItem(Character character, ShopItem item, SimpleIntegerProperty x, SimpleIntegerProperty y) {
+    public Item purchaseItem(Character character, GenerateItem item, SimpleIntegerProperty x, SimpleIntegerProperty y) {
         if (character.getGold().get() >= item.price().get()) {
             Item newItem = item.createItem(x, y);
             character.addItemToInventory(newItem);

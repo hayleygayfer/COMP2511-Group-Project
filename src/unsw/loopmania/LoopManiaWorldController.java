@@ -54,6 +54,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
+import unsw.loopmania.itemTypes.HelmetType;
 
 import org.javatuples.Pair;
 
@@ -150,6 +151,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private GridPane equippedWeapon;
+
+    @FXML
+    private GridPane equippedHelmet;
 
     @FXML
     private GridPane unequippedInventory;
@@ -308,7 +312,7 @@ public class LoopManiaWorldController {
 
         // add the starting heros castle shop items
 
-        List<ShopItem> itemMenu = world.getHerosCastleMenu().getItems();
+        List<GenerateItem> itemMenu = world.getHerosCastleMenu().getItems();
         for (int i = 0; i < itemMenu.size(); i++) {
             VBox newTag = loadShopTag(itemMenu.get(i));
             if (i < 3) shopItems.add(newTag, 0, i);
@@ -399,7 +403,7 @@ public class LoopManiaWorldController {
         gameMap.setVisible(true);
     }
 
-    public void purchaseItemFromShop(ShopItem item) {
+    public void purchaseItemFromShop(GenerateItem item) {
         Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
         Item purchasedItem = world.getHerosCastleMenu().purchaseItem(world.getCharacter(), item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
         if (!purchasedItem.equals(null)) {
@@ -407,9 +411,9 @@ public class LoopManiaWorldController {
         }
     }
 
-    public VBox loadShopTag(ShopItem item) {
-        VBox shopItem = new VBox();
-        shopItem.setStyle("-fx-padding: 8;" + 
+    public VBox loadShopTag(GenerateItem item) {
+        VBox GenerateItem = new VBox();
+        GenerateItem.setStyle("-fx-padding: 8;" + 
         "-fx-border-style: solid inside;" + 
         "-fx-border-width: 1;" +
         "-fx-border-insets: 3;" + 
@@ -440,7 +444,7 @@ public class LoopManiaWorldController {
         imgRow.getChildren().add(nameDescription);
         imgRow.getChildren().add(itemView);
 
-        shopItem.getChildren().add(imgRow);
+        GenerateItem.getChildren().add(imgRow);
 
         // add item price
         Label price = new Label("$" + item.price().get());
@@ -454,9 +458,9 @@ public class LoopManiaWorldController {
         buyItem.disableProperty().bind(world.getCharacter().getGold().lessThan(item.price()));
         priceRow.getChildren().add(buyItem);
 
-        shopItem.getChildren().add(priceRow);
+        GenerateItem.getChildren().add(priceRow);
 
-        return shopItem;
+        return GenerateItem;
     }
 
     /**
@@ -495,9 +499,15 @@ public class LoopManiaWorldController {
     private void reactToEnemyDefeat(BasicEnemy enemy){
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
-        // TODO = provide different benefits to defeating the enemy based on the type of enemy
-        loadSword();
-        loadCard();
+        List<Item> itemsToLoad = world.defeatedEnemyItemDrops(enemy);
+        for (int i = 0; i < itemsToLoad.size(); i++) {
+            onLoad(itemsToLoad.get(i));
+        }
+        List<Card> cardsToLoad = world.defeatedEnemyCardDrops(enemy);
+        for (int i = 0; i < cardsToLoad.size(); i++) {
+            onLoad(cardsToLoad.get(i));
+        }
+        world.getGoldAndXpDrops(enemy);
     }
 
     /**
@@ -531,6 +541,8 @@ public class LoopManiaWorldController {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon);
         } else if (item instanceof ShieldType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
+        } else if (item instanceof HelmetType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
         }
         addEntity(item, view);
         unequippedInventory.getChildren().add(view);

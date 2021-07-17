@@ -188,10 +188,47 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @param enemy enemy to be killed
      */
     private void killEnemy(BasicEnemy enemy){
-        List<Item> itemDrops = enemy.getItemDrops();
-        character.addItemsToInventory(itemDrops);
         enemy.destroy();
         enemies.remove(enemy);
+    }
+
+    // GET ITEM DROPS FROM ENEMY
+    public List<Item> defeatedEnemyItemDrops(BasicEnemy enemy) {
+        List<GenerateItem> itemDrops = enemy.getItemDrops();
+        List<Item> itemInstances = new ArrayList<Item>();
+
+        for (int i = 0; i < itemDrops.size(); i++) {
+            Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
+            Item newDrop = itemDrops.get(i).createItem(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
+            itemInstances.add(newDrop);
+        }
+        character.addItemsToInventory(itemInstances);
+        return itemInstances;
+    }
+
+    public void getGoldAndXpDrops(BasicEnemy enemy) {
+        enemy.getXPAndGold(character);
+    }
+
+    // GET CARD DROPS FROM ENEMY
+    public List<Card> defeatedEnemyCardDrops(BasicEnemy enemy) {
+        List<GenerateCard> cardDrops = enemy.getCardDrops();
+        List<Card> cardInstances = new ArrayList<Card>();
+
+        for (int i = 0; i < cardDrops.size(); i++) {
+            // if adding more cards than have, remove the first card...
+            if (cardEntities.size() >= getWidth()){
+                // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+                removeCard(0);
+            }
+            SimpleIntegerProperty x = new SimpleIntegerProperty(cardEntities.size());
+            SimpleIntegerProperty y = new SimpleIntegerProperty(0);
+            Card newCard = cardDrops.get(i).createCard(x, y);
+            cardEntities.add(newCard);
+            cardInstances.add(newCard);
+        }
+
+        return cardInstances;
     }
 
     /**

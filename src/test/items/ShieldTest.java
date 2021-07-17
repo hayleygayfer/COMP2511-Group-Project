@@ -65,14 +65,6 @@ public class ShieldTest {
     }
 
     @Test
-    public void testPrice() {
-        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-
-        // shield costs 10 gold
-        assertEquals(10, shield.getPrice());
-    }
-
-    @Test
     public void testIsEquippable() {
         Character character = createCharacter();
         Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 

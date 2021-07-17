@@ -140,30 +140,47 @@
                   <Font name="Avenir Book" size="13.0" />
                </font>
             </Text>
-            <GridPane fx:id="equippedArmour" hgap="5.0" vgap="5.0">
-               <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-               </rowConstraints>
+            <HBox>
                <children>
-                  <ImageView id="blankCell" GridPane.rowIndex="0">
-                     <image>
-                        <Image url="@../../images/image_just_black_tiny.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                     <image>
-                        <Image url="@../../images/image_just_black_tiny.png" />
-                     </image>
-                  </ImageView>
+                  <GridPane fx:id="equippedHelmet" hgap="5.0" vgap="5.0">
+                     <columnConstraints>
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <ImageView id="blankCell" GridPane.rowIndex="0">
+                           <image>
+                              <Image url="@../../images/helmet_slot.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </GridPane>
+                  <GridPane fx:id="equippedArmour" hgap="5.0" vgap="5.0">
+                     <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <ImageView id="blankCell" GridPane.rowIndex="0">
+                           <image>
+                              <Image url="@../../images/image_just_black_tiny.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </GridPane>
                </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </GridPane>
+            </HBox>
             <Text fill="#4d4d4d" strokeType="OUTSIDE" strokeWidth="0.0" text="Shield">
                <font>
                   <Font name="Avenir Book" size="13.0" />

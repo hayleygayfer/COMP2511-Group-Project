@@ -1,27 +1,27 @@
-package unsw.loopmania.shopItems;
+package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
-import unsw.loopmania.ShopItem;
-import unsw.loopmania.items.Shield;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.items.HealthPotion;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class ShieldShopItem extends ShopItem {
+public class HealthPotionGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
-    public ShieldShopItem() {
-        this.name = new SimpleStringProperty("Shield");
-        this.description = new SimpleStringProperty("Critical Vampire attacks have a 60% lower chance of occuring.");
-        this.price = new SimpleIntegerProperty(10);
+    public HealthPotionGenerateItem() {
+        this.name = new SimpleStringProperty("Health Potion");
+        this.description = new SimpleStringProperty("Restores character health");
+        this.price = new SimpleIntegerProperty(20);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        Item newShield = new Shield(x, y);
-        return newShield;
+        Item newHealthPotion = new HealthPotion(x, y);
+        return newHealthPotion;
     }
 
     public SimpleStringProperty description() {
@@ -37,7 +37,7 @@ public class ShieldShopItem extends ShopItem {
     }
 
     public Image getImage() {
-        return new Image((new File("src/images/shield.png")).toURI().toString());
+        return new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
     }
 
 }

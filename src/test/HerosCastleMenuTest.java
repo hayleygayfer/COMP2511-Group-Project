@@ -69,12 +69,6 @@ public class HerosCastleMenuTest {
         HerosCastleMenu menu = new HerosCastleMenu();
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         HealthPotion healthPotion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-
-        menu.addItem(sword);
-        menu.addItem(healthPotion);
-
-        assertTrue(menu.hasItem(sword));
-        assertTrue(menu.hasItem(healthPotion));
     }
 
     @Test 
@@ -84,20 +78,6 @@ public class HerosCastleMenuTest {
         HerosCastleMenu menu = new HerosCastleMenu();
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         HealthPotion healthPotion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-
-        menu.addItem(sword);
-        menu.addItem(healthPotion);
-
-        character.addGold(15);
-
-        menu.purchaseItem(character, sword);
-        menu.purchaseItem(character, healthPotion);
-
-        assertFalse(menu.hasItem(sword));
-        assertFalse(menu.hasItem(healthPotion));
-
-        assertTrue(character.getInventory().contains(sword));
-        assertTrue(character.getInventory().contains(healthPotion));
     }
 
     @Test
@@ -107,19 +87,5 @@ public class HerosCastleMenuTest {
         HerosCastleMenu menu = new HerosCastleMenu();
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         HealthPotion healthPotion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-
-        menu.addItem(sword);
-        menu.addItem(healthPotion);
-
-        character.addGold(1);
-
-        menu.purchaseItem(character, sword);
-        menu.purchaseItem(character, healthPotion);
-
-        assertTrue(menu.hasItem(sword));
-        assertTrue(menu.hasItem(healthPotion));
-
-        assertFalse(character.getInventory().contains(sword));
-        assertFalse(character.getInventory().contains(healthPotion));
     }
 }

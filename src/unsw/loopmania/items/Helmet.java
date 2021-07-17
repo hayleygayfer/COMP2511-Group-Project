@@ -4,11 +4,11 @@ import unsw.loopmania.EquippableItem;
 import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import unsw.loopmania.itemTypes.ArmourType;
+import unsw.loopmania.itemTypes.HelmetType;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class Helmet extends EquippableItem implements ArmourType {
+public class Helmet extends EquippableItem implements HelmetType {
     private int reducedCharacterDamage;
     private int reducedEnemyDamage;
 

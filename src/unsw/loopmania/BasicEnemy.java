@@ -24,7 +24,11 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
     private SimpleIntegerProperty supportRadius = new SimpleIntegerProperty();
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
-    private List<Pair<Item, Double>> dropChances;
+    private List<Pair<GenerateItem, Double>> dropItemChances;
+    private List<Pair<GenerateCard, Double>> dropCardChances;
+
+    private SimpleIntegerProperty experienceGained = new SimpleIntegerProperty();
+    private SimpleIntegerProperty maxGoldGained = new SimpleIntegerProperty();
 
     // Abstract methods
     public abstract Image render();
@@ -128,22 +132,56 @@ public abstract class BasicEnemy extends MovingEntity implements DamageStrategy,
         }
     }
 
-    public void setDroppableItems(List<Pair<Item, Double>> dropChances) {
-        this.dropChances = dropChances;
+    public void setExperienceGained(int xp) {
+        this.experienceGained.set(xp);
     }
 
-    public List<Item> getItemDrops() {
+    public void setMaxGoldGained(int gold) {
+        this.maxGoldGained.set(gold);
+    }
+
+    public void getXPAndGold(Character character) {
         Random chance = new Random(System.currentTimeMillis());
-        List<Item> droppedItems = new ArrayList<Item>();
+        int goldAmount = chance.nextInt(maxGoldGained.get());
+        character.addGold(goldAmount);
+        character.addXp(experienceGained.get());
+    }
+
+    public void setDroppableItems(List<Pair<GenerateItem, Double>> dropItemChances) {
+        this.dropItemChances = dropItemChances;
+    }
+
+    public void setDroppableCards(List<Pair<GenerateCard, Double>> dropCardChances) {
+        this.dropCardChances = dropCardChances;
+    } 
+
+    public List<GenerateItem> getItemDrops() {
+        Random chance = new Random(System.currentTimeMillis());
+        List<GenerateItem> droppedItems = new ArrayList<GenerateItem>();
 
         // For each possible drop generate a random number to see if it actually drops
-        for (int i = 0; i < dropChances.size(); i++) {
+        for (int i = 0; i < dropItemChances.size(); i++) {
             Double percentChance = chance.nextDouble();
-            if (percentChance <= dropChances.get(i).getValue1()) {
-                droppedItems.add(dropChances.get(i).getValue0());
+            if (percentChance <= dropItemChances.get(i).getValue1()) {
+                droppedItems.add(dropItemChances.get(i).getValue0());
             }
         }
         
         return droppedItems;
+    }
+
+    public List<GenerateCard> getCardDrops() {
+        Random chance = new Random(System.currentTimeMillis());
+        List<GenerateCard> droppedCards = new ArrayList<GenerateCard>();
+
+        // For each possible drop generate a random number to see if it actually drops
+        for (int i = 0; i < dropCardChances.size(); i++) {
+            Double percentChance = chance.nextDouble();
+            if (percentChance <= dropCardChances.get(i).getValue1()) {
+                droppedCards.add(dropCardChances.get(i).getValue0());
+            }
+        }
+        
+        return droppedCards;
     }
 }
