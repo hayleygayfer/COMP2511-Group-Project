@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.Goals.Goal;
+import unsw.loopmania.Goals.XpLeaf;
 import unsw.loopmania.buildings.HerosCastleBuilding;
 
 import java.util.List;
@@ -154,6 +156,7 @@ public abstract class LoopManiaWorldLoader {
         switch (goal) {
             case "experience":
                 int quantity = currentJson.getInt("quantity");
+                
                 
             case "cycle":
 

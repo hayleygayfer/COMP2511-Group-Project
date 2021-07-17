@@ -7,6 +7,7 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.ZombiePitCard;
@@ -488,6 +489,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public int getGameCycle() {
         return this.gameCycle.get();
+    }
+
+
+    /**
+     * 
+     * @param gameCycle
+     */
+    public void setGameCycle(SimpleIntegerProperty gameCycle) {
+        this.gameCycle = gameCycle;
     }
 
     /**
