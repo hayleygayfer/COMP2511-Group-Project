@@ -36,6 +36,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -58,9 +59,11 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Armour;
 import unsw.loopmania.items.Shield;
+import unsw.loopmania.UsableItem;
 import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
+import unsw.loopmania.itemTypes.HelmetType;
 
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -132,7 +135,7 @@ public class LoopManiaWorldController {
      * container for all hero castle menu components
      */
     @FXML
-    private VBox heroCastle;
+    private ScrollPane heroCastle;
 
     /**
      * container for all game map components
@@ -181,6 +184,9 @@ public class LoopManiaWorldController {
     private GridPane equippedWeapon;
 
     @FXML
+    private GridPane equippedHelmet;
+
+    @FXML
     private GridPane unequippedInventory;
 
     @FXML
@@ -188,6 +194,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private Text healthDisplay;
+
+    @FXML
+    private Text baseHealthDisplay;
 
     @FXML
     private Text goldDisplay;
@@ -210,18 +219,6 @@ public class LoopManiaWorldController {
      * runs the periodic game logic - second-by-second moving of character through maze, as well as enemies, and running of battles
      */
     private Timeline timeline;
-
-    private Image vampireCastleCardImage;
-
-    private Image swordImage;
-    private Image basicBuildingImage;
-    private Image goldImage;
-    private Image helmetImage;
-    private Image armourImage;
-    private Image staffImage;
-    private Image stakeImage;
-    private Image healthPotionImage;
-    private Image shieldImage;
 
     /**
      * the image currently being dragged, if there is one, otherwise null.
@@ -268,17 +265,6 @@ public class LoopManiaWorldController {
     public LoopManiaWorldController(LoopManiaWorld world, List<ImageView> initialEntities) {
         this.world = world;
         entityImages = new ArrayList<>(initialEntities);
-        vampireCastleCardImage = new Image((new File("src/images/vampire.png")).toURI().toString());
-
-        swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
-        helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
-        armourImage = new Image((new File("src/images/armour.png")).toURI().toString());
-        healthPotionImage = new Image((new File("src/images/basic_healthPotion.png")).toURI().toString());
-        staffImage = new Image((new File("src/images/staff.png")).toURI().toString());
-        stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
-        shieldImage = new Image((new File("src/images/shield.png")).toURI().toString());
-        basicBuildingImage = new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
-        goldImage = new Image((new File("src/images/gold_pile.png")).toURI().toString());
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
 
@@ -339,16 +325,25 @@ public class LoopManiaWorldController {
 
         // add the starting heros castle shop items
 
-        List<ShopItem> itemMenu = world.getHerosCastleMenu().getItems();
+        List<GenerateItem> itemMenu = world.getHerosCastleMenu().getItems();
+        int row = 0;
+        int col = 0;
         for (int i = 0; i < itemMenu.size(); i++) {
             VBox newTag = loadShopTag(itemMenu.get(i));
-            if (i < 3) shopItems.add(newTag, 0, i);
-            else shopItems.add(newTag, 1, i - 3);
+            if (col < 2) {
+                shopItems.add(newTag, row, col);
+                col++;
+            } else {
+                row += 1;
+                col = 0;
+                shopItems.add(newTag, row, col);
+                col++;
+            }
         }
 
-        heroCastle.setPrefWidth(320);
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
+        heroCastle.setPrefWidth(320);
 
         // bind the game states layout to their visibility
         heroCastle.managedProperty().bind(heroCastle.visibleProperty());
@@ -367,9 +362,14 @@ public class LoopManiaWorldController {
 
         // make bindings for stats
         cycleDisplay.textProperty().bindBidirectional(world.getGameCycleProperty(), new NumberStringConverter());
-        healthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
+        healthDisplay.textProperty().bindBidirectional(world.getCharacter().getCurrentHealthProperty(), new NumberStringConverter());
+        baseHealthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
+
+        // TODO remove when done testing
+        loadCard();
+        loadCard();
     }
 
     /**
@@ -461,7 +461,7 @@ public class LoopManiaWorldController {
         gameMap.setVisible(true);
     }
 
-    public void purchaseItemFromShop(ShopItem item) {
+    public void purchaseItemFromShop(GenerateItem item) {
         Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
         Item purchasedItem = world.getHerosCastleMenu().purchaseItem(world.getCharacter(), item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
         if (!purchasedItem.equals(null)) {
@@ -469,9 +469,9 @@ public class LoopManiaWorldController {
         }
     }
 
-    public VBox loadShopTag(ShopItem item) {
-        VBox shopItem = new VBox();
-        shopItem.setStyle("-fx-padding: 8;" + 
+    public VBox loadShopTag(GenerateItem item) {
+        VBox GenerateItem = new VBox();
+        GenerateItem.setStyle("-fx-padding: 8;" + 
         "-fx-border-style: solid inside;" + 
         "-fx-border-width: 1;" +
         "-fx-border-insets: 3;" + 
@@ -502,7 +502,7 @@ public class LoopManiaWorldController {
         imgRow.getChildren().add(nameDescription);
         imgRow.getChildren().add(itemView);
 
-        shopItem.getChildren().add(imgRow);
+        GenerateItem.getChildren().add(imgRow);
 
         // add item price
         Label price = new Label("$" + item.price().get());
@@ -516,9 +516,9 @@ public class LoopManiaWorldController {
         buyItem.disableProperty().bind(world.getCharacter().getGold().lessThan(item.price()));
         priceRow.getChildren().add(buyItem);
 
-        shopItem.getChildren().add(priceRow);
+        GenerateItem.getChildren().add(priceRow);
 
-        return shopItem;
+        return GenerateItem;
     }
 
     /**
@@ -533,12 +533,11 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a vampire card from the world, and pair it with an image in the GUI
+     * load a card from the world, and pair it with an image in the GUI
      */
-    private void loadVampireCard() {
-        // TODO = load more types of card
-        VampireCastleCard vampireCastleCard = world.loadVampireCard();
-        onLoad(vampireCastleCard);
+    private void loadCard() {
+        Card card = world.loadCard();
+        onLoad(card);
     }
 
     /**
@@ -558,9 +557,15 @@ public class LoopManiaWorldController {
     private void reactToEnemyDefeat(BasicEnemy enemy){
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
-        // TODO = provide different benefits to defeating the enemy based on the type of enemy
-        loadSword();
-        loadVampireCard();
+        List<Item> itemsToLoad = world.defeatedEnemyItemDrops(enemy);
+        for (int i = 0; i < itemsToLoad.size(); i++) {
+            onLoad(itemsToLoad.get(i));
+        }
+        List<Card> cardsToLoad = world.defeatedEnemyCardDrops(enemy);
+        for (int i = 0; i < cardsToLoad.size(); i++) {
+            onLoad(cardsToLoad.get(i));
+        }
+        world.getGoldAndXpDrops(enemy);
     }
 
     /**
@@ -570,7 +575,7 @@ public class LoopManiaWorldController {
      * @param Card
      */
     private void onLoad(Card card) {
-        ImageView view = new ImageView(vampireCastleCardImage);
+        ImageView view = new ImageView(card.render());
 
         // FROM https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
         // note target setOnDragOver and setOnDragEntered defined in initialize method
@@ -587,13 +592,40 @@ public class LoopManiaWorldController {
      * @param sword
      */
     private void onLoad(Item item) {
-        ImageView view = new ImageView(item.getImage());
+        ImageView view = new ImageView(item.render());
         if (item instanceof ArmourType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour);
         } else if (item instanceof WeaponType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon);
         } else if (item instanceof ShieldType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
+        } else if (item instanceof HelmetType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
+        }
+
+        if (item instanceof UsableItem) {
+            view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    item.applyEffect(world.getCharacter());
+                    world.removeItemWhenUsed(item);
+                    view.setVisible(false);
+                    view.setManaged(false);
+                    event.consume();
+                }
+            });
+        } else  {
+            view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (heroCastle.isVisible()) {
+                        world.sellItem(item);
+                        view.setVisible(false);
+                        view.setManaged(false);
+                        event.consume();
+                    }
+                }
+            });
         }
         addEntity(item, view);
         unequippedInventory.getChildren().add(view);
@@ -615,7 +647,7 @@ public class LoopManiaWorldController {
      * @param building
      */
     private void onLoad(Building building) {
-        ImageView view = new ImageView(basicBuildingImage);
+        ImageView view = new ImageView(building.render());
         addEntity(building, view);
         squares.getChildren().add(view);
     }
@@ -625,9 +657,7 @@ public class LoopManiaWorldController {
      * @param gold
      */
     private void onLoad(Gold gold) {
-        ImageView view = new ImageView(goldImage);
-        // TODO: add a clickable handler
-
+        ImageView view = new ImageView(gold.render());
         addEntity(gold, view);
         squares.getChildren().add(view);
     }
@@ -650,6 +680,7 @@ public class LoopManiaWorldController {
                  *you might want to design the application so dropping at an invalid location drops at the most recent valid location hovered over,
                  * or simply allow the card/item to return to its slot (the latter is easier, as you won't have to store the last valid drop location!)
                  */
+                boolean validDrop = false;
                 if (currentlyDraggedType == draggableType){
                     // problem = event is drop completed is false when should be true...
                     // https://bugs.openjdk.java.net/browse/JDK-8117019
@@ -673,26 +704,34 @@ public class LoopManiaWorldController {
                         switch (draggableType){
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
-                                // TODO = spawn a building here of different types
-                                Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                onLoad(newBuilding);
-                                break;
+                                if (canBuildByCoordinates(nodeX, nodeY, x, y)) {
+                                    Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                    onLoad(newBuilding);
+                                    validDrop = true;
+                                }
+                               break;
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
+                                validDrop = true;
                                 break;
                             default:
                                 break;
                         }
-                        
+                        if (!validDrop) {
+                            currentlyDraggedImage.setVisible(true);
+                        }
+
                         draggedEntity.setVisible(false);
                         draggedEntity.setMouseTransparent(false);
                         // remove drag event handlers before setting currently dragged image to null
+                        removeDraggableDragEventHandlers(draggableType, targetGridPane);
                         currentlyDraggedImage = null;
                         currentlyDraggedType = null;
                         printThreadingNotes("DRAG DROPPED ON GRIDPANE HANDLED");
+                       
                     }
                 }
                 event.setDropCompleted(true);
@@ -759,6 +798,10 @@ public class LoopManiaWorldController {
         return world.convertCardToBuildingByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
     }
 
+    private boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        return world.canBuildByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
+    }
+
     /**
      * remove an item from the unequipped inventory by its x and y coordinates in the unequipped inventory gridpane
      * @param nodeX x coordinate from 0 to unequippedInventoryWidth-1
@@ -819,13 +862,22 @@ public class LoopManiaWorldController {
                     // events for entering and exiting are attached to squares children because that impacts opacity change
                     // these do not affect visibility of original image...
                     // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
+                    
                     gridPaneNodeSetOnDragEntered.put(draggableType, new EventHandler<DragEvent>() {
-                        // TODO = be more selective about whether highlighting changes - if it cannot be dropped in the location, the location shouldn't be highlighted!
+                        Integer cIndex = GridPane.getColumnIndex(n);
+                        Integer rIndex = GridPane.getRowIndex(n);
+                        int x = cIndex == null ? 0 : cIndex;
+                        int y = rIndex == null ? 0 : rIndex;
+                        //Places at 0,0 - will need to take coordinates once that is implemented
+
+                        int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
+                        int nodeY = GridPane.getRowIndex(currentlyDraggedImage);
+
                         public void handle(DragEvent event) {
-                            if (currentlyDraggedType == draggableType){
+                            if (currentlyDraggedType == draggableType) {
                             //The drag-and-drop gesture entered the target
                             //show the user that it is an actual gesture target
-                                if(event.getGestureSource() != n && event.getDragboard().hasImage()){
+                                if(event.getGestureSource() != n && event.getDragboard().hasImage() && canBuildByCoordinates(nodeX, nodeY, x, y)){
                                     n.setOpacity(0.7);
                                 }
                             }
@@ -833,9 +885,8 @@ public class LoopManiaWorldController {
                         }
                     });
                     gridPaneNodeSetOnDragExited.put(draggableType, new EventHandler<DragEvent>() {
-                        // TODO = since being more selective about whether highlighting changes, you could program the game so if the new highlight location is invalid the highlighting doesn't change, or leave this as-is
                         public void handle(DragEvent event) {
-                            if (currentlyDraggedType == draggableType){
+                            if (currentlyDraggedType == draggableType) {
                                 n.setOpacity(1);
                             }
                 

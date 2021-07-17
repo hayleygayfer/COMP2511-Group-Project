@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.items.Sword;
+import javafx.scene.image.Image;
+import java.io.File;
 
 import org.hamcrest.core.IsInstanceOf;
 import org.javatuples.Pair;
@@ -23,8 +25,9 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     // Base & Battle Damage & Health
     private SimpleIntegerProperty baseDamage;
     private SimpleIntegerProperty baseHealth;
-    private SimpleIntegerProperty battleDamage;
-    private SimpleIntegerProperty battleHealth;
+    private SimpleIntegerProperty currentHealth;
+    private SimpleIntegerProperty modifiedHealth;
+    private SimpleIntegerProperty modifiedDamage;
 
 
     // Initial position
@@ -41,12 +44,16 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.gold = new SimpleIntegerProperty(0);
         this.xp = new SimpleIntegerProperty(0);
         this.baseHealth = new SimpleIntegerProperty(50);
-        this.battleHealth = new SimpleIntegerProperty(50);
+        this.modifiedHealth = new SimpleIntegerProperty(50);
+        this.currentHealth = new SimpleIntegerProperty(50);
         this.baseDamage = new SimpleIntegerProperty(1);
-        this.battleDamage = new SimpleIntegerProperty(5);
+        this.modifiedDamage = new SimpleIntegerProperty(1);
         inventory = new ArrayList<Item>();
         equippedItems = new ArrayList<EquippableItem>();
-        equippedItems.add(new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)));
+    }
+
+    public Image render() {
+        return new Image((new File("src/images/human_new.png")).toURI().toString());
     }
 
     public SimpleIntegerProperty getXpProperty() {
@@ -62,6 +69,22 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
+     * Modified Health Getter (After Shields + Armour)
+     * @return baseHealth int
+     */
+    public int getModifiedHealth() {
+        return modifiedHealth.get();
+    }
+
+    /**
+     * Current Health Getter (Before Shields + Armour)
+     * @return baseHealth int
+     */
+    public int getCurrentHealth() {
+        return currentHealth.get();
+    }
+
+    /**
      * Base Health Property Getter
      * @return baseHealth int
      */
@@ -70,38 +93,44 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Battle Health Getter
-     * @param damage
+     * Current Health Property Getter
+     * @return baseHealth int
      */
-    public int getBattleHealth() {
-        return battleHealth.get();
+    public SimpleIntegerProperty getCurrentHealthProperty() {
+        return currentHealth;
     }
+
+    public void addXp(int experiencePoints) {
+        xp.set(this.xp.get() + experiencePoints);
+    }
+
 
     /**
      * Battle Health Setter
      * @param damage
      */
-    public void setBattleHealth(int health) {
-        battleHealth.set(health);
+    public void setModifiedHealth(int health) {
+        modifiedHealth.set(health);
     }
 
     /**
-     * Base Health Setter
+     * Current Health Setter
      * @param damage
      */
-    public void setBaseHealth(int health) {
-        baseHealth.set(health);
+    public void setCurrentHealth(int health) {
+        currentHealth.set(health);
     }
 
     /**
      * Resets health after a battle
      */
     public void resetHealth() {
-        if (getBaseHealth() > getBattleHealth()) {
-            setBaseHealth(getBattleHealth());
+        if (getModifiedHealth() < getCurrentHealth()) {
+            setCurrentHealth(getModifiedHealth());
         } else {
-            setBattleHealth(getBaseHealth());
+            setModifiedHealth(getCurrentHealth());
         }
+        setModifiedDamage(getBaseDamage());
     }
 
     /**
@@ -116,31 +145,23 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * Battle Damage Getter
      * @param damage
      */
-    public int getBattleDamage() {
-        return baseDamage.get();
+    public int getModifiedDamage() {
+        return modifiedDamage.get();
     }
 
     /**
      * Battle Damage Setter
      * @param damage
      */
-    public void setBattleDamage(int damage) {
-        baseDamage.set(damage);
+    public void setModifiedDamage(int damage) {
+        modifiedDamage.set(damage);
     }
 
     /**
      * Returns whether or not the character is alive
      */
     public boolean isAlive() {
-        return getBattleHealth() > 0;
-    }
-
-    /**
-     * Applies an attack on the enemy, given the amount
-     * of damage you can do
-     */
-    public void attack(BasicEnemy enemy, int damage) {
-        // just apply the attack from every equipped item
+        return getModifiedHealth() > 0;
     }
     
     /**
@@ -264,7 +285,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
                 return;
             }
         }
-        System.out.println("BATTLE DAMAGE = " + getBattleDamage());
-        enemy.setHealth(enemy.getHealth() - getBattleDamage());
+        enemy.setHealth(enemy.getHealth() - getModifiedDamage());
     }
 }

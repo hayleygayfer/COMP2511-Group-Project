@@ -19,7 +19,7 @@ public class Battle {
     for (EquippableItem item : character.getEquippedItems()) {
       item.affect(character);
     }
-    frames.add(Triplet.with(character.getBattleHealth(), enemies.get(0).getHealth(), enemies.get(0)));
+    frames.add(Triplet.with(character.getModifiedHealth(), enemies.get(0).getHealth(), enemies.get(0)));
     for (BasicEnemy enemy : enemies) {
       // Initial set up for each enemy
       for (EquippableItem item : character.getEquippedItems()) {
@@ -28,7 +28,7 @@ public class Battle {
       while (character.isAlive() && enemy.isAlive()) {
         enemy.attack(character);
         character.attack(enemy);
-        frames.add(Triplet.with(character.getBattleHealth(), enemy.getHealth(), enemy));
+        frames.add(Triplet.with(character.getModifiedHealth(), enemy.getHealth(), enemy));
       }
     }
     return frames;

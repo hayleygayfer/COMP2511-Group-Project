@@ -63,7 +63,7 @@ public abstract class EquippableItem extends Item {
     }
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
 }

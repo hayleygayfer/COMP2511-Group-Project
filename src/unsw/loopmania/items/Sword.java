@@ -18,15 +18,16 @@ public class Sword extends EquippableItem implements WeaponType {
     public Sword(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         damage = 10;
+        setSellPrice(10);
     }    
 
     @Override
     public void affect(Character character) {
-        character.setBattleDamage(character.getBattleDamage() + damage);
+        character.setModifiedDamage(character.getModifiedDamage() + damage);
     }
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
 }

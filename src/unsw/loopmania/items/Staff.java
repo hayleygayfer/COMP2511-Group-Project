@@ -17,6 +17,7 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
     public Staff(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         baseDamage = 2;
+        setSellPrice(20);
     }
 
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
@@ -32,7 +33,7 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
     }
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/staff.png")).toURI().toString());
     }
 }

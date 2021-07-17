@@ -4,16 +4,17 @@ import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import unsw.loopmania.itemTypes.ArmourType;
+import unsw.loopmania.itemTypes.HelmetType;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class Helmet extends EquippableItem implements ArmourType {
+public class Helmet extends EquippableItem implements HelmetType {
     private int reducedEnemyDamage;
 
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         reducedEnemyDamage = 3;
+        setSellPrice(15);
     }
 
     /**
@@ -34,7 +35,7 @@ public class Helmet extends EquippableItem implements ArmourType {
     }
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/helmet.png")).toURI().toString());
     }
 }

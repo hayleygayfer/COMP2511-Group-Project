@@ -15,6 +15,7 @@ public class Shield extends EquippableItem implements ShieldType {
     public Shield(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         reducedEnemyCriticalChance = 0.40;
+        setSellPrice(10);
     }
 
     /**
@@ -37,7 +38,7 @@ public class Shield extends EquippableItem implements ShieldType {
     }
     
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/shield.png")).toURI().toString());
     }
 }

@@ -9,11 +9,11 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class Stake extends EquippableItem implements WeaponType, CustomAttackStrategy {
-    // private int baseDamage;
 
     // TODO write stake
     public Stake(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
+        setSellPrice(15);
     }
 
     public void attack(BasicEnemy enemy) {
@@ -21,7 +21,7 @@ public class Stake extends EquippableItem implements WeaponType, CustomAttackStr
     }    
 
     @Override
-    public Image getImage() {
+    public Image render() {
         return new Image((new File("src/images/stake.png")).toURI().toString());
     }
 }
