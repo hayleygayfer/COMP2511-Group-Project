@@ -57,6 +57,7 @@ import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.itemTypes.HelmetType;
+import unsw.loopmania.itemTypes.AccessoryType;
 
 import org.javatuples.Pair;
 
@@ -156,6 +157,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private GridPane equippedHelmet;
+
+    @FXML
+    private GridPane equippedAccessory;
 
     @FXML
     private GridPane unequippedInventory;
@@ -558,7 +562,9 @@ public class LoopManiaWorldController {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
         } else if (item instanceof HelmetType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
-        }
+        } else if (item instanceof AccessoryType) {
+            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedAccessory);
+        }   
 
         if (item instanceof UsableItem) {
             view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {

@@ -222,6 +222,29 @@
                   <Insets />
                </opaqueInsets>
             </GridPane>
+            <Text fill="#4d4d4d" strokeType="OUTSIDE" strokeWidth="0.0" text="Accessory">
+               <font>
+                  <Font name="Avenir Book" size="13.0" />
+               </font>
+            </Text>
+            <GridPane fx:id="equippedAccessory" hgap="5.0" vgap="5.0">
+               <columnConstraints>
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
+               <children>
+                  <ImageView id="blankCell" GridPane.rowIndex="0">
+                     <image>
+                        <Image url="@../../images/image_just_black_tiny.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </GridPane>
             <Text fill="#4d4d4d" strokeType="OUTSIDE" strokeWidth="0.0" text="Weapon">
                <font>
                   <Font name="Avenir Book" size="13.0" />
