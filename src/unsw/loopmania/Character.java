@@ -2,13 +2,9 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.items.Sword;
 import javafx.scene.image.Image;
 import java.io.File;
-
-import org.hamcrest.core.IsInstanceOf;
 import org.javatuples.Pair;
 
 /**

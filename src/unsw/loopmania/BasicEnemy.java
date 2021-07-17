@@ -4,13 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
-import java.util.List;
-import java.util.ArrayList;
 import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import java.util.Random;
 
 /**
  * a basic form of enemy in the world

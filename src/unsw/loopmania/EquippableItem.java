@@ -3,7 +3,6 @@ package unsw.loopmania;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 public abstract class EquippableItem extends Item {
