@@ -13,6 +13,7 @@ import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.HealthPotion;
 
 /**
  * A backend world.
@@ -183,6 +184,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return spawningGold;
     }
 
+    public void sellItem(Item item) {
+        shopMenu.sellItem(character, item);
+    }
+
+    public void removeItemWhenUsed(Item item) {
+        item.destroy();
+        character.removeItemFromInventory(item);
+    }
+
     /**
      * kill an enemy
      * @param enemy enemy to be killed
@@ -199,8 +209,17 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
         for (int i = 0; i < itemDrops.size(); i++) {
             Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
-            Item newDrop = itemDrops.get(i).createItem(new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
-            itemInstances.add(newDrop);
+            int x = coords.getValue0() + i;
+            int y = coords.getValue1();
+            if (x > 3) {
+                x = 0;
+                y += 1;
+            }
+            
+            if (!(x > 3 && y == 3)) {
+                Item newDrop = itemDrops.get(i).createItem(new SimpleIntegerProperty(x), new SimpleIntegerProperty(y));
+                itemInstances.add(newDrop);
+            }
         }
         character.addItemsToInventory(itemInstances);
         return itemInstances;
@@ -263,7 +282,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public Card loadCard () {
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()){
-            // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+            character.addGold(5);
+            character.addXp(5);
             removeCard(0);
         }
         SimpleIntegerProperty posX = new SimpleIntegerProperty(cardEntities.size());

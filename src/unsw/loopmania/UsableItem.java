@@ -10,5 +10,8 @@ public abstract class UsableItem extends Item {
     /**
      * Applies effect of the item to the character
      */
-    public void applyEffect(Character character) {}
+    @Override
+    public void applyEffect(Character character) {
+        
+    }
 }

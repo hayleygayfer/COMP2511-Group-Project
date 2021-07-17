@@ -17,6 +17,7 @@ public class Helmet extends EquippableItem implements HelmetType {
         super(x, y);
         reducedCharacterDamage = 1;
         reducedEnemyDamage = 3;
+        setSellPrice(15);
     }
 
     /**

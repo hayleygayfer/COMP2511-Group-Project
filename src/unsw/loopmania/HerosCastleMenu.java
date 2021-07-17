@@ -9,6 +9,7 @@ import unsw.loopmania.generateItems.ShieldGenerateItem;
 import unsw.loopmania.generateItems.StaffGenerateItem;
 import unsw.loopmania.generateItems.StakeGenerateItem;
 import unsw.loopmania.generateItems.SwordGenerateItem;
+import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class HerosCastleMenu {
         items.add(new HelmetGenerateItem());
         items.add(new ArmourGenerateItem());
         items.add(new ShieldGenerateItem());
+        items.add(new HealthPotionGenerateItem());
     }   
 
     /**
@@ -53,5 +55,11 @@ public class HerosCastleMenu {
             return newItem;
         }
         return null;
+    }
+
+    public void sellItem(Character character, Item item) {
+        character.removeItemFromInventory(item);
+        character.addGold(item.getSellPrice().get());
+        item.destroy();
     }
 }

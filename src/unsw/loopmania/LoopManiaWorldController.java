@@ -29,6 +29,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -51,6 +52,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Armour;
 import unsw.loopmania.items.Shield;
+import unsw.loopmania.UsableItem;
 import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
@@ -104,7 +106,7 @@ public class LoopManiaWorldController {
      * container for all hero castle menu components
      */
     @FXML
-    private VBox heroCastle;
+    private ScrollPane heroCastle;
 
     /**
      * container for all game map components
@@ -163,6 +165,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private Text healthDisplay;
+
+    @FXML
+    private Text baseHealthDisplay;
 
     @FXML
     private Text goldDisplay;
@@ -313,10 +318,19 @@ public class LoopManiaWorldController {
         // add the starting heros castle shop items
 
         List<GenerateItem> itemMenu = world.getHerosCastleMenu().getItems();
+        int row = 0;
+        int col = 0;
         for (int i = 0; i < itemMenu.size(); i++) {
             VBox newTag = loadShopTag(itemMenu.get(i));
-            if (i < 3) shopItems.add(newTag, 0, i);
-            else shopItems.add(newTag, 1, i - 3);
+            if (col < 2) {
+                shopItems.add(newTag, row, col);
+                col++;
+            } else {
+                row += 1;
+                col = 0;
+                shopItems.add(newTag, row, col);
+                col++;
+            }
         }
 
         heroCastle.setPrefWidth(320);
@@ -337,6 +351,7 @@ public class LoopManiaWorldController {
         // make bindings for stats
         cycleDisplay.textProperty().bindBidirectional(world.getGameCycleProperty(), new NumberStringConverter());
         healthDisplay.textProperty().bindBidirectional(world.getCharacter().getHealthProperty(), new NumberStringConverter());
+        baseHealthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
@@ -543,6 +558,31 @@ public class LoopManiaWorldController {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
         } else if (item instanceof HelmetType) {
             addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
+        }
+
+        if (item instanceof UsableItem) {
+            view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    item.applyEffect(world.getCharacter());
+                    world.removeItemWhenUsed(item);
+                    view.setVisible(false);
+                    view.setManaged(false);
+                    event.consume();
+                }
+            });
+        } else  {
+            view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (heroCastle.isVisible()) {
+                        world.sellItem(item);
+                        view.setVisible(false);
+                        view.setManaged(false);
+                        event.consume();
+                    }
+                }
+            });
         }
         addEntity(item, view);
         unequippedInventory.getChildren().add(view);

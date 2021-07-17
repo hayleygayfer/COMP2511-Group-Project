@@ -13,6 +13,7 @@ public class Shield extends EquippableItem implements ShieldType {
     public Shield(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         reducedEnemyCriticalChance = 0.40;
+        setSellPrice(10);
     }
 
     /**

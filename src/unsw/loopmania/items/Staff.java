@@ -14,6 +14,7 @@ public class Staff extends EquippableItem implements WeaponType {
     public Staff(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         baseDamage = 2;
+        setSellPrice(20);
     }
 
     public int getModifiedDamage(MovingEntity target, int baseDamage) {

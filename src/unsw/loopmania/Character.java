@@ -22,6 +22,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     // damage strategy (what weapon is equipped)
     private DamageStrategy damageStrategy;
+    private SimpleIntegerProperty baseHealth;
     private SimpleIntegerProperty health;
     private SimpleIntegerProperty baseDamage;
 
@@ -41,7 +42,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
         this.gold = new SimpleIntegerProperty(0);
         this.xp = new SimpleIntegerProperty(0);
-        this.health = new SimpleIntegerProperty(50);
+        this.baseHealth = new SimpleIntegerProperty(50);
+        this.health = new SimpleIntegerProperty(25);
         inventory = new ArrayList<Item>();
         equippedItems = new ArrayList<Item>();
     }
@@ -60,6 +62,18 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     public int getHealth() {
         return health.get();
+    }
+
+    public void setHealth(int health) {
+        this.health.set(health);
+    }
+
+    public int getBaseHealth() {
+        return baseHealth.get();
+    }
+
+    public SimpleIntegerProperty getBaseHealthProperty() {
+        return baseHealth;
     }
 
     public SimpleIntegerProperty getHealthProperty() {

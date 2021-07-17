@@ -6,6 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -21,19 +22,26 @@
    <!-- HBox is used to stack items horizontally left to right -->
    <HBox>
       <!-- VBox is used to stack items vertically top to bottom -->
-      <VBox fx:id="heroCastle">
-         <GridPane fx:id="shopItems" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-               <columnConstraints>
-                  <ColumnConstraints />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-               </rowConstraints>
-               <children>
-                  
-               </children>
-            </GridPane>
-      </VBox>
+      <ScrollPane fx:id="heroCastle">
+         <VBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tip: Click on an item in your Inventory to sell it">
+               <font>
+                  <Font name="Avenir Book" size="14.0" />
+               </font>
+            </Text>
+            <GridPane fx:id="shopItems" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+                  <columnConstraints>
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                  </rowConstraints>
+                  <children>
+                     
+                  </children>
+               </GridPane>
+         </VBox>
+      </ScrollPane>
       <VBox fx:id="gameMap">
          <children>
              <!-- squares contains the path, buildings, character, and enemies -->
@@ -94,6 +102,16 @@
                            </font>
                         </Text>
                         <Text fx:id="healthDisplay" fill="#df1515" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                           <font>
+                              <Font name="Avenir Book" size="14.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#df1515" strokeType="OUTSIDE" strokeWidth="0.0" text=" / ">
+                           <font>
+                              <Font name="Avenir Book" size="14.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="baseHealthDisplay" fill="#df1515" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                            <font>
                               <Font name="Avenir Book" size="14.0" />
                            </font>

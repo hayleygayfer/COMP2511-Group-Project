@@ -16,7 +16,7 @@ public class HealthPotionGenerateItem extends GenerateItem {
     public HealthPotionGenerateItem() {
         this.name = new SimpleStringProperty("Health Potion");
         this.description = new SimpleStringProperty("Restores character health");
-        this.price = new SimpleIntegerProperty(20);
+        this.price = new SimpleIntegerProperty(30);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {

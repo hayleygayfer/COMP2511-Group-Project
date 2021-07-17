@@ -18,6 +18,7 @@ public class Sword extends EquippableItem implements WeaponType {
     public Sword(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         baseDamage = 10;
+        setSellPrice(10);
     }    
 
     /**
