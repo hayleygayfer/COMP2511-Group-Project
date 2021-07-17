@@ -60,14 +60,17 @@ public class VillageCardTest {
     }
 
     @Test
-    public void testValidPosition() {
+    public void testPathPositions() {
         List<Pair<Integer, Integer>> path = TestHelper.createSquarePath(6, 0);
-        LoopManiaWorld world = TestHelper.createWorld(path);
         VillageCard card = new VillageCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        // Tests that all path tiles are valid
-        for (Pair<Integer, Integer> position: world.getPath()) {
-            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), path));
+        // Tests that all path tiles except hero's castle are valid
+        for (Pair<Integer, Integer> position: path) {
+            if (path.indexOf(position) == 0) {
+                assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), path));
+            } else {
+                assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), path));
+            }
         }
     }
 }

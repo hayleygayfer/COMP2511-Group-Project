@@ -36,6 +36,9 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     // XP
     private SimpleIntegerProperty xp;
 
+    // allied soldiers
+    private List<AlliedSoldier> alliedSoldiers;
+
 
     // TODO = potentially implement relationships between this class and other classes
     public Character(PathPosition position) {
@@ -45,8 +48,9 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.xp = new SimpleIntegerProperty(0);
         this.baseHealth = new SimpleIntegerProperty(50);
         this.health = new SimpleIntegerProperty(25);
-        inventory = new ArrayList<Item>();
-        equippedItems = new ArrayList<Item>();
+        this.inventory = new ArrayList<Item>();
+        this.equippedItems = new ArrayList<Item>();
+        this.alliedSoldiers = new ArrayList<AlliedSoldier>();
     }
 
     public Image render() {
@@ -233,4 +237,16 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.gold.set(this.gold.get() + amount);
     }
 
+    /**
+     * Adds an allied soldiier to the character
+     * @param newSoldier
+     * @pre newSoldier != NULL and is not currently in the list
+     */
+    public void addSoldier(AlliedSoldier newSoldier) {
+        alliedSoldiers.add(newSoldier);
+    }
+
+    public List<AlliedSoldier> getAlliedSoldiers() {
+        return alliedSoldiers;
+    }
 }
