@@ -11,6 +11,7 @@ import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.generateItems.StakeGenerateItem;
+import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.generateItems.ShieldGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 import unsw.loopmania.GenerateItem;
@@ -34,6 +35,7 @@ public class Vampire extends BasicEnemy {
         droppableItems.add(new Pair<GenerateItem, Double>(new StakeGenerateItem(), 0.50));
         droppableItems.add(new Pair<GenerateItem, Double>(new ShieldGenerateItem(), 0.50));
         droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.2));
+        droppableItems.add(new Pair<GenerateItem, Double>(new TheOneRingGenerateItem(), 0.05));
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
