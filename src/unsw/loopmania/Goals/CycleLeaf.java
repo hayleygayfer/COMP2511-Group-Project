@@ -6,6 +6,7 @@ public class CycleLeaf implements Goal{
     private int goalCycle; 
 
     public CycleLeaf(int goalCycle) {
+
         this.goalCycle = goalCycle;
     }
 
@@ -13,7 +14,7 @@ public class CycleLeaf implements Goal{
 
     @Override
     public Boolean metGoal(LoopManiaWorld world) {
-        if (world.getCharacter().getGold().get() > goalCycle) {
+        if (world.getGameCycle() > goalCycle) {
             return true;
         } 
         return false;

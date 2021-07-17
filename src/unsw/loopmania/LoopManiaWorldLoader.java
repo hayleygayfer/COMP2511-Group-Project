@@ -10,7 +10,11 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.Goals.CycleLeaf;
 import unsw.loopmania.Goals.Goal;
+import unsw.loopmania.Goals.GoalAND;
+import unsw.loopmania.Goals.GoalOR;
+import unsw.loopmania.Goals.GoldLeaf;
 import unsw.loopmania.Goals.XpLeaf;
 import unsw.loopmania.buildings.HerosCastleBuilding;
 
@@ -44,6 +48,7 @@ public abstract class LoopManiaWorldLoader {
         List<Pair<Integer, Integer>> orderedPath = loadPathTiles(json.getJSONObject("path"), width, height);
 
         LoopManiaWorld world = new LoopManiaWorld(width, height, orderedPath);
+        loadGoal(world);
 
 
         JSONArray jsonEntities = json.getJSONArray("entities");
@@ -151,22 +156,30 @@ public abstract class LoopManiaWorldLoader {
         return orderedPath;
     }
 
-    public void loadGoal(LoopManiaWorld world, JSONObject currentJson) {
-        String goal = currentJson.getString("goal");
-        switch (goal) {
+    public void loadGoal(LoopManiaWorld world) {
+        JSONObject goal = json.getJSONObject("goal-condition");
+        Goal goalObject;
+        switch (goal.getString("goal")) {
             case "experience":
-                int quantity = currentJson.getInt("quantity");
-
-            case "cycle":
-
+                goalObject = new XpLeaf(goal.getInt("quantity"));
+                break;
+            case "cycles":
+                goalObject = new CycleLeaf(goal.getInt("quantity"));
+                break;
             case "gold":
-
+                goalObject = new GoldLeaf(goal.getInt("quantity"));
+                break;
             case "AND":
-            
+                goalObject = new GoalAND(goal.getJSONArray("subgoals"));
+                break;
             case "OR":
+                goalObject = new GoalOR(goal.getJSONArray("subgoals"));
+                break;
+            default:
+                return;
 
         }
-
+        world.setGameGoal(goalObject);
     }
 
     public abstract void onLoad(Character character);
