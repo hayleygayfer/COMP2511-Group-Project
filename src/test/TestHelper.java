@@ -7,7 +7,6 @@ import org.javatuples.Pair;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.enemies.Vampire;
 
 public class TestHelper {
    /**
