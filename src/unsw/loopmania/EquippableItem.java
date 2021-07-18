@@ -16,7 +16,7 @@ public abstract class EquippableItem extends Item {
      * Checks whether an item can be equipped
      */
     public boolean isEquippable(List<Item> equippedItems) {
-        return true;
+        return !equippedItems.contains(this);
     }
 
     /**

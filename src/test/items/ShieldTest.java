@@ -18,6 +18,7 @@ import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.StaticEntity;
+import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.Entity;
 
@@ -67,9 +68,15 @@ public class ShieldTest {
     @Test
     public void testIsEquippable() {
         Character character = createCharacter();
-        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
 
-        assertTrue(shield.isEquippable(character.getEquippedItems()));
+        assertTrue(shield.isEquippable(items));
     }
 
     @Test
@@ -81,9 +88,15 @@ public class ShieldTest {
 
         Shield shield2 = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
 
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
+
         // can't equip second shield if shield is already equipped
-        assertFalse(shield2.isEquippable(character.getEquippedItems())); 
-        assertFalse(shield1.isEquippable(character.getEquippedItems()));
+        assertTrue(shield2.isEquippable(items)); 
+        assertFalse(shield1.isEquippable(items));
     }
 
     @Test
@@ -92,38 +105,23 @@ public class ShieldTest {
         Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         Slug slug = new Slug(new PathPosition(0, createPath()));
 
-        int baseDamage = 2;
-        assertEquals(baseDamage, shield.getModifiedDamage(slug, baseDamage));
+        int initialDamage = slug.getDamage();
+
+        shield.affect(slug);
+
+        assertEquals(initialDamage - 4, slug.getDamage());
     }
 
     @Test
-    public void testGetModifiedEnemyDamage() {
-        // doesn't affect enemy's damage
-        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        int baseDamage = 10;
-
-        assertEquals(baseDamage, shield.getModifiedEnemyDamage(baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedCriticalChance() {
-        // reduces critical hit from vampires by 60%
-        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        double baseCriticalChance = 0.2;
-
-        assertEquals(baseCriticalChance * 0.4, shield.getModifiedCriticalChance(baseCriticalChance));
-    }
-
-    @Test
-    public void attackSlug() {
+    public void affectVampireCritical() {
         // attack should not do anything
         Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-        Slug slug = new Slug(new PathPosition(0, createPath()));
+        Vampire vampire = new Vampire(new PathPosition(0, createPath()));
 
-        int initialHealth = slug.getHealth();
+        double initialCrit = vampire.getCriticalHitChance();
 
-        shield.attack(slug, 10);
+        shield.affect(vampire);
 
-        assertEquals(initialHealth, slug.getHealth());
+        assertEquals(0.04, vampire.getCriticalHitChance());
     } 
 }

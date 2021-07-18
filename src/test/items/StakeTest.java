@@ -70,20 +70,14 @@ public class StakeTest {
     public void testIsEquippable() {
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Character character = createCharacter();
+        
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
 
-        assertTrue(stake.isEquippable(character.getEquippedItems()));
-    }
-
-    @Test
-    public void testIsEquippableWithOtherAttackItems() {
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-        Character character = createCharacter(); 
-
-        character.equipItem(sword);
-
-        // can't equip stake item if another attack item is equipped
-        assertFalse(stake.isEquippable(character.getEquippedItems()));
+        assertTrue(stake.isEquippable(items));
     }
 
     @Test
@@ -93,77 +87,47 @@ public class StakeTest {
 
         character.equipItem(stake1);
 
-        Stake stake2 = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));   
+        Stake stake2 = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
+        
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
 
         // can't equip stake if another stake is equipped
-        assertFalse(stake2.isEquippable(character.getEquippedItems()));
+        assertTrue(stake2.isEquippable(items));
+        assertFalse(stake1.isEquippable(items));
     }
 
     @Test
-    public void testGetModifiedDamageRegularEnemy() {
+    public void testAttackRegularEnemy() {
         // damage on slugs and zombies is 6
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-
-        int baseDamage = 2;
 
         Slug slug = new Slug(new PathPosition(0, createPath()));
         Zombie zombie = new Zombie(new PathPosition(0, createPath()));
 
-        assertEquals(6, stake.getModifiedDamage(slug, baseDamage));
-        assertEquals(6, stake.getModifiedDamage(zombie, baseDamage));
+        int initialSlugHealth = slug.getHealth();
+        int initialZombieHealth = slug.getHealth();
+
+        stake.attack(slug);
+        stake.attack(zombie);
+
+        assertEquals(initialSlugHealth - 1, slug.getHealth());
+        assertEquals(initialZombieHealth - 1, zombie.getHealth());
     }
 
     @Test
-    public void testGetModifiedDamageVampire() {
+    public void testAttackVampire() {
         // 20 points damage on vampires
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         Vampire vampire = new Vampire(new PathPosition(0, createPath()));
 
-        int baseDamage = 2;
+        int initialVampireHealth = vampire.getHealth();
 
-        assertEquals(20, stake.getModifiedDamage(vampire, baseDamage));
-    }
+        stake.attack(vampire);
 
-    @Test
-    public void testGetModifiedEnemyDamage() {
-        // won't affect enemy damage
-        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        int baseDamage = 10;
-        assertEquals(baseDamage, stake.getModifiedEnemyDamage(baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedCriticalChance() {
-        // doesn't modify critical chance
-        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        double baseCriticalChance = 0.2;
-
-        assertEquals(baseCriticalChance, stake.getModifiedCriticalChance(baseCriticalChance));
-    }
-
-    @Test
-    public void attackSlug() {
-        // decrease slug health by 3
-        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-        Slug slug = new Slug(new PathPosition(0, createPath()));
-
-        int initialHealth = slug.getHealth();
-
-        stake.attack(slug, 3);
-
-        assertEquals(initialHealth - 3, slug.getHealth());
-    } 
-
-    @Test
-    public void attackVampire() {
-        // decrease vampire health by 20
-        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-        Vampire vampire = new Vampire(new PathPosition(0, createPath()));
-
-        int initialHealth = vampire.getHealth();
-
-        stake.attack(vampire, 20);
-
-        assertEquals(initialHealth - 20, vampire.getHealth()); 
+        assertEquals(initialVampireHealth - 20, vampire.getHealth());
     }
 }

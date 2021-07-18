@@ -2,7 +2,7 @@ package unsw.loopmania.Goals;
 
 import unsw.loopmania.LoopManiaWorld;
 
-public class GoldLeaf implements Goal{
+public class GoldLeaf implements Goal {
     private int goalGold; 
 
     public GoldLeaf(int goal) {
@@ -14,7 +14,7 @@ public class GoldLeaf implements Goal{
     }
 
     @Override
-    public Boolean metGoal(LoopManiaWorld world) {
+    public boolean metGoal(LoopManiaWorld world) {
         if (world.getCharacter().getGold().get() > goalGold) {
             return true;
         } 

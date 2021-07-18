@@ -64,26 +64,19 @@ public class CharacterTest {
         assertTrue(character instanceof MovingEntity);
         assertTrue(character instanceof Entity);
     }
-    
-    @Test
-    public void testHealth() {
-        Character character = createCharacter();
-        assertEquals(50, character.getHealth());
-        assertEquals(new SimpleIntegerProperty(50), character.health());
-    }
 
     @Test
-    public void testLoseHealth() {
+    public void testSetHealth() {
         Character character = createCharacter();
 
-        character.loseHealth(20);
-        assertEquals(30, character.getHealth());
+        character.setCurrentHealth(20);
+        assertEquals(20, character.getCurrentHealth());
 
-        character.loseHealth(25);
-        assertEquals(5, character.getHealth());
+        character.setCurrentHealth(25);
+        assertEquals(25, character.getCurrentHealth());
 
-        character.loseHealth(10);
-        assertEquals(-5, character.getHealth());
+        character.setCurrentHealth(character.getCurrentHealth() - 30);
+        assertEquals(-5, character.getCurrentHealth());
     }
 
     @Test
@@ -92,7 +85,7 @@ public class CharacterTest {
 
         assertTrue(character.isAlive());
 
-        character.loseHealth(30);
+        character.setCurrentHealth(30);
         assertTrue(character.isAlive());
     }
 
@@ -100,15 +93,24 @@ public class CharacterTest {
     public void testIsDead() {
         Character character = createCharacter();
 
-        character.loseHealth(50);
+        character.setModifiedHealth(0);
         assertFalse(character.isAlive());
     }
 
     @Test
-    public void testGetDamage() {
+    public void testBaseDamage() {
         Character character = createCharacter();
 
-        assertEquals(2, character.getDamage());
+        assertEquals(1, character.getBaseDamage());
+    }
+
+    @Test
+    public void testModifyDamage() {
+        Character character = createCharacter();
+
+        character.setModifiedDamage(10);
+
+        assertEquals(10, character.getModifiedDamage());
     }
 
     @Test
@@ -116,9 +118,11 @@ public class CharacterTest {
         Character character = createCharacter();
         Slug enemy = new Slug(new PathPosition(0, createPath()));
 
-        character.attack(enemy, 5);
+        int initialHealth = enemy.getHealth();
 
-        assertEquals(5, enemy.getHealth());
+        character.attack(enemy);
+
+        assertEquals(initialHealth - 1, enemy.getHealth());
     }
 
     @Test
@@ -207,19 +211,5 @@ public class CharacterTest {
         character.unequipItem(armour);
         expectedEquippedItems.remove(armour);
         expectedEquippedItems.equals(character.getEquippedItems());
-    }
-
-    @Test
-    public void testUseItem() {
-        Character character = createCharacter();
-        List<Item> expectedInventory = new ArrayList<>();
-
-        HealthPotion potion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        character.addItemToInventory(potion);
-
-        character.useItem(potion);
-
-        // item is no longer in the inventory
-        assertTrue(expectedInventory.equals(character.getInventory()));
     }
 }

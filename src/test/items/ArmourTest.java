@@ -68,7 +68,13 @@ public class ArmourTest {
         Character character = createCharacter();
         Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
 
-        assertTrue(armour.isEquippable(character.getEquippedItems()));
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
+
+        assertTrue(armour.isEquippable(items));
     }
 
     @Test
@@ -80,49 +86,27 @@ public class ArmourTest {
 
         Armour armour2 = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
 
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
+
         // can't equip second armour if armour is already equipped
-        assertFalse(armour2.isEquippable(character.getEquippedItems())); 
-        assertFalse(armour1.isEquippable(character.getEquippedItems()));
+        assertTrue(armour2.isEquippable(items)); 
+        assertFalse(armour1.isEquippable(items));
     }
 
     @Test
-    public void testGetModifiedDamage() {
-        // shouldn't modify character's own damage
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        Slug slug = new Slug(new PathPosition(0, createPath()));
-
-        int baseDamage = 2;
-        assertEquals(baseDamage, armour.getModifiedDamage(slug, baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedEnemyDamage() {
-        // halves the enemy's base damage
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        int baseDamage = 10;
-
-        assertEquals(5, armour.getModifiedEnemyDamage(baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedCriticalChance() {
-        // does not modify critical chance
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        double baseCriticalChance = 0.2;
-
-        assertEquals(baseCriticalChance, armour.getModifiedCriticalChance(baseCriticalChance));
-    }
-
-    @Test
-    public void attackSlug() {
+    public void affectSlug() {
         // attack should not do anything
         Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Slug slug = new Slug(new PathPosition(0, createPath()));
 
-        int initialHealth = slug.getHealth();
+        int initialDamage = slug.getDamage();
 
-        armour.attack(slug, 10);
+        armour.affect(slug);
 
-        assertEquals(initialHealth, slug.getHealth());
+        assertEquals(initialDamage / 2, slug.getDamage());
     }
 }
