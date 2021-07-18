@@ -133,6 +133,9 @@ public class LoopManiaWorldController {
     @FXML
     private Text characterBattleHealth;
 
+    @FXML
+    private HBox gameOver;
+
     /**
      * container for all hero castle menu components
      */
@@ -354,10 +357,12 @@ public class LoopManiaWorldController {
         heroCastle.managedProperty().bind(heroCastle.visibleProperty());
         gameMap.managedProperty().bind(gameMap.visibleProperty());
         battle.managedProperty().bind(battle.visibleProperty());
+        gameOver.managedProperty().bind(gameOver.visibleProperty());
 
         // heros castle menu not visible in the beginning
         heroCastle.setVisible(false);
         battle.setVisible(false);
+        gameOver.setVisible(false);
 
         // create the draggable icon
         draggedEntity = new DragIcon();
@@ -390,6 +395,7 @@ public class LoopManiaWorldController {
 
             if (evaluate(world.getGameGoal())) {
                 terminate();
+                System.out.println("hello");
             }
             // check if character is at heros castle
             if (this.world.characterAtHerosCastle()) {
@@ -459,6 +465,9 @@ public class LoopManiaWorldController {
     }
 
     public void terminate() {
+        System.out.println("end game");
+        gameOver.setVisible(true);
+        
         pause();
     }
 
