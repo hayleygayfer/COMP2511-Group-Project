@@ -25,7 +25,7 @@ public class VampireCastleBuilding extends Building implements SpawnEnemyStrateg
      * Spawns Vampire on an adjacent path tile
      * @pre character is currently at hero's castle 
      * @param ordered path 
-     * @param the game cycle
+     * @param game cycle The current game cycle
      * @return a new Vampire 
      */
     public Vampire possiblySpawnEnemy(List<Pair<Integer, Integer>> orderedPath, int gameCycle) {

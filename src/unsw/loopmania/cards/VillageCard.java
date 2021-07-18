@@ -19,7 +19,7 @@ public class VillageCard extends Card {
      * Position is valid if it is a path tile, and not hero's castle
      * @param x x coordinate of position
      * @param y y coordinate of position
-     * @param the curret path
+     * @param path the curret path on the board
      * @return whether the card can be placed at the given position
      */
     public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {

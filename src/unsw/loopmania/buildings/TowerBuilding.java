@@ -17,7 +17,7 @@ public class TowerBuilding extends Building implements EnemyPositionObserver {
     
     /**
      * If enemy is on an adjacent tile, deduct health by 2
-     * @param enemy
+     * @param enemy The current enemy that the building has encounted
      * @pre enemy != NULL
      */
     public void encounter(BasicEnemy enemy) {

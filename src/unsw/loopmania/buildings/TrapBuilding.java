@@ -14,7 +14,7 @@ public class TrapBuilding extends Building implements EnemyPositionObserver {
 
     /**
      * Deducts 3 health from any enemy that steps on this trap
-     * @param enemy
+     * @param enemy The current enemy that the building has encounted
      * @pre enemy != NULL and enemy does exist
      */
     public void encounter(BasicEnemy enemy) {

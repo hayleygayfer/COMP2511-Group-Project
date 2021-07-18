@@ -23,7 +23,7 @@ public class VampireCastleCard extends Card {
      * Position is valid if it is adjacent to a path tile and is not a path tile itself
      * @param x x coordinate of position
      * @param y y coordinate of position
-     * @param the current path
+     * @param path the current path on the board
      * @return whether the card can be placed at the given position
      */
     public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {

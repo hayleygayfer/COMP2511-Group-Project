@@ -19,8 +19,8 @@ public class ZombiePitBuilding extends Building implements SpawnEnemyStrategy {
     /**
      * Generates a zombie every cycle
      * @pre the character is currently at hero's castle
-     * @param ordered Path
-     * @param current game cycle
+     * @param ordered path
+     * @param game cycle The current game cycle
      * @return a new Zombie 
      */
     public Zombie possiblySpawnEnemy(List<Pair<Integer, Integer>> orderedPath, int gameCycle) {

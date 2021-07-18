@@ -44,6 +44,7 @@ public class Slug extends BasicEnemy {
 
     /**
      * Renders the image of the slug.
+     * @return Image
      */
     public Image render() {
         return new Image((new File("src/images/slug.png")).toURI().toString());
@@ -59,6 +60,7 @@ public class Slug extends BasicEnemy {
 
     /**
      * Detaches an emepy position observer
+     * @param observer The enemy position observer
      */
     public void detach(EnemyPositionObserver observer) {
         observers.remove(observer);

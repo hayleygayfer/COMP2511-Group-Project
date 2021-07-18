@@ -14,7 +14,7 @@ public class VillageBuilding extends Building implements CharacterPositionObserv
     
     /**
      * When a character steps on the same tile, they gain 10 health points
-     * @param character
+     * @param character The current character
      * @pre the character is not null
      * @post the character has not been modified in any other way except its health points
      */

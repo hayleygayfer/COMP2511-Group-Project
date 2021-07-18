@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.SimpleIntegerProperty;
-
 import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.PathPosition;
@@ -49,6 +47,7 @@ public class Vampire extends BasicEnemy {
 
     /**
      * Will reset the damage if is hit
+     * @param damage Updating damage
      */
     @Override
     public void setDamage(int damage) {
@@ -63,18 +62,23 @@ public class Vampire extends BasicEnemy {
       this.criticalHitChance = criticalHitChance;
     }
 
+    /**
+     * Gets the chance of a critical hit 
+     * @return double 
+     */
     public double getCriticalHitChance() {
         return this.criticalHitChance;
     }
 
     /**
      * Renders the image of the vampire.
+     * @return Image
      */
     public Image render() {
         return new Image((new File("src/images/vampire.png")).toURI().toString());
     }
 
-        /**
+    /**
      * Attaches an enemy position observer
      * @param observer The observer to attach
      */
@@ -84,6 +88,7 @@ public class Vampire extends BasicEnemy {
 
     /**
      * Detaches an emepy position observer
+     * @param observer The enemey position observer 
      */
     public void detach(EnemyPositionObserver observer) {
         observers.remove(observer);

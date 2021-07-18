@@ -15,7 +15,7 @@ public class CampfireBuilding extends Building implements CharacterPositionObser
     
     /**
      * If character is on an adjacent tile, double damage is applied within the battle radius
-     * @param character
+     * @param character The current character
      * @pre character != null
      */
     public void encounter(Character character) {

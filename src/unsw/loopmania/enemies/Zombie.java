@@ -19,6 +19,7 @@ import org.javatuples.Pair;
 
 public class Zombie extends BasicEnemy {
 
+    //TODO: adjust the speed that zombies move
     private double movementSpeed;
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
 
@@ -41,6 +42,9 @@ public class Zombie extends BasicEnemy {
         setExperienceGained(10);
     }
 
+    /**
+     * Moves a basic enemy
+     */
     @Override
     public void move() {
         super.move();
@@ -48,12 +52,13 @@ public class Zombie extends BasicEnemy {
 
     /**
      * Renders the image of the zombie.
+     * @return Image
      */
     public Image render() {
         return new Image((new File("src/images/zombie.png")).toURI().toString());
     }
 
-        /**
+    /**
      * Attaches an enemy position observer
      * @param observer The observer to attach
      */
@@ -63,6 +68,7 @@ public class Zombie extends BasicEnemy {
 
     /**
      * Detaches an emepy position observer
+     * @param observer The enemy position observer to detach
      */
     public void detach(EnemyPositionObserver observer) {
         observers.remove(observer);

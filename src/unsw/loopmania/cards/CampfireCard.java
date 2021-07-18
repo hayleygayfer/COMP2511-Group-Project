@@ -19,9 +19,9 @@ public class CampfireCard extends Card {
     
     /**
      * Position is valid if it is a path tile, and not hero's castle
-     * @param x coordinate of position
-     * @param y coordinate of position
-     * @param the current path 
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     * @param path the current path on the board
      * @return whether the card can be placed at the given position
      */
     public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
