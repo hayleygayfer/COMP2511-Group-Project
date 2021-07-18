@@ -56,23 +56,23 @@
 
 | Type | Health | Damage | Battle radius | Support radius | Speed |
 |------|--------|--------|---------------|----------------|-------|
-| Slug | 10 | 3 | 1 | 1 | 1 |
-| Zombie | 10 | 6,  For each attack on an allied soldier there is a 10% chance of a critical bite | 2 | 2 | 0.5 |
-| Vampire | 20 | Standard: 10, Critical: 20, for each attack there is a 20% chance of a critical attack occurring | 3 | 4 | 1 |
+| Slug | 5 | 1 | 1 | 1 | 1 |
+| Zombie | 10 | 2,  For each attack on an allied soldier there is a 10% chance of a critical bite | 2 | 2 | 0.5 |
+| Vampire | 15 | Standard: 3, Critical: 6, for each attack there is a 20% chance of a critical attack occurring | 3 | 4 | 1 |
 
 ### Attack item stats
 | Type | Damage | Cost (gold) |
 |------|--------|-------------|
 | Sword | 10 | 10 |
-| Stake | Normal: 6, Vampires: 20 | 10 |
-| Staff | Normal: 3, Trance lasts 5 attack turns | 10 |
+| Stake | Normal: 6, Vampires: 20 | 15 |
+| Staff | Normal: 3, Trance lasts 5 attack turns | 20 |
 
 
 ### Defence item stats
 | Type | Defence | Cost (gold) |
 |------|---------|-------------|
-| Armour | Enemy attacks are halved | 10 |
+| Armour | Enemy attacks are halved | 20 |
 | Shield | Vampire critical attack chance decreases by 60% | 10 |
-| Helmet | Enemy attacks are reduced by 2, Damage to enemies is reduced by 2 | 10 |
+| Helmet | Enemy attacks are reduced by 2, Damage to enemies is reduced by 2 | 15 |
 
 
