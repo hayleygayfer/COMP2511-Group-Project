@@ -9,7 +9,11 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.cards.BarracksCard;
+import unsw.loopmania.cards.TowerCard;
+import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
@@ -48,7 +52,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(-1); 
+    private SimpleIntegerProperty gameCycle;
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -99,6 +103,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         buildingEntities = new ArrayList<>();
         spawnEnemyStrategies = new ArrayList<>();
         shopMenu = new HerosCastleMenu();
+        gameCycle = new SimpleIntegerProperty(0);
     }
 
     // TODO: move heros castle into state
@@ -212,6 +217,32 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
+     * Removes enemies that have died for other reasons
+     * @return list of enemies that have died
+     */
+    public List<BasicEnemy> otherDefeatedEnemies() {
+        List<BasicEnemy> killedEnemies = new ArrayList<BasicEnemy>();
+        for (BasicEnemy enemy : enemies) {
+            if (!enemy.isAlive()) {
+                enemy.destroy();
+                killedEnemies.add(enemy);
+            }
+        }
+
+        for (BasicEnemy enemy : killedEnemies) {
+            enemies.remove(enemy);
+        }
+        return killedEnemies;
+    }
+
+    /**
+     * Goes through buildings and removes those that shouldn't exist
+     */
+    public void destroyBuildings() {
+        buildingEntities.removeIf(b -> !b.shouldExist().get());
+    }
+
+    /**
      * kill an enemy
      * @param enemy enemy to be killed
      */
@@ -255,7 +286,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         for (int i = 0; i < cardDrops.size(); i++) {
             // if adding more cards than have, remove the first card...
             if (cardEntities.size() >= getWidth()){
-                // TODO = give some cash/experience/item rewards for the discarding of the oldest card
+                character.addGold(10);
+                character.addXp(10);
                 removeCard(0);
             }
             SimpleIntegerProperty x = new SimpleIntegerProperty(cardEntities.size());
@@ -325,6 +357,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         List<Card> potentialCards = new ArrayList<>();
         potentialCards.add(new VampireCastleCard(posX, posY));
         potentialCards.add(new ZombiePitCard(posX, posY));
+        potentialCards.add(new VillageCard(posX, posY));
+        potentialCards.add(new TrapCard(posX, posY));
+        potentialCards.add(new TowerCard(posX, posY));
 
         Random random = new Random();
         Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));
@@ -482,9 +517,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * move all enemies
      */
     private void moveBasicEnemies() {
-        // TODO = expand to more types of enemy
         for (BasicEnemy e: enemies){
             e.move();
+            e.updateObservers();
         }
     }
 
@@ -526,7 +561,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @pre the position of the building to be added is a valid position
      */
     public Building convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
-        System.out.println(String.format("From (%d, %d) to (%d, %d)", cardNodeX, cardNodeY, buildingNodeX, buildingNodeY));
         // start by getting card
         Card card = null;
         for (Card c: cardEntities){
@@ -540,7 +574,19 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         // now spawn building
         Building newBuilding = card.generateBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         buildingEntities.add(newBuilding);
-        spawnEnemyStrategies.add(newBuilding);
+        if (newBuilding instanceof SpawnEnemyStrategy) {
+            spawnEnemyStrategies.add((SpawnEnemyStrategy) newBuilding);
+        }
+
+        if (newBuilding instanceof CharacterPositionObserver) {
+            character.attach((CharacterPositionObserver) newBuilding);
+        }
+
+        if (newBuilding instanceof EnemyPositionObserver) {
+            for (BasicEnemy enemy : enemies) {
+                enemy.attach((EnemyPositionObserver) newBuilding);
+            }
+        }
 
         // destroy the card
         card.destroy();

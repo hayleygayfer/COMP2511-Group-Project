@@ -2,85 +2,73 @@ package test.cards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
-import java.util.ArrayList;
 import java.util.List;
-import unsw.loopmania.LoopManiaWorld;
 
+import unsw.loopmania.Building;
+import test.TestHelper;
 import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.buildings.BarracksBuilding;
+import unsw.loopmania.Card;
+import unsw.loopmania.StaticEntity;
+import unsw.loopmania.Entity;
 
 public class BarracksCardTest {
-    
-    /**
-     * @author Angeni
-     * Creates the path for testing
-     * just a 5x5 square loop
-     */
-    public List<Pair<Integer, Integer>> createSquarePath(int size, int start) {
-        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+    @Test
+    public void testConstructor() {
+        Card card = new BarracksCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1)); 
 
-        // add top horizontal
-        for (int i = start; i < size; i++) {
-        orderedPath.add(Pair.with(i, start));
-        }
-        // add right side down
-        for (int i = start + 1; i < size; i++) {
-        orderedPath.add(Pair.with(size - 1, i));
-        }
-        // add bottom horizontal
-        for (int i = (size-2); i >= start; i--) {
-        orderedPath.add(Pair.with(i, size-1));
-        }
-        // add left side up
-        for (int i = (size-2); i > start; i--) {
-        orderedPath.add(Pair.with(start, i));
-        }
-        return orderedPath;
-    }
+        assertTrue(card instanceof BarracksCard);
+        assertTrue(card instanceof Card);
+        assertTrue(card instanceof StaticEntity);
+        assertTrue(card instanceof Entity);
 
-    /**
-     * @author Angeni
-     * @return LoopManiaWorld object
-     */
-    public LoopManiaWorld createWorld() {
-        return new LoopManiaWorld(6, 6, createSquarePath(6, 0));
+        assertEquals(0, card.getX());
+        assertEquals(1, card.getY());
     }
     
     @Test
     public void testGenerateBuilding(){
         BarracksCard card = new BarracksCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        BarracksBuilding building = new BarracksBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
 
-        // Tests that the building is generated at the given coordinates.
-        assertEquals(card.generateBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1)), building);
+        Building building = card.generateBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
+
+        // correct type and coordinates
+        assertTrue(building instanceof BarracksBuilding);
+        assertEquals(2, building.getX());
+        assertEquals(1, building.getY());
     }
 
     @Test
     public void testInvalidPosition() {
-        LoopManiaWorld world = createWorld();
-        List<Pair<Integer, Integer>> adjacentPath = createSquarePath(5, 1); // Invalid Positions
+        List<Pair<Integer, Integer>> worldPath = TestHelper.createSquarePath(6, 0);
+        List<Pair<Integer, Integer>> adjacentPath = TestHelper.createSquarePath(5, 1); // Invalid Positions
 
         BarracksCard card = new BarracksCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         // Tests that all non path tiles are invalid
         for (Pair<Integer, Integer> position: adjacentPath) {
-            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), worldPath));
         }
     }
 
-
-    public void testValidPosition() {
-        LoopManiaWorld world = createWorld();
+    @Test
+    public void testPathPositions() {
+        List<Pair<Integer, Integer>> path = TestHelper.createSquarePath(6, 0);
         BarracksCard card = new BarracksCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        // Tests that all path tiles are valid
-        for (Pair<Integer, Integer> position: world.getPath()) {
-            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+        // Tests that all path tiles except hero's castle are valid
+        for (Pair<Integer, Integer> position: path) {
+            if (path.indexOf(position) == 0) {
+                assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), path));
+            } else {
+                assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), path));
+            }
         }
     }
 }
