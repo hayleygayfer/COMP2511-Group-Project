@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
  * which adds an additional relocation method
  * so that the drag icon centres on the provided coordinates (rather than the top-left coordinates)
  */
-public class DragIcon extends ImageView{
+public class DragIcon extends ImageView {
 	public DragIcon() {
 		super();
 	}

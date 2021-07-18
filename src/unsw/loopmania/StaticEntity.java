@@ -2,7 +2,9 @@ package unsw.loopmania;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-
+import java.util.List;
+import org.javatuples.Pair;
+import java.util.ArrayList;
 
 /**
  * represents a non-moving entity
@@ -34,5 +36,23 @@ public abstract class StaticEntity extends Entity {
 
     public int getY() {
         return y().get();
+    }
+    
+    /**
+     * Gets the squares adjacent to the given position, whether or not they're actually within bounds
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     * @return list of adjacent square
+     */
+    public List<Pair<Integer, Integer>> getAdjacentSquares(int x, int y) {
+        List<Pair<Integer, Integer>> adjacentSquares = new ArrayList<>();
+
+        // having out of bounds squares doesn't matter
+        adjacentSquares.add(new Pair<Integer, Integer>(x - 1, y));
+        adjacentSquares.add(new Pair<Integer, Integer>(x, y - 1));
+        adjacentSquares.add(new Pair<Integer, Integer>(x, y + 1));
+        adjacentSquares.add(new Pair<Integer, Integer>(x + 1, y));
+
+        return adjacentSquares;
     }
 }

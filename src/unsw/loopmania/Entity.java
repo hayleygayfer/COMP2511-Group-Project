@@ -3,6 +3,7 @@ package unsw.loopmania;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.image.Image;
 
 /**
  * A backend entity in the world.
@@ -77,4 +78,7 @@ public abstract class Entity {
      * @return y coordinate, as number from 0 to height-1
      */
     public abstract int getY();
+
+
+    public abstract Image render();
 }

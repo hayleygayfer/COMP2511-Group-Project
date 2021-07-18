@@ -10,6 +10,13 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.Goals.CycleLeaf;
+import unsw.loopmania.Goals.Goal;
+import unsw.loopmania.Goals.GoalAND;
+import unsw.loopmania.Goals.GoalOR;
+import unsw.loopmania.Goals.GoldLeaf;
+import unsw.loopmania.Goals.XpLeaf;
+import unsw.loopmania.buildings.HerosCastleBuilding;
 
 import java.util.List;
 
@@ -41,6 +48,8 @@ public abstract class LoopManiaWorldLoader {
         List<Pair<Integer, Integer>> orderedPath = loadPathTiles(json.getJSONObject("path"), width, height);
 
         LoopManiaWorld world = new LoopManiaWorld(width, height, orderedPath);
+        loadGoal(world);
+
 
         JSONArray jsonEntities = json.getJSONArray("entities");
 
@@ -71,7 +80,10 @@ public abstract class LoopManiaWorldLoader {
         case "hero_castle":
             Character character = new Character(new PathPosition(indexInPath, orderedPath));
             world.setCharacter(character);
+            HerosCastleBuilding herosCastle = new HerosCastleBuilding(new SimpleIntegerProperty(x), new SimpleIntegerProperty(y));
+            onLoad(herosCastle);
             onLoad(character);
+            world.addEntity(herosCastle);
             entity = character;
             break;
         case "path_tile":
@@ -144,7 +156,34 @@ public abstract class LoopManiaWorldLoader {
         return orderedPath;
     }
 
+    public void loadGoal(LoopManiaWorld world) {
+        JSONObject goal = json.getJSONObject("goal-condition");
+        Goal goalObject;
+        switch (goal.getString("goal")) {
+            case "experience":
+                goalObject = new XpLeaf(goal.getInt("quantity"));
+                break;
+            case "cycles":
+                goalObject = new CycleLeaf(goal.getInt("quantity"));
+                break;
+            case "gold":
+                goalObject = new GoldLeaf(goal.getInt("quantity"));
+                break;
+            case "AND":
+                goalObject = new GoalAND(goal.getJSONArray("subgoals"));
+                break;
+            case "OR":
+                goalObject = new GoalOR(goal.getJSONArray("subgoals"));
+                break;
+            default:
+                return;
+
+        }
+        world.setGameGoal(goalObject);
+    }
+
     public abstract void onLoad(Character character);
+    public abstract void onLoad(HerosCastleBuilding herosCastle);
     public abstract void onLoad(PathTile pathTile, PathTile.Direction into, PathTile.Direction out);
 
     // TODO Create additional abstract methods for the other entities
