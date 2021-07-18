@@ -93,36 +93,8 @@ public class ArmourTest {
         }
 
         // can't equip second armour if armour is already equipped
-        assertFalse(armour2.isEquippable(items)); 
+        assertTrue(armour2.isEquippable(items)); 
         assertFalse(armour1.isEquippable(items));
-    }
-
-    @Test
-    public void testGetModifiedDamage() {
-        // shouldn't modify character's own damage
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        Slug slug = new Slug(new PathPosition(0, createPath()));
-
-        int baseDamage = 2;
-        assertEquals(baseDamage, armour.getModifiedDamage(slug, baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedEnemyDamage() {
-        // halves the enemy's base damage
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        int baseDamage = 10;
-
-        assertEquals(5, armour.getModifiedEnemyDamage(baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedCriticalChance() {
-        // does not modify critical chance
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        double baseCriticalChance = 0.2;
-
-        assertEquals(baseCriticalChance, armour.getModifiedCriticalChance(baseCriticalChance));
     }
 
     @Test

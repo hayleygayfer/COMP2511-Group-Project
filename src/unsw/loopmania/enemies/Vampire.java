@@ -24,8 +24,7 @@ import org.javatuples.Pair;
 public class Vampire extends BasicEnemy {
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
-    private double criticalHitChance = 0;
-
+    private double criticalHitChance = 0.1;
 
     // TODO write vampire
     public Vampire(PathPosition position) {
@@ -55,6 +54,10 @@ public class Vampire extends BasicEnemy {
      */
     public void setCriticalHitChance(double criticalHitChance) {
       this.criticalHitChance = criticalHitChance;
+    }
+
+    public double getCriticalHitChance() {
+        return this.criticalHitChance;
     }
 
     /**

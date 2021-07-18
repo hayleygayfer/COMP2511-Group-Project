@@ -1,5 +1,6 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.AlliedSoldier;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
@@ -18,10 +19,6 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
         super(x, y);
         baseDamage = 2;
         setSellPrice(20);
-    }
-
-    public int getModifiedDamage(MovingEntity target, int baseDamage) {
-        return this.baseDamage;
     }
 
     /**

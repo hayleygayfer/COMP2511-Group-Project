@@ -10,11 +10,13 @@ import javafx.scene.image.Image;
 import java.io.File;
 public class Shield extends EquippableItem implements ShieldType {
     private double reducedEnemyCriticalChance;
+    private int reduceEnemyDamage;
 
     // TODO write shield
     public Shield(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        reducedEnemyCriticalChance = 0.40;
+        reducedEnemyCriticalChance = 0.04;
+        reduceEnemyDamage = 4;
         setSellPrice(10);
     }
 
@@ -23,6 +25,7 @@ public class Shield extends EquippableItem implements ShieldType {
      * @param enemy The enemy to affect
      */
     public void affect(BasicEnemy enemy) {
+        enemy.setDamage(enemy.getDamage() - reduceEnemyDamage);
         if (enemy instanceof Vampire) {
             Vampire vampire = (Vampire) enemy;
             vampire.setCriticalHitChance(reducedEnemyCriticalChance);
