@@ -28,7 +28,9 @@ public class Battle {
       while (character.isAlive() && enemy.isAlive()) {
         enemy.attack(character);
         character.attack(enemy);
-        frames.add(Triplet.with(character.getModifiedHealth(), enemy.getHealth(), enemy));
+        int enemyHealth = enemy.getHealth();
+        if (enemyHealth < 0) enemyHealth = 0;
+        frames.add(Triplet.with(character.getModifiedHealth(), enemyHealth, enemy));
       }
     }
     return frames;

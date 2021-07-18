@@ -30,9 +30,9 @@ public class Slug extends BasicEnemy {
     // TODO write slug
     public Slug(PathPosition position) {
         super(position);
-        setDamage(3);
+        setDamage(1);
         setBattleRadius(2);
-        setHealth(10);
+        setHealth(5);
         setSupportRadius(1);
         // item drops
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();

@@ -375,6 +375,13 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         character.removeItemFromInventory(item);
     }
 
+    public void equipInventoryItemByCoordinates(int x, int y){
+        Item item = getUnequippedInventoryItemEntityByCoordinates(x, y);
+        if (item instanceof EquippableItem) {
+            character.equipItem((EquippableItem) item);
+        }
+    }
+
     /**
      * run moves which occur with every tick without needing to spawn anything immediately
      */
