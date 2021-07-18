@@ -11,12 +11,8 @@ import java.util.List;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
-import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Building;
-import unsw.loopmania.buildings.CampfireBuilding;
-import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VillageBuilding;
-import unsw.loopmania.enemies.Zombie;
 import unsw.loopmania.Character;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
@@ -43,13 +39,29 @@ public class VillageBuildingTest {
         Character character = world.getCharacter();
 
         VillageBuilding village = new VillageBuilding(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
-        int initialHealth = character.getHealth();
+        character.setCurrentHealth(5);
 
         character.moveDownPath();
         // character is now on same tile as village
         village.encounter(character);
         
-        assertEquals(initialHealth + 10, character.getHealth());
+        assertEquals(15, character.getCurrentHealth());
+    }
+
+    @Test
+    public void testEncounterAtFullHealth() {
+        List<Pair<Integer, Integer>> path = TestHelper.createPath();
+        LoopManiaWorld world = TestHelper.createWorld(path);
+        Character character = world.getCharacter();
+
+        VillageBuilding village = new VillageBuilding(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
+        int initialHealth = character.getCurrentHealth();
+
+        character.moveDownPath();
+        // character is now on same tile as village
+        village.encounter(character);
+        
+        assertEquals(initialHealth, character.getCurrentHealth()); 
     }
 
     @Test
@@ -59,11 +71,11 @@ public class VillageBuildingTest {
         Character character = world.getCharacter();
 
         VillageBuilding village = new VillageBuilding(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
-        int initialHealth = character.getHealth();
+        int initialHealth = character.getCurrentHealth();
 
         // character is not on same tile as village
         village.encounter(character);
         
-        assertEquals(initialHealth, character.getHealth());
+        assertEquals(initialHealth, character.getCurrentHealth());
     }
 }

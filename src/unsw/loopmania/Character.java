@@ -37,7 +37,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private List<AlliedSoldier> alliedSoldiers;
 
 
-    // TODO = potentially implement relationships between this class and other classes
     public Character(PathPosition position) {
         super(position);
         this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
