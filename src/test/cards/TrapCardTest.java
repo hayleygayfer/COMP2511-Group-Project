@@ -8,11 +8,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
-import java.util.ArrayList;
 import java.util.List;
 
 import test.TestHelper;
-import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.Building;

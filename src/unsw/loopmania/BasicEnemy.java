@@ -77,6 +77,13 @@ public abstract class BasicEnemy extends MovingEntity implements DropLootStrateg
         return health.get();
     }
 
+    public void deductHealth(int health) {
+        this.health.set(this.health.get() - health);
+        if (!isAlive()) {
+            this.destroy();
+        }
+    }
+
     // battle radius
 
     public SimpleIntegerProperty battleRadius() {

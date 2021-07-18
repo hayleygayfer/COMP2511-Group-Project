@@ -13,6 +13,7 @@ import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
 import unsw.loopmania.Building;
+import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.StaticEntity;
@@ -25,6 +26,7 @@ public class TrapBuildingTest {
         Building trap = new TrapBuilding(new SimpleIntegerProperty(0), new SimpleIntegerProperty(3));
 
         assertTrue(trap instanceof TrapBuilding);
+        assertTrue(trap instanceof EnemyPositionObserver);
         assertTrue(trap instanceof Building);
         assertTrue(trap instanceof StaticEntity);
         assertTrue(trap instanceof Entity);
