@@ -25,6 +25,7 @@ public abstract class BasicEnemy extends MovingEntity implements DropLootStrateg
 
     private SimpleIntegerProperty experienceGained = new SimpleIntegerProperty();
     private SimpleIntegerProperty maxGoldGained = new SimpleIntegerProperty();
+    private Random chance = new Random(1);
 
     // Abstract methods
     public abstract Image render();
@@ -128,7 +129,6 @@ public abstract class BasicEnemy extends MovingEntity implements DropLootStrateg
     }
 
     public void getXPAndGold(Character character) {
-        Random chance = new Random(System.currentTimeMillis());
         int goldAmount = chance.nextInt(maxGoldGained.get());
         character.addGold(goldAmount);
         character.addXp(experienceGained.get());
@@ -143,7 +143,6 @@ public abstract class BasicEnemy extends MovingEntity implements DropLootStrateg
     } 
 
     public List<GenerateItem> getItemDrops() {
-        Random chance = new Random(System.currentTimeMillis());
         List<GenerateItem> droppedItems = new ArrayList<GenerateItem>();
 
         // For each possible drop generate a random number to see if it actually drops
@@ -166,7 +165,6 @@ public abstract class BasicEnemy extends MovingEntity implements DropLootStrateg
     }
 
     public List<GenerateCard> getCardDrops() {
-        Random chance = new Random(System.currentTimeMillis());
         List<GenerateCard> droppedCards = new ArrayList<GenerateCard>();
 
         // For each possible drop generate a random number to see if it actually drops

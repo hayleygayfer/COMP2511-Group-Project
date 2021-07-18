@@ -2,7 +2,7 @@ package unsw.loopmania.Goals;
 
 import unsw.loopmania.LoopManiaWorld;
 
-public class GoldLeaf implements Goal{
+public class GoldLeaf implements Goal {
     private int goalGold; 
 
     public GoldLeaf(int goal) {
