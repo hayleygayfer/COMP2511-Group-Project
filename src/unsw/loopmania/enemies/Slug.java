@@ -32,11 +32,7 @@ public class Slug extends BasicEnemy {
         super(position);
         setDamage(1);
         setBattleRadius(2);
-<<<<<<< HEAD
         setHealth(4);
-=======
-        setHealth(5);
->>>>>>> dev
         setSupportRadius(1);
         // item drops
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();

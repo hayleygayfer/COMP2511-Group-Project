@@ -29,12 +29,7 @@ public class Vampire extends BasicEnemy {
     // TODO write vampire
     public Vampire(PathPosition position) {
         super(position);
-<<<<<<< HEAD
-        setDamage(1);
-        System.out.println("damage"  + getDamage());
-=======
         setDamage(3);
->>>>>>> dev
         setBattleRadius(2);
         setHealth(15);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
