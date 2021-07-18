@@ -67,9 +67,9 @@ public class HealthPotionTest {
         HealthPotion potion = new HealthPotion(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         Character character = createCharacter();
 
-        assertEquals(50, character.getHealth()); 
+        assertEquals(50, character.getCurrentHealth()); 
 
-        character.loseHealth(40);
+        character.setCurrentHealth(character.getCurrentHealth() - 40);
 
         // character goes back up to 50 health points
         potion.applyEffect(character);
