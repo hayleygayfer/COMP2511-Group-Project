@@ -14,7 +14,7 @@ public class XpLeaf implements Goal {
     }
     
     @Override
-    public Boolean metGoal(LoopManiaWorld world) { 
+    public boolean metGoal(LoopManiaWorld world) { 
         if (world.getCharacter().getXpProperty().get() > goalXp) {
             return true;
         } 

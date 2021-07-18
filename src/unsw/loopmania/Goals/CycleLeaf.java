@@ -13,7 +13,7 @@ public class CycleLeaf implements Goal{
     
 
     @Override
-    public Boolean metGoal(LoopManiaWorld world) {
+    public boolean metGoal(LoopManiaWorld world) {
         if (world.getGameCycle() > goalCycle) {
             return true;
         } 

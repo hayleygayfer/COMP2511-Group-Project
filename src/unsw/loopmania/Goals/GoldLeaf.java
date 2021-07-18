@@ -14,7 +14,7 @@ public class GoldLeaf implements Goal{
     }
 
     @Override
-    public Boolean metGoal(LoopManiaWorld world) {
+    public boolean metGoal(LoopManiaWorld world) {
         if (world.getCharacter().getGold().get() > goalGold) {
             return true;
         } 
