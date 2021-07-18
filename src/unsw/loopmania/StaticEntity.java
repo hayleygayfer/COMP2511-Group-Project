@@ -48,14 +48,10 @@ public abstract class StaticEntity extends Entity {
         List<Pair<Integer, Integer>> adjacentSquares = new ArrayList<>();
 
         // having out of bounds squares doesn't matter
-        adjacentSquares.add(new Pair<Integer, Integer>(x - 1, y - 1));
         adjacentSquares.add(new Pair<Integer, Integer>(x - 1, y));
-        adjacentSquares.add(new Pair<Integer, Integer>(x - 1, y + 1));
         adjacentSquares.add(new Pair<Integer, Integer>(x, y - 1));
         adjacentSquares.add(new Pair<Integer, Integer>(x, y + 1));
-        adjacentSquares.add(new Pair<Integer, Integer>(x + 1, y - 1));
         adjacentSquares.add(new Pair<Integer, Integer>(x + 1, y));
-        adjacentSquares.add(new Pair<Integer, Integer>(x + 1, y + 1));
 
         return adjacentSquares;
     }

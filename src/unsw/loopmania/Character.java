@@ -33,13 +33,19 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     // XP
     private SimpleIntegerProperty xp;
 
-    // TODO = potentially implement relationships between this class and other classes
+    // allied soldiers
+    private List<AlliedSoldier> alliedSoldiers;
+
+
     public Character(PathPosition position) {
         super(position);
         this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
         this.gold = new SimpleIntegerProperty(0);
         this.xp = new SimpleIntegerProperty(0);
         this.baseHealth = new SimpleIntegerProperty(50);
+        this.inventory = new ArrayList<Item>();
+        this.equippedItems = new ArrayList<EquippableItem>();
+        this.alliedSoldiers = new ArrayList<AlliedSoldier>();
         this.modifiedHealth = new SimpleIntegerProperty(50);
         this.currentHealth = new SimpleIntegerProperty(50);
         this.baseDamage = new SimpleIntegerProperty(1);
@@ -56,13 +62,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         return xp;
     }
 
-    /**
-     * Base Health Getter
-     * @return baseHealth int
-     */
-    public int getBaseHealth() {
-        return baseHealth.get();
-    }
 
     /**
      * Modified Health Getter (After Shields + Armour)
@@ -73,11 +72,33 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Current Health Getter (Before Shields + Armour)
-     * @return baseHealth int
+     * Increases health by given amount, but without exceeding baseHealth
+     * @param increase
+     * @post health <= baseHealth
      */
+    public void gainHealth(int increase) {
+        this.currentHealth.set(Math.min(baseHealth.get(), currentHealth.get() + increase));
+    }
+
+    public int getBaseHealth() {
+        return baseHealth.get();
+    }
+
     public int getCurrentHealth() {
         return currentHealth.get();
+    }
+
+    // does same as above but only here for legacy support
+    public int getHealth() {
+        return currentHealth.get();
+    }
+
+    public void loseHealth(int health) {
+        currentHealth.set(currentHealth.get() - health);
+    }
+
+    public SimpleIntegerProperty health() {
+        return currentHealth;
     }
 
     /**
@@ -266,6 +287,19 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public void addGold(int amount) {
         this.gold.set(this.gold.get() + amount);
+    }
+
+    /**
+     * Adds an allied soldiier to the character
+     * @param newSoldier
+     * @pre newSoldier != NULL and is not currently in the list
+     */
+    public void addSoldier(AlliedSoldier newSoldier) {
+        alliedSoldiers.add(newSoldier);
+    }
+
+    public List<AlliedSoldier> getAlliedSoldiers() {
+        return alliedSoldiers;
     }
 
     /**

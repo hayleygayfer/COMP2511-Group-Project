@@ -11,7 +11,7 @@ import unsw.loopmania.Building;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class ZombiePitBuilding extends Building {
+public class ZombiePitBuilding extends Building implements SpawnEnemyStrategy {
     public ZombiePitBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
