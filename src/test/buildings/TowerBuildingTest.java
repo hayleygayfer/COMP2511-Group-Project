@@ -11,10 +11,8 @@ import java.util.List;
 import org.javatuples.Pair;
 
 import test.TestHelper;
-import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.enemies.Zombie;
-import unsw.loopmania.Character;
 import unsw.loopmania.Building;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;

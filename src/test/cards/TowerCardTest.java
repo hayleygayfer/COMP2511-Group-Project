@@ -15,7 +15,6 @@ import java.util.List;
 import unsw.loopmania.Building;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Card;
-import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.Entity;
 import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.buildings.TowerBuilding;

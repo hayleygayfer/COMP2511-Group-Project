@@ -9,6 +9,8 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.cards.BarracksCard;
+import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
@@ -50,7 +52,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     /**
      * cycles - the current game cycle
      */
-    private SimpleIntegerProperty gameCycle = new SimpleIntegerProperty(-1); 
+    private SimpleIntegerProperty gameCycle;
 
     // TODO = add more lists for other entities, for equipped inventory items, etc...
 
@@ -101,6 +103,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         buildingEntities = new ArrayList<>();
         spawnEnemyStrategies = new ArrayList<>();
         shopMenu = new HerosCastleMenu();
+        gameCycle = new SimpleIntegerProperty(0);
     }
 
     // TODO: move heros castle into state
@@ -282,7 +285,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
         for (int i = 0; i < cardDrops.size(); i++) {
             // if adding more cards than have, remove the first card...
-            // TODO after testing, change 2 to getWidth()
             if (cardEntities.size() >= getWidth()){
                 character.addGold(10);
                 character.addXp(10);
@@ -353,10 +355,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         SimpleIntegerProperty posY = new SimpleIntegerProperty(0);
         // pick a random card
         List<Card> potentialCards = new ArrayList<>();
-        // potentialCards.add(new VampireCastleCard(posX, posY));
-        // potentialCards.add(new ZombiePitCard(posX, posY));
-        // potentialCards.add(new VillageCard(posX, posY));
+        potentialCards.add(new VampireCastleCard(posX, posY));
+        potentialCards.add(new ZombiePitCard(posX, posY));
+        potentialCards.add(new VillageCard(posX, posY));
         potentialCards.add(new TrapCard(posX, posY));
+        potentialCards.add(new TowerCard(posX, posY));
 
         Random random = new Random();
         Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));
