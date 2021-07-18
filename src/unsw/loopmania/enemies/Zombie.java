@@ -27,9 +27,9 @@ public class Zombie extends BasicEnemy {
     // TODO write zombie
     public Zombie(PathPosition position) {
         super(position);
-        setDamage(1);
+        setDamage(2);
         setBattleRadius(2);
-        setHealth(1);
+        setHealth(10);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new StaffGenerateItem(), 0.50));
         droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.2));

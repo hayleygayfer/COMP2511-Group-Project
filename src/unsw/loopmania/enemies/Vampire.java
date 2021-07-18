@@ -24,15 +24,14 @@ import org.javatuples.Pair;
 public class Vampire extends BasicEnemy {
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
-    private double criticalHitChance = 0;
-
+    private double criticalHitChance = 0.1;
 
     // TODO write vampire
     public Vampire(PathPosition position) {
         super(position);
-        setDamage(1);
+        setDamage(3);
         setBattleRadius(2);
-        setHealth(1);
+        setHealth(15);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new StakeGenerateItem(), 0.50));
         droppableItems.add(new Pair<GenerateItem, Double>(new ShieldGenerateItem(), 0.50));
@@ -55,6 +54,10 @@ public class Vampire extends BasicEnemy {
      */
     public void setCriticalHitChance(double criticalHitChance) {
       this.criticalHitChance = criticalHitChance;
+    }
+
+    public double getCriticalHitChance() {
+        return this.criticalHitChance;
     }
 
     /**

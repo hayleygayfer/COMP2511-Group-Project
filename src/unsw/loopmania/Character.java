@@ -187,13 +187,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Uses the item and applies its effect
-     */
-    public void useItem(UsableItem item) {
-
-    }
-
-    /**
      * Unequips item - moves it to inventory
      */
     public void unequipItem(EquippableItem item) {
@@ -203,6 +196,12 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     public List<EquippableItem> getEquippedItems() {
         return equippedItems;
+    }
+
+    public void unEquipAllItems() {
+        for (EquippableItem item : equippedItems) {
+            unequipItem(item);
+        }
     }
 
     /**
