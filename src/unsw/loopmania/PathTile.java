@@ -9,6 +9,10 @@ import java.io.File;
  * It holds internally an enumerated value representing a direction.
  */
 public class PathTile extends StaticEntity {
+    /**
+     * Creates the direction of the path based on the different coordinates 
+     * Caclulates the direction from the various other coordinates
+     */
     public enum Direction {
         UP(0, -1),
         DOWN(0, 1),
@@ -53,11 +57,15 @@ public class PathTile extends StaticEntity {
             this.yOffset = yOffset;
         }
     }
-
+    
     public PathTile(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
 
+    /**
+     * Creates an image of the path tiles 
+     * @return Image 
+     */
     public Image render() {
         return new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
     }

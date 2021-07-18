@@ -19,23 +19,45 @@ public class SwordGenerateItem extends GenerateItem {
         this.price = new SimpleIntegerProperty(10);
     }
 
+    /**
+     * Creates a new sword item based on its new position
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     * @return Item a new item
+     */
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         Item newSword = new Sword(x, y);
         return newSword;
     }
 
+    /**
+     * Gets the description for the label
+     * @return SimpleStringProperty
+     */
     public SimpleStringProperty description() {
         return description;
     }
 
+    /**
+     * Gets the name for the label
+     * @return SimpleStringProperty
+     */
     public SimpleStringProperty name() {
         return name;
     }
 
+    /**
+     * Gets the price for the label
+     * @return SimpleStringProperty
+     */
     public SimpleIntegerProperty price() {
         return price;
     }
 
+     /**
+     * Gets the image of sword for rendering
+     * @return Image
+     */
     public Image getImage() {
         return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }

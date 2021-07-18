@@ -14,6 +14,8 @@ public abstract class EquippableItem extends Item {
 
     /**
      * Checks whether an item can be equipped
+     * @param equippedItems All the current equipped items
+     * @return boolean 
      */
     public boolean isEquippable(List<Item> equippedItems) {
         return !equippedItems.contains(this);
@@ -22,6 +24,9 @@ public abstract class EquippableItem extends Item {
     /**
      * Given a character's base damage, returns the modified
      * damage based on the properties of this item
+     * @param target The moving entity to modify the damage to 
+     * @param based damage of the equippable item
+     * @return int 
      */
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
         return baseDamage;
@@ -31,6 +36,8 @@ public abstract class EquippableItem extends Item {
      * Given the enemy's base damage, returns the
      * modified damage based on the properties of
      * this item
+     * @param base damage the enemy's base damage
+     * @return int 
      */
     public int getModifiedEnemyDamage(int baseDamage) {
         return baseDamage;
@@ -40,6 +47,8 @@ public abstract class EquippableItem extends Item {
     /**
      * Given a critical hit chance, returns the modified
      * critical hit chance based on the properties of this item
+     * @param baseCriticalChance Chance of a critical hit
+     * @return double
      */
     public double getModifiedCriticalChance(double baseCriticalChance) {
         return baseCriticalChance;
@@ -61,6 +70,11 @@ public abstract class EquippableItem extends Item {
         return;
     }
 
+     /**
+     * TODO: change this to be generic
+     * Creates a new Image of a sword for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/basic_sword.png")).toURI().toString());

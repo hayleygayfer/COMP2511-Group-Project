@@ -19,6 +19,7 @@ public class BarracksCard extends Card {
      * Position is valid if it is a path tile, and not hero's castle
      * @param x x coordinate of position
      * @param y y coordinate of position
+     * @param path the current path on the board
      * @return whether the card can be placed at the given position
      */
     public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
@@ -34,13 +35,17 @@ public class BarracksCard extends Card {
      * Generates a barracks building from this card at the supplied position
      * @param x x coordinate of spawn position
      * @param y y coordinate of spawn position
-     * @return the generated building
      * @pre the supplied position is a valid spawn position
+     * @return the generated building
      */
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new BarracksBuilding(x, y);
     }   
 
+    /**
+     * Creates a new image of barracks card
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/barracks_card.png")).toURI().toString());
     }

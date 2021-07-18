@@ -13,6 +13,11 @@ public class GoldLeaf implements Goal {
         this.goalGold = goalGold;
     }
 
+     /**
+     * Checks if the current gold in game cycle is greater than the goal gold
+     * @param world the current world
+     * @return boolean 
+     */
     @Override
     public boolean metGoal(LoopManiaWorld world) {
         if (world.getCharacter().getGold() > goalGold) {

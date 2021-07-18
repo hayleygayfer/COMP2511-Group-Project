@@ -13,7 +13,6 @@ import java.io.File;
 public class Stake extends EquippableItem implements WeaponType, CustomAttackStrategy {
     private int baseDamage;
 
-    // TODO write stake
     public Stake(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         setSellPrice(15);
@@ -21,10 +20,21 @@ public class Stake extends EquippableItem implements WeaponType, CustomAttackStr
         baseDamage = 5;
     }
 
+    /**
+     * @param target The moving entity to effect
+     * @param base damage The current damage 
+     * @return int the current damage plus the new damage
+     */
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
         return this.baseDamage + baseDamage;
     }
 
+    /**
+     * Adds damage to an enemy
+     * If a vampire has high damage else just base damage
+     * @param enemy the enemy to attack
+     * @pre enemy != null
+     */
     public void attack(BasicEnemy enemy) {
         System.out.println("inflict extra damage to vampires");
         if (enemy instanceof Vampire) {
@@ -36,6 +46,10 @@ public class Stake extends EquippableItem implements WeaponType, CustomAttackStr
         }
     }    
 
+    /**
+     * Gets the image of stake for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/stake.png")).toURI().toString());
