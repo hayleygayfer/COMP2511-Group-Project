@@ -2,16 +2,29 @@
 ### Starting state
 - A player starts with 50 health and can deal 2 damage
 
+### Spawning Enemies
+- Only 2 Slugs may be spawned at any one time, if the Character kills one of two spawned then another may spawn elsewhere in the path in the same cycle.
+
 ### Movement
 - When the game is in play, the character moves at a rate of one tile per second
 
-### Defining radius
-- Radius is given as the line distance calculated using coordinate positions
+### Enemy radius
+- Regardless of enemy, the Character will engage in battle with an enemy that is in an adjacent tile
 
 ### Buying and equipping items
 - The Human Player will not be allowed to buy any items the character can’t afford
-- The character can only equip one item of each type at a time
+- When in the Hero's Castle, the Player can buy an unlimited amount of any item available as long as the Character has enough Gold.
+- The character can only equip one item of each type at a time, a seperate equip slot is available for each type
+    - These types include:
+        - Weapon
+        - Armour
+        - Helmet
+        - Shield
+        - Accessory
 - The character can have multiple of each item type in their inventory
+- Items will be sold for the same price as they are bought, and can be sold directly after buying
+- Any items that require specific circumstances to activate must be equipped in order for the Character to recieve their benefits
+    - e.g. The One Ring can resurrect the Character upon death, to do this it must be equipped in the Accessory slot. Once activated it will be destroyed as it is one-use.
 
 ### Battle behaviour
 - Order of attack: character → allied soldiers in order of age → enemy → enemy support troops in order of distance
@@ -24,6 +37,18 @@
 - A tower has a shooting radius of 2, and deals 1 point of damage on an enemy character for every second that it is within this shooting radius
 - Buildings that are on path tiles are activated when the character/enemy steps on the same tile
 - A campfire has a battle radius of 2
+- When a Card is discarded due to the max number of Cards being exceeded, the Character is awarded 5 XP and 5 Gold
+
+### Enemy Item and Cards Drops
+- Slugs have a 50% chance to drop a Sword, and a 50% chance to drop a BarracksCard
+- Vampires have a 50% chance to drop a Stake, a 50% chance to drop a shield, a 50% chance to drop a VillageCard and a 50% chance to drop a CampfireCard
+- Zombies have a 50% chance to drop a Staff and a 50% chance to drop a TowerCard
+- All enemies have a 20% chance to drop a Health Potion and a 5% chance to drop The One Ring
+
+### Enemy Xp and Gold Drops
+- Slugs can drop anywhere between 0 and 2 Gold, and give 5 XP when killed
+- Vampire can drop anywhere between 0 and 8 Gold, and give 20 XP when killed
+- Zombies can drop anywhere between 0 and 4 Gold, and give 10 XP when killed
 
 ### Enemy stats
 - Enemies move in an anti-clockwise direction
