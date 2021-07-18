@@ -6,7 +6,6 @@ import java.util.List;
 
 import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
-import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.generateItems.SwordGenerateItem;
 import unsw.loopmania.generateItems.TheOneRingGenerateItem;
@@ -18,8 +17,6 @@ import unsw.loopmania.generateCards.BarracksGenerateCard;
 import org.javatuples.Pair;
 
 public class Slug extends BasicEnemy {
-
-    private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
 
     public Slug(PathPosition position) {
         super(position);
@@ -48,31 +45,6 @@ public class Slug extends BasicEnemy {
      */
     public Image render() {
         return new Image((new File("src/images/slug.png")).toURI().toString());
-    }
-
-    /**
-     * Attaches an enemy position observer
-     * @param observer The observer to attach
-     */
-    public void attach(EnemyPositionObserver observer) {
-        observers.add(observer);
-    }
-
-    /**
-     * Detaches an emepy position observer
-     * @param observer The enemy position observer
-     */
-    public void detach(EnemyPositionObserver observer) {
-        observers.remove(observer);
-    }
-
-    /**
-     * Updates all enemy position observers
-     */
-    public void updateObservers() {
-        for (EnemyPositionObserver observer : observers) {
-            observer.encounter(this);
-        }
     }
 
 }

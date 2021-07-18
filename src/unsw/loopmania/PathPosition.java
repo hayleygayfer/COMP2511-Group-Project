@@ -60,22 +60,42 @@ public class PathPosition{
         y.set(orderedPath.get(currentPositionInPath).getValue1());
     }
 
+    /**
+     * Gets the display value of x
+     * @return SimpleIntegerProperty
+     */
     public SimpleIntegerProperty getX(){
         return x;
     }
 
+    /**
+     * Gets the display value of y
+     * @return SimpleIntegerProperty
+     */
     public SimpleIntegerProperty getY(){
         return y;
     }
 
+    /**
+     * Gets the value of x
+     * @return SimpleIntegerProperty
+     */
     public int getXValue(){
         return x.getValue();
     }
 
+    /**
+     * Gets the value of y
+     * @return SimpleIntegerProperty
+     */
     public int getYValue(){
         return y.getValue();
     }
 
+    /**
+     * Gets the pair position of cordinates
+     * @return Pair<Integer, Integer>
+     */
     public Pair<Integer, Integer> getPositionPair() {
         return new Pair<Integer, Integer>(getX().getValue(), getY().getValue());
     }

@@ -7,7 +7,6 @@ import java.util.List;
 import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.generateItems.StakeGenerateItem;
 import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.generateItems.ShieldGenerateItem;
@@ -21,7 +20,6 @@ import org.javatuples.Pair;
 
 public class Vampire extends BasicEnemy {
 
-    private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
     private double criticalHitChance = 0.1;
 
     public Vampire(PathPosition position) {
@@ -78,28 +76,4 @@ public class Vampire extends BasicEnemy {
         return new Image((new File("src/images/vampire.png")).toURI().toString());
     }
 
-    /**
-     * Attaches an enemy position observer
-     * @param observer The observer to attach
-     */
-    public void attach(EnemyPositionObserver observer) {
-        observers.add(observer);
-    }
-
-    /**
-     * Detaches an emepy position observer
-     * @param observer The enemey position observer 
-     */
-    public void detach(EnemyPositionObserver observer) {
-        observers.remove(observer);
-    }
-
-    /**
-     * Updates all enemy position observers
-     */
-    public void updateObservers() {
-        for (EnemyPositionObserver observer : observers) {
-            observer.encounter(this);
-        }
-    }
 }

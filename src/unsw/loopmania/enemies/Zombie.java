@@ -21,7 +21,6 @@ public class Zombie extends BasicEnemy {
 
     //TODO: adjust the speed that zombies move
     private double movementSpeed;
-    private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
 
     public Zombie(PathPosition position) {
         super(position);
@@ -58,28 +57,4 @@ public class Zombie extends BasicEnemy {
         return new Image((new File("src/images/zombie.png")).toURI().toString());
     }
 
-    /**
-     * Attaches an enemy position observer
-     * @param observer The observer to attach
-     */
-    public void attach(EnemyPositionObserver observer) {
-        observers.add(observer);
-    }
-
-    /**
-     * Detaches an emepy position observer
-     * @param observer The enemy position observer to detach
-     */
-    public void detach(EnemyPositionObserver observer) {
-        observers.remove(observer);
-    }
-
-    /**
-     * Updates all enemy position observers
-     */
-    public void updateObservers() {
-        for (EnemyPositionObserver observer : observers) {
-            observer.encounter(this);
-        }
-    }
 }

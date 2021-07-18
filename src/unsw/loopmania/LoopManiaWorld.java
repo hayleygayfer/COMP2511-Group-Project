@@ -93,30 +93,42 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         gameCycle = new SimpleIntegerProperty(0);
     }
 
-    // excellent hero's castle method
+    /**
+     * Excellent hero's castle method
+     * @return The shop menu
+     */
     public HerosCastleMenu getHerosCastleMenu() {
         return shopMenu;
     }
 
+    /**
+     * Width of board getter
+     * @return int 
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Height of board getter
+     * @return int 
+     */
     public int getHeight() {
         return height;
     }
 
-    // TODO get rid of this function in tests
-    /*
-    public List<Pair<Integer, Integer>> getPath() {
-        return orderedPath;
-    }
-    */
-
+    /**
+     * Goal of the game getter
+     * @return Goal of the game
+     */
     public Goal getGameGoal() {
         return gameGoal;
     }
 
+    /**
+     * Goal of the game setter
+     * @param gameGoal
+     */
     public void setGameGoal(Goal gameGoal) {
         this.gameGoal = gameGoal;
     }
@@ -195,10 +207,19 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return spawningGold;
     }
 
+    /**
+     * Sells an item from the shop menu and adds to character
+     * @param item an item to sell from the menu
+     */
     public void sellItem(Item item) {
         shopMenu.sellItem(character, item);
     }
 
+    /**
+     * Removes the item from the inventory once it has been used
+     * @param item to remove when used
+     * @pre item is in inventory
+     */
     public void removeItemWhenUsed(Item item) {
         item.destroy();
         character.removeItemFromInventory(item);
@@ -240,6 +261,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     // GET ITEM DROPS FROM ENEMY
+    /**
+     * Goes through and gets all of the items which a defeated enemy will drop
+     * @param enemy which hsa been defeated
+     * @return List<Item> all the items that the enemy drops when it has been defeated drops
+     */
     public List<Item> defeatedEnemyItemDrops(BasicEnemy enemy) {
         List<GenerateItem> itemDrops = enemy.getItemDrops();
         List<Item> itemInstances = new ArrayList<Item>();
@@ -264,11 +290,20 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return itemInstances;
     }
 
+    /**
+     * Updates gold and xp once the enemy has been defeated
+     * @param enemy That drops gold and xp once defeated
+     */
     public void getGoldAndXpDrops(BasicEnemy enemy) {
         enemy.getXPAndGold(character);
     }
 
     // GET CARD DROPS FROM ENEMY
+    /**
+     * Goes through and gets all of the cards which a defeated enemy will drop
+     * @param enemy which hsa been defeated
+     * @return List<Card> all the cards that the enemy drops when it  has been defeated drops
+     */
     public List<Card> defeatedEnemyCardDrops(BasicEnemy enemy) {
         List<GenerateCard> cardDrops = enemy.getCardDrops();
         List<Card> cardInstances = new ArrayList<Card>();
@@ -350,7 +385,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     /**
      * Sets current battle
-     * @return
+     * @param battle the current battle happening
      */
     public void setCurrentBattle(Battle battle) {
         this.currentBattle = battle;
@@ -379,6 +414,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         character.removeItemFromInventory(item);
     }
 
+    /**
+     * Adds in items by cordinates to the inventory
+     * @param x x coordinate from 0 to width-1
+     * @param y y coordinate from 0 to height-1
+     */
     public void equipInventoryItemByCoordinates(int x, int y){
         Item item = getUnequippedInventoryItemEntityByCoordinates(x, y);
         if (item instanceof EquippableItem) {
@@ -422,7 +462,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     /**
      * get the first pair of x,y coordinates which don't have any items in it in the unequipped inventory
-     * @return x,y coordinate pair
+     * @return  Pair<Integer, Integer>  x,y coordinate pair
      */
     public Pair<Integer, Integer> getFirstAvailableSlotForItem() {
         // first available slot for an item...
@@ -459,6 +499,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         }
     }
 
+    /**
+     * Checks if the character is at heros castle
+     * @return boolean
+     */
     public boolean characterAtHerosCastle() {
         return character.isAtHerosCastle();
     }
@@ -509,6 +553,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @param buildingNodeX x index from 0 to width-1 of building to be added
      * @param buildingNodeY y index from 0 to height-1 of building to be added
      * @pre the position of the building to be added is a valid position
+     * @return A new building
      */
     public Building convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         // start by getting card
@@ -546,6 +591,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return newBuilding;
     }
 
+    /**
+     * Checks if a card is placemable and thus can build
+     * @param cardNodeX x index from 0 to width-1 of card to be removed
+     * @param cardNodeY y index from 0 to height-1 of card to be removed
+     * @param buildingNodeX x index from 0 to width-1 of building to be added
+     * @param buildingNodeY y index from 0 to height-1 of building to be added
+     * @return boolean if the build can happen
+     */
     public boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         Card card = null;
         for (Card c: cardEntities){

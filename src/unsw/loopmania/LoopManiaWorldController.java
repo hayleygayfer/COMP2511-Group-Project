@@ -3,8 +3,6 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Action;
-
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -25,7 +23,6 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
-import javafx.scene.shape.Circle;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -35,33 +32,17 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.geometry.Insets;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.Goals.Goal;
-import unsw.loopmania.buildings.VampireCastleBuilding;
-import unsw.loopmania.cards.VampireCastleCard;
-import unsw.loopmania.items.Sword;
-import unsw.loopmania.items.Helmet;
-import unsw.loopmania.items.Stake;
-import unsw.loopmania.items.Staff;
-import unsw.loopmania.items.Armour;
-import unsw.loopmania.items.Shield;
-import unsw.loopmania.items.TheOneRing;
-import unsw.loopmania.UsableItem;
 import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
@@ -136,6 +117,10 @@ public class LoopManiaWorldController {
 
     @FXML
     private HBox gameOver;
+
+
+    @FXML
+    Button pauseButton;
 
     /**
      * container for all hero castle menu components
@@ -285,10 +270,17 @@ public class LoopManiaWorldController {
         gridPaneNodeSetOnDragExited = new EnumMap<DRAGGABLE_TYPE, EventHandler<DragEvent>>(DRAGGABLE_TYPE.class);
     }
 
+    /**
+     * Getter for the current world
+     * @return LoopManiaWorld the current world
+     */
     public LoopManiaWorld getWorld() {
         return world;
     }
 
+    /**
+     * Sets up the board and world 
+     */
     @FXML
     public void initialize() {
         
@@ -464,23 +456,37 @@ public class LoopManiaWorldController {
         timeline.stop();
     }
 
+    /**
+     * End the game 
+     */
     public void terminate() {
         System.out.println("end game");
         gameOver.setVisible(true);
-        
         pause();
     }
 
+    /**
+     * Restart game after shop has been open
+     */
     public void resumeGameFromShop() {
         heroCastle.setVisible(false);
         gameMap.setVisible(true);
     }
 
+    /**
+     * Checks if the current stats meet the goal
+     * @param expression the game current goal
+     * @return boolean
+     */
     public boolean evaluate(Goal expression) {
         // Return the expression evaluated
         return expression.metGoal(this.getWorld());
     }
 
+    /**
+     * Go through and get an item from heros castle menu
+     * @param item An item to get from the shop
+     */
     public void purchaseItemFromShop(GenerateItem item) {
         Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
         Item purchasedItem = world.getHerosCastleMenu().purchaseItem(world.getCharacter(), item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
@@ -489,6 +495,11 @@ public class LoopManiaWorldController {
         }
     }
 
+    /**
+     * Creates the shop and all the items in it 
+     * @param item The item from shop
+     * @return VBox
+     */
     public VBox loadShopTag(GenerateItem item) {
         VBox GenerateItem = new VBox();
         GenerateItem.setStyle("-fx-padding: 8;" + 
@@ -553,14 +564,6 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a card from the world, and pair it with an image in the GUI
-     */
-    private void loadCard() {
-        Card card = world.loadCard();
-        onLoad(card);
-    }
-
-    /**
      * run GUI events after an enemy is defeated, such as spawning items/experience/gold
      * @param enemy defeated enemy for which we should react to the death of
      */
@@ -579,10 +582,10 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a vampire castle card into the GUI.
+     * load a card into the GUI.
      * Particularly, we must connect to the drag detection event handler,
      * and load the image into the cards GridPane.
-     * @param Card
+     * @param Card to load to GUI 
      */
     private void onLoad(Card card) {
         ImageView view = new ImageView(card.render());
@@ -599,7 +602,7 @@ public class LoopManiaWorldController {
      * load an item into the GUI.
      * Particularly, we must connect to the drag detection event handler,
      * and load the image into the unequippedInventory GridPane.
-     * @param sword
+     * @param item an item to load to GUI
      */
     private void onLoad(Item item) {
         ImageView view = new ImageView(item.render());
@@ -645,7 +648,7 @@ public class LoopManiaWorldController {
 
     /**
      * load an enemy into the GUI
-     * @param enemy
+     * @param enemy and enemy to load to GUI
      */
     private void onLoad(BasicEnemy enemy) {
         // Determine which image to load in.
@@ -656,7 +659,7 @@ public class LoopManiaWorldController {
 
     /**
      * load a building into the GUI
-     * @param building
+     * @param building the building to load to GUI
      */
     private void onLoad(Building building) {
         ImageView view = new ImageView(building.render());
@@ -666,7 +669,7 @@ public class LoopManiaWorldController {
 
     /**
      * load a gold card into the GUI
-     * @param gold
+     * @param gold The gold to load to GUI
      */
     private void onLoad(Gold gold) {
         ImageView view = new ImageView(gold.render());
@@ -811,10 +814,23 @@ public class LoopManiaWorldController {
         return world.convertCardToBuildingByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
     }
 
+    /**
+     * Checks if based on the co0rdinates can build 
+     * @param cardNodeX the x coordinate of the card which was dragged, from 0 to width-1
+     * @param cardNodeY the y coordinate of the card which was dragged (in starter code this is 0 as only 1 row of cards)
+     * @param buildingNodeX the x coordinate of the drop location for the card, where the building will spawn, from 0 to width-1
+     * @param buildingNodeY the y coordinate of the drop location for the card, where the building will spawn, from 0 to height-1
+     * @return boolean if can build based on the coordinates
+     */
     private boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         return world.canBuildByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
     }
 
+    /**
+     * Equips items based on the coordinates
+     * @param itemNodeX the x coordiate for the item
+     * @param itemNodeY the y coordinate for the item
+     */
     private void equipItemByCoordinates(int itemNodeX, int itemNodeY) {
         world.equipInventoryItemByCoordinates(itemNodeX, itemNodeY);
     }
@@ -965,6 +981,10 @@ public class LoopManiaWorldController {
         }
     }
 
+    /**
+     * If pressed then takes user to main menu
+     * @param mainMenuSwitcher the button to switch to main menu
+     */
     public void setMainMenuSwitcher(MenuSwitcher mainMenuSwitcher){
         // TODO = possibly set other menu switchers
         this.mainMenuSwitcher = mainMenuSwitcher;
@@ -981,9 +1001,12 @@ public class LoopManiaWorldController {
         mainMenuSwitcher.switchMenu();
     }
 
-    @FXML
-    Button pauseButton;
 
+    /**
+     * Sets up visibaily of heros castle
+     * Stops and starts the timer 
+     * @throws IOException 
+     */
     @FXML
     private void pauseGame() throws IOException {
         if (isPaused) {
@@ -1010,7 +1033,7 @@ public class LoopManiaWorldController {
      * or items which might need to be removed should be tracked here
      * 
      * NOTE teardown functions setup here also remove nodes from their GridPane. So it is vital this is handled in this Controller class
-     * @param entity
+     * @param entity 
      * @param node
      */
     private void trackPosition(Entity entity, Node node) {
@@ -1074,6 +1097,7 @@ public class LoopManiaWorldController {
      * Always writing code running on the application thread will make the project easier, as long as you are not running time-consuming tasks.
      * We recommend only running code on the application thread, by using Timelines when you want to run multiple processes at once.
      * EventHandlers will run on the application thread.
+     * @param currentMethodLabel The method label to help with debugging
      */
     private void printThreadingNotes(String currentMethodLabel){
         System.out.println("\n###########################################");
@@ -1116,6 +1140,10 @@ public class LoopManiaWorldController {
         return ptr;
     }
 
+    /**
+     * Setting up the screen at the end of the battle
+     * @param event
+     */
     @FXML
     private void onFinishBattleButton(ActionEvent event) {
         battle.setVisible(false);
