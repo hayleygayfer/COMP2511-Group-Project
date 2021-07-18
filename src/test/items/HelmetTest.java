@@ -69,7 +69,13 @@ public class HelmetTest {
         Character character = createCharacter();
         Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
 
-        assertTrue(helmet.isEquippable(character.getEquippedItems()));
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
+
+        assertTrue(helmet.isEquippable(items));
     }
 
     @Test
@@ -81,49 +87,27 @@ public class HelmetTest {
 
         Helmet helmet2 = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
 
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
+
         // can't equip second helmet if helmet is already equipped
-        assertFalse(helmet2.isEquippable(character.getEquippedItems())); 
-        assertFalse(helmet1.isEquippable(character.getEquippedItems()));
+        assertTrue(helmet2.isEquippable(items)); 
+        assertFalse(helmet1.isEquippable(items));
     }
 
     @Test
-    public void testGetModifiedDamage() {
-        // reduces damage by 2
-        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        Slug slug = new Slug(new PathPosition(0, createPath()));
-
-        int baseDamage = 10;
-        assertEquals(baseDamage - 2, helmet.getModifiedDamage(slug, baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedEnemyDamage() {
-        // reduces enemy damage by 2
-        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-
-        int baseDamage = 10;
-        assertEquals(baseDamage - 2, helmet.getModifiedEnemyDamage(baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedCriticalChance() {
-        // does not modify critical chance
-        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        double baseCriticalChance = 0.2;
-
-        assertEquals(baseCriticalChance, helmet.getModifiedCriticalChance(baseCriticalChance));
-    }
-
-    @Test
-    public void attackSlug() {
+    public void affectSlug() {
         // attack should not do anything
         Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Slug slug = new Slug(new PathPosition(0, createPath()));
 
-        int initialHealth = slug.getHealth();
+        int initialDamage = slug.getDamage();
 
-        helmet.attack(slug, 0);
+        helmet.affect(slug);
 
-        assertEquals(initialHealth, slug.getHealth());
+        assertEquals(initialDamage - 3, slug.getDamage());
     } 
 }

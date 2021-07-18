@@ -45,7 +45,7 @@ public class GoalAND implements Goal {
     }
 
     @Override
-    public Boolean metGoal(LoopManiaWorld world) {
+    public boolean metGoal(LoopManiaWorld world) {
         return goal1.metGoal(world) && goal2.metGoal(world);
     }
 

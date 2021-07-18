@@ -71,19 +71,13 @@ public class SwordTest {
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Character character = createCharacter();
 
-        assertTrue(sword.isEquippable(character.getEquippedItems()));
-    }
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
 
-    @Test
-    public void testIsEquippableWithOtherAttackItems() {
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-        Character character = createCharacter(); 
-
-        character.equipItem(stake);
-
-        // can't equip sword item if another attack item is equipped
-        assertFalse(sword.isEquippable(character.getEquippedItems()));
+        assertTrue(sword.isEquippable(items));
     }
 
     @Test
@@ -95,53 +89,28 @@ public class SwordTest {
 
         Sword sword2 = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));   
 
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
+
         // can't equip sword if another sword is equipped
-        assertFalse(sword2.isEquippable(character.getEquippedItems()));
+        assertTrue(sword2.isEquippable(items));
+        assertFalse(sword1.isEquippable(items));
     }
 
     @Test
-    public void testGetModifiedDamage() {
+    public void testGetModifiedCharacterDamage() {
         // sets damage to 10
+        Character character = createCharacter();
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        int baseDamage = 2;
+        int initialDamage = character.getModifiedDamage();
 
-        Slug slug = new Slug(new PathPosition(0, createPath()));
-        Zombie zombie = new Zombie(new PathPosition(0, createPath()));
-        Vampire vampire = new Vampire(new PathPosition(0, createPath()));
+        sword.affect(character);
 
-        assertEquals(10, sword.getModifiedDamage(slug, baseDamage));
-        assertEquals(10, sword.getModifiedDamage(zombie, baseDamage));
-        assertEquals(10, sword.getModifiedDamage(vampire, baseDamage));
+        assertEquals(initialDamage + 10, character.getModifiedDamage());
     }
 
-    @Test
-    public void testGetModifiedEnemyDamage() {
-        // won't affect enemy damage
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        int baseDamage = 2;
-        assertEquals(baseDamage, sword.getModifiedEnemyDamage(baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedCriticalChance() {
-        // doesn't modify critical chance
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        double baseCriticalChance = 0.2;
-
-        assertEquals(baseCriticalChance, sword.getModifiedCriticalChance(baseCriticalChance));
-    }
-
-    @Test
-    public void attackZombie() {
-        // decrease zombie health by 10
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-        Zombie zombie = new Zombie(new PathPosition(0, createPath()));
-
-        int initialHealth = zombie.getHealth();
-
-        sword.attack(zombie, 10);
-
-        assertEquals(initialHealth - 10, zombie.getHealth()); 
-    } 
 }

@@ -297,6 +297,16 @@
          </padding>
       </VBox>
    </HBox>
+   <HBox fx:id="gameOver" alignment="CENTER" prefHeight="550.0" prefWidth="470.0" style="-fx-background-color: white;">
+      <children>
+         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <children>
+               <Text fx:id="GameOverText" fill="#ff0e0e" strokeType="OUTSIDE" strokeWidth="0.0" text="GAMEOVER!!!"></Text>
+               <Button onAction="#switchToMainMenu" text="Exit to Main Menu" />
+            </children>
+         </VBox>
+      </children>
+   </HBox>
    <HBox fx:id="battle" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: white;">
       <children>
          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">

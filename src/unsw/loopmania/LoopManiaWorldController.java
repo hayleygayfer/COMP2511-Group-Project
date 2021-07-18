@@ -60,6 +60,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Armour;
 import unsw.loopmania.items.Shield;
+import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.UsableItem;
 import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.itemTypes.ArmourType;
@@ -132,6 +133,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private Text characterBattleHealth;
+
+    @FXML
+    private HBox gameOver;
 
     /**
      * container for all hero castle menu components
@@ -354,10 +358,12 @@ public class LoopManiaWorldController {
         heroCastle.managedProperty().bind(heroCastle.visibleProperty());
         gameMap.managedProperty().bind(gameMap.visibleProperty());
         battle.managedProperty().bind(battle.visibleProperty());
+        gameOver.managedProperty().bind(gameOver.visibleProperty());
 
         // heros castle menu not visible in the beginning
         heroCastle.setVisible(false);
         battle.setVisible(false);
+        gameOver.setVisible(false);
 
         // create the draggable icon
         draggedEntity = new DragIcon();
@@ -466,6 +472,9 @@ public class LoopManiaWorldController {
     }
 
     public void terminate() {
+        System.out.println("end game");
+        gameOver.setVisible(true);
+        
         pause();
     }
 
@@ -733,6 +742,7 @@ public class LoopManiaWorldController {
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
+                                equipItemByCoordinates(nodeX, nodeY);
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
                                 validDrop = true;
@@ -820,6 +830,10 @@ public class LoopManiaWorldController {
 
     private boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         return world.canBuildByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
+    }
+
+    private void equipItemByCoordinates(int itemNodeX, int itemNodeY) {
+        world.equipInventoryItemByCoordinates(itemNodeX, itemNodeY);
     }
 
     /**

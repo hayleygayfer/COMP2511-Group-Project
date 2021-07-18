@@ -69,19 +69,13 @@ public class StaffTest {
         Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Character character = createCharacter();
 
-        assertTrue(staff.isEquippable(character.getEquippedItems()));
-    }
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
 
-    @Test
-    public void testIsEquippableWithOtherAttackItems() {
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-        Character character = createCharacter(); 
-
-        character.equipItem(sword);
-
-        // can't equip staff item if another attack item is equipped
-        assertFalse(staff.isEquippable(character.getEquippedItems()));
+        assertTrue(staff.isEquippable(items));
     }
 
     @Test
@@ -91,40 +85,22 @@ public class StaffTest {
 
         character.equipItem(staff1);
 
-        Staff staff2 = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));   
+        Staff staff2 = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
+        
+        List<EquippableItem> equippedItems = character.getEquippedItems();
+        List<Item> items = new ArrayList<Item>();
+        for (Item item : equippedItems) {
+            items.add(item);
+        }
 
-        assertFalse(staff2.isEquippable(character.getEquippedItems()));
+        assertFalse(staff1.isEquippable(items));
+        assertTrue(staff2.isEquippable(items));
     }
 
     @Test
-    public void testGetModifiedDamage() {
-        // 3 points of damage
-        Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
-        Slug slug = new Slug(new PathPosition(0, createPath()));
-
-        int baseDamage = 2;
-        assertEquals(3, staff.getModifiedDamage(slug, baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedEnemyDamage() {
-        // doesn't affect enemy damage
-        Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        int baseDamage = 10;
-        assertEquals(baseDamage, staff.getModifiedEnemyDamage(baseDamage));
-    }
-
-    @Test
-    public void testGetModifiedCriticalChance() {
+    public void testInflictTrance() {
         // doesn't modify critical chance
         Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        double baseCriticalChance = 0.2;
 
-        assertEquals(baseCriticalChance, staff.getModifiedCriticalChance(baseCriticalChance));
     }
-
-    @Test
-    public void attackSlug() {
-        // changing enemy to an allied soldier
-    } 
 }
