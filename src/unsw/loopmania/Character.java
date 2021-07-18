@@ -88,6 +88,19 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         return currentHealth.get();
     }
 
+    // does same as above but only here for legacy support
+    public int getHealth() {
+        return currentHealth.get();
+    }
+
+    public void loseHealth(int health) {
+        currentHealth.set(currentHealth.get() - health);
+    }
+
+    public SimpleIntegerProperty health() {
+        return currentHealth;
+    }
+
     /**
      * Base Health Property Getter
      * @return baseHealth int

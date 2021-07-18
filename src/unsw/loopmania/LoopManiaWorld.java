@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombiePitCard;
@@ -213,6 +214,32 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
+     * Removes enemies that have died for other reasons
+     * @return list of enemies that have died
+     */
+    public List<BasicEnemy> otherDefeatedEnemies() {
+        List<BasicEnemy> killedEnemies = new ArrayList<BasicEnemy>();
+        for (BasicEnemy enemy : enemies) {
+            if (!enemy.isAlive()) {
+                enemy.destroy();
+                killedEnemies.add(enemy);
+            }
+        }
+
+        for (BasicEnemy enemy : killedEnemies) {
+            enemies.remove(enemy);
+        }
+        return killedEnemies;
+    }
+
+    /**
+     * Goes through buildings and removes those that shouldn't exist
+     */
+    public void destroyBuildings() {
+        buildingEntities.removeIf(b -> !b.shouldExist().get());
+    }
+
+    /**
      * kill an enemy
      * @param enemy enemy to be killed
      */
@@ -326,9 +353,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         SimpleIntegerProperty posY = new SimpleIntegerProperty(0);
         // pick a random card
         List<Card> potentialCards = new ArrayList<>();
-        potentialCards.add(new VampireCastleCard(posX, posY));
-        potentialCards.add(new ZombiePitCard(posX, posY));
-        potentialCards.add(new VillageCard(posX, posY));
+        // potentialCards.add(new VampireCastleCard(posX, posY));
+        // potentialCards.add(new ZombiePitCard(posX, posY));
+        // potentialCards.add(new VillageCard(posX, posY));
+        potentialCards.add(new TrapCard(posX, posY));
 
         Random random = new Random();
         Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));
@@ -479,9 +507,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * move all enemies
      */
     private void moveBasicEnemies() {
-        // TODO = expand to more types of enemy
         for (BasicEnemy e: enemies){
             e.move();
+            e.updateObservers();
         }
     }
 
@@ -542,6 +570,12 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
         if (newBuilding instanceof CharacterPositionObserver) {
             character.attach((CharacterPositionObserver) newBuilding);
+        }
+
+        if (newBuilding instanceof EnemyPositionObserver) {
+            for (BasicEnemy enemy : enemies) {
+                enemy.attach((EnemyPositionObserver) newBuilding);
+            }
         }
 
         // destroy the card

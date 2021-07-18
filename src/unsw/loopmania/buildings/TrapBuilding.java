@@ -18,7 +18,9 @@ public class TrapBuilding extends Building implements EnemyPositionObserver {
      * @pre enemy != NULL and enemy does exist
      */
     public void encounter(BasicEnemy enemy) {
+        System.out.println("UPDATING");
         if (enemy.getX() == getX() && enemy.getY() == getY() && this.shouldExist().get()) {
+            System.out.println("ENCOUNTERED ENEMY");
             enemy.deductHealth(3);
             this.destroy();
         }

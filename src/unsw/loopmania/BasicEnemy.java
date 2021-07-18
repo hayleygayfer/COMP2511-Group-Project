@@ -79,9 +79,6 @@ public abstract class BasicEnemy extends MovingEntity implements DropLootStrateg
 
     public void deductHealth(int health) {
         this.health.set(this.health.get() - health);
-        if (!isAlive()) {
-            this.destroy();
-        }
     }
 
     // battle radius

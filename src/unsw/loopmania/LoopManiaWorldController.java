@@ -375,6 +375,8 @@ public class LoopManiaWorldController {
         // TODO remove when done testing
         loadCard();
         loadCard();
+        loadCard();
+        loadCard();
     }
 
     /**
@@ -434,6 +436,11 @@ public class LoopManiaWorldController {
             for (BasicEnemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
             }
+            List<BasicEnemy> otherDefeatedEnemies = world.otherDefeatedEnemies();
+            for (BasicEnemy e: otherDefeatedEnemies) {
+                reactToEnemyDefeat(e);
+            }
+            world.destroyBuildings();
             List<BasicEnemy> newEnemies = world.possiblySpawnEnemies();
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
@@ -1037,7 +1044,6 @@ public class LoopManiaWorldController {
                                                     entityImages.remove(node);
                                                     squares.getChildren().remove(node);
                                                     cards.getChildren().remove(node);
-                                                    equippedItems.getChildren().remove(node);
                                                     unequippedInventory.getChildren().remove(node);
                                                 })
                                                .buildAttached();
@@ -1048,7 +1054,6 @@ public class LoopManiaWorldController {
                                                    entityImages.remove(node);
                                                    squares.getChildren().remove(node);
                                                    cards.getChildren().remove(node);
-                                                   equippedItems.getChildren().remove(node);
                                                    unequippedInventory.getChildren().remove(node);
                                                 })
                                                .buildAttached();
