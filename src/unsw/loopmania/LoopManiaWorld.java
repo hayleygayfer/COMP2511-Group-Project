@@ -7,6 +7,7 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
@@ -72,6 +73,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     // THIS IS HERE TEMPORARILY, SHOULD BE MOVED OUT LATER
     private HerosCastleMenu shopMenu;
 
+    // Current Battle object
+    Battle currentBattle;
+
+    /**
+     * This gets read in from JSON 
+     * Gets set in the loader 
+     */
+    private Goal gameGoal;
+
     /**
      * create the world (constructor)
      * 
@@ -107,6 +117,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     public List<Pair<Integer, Integer>> getPath() {
         return orderedPath;
+    }
+
+    public Goal getGameGoal() {
+        return gameGoal;
+    }
+
+    public void setGameGoal(Goal gameGoal) {
+        this.gameGoal = gameGoal;
     }
 
     /**
@@ -266,7 +284,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
                 // TODO: Setup Battle
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
-                defeatedEnemies.add(e);
+                List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
+                enemiesEncountered.add(e);
+                setCurrentBattle(new Battle(character, enemiesEncountered));
+                if (character.getBaseHealth() > 0) {
+                    defeatedEnemies.add(e);
+                } else {
+                    // Finish Game
+                }
             }
         }
         for (BasicEnemy e: defeatedEnemies){
@@ -276,6 +301,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             killEnemy(e);
         }
         return defeatedEnemies;
+    }
+
+    /**
+     * Sets current battle
+     * @return
+     */
+    public void setCurrentBattle(Battle battle) {
+        this.currentBattle = battle;
     }
 
     /**
@@ -378,6 +411,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets the current battle object
+     * @return currentBattle
+     */
+    public Battle getCurrentBattle() {
+      return currentBattle;
     }
 
     /**
@@ -540,6 +581,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public int getGameCycle() {
         return this.gameCycle.get();
+    }
+
+
+    /**
+     * 
+     * @param gameCycle
+     */
+    public void setGameCycle(SimpleIntegerProperty gameCycle) {
+        this.gameCycle = gameCycle;
     }
 
     /**
