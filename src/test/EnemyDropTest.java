@@ -41,9 +41,10 @@ import unsw.loopmania.enemies.Zombie;
 public class EnemyDropTest {
     @Test
     public void testVampireDrop() {
+        List<Pair<Integer, Integer>> path = TestHelper.createPath();
         LoopManiaWorld world = TestHelper.createWorld(TestHelper.createPath());
         Character character = world.getCharacter();
 
-        Vampire testVampire = new Vampire(new PathPosition(0, world.getPath()));
+        Vampire testVampire = new Vampire(new PathPosition(0, path));
     }
 }

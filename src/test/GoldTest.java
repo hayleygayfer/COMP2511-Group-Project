@@ -68,11 +68,11 @@ public class GoldTest {
         Gold gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1)); 
         character.attach(gold);
 
-        int initialTotal = character.getGold().get(); 
+        int initialTotal = character.getGold(); 
 
         world.runTickMoves();
 
-        assertEquals(initialTotal + 1, character.getGold().get());
+        assertEquals(initialTotal + 1, character.getGold());
         assertFalse(gold.shouldExist().get());
     }
 
@@ -84,11 +84,11 @@ public class GoldTest {
         Gold gold = new Gold(new SimpleIntegerProperty(0), new SimpleIntegerProperty(2)); 
         character.attach(gold);
 
-        int initialTotal = character.getGold().get(); 
+        int initialTotal = character.getGold(); 
 
         world.runTickMoves();
 
-        assertEquals(initialTotal, character.getGold().get());
+        assertEquals(initialTotal, character.getGold());
         assertTrue(gold.shouldExist().get());
     }
 }

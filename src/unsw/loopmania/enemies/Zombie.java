@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.SimpleIntegerProperty;
-
 import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.GenerateItem;
@@ -24,7 +22,6 @@ public class Zombie extends BasicEnemy {
     private double movementSpeed;
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
 
-    // TODO write zombie
     public Zombie(PathPosition position) {
         super(position);
         setDamage(2);
@@ -45,7 +42,7 @@ public class Zombie extends BasicEnemy {
     }
 
     @Override
-    public void move(){
+    public void move() {
         super.move();
     }
 

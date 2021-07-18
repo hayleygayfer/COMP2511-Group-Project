@@ -74,12 +74,6 @@ public class LoopManiaWorldTest {
         assertEquals(6, world.getHeight());
     }
 
-    @Test 
-    public void testGetPath() {
-        LoopManiaWorld world = TestHelper.createWorld(path);
-        assertEquals(path, world.getPath());
-    }
-
     @Test
     public void testSetandGetGameGoal() {
         LoopManiaWorld world = TestHelper.createWorld(path);
@@ -165,7 +159,7 @@ public class LoopManiaWorldTest {
 
         world.sellItem(item);
 
-        assertEquals(10, character.getGold().get());
+        assertEquals(10, character.getGold());
         assertFalse(character.getInventory().contains(item));
     }
 
@@ -213,15 +207,15 @@ public class LoopManiaWorldTest {
 
         world.getGoldAndXpDrops(slug);
         assertEquals(5, world.getCharacter().getXpProperty().get());
-        assertEquals(1, world.getCharacter().getGold().get());
+        assertEquals(1, world.getCharacter().getGold());
 
         world.getGoldAndXpDrops(vampire);
         assertEquals(25, world.getCharacter().getXpProperty().get());
-        assertEquals(6, world.getCharacter().getGold().get());
+        assertEquals(6, world.getCharacter().getGold());
 
         world.getGoldAndXpDrops(zombie);
         assertEquals(35, world.getCharacter().getXpProperty().get());
-        assertEquals(8, world.getCharacter().getGold().get());
+        assertEquals(8, world.getCharacter().getGold());
     }
 
     @Test 
@@ -366,10 +360,11 @@ public class LoopManiaWorldTest {
     @Test
     public void testGameCycle() {
         LoopManiaWorld world = TestHelper.createWorld(path);
-        world.iterateGamecycle();
         assertEquals(0, world.getGameCycle());
 
-        world.setGameCycle(new SimpleIntegerProperty(5));
+        for (int i = 0; i < 5; i++) {
+            world.iterateGamecycle();
+        }
         assertEquals(5, world.getGameCycle());
 
         assertTrue(world.getGameCycleProperty() instanceof SimpleIntegerProperty);

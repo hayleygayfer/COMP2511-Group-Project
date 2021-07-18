@@ -11,7 +11,6 @@ import org.javatuples.Pair;
 import java.util.List;
 
 import unsw.loopmania.Building;
-import unsw.loopmania.LoopManiaWorld;
 import test.TestHelper;
 
 import unsw.loopmania.cards.ZombiePitCard;
@@ -33,26 +32,26 @@ public class ZombiePitCardTest {
     @Test
     public void testValidPosition() {
         List<Pair<Integer, Integer>> adjacentPath = TestHelper.createSquarePath(5, 1); // Valid Positions
-        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        List<Pair<Integer, Integer>> worldPath = TestHelper.createSquarePath(6, 0);
 
         ZombiePitCard card = new ZombiePitCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         // Tests that all adjacent pairs are valid
         for (Pair<Integer, Integer> position: adjacentPath) {
-            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), worldPath));
         }
     }
 
     @Test
     public void testInvalidPosition() {
         List<Pair<Integer, Integer>> nonAdjacentPath = TestHelper.createSquarePath(4, 2); // Valid Positions
-        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        List<Pair<Integer, Integer>> worldPath = TestHelper.createSquarePath(6, 0);
 
         ZombiePitCard card = new ZombiePitCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         // Tests that all non adjacent pairs are invalid
         for (Pair<Integer, Integer> position: nonAdjacentPath) {
-            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), worldPath));
         }
     }
 }

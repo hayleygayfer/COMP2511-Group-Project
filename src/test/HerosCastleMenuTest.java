@@ -87,7 +87,7 @@ public class HerosCastleMenuTest {
         Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         assertTrue(character.getInventory().contains(purchasedItem));
-        assertEquals(0, character.getGold().get());
+        assertEquals(0, character.getGold());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class HerosCastleMenuTest {
         Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         assertFalse(character.getInventory().contains(purchasedItem));
-        assertEquals(5, character.getGold().get());
+        assertEquals(5, character.getGold());
     }
 
     @Test
@@ -119,12 +119,12 @@ public class HerosCastleMenuTest {
         Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         assertTrue(character.getInventory().contains(purchasedItem));
-        assertEquals(0, character.getGold().get());
+        assertEquals(0, character.getGold());
 
         menu.sellItem(character, purchasedItem);
 
         assertFalse(character.getInventory().contains(purchasedItem));
-        assertEquals(10, character.getGold().get());
+        assertEquals(10, character.getGold());
     }
 
     @Test 

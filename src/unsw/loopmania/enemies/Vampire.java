@@ -26,7 +26,6 @@ public class Vampire extends BasicEnemy {
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
     private double criticalHitChance = 0.1;
 
-    // TODO write vampire
     public Vampire(PathPosition position) {
         super(position);
         setDamage(3);
@@ -53,7 +52,6 @@ public class Vampire extends BasicEnemy {
      */
     @Override
     public void setDamage(int damage) {
-        // TODO Auto-generated method stub
         super.setDamage(damage);
     }
 
