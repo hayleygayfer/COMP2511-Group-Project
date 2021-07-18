@@ -31,6 +31,7 @@ public class Vampire extends BasicEnemy {
     public Vampire(PathPosition position) {
         super(position);
         setDamage(1);
+        System.out.println("damage"  + getDamage());
         setBattleRadius(2);
         setHealth(1);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
@@ -47,6 +48,15 @@ public class Vampire extends BasicEnemy {
         // xp and gold
         setMaxGoldGained(8);
         setExperienceGained(20);
+    }
+
+    /**
+     * Will reset the damage if is hit
+     */
+    @Override
+    public void setDamage(int damage) {
+        // TODO Auto-generated method stub
+        super.setDamage(damage);
     }
 
     /**
