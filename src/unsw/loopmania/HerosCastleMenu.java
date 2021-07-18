@@ -48,7 +48,7 @@ public class HerosCastleMenu {
     }
 
     public Item purchaseItem(Character character, GenerateItem item, SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        if (character.getGold().get() >= item.price().get()) {
+        if (character.getGold() >= item.price().get()) {
             Item newItem = item.createItem(x, y);
             character.addItemToInventory(newItem);
             character.deductGold(item.price().get());

@@ -291,7 +291,6 @@ public class LoopManiaWorldController {
 
     @FXML
     public void initialize() {
-        // TODO = load more images/entities during initialization
         
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
@@ -375,21 +374,15 @@ public class LoopManiaWorldController {
         cycleDisplay.textProperty().bindBidirectional(world.getGameCycleProperty(), new NumberStringConverter());
         healthDisplay.textProperty().bindBidirectional(world.getCharacter().getCurrentHealthProperty(), new NumberStringConverter());
         baseHealthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
-        goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGold(), new NumberStringConverter());
+        goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
-        // TODO remove when done testing
-        loadCard();
-        loadCard();
-        loadCard();
-        loadCard();
     }
 
     /**
      * create and run the timer
      */
     public void startTimer(){
-        // TODO = handle more aspects of the behaviour required by the specification
         System.out.println("starting timer");
         isPaused = false;
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
@@ -540,7 +533,7 @@ public class LoopManiaWorldController {
         buyItem.setOnAction(e -> { 
             purchaseItemFromShop(item); 
         });
-        buyItem.disableProperty().bind(world.getCharacter().getGold().lessThan(item.price()));
+        buyItem.disableProperty().bind(world.getCharacter().getGoldProperty().lessThan(item.price()));
         priceRow.getChildren().add(buyItem);
 
         GenerateItem.getChildren().add(priceRow);
@@ -565,16 +558,6 @@ public class LoopManiaWorldController {
     private void loadCard() {
         Card card = world.loadCard();
         onLoad(card);
-    }
-
-    /**
-     * load a sword from the world, and pair it with an image in the GUI
-     */
-    private void loadSword(){
-        // TODO = load more types of weapon
-        // start by getting first available coordinates
-        Sword sword = world.addUnequippedSword();
-        onLoad(sword);
     }
 
     /**

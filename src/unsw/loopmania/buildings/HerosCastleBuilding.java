@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class HerosCastleBuilding extends Building {
-    // TODO write heros castle building
     public HerosCastleBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }

@@ -27,4 +27,8 @@ public class AlliedSoldier {
     public int getDamage() {
         return baseDamage.get();
     }
+
+    public int getBaseDefence() {
+        return baseDefence.get();
+    }
 }

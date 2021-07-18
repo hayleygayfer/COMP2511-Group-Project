@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import test.TestHelper;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
@@ -64,25 +65,25 @@ public class CampfireCardTest {
 
     @Test
     public void testValidPosition() {
-        LoopManiaWorld world = createWorld();
         List<Pair<Integer, Integer>> adjacentPath = createSquarePath(3, 1); // Valid Positions
+        List<Pair<Integer, Integer>> worldPath = TestHelper.createSquarePath(6, 0);
 
         CampfireCard card = new CampfireCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
         // Tests that all non path tiles are valid
         for (Pair<Integer, Integer> position: adjacentPath) {
-            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+            assertTrue(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), worldPath));
         }
     }
 
 
     public void testInvalidPosition() {
-        LoopManiaWorld world = createWorld();
         CampfireCard card = new CampfireCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        List<Pair<Integer, Integer>> worldPath = TestHelper.createSquarePath(6, 0);
 
         // Tests that all path tiles are invalid
-        for (Pair<Integer, Integer> position: world.getPath()) {
-            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), world.getPath()));
+        for (Pair<Integer, Integer> position: worldPath) {
+            assertFalse(card.isValidPosition(new SimpleIntegerProperty(position.getValue0()), new SimpleIntegerProperty(position.getValue1()), worldPath));
         }
     }
 }

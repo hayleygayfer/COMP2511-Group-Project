@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.SimpleIntegerProperty;
-
 import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EnemyPositionObserver;
@@ -13,21 +11,16 @@ import unsw.loopmania.PathPosition;
 import unsw.loopmania.generateItems.SwordGenerateItem;
 import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
-import unsw.loopmania.Item;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
 import unsw.loopmania.generateCards.BarracksGenerateCard;
-import unsw.loopmania.items.Sword;
 
-import java.util.List;
-import java.util.ArrayList;
 import org.javatuples.Pair;
 
 public class Slug extends BasicEnemy {
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
 
-    // TODO write slug
     public Slug(PathPosition position) {
         super(position);
         setDamage(1);

@@ -8,7 +8,6 @@ import java.io.File;
 
 
 public class HealthPotion extends UsableItem {
-    // TODO write health potion
     public HealthPotion(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         setSellPrice(30);

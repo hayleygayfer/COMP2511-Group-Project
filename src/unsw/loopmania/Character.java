@@ -25,7 +25,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private SimpleIntegerProperty modifiedHealth;
     private SimpleIntegerProperty modifiedDamage;
 
-
     // Initial position
     private Pair<Integer, Integer> initialPosition;
     // gold
@@ -50,8 +49,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.currentHealth = new SimpleIntegerProperty(50);
         this.baseDamage = new SimpleIntegerProperty(1);
         this.modifiedDamage = new SimpleIntegerProperty(1);
-        inventory = new ArrayList<Item>();
-        equippedItems = new ArrayList<EquippableItem>();
+        this.inventory = new ArrayList<Item>();
+        this.equippedItems = new ArrayList<EquippableItem>();
     }
 
     public Image render() {
@@ -88,19 +87,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         return currentHealth.get();
     }
 
-    // does same as above but only here for legacy support
-    public int getHealth() {
-        return currentHealth.get();
-    }
-
-    public void loseHealth(int health) {
-        currentHealth.set(currentHealth.get() - health);
-    }
-
-    public SimpleIntegerProperty health() {
-        return currentHealth;
-    }
-
     /**
      * Base Health Property Getter
      * @return baseHealth int
@@ -117,10 +103,16 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         return currentHealth;
     }
 
+    /**
+     * Returns whether or not the character is alive
+     */
+    public boolean isAlive() {
+        return getModifiedHealth() > 0;
+    }
+
     public void addXp(int experiencePoints) {
         xp.set(this.xp.get() + experiencePoints);
     }
-
 
     /**
      * Battle Health Setter
@@ -175,21 +167,10 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Returns whether or not the character is alive
-     */
-    public boolean isAlive() {
-        return getModifiedHealth() > 0;
-    }
-    
-    /**
      * Adds an item to the character's inventory
      */
     public void addItemToInventory(Item item) {
         inventory.add(item);
-    }
-
-    public void addItemsToInventory(List<Item> items) {
-        inventory.addAll(items);
     }
 
     /**
@@ -217,12 +198,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     public List<EquippableItem> getEquippedItems() {
         return equippedItems;
-    }
-
-    public void unEquipAllItems() {
-        for (EquippableItem item : equippedItems) {
-            unequipItem(item);
-        }
     }
 
     /**
@@ -269,8 +244,12 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         return (getPosition().getPositionPair().equals(initialPosition));
     }
     
-    public SimpleIntegerProperty getGold() {
+    public SimpleIntegerProperty getGoldProperty() {
         return gold;
+    }
+
+    public int getGold() {
+        return gold.get();
     }
 
     /**
