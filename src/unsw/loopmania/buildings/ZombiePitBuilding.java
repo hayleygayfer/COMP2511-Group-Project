@@ -19,6 +19,9 @@ public class ZombiePitBuilding extends Building implements SpawnEnemyStrategy {
     /**
      * Generates a zombie every cycle
      * @pre the character is currently at hero's castle
+     * @param ordered Path
+     * @param current game cycle
+     * @return a new Zombie 
      */
     public Zombie possiblySpawnEnemy(List<Pair<Integer, Integer>> orderedPath, int gameCycle) {
         List<Pair<Integer, Integer>> adjacentPathTiles = getAdjacentSquares(getX(), getY());
@@ -32,6 +35,10 @@ public class ZombiePitBuilding extends Building implements SpawnEnemyStrategy {
         return new Zombie(new PathPosition(orderedPath.indexOf(spawnTile), orderedPath));
     }
 
+    /**
+     * Creates a new image of zombie pit
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/zombie_pit.png")).toURI().toString());
     }

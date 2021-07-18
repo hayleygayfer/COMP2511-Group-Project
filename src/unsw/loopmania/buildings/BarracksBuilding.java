@@ -26,6 +26,10 @@ public class BarracksBuilding extends Building implements CharacterPositionObser
         }
     }
 
+    /**
+     * Creates a new image of barracks
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/barracks.png")).toURI().toString());
     }

@@ -24,6 +24,10 @@ public class VillageBuilding extends Building implements CharacterPositionObserv
         }
     }
 
+    /**
+     * Creates a new image of village
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/village.png")).toURI().toString());
     }

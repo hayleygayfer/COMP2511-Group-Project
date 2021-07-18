@@ -10,6 +10,10 @@ public class HerosCastleBuilding extends Building {
         super(x, y);
     }
 
+    /**
+     * Creates a new image of heros castle
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/heros_castle.png")).toURI().toString());
     }

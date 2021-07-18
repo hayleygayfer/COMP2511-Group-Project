@@ -29,6 +29,10 @@ public class TowerBuilding extends Building implements EnemyPositionObserver {
         }
     }
 
+    /**
+     * Creates a new image of tower
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/tower.png")).toURI().toString());
     }

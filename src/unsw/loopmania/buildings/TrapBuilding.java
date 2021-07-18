@@ -24,6 +24,10 @@ public class TrapBuilding extends Building implements EnemyPositionObserver {
         }
     }
 
+    /**
+     * Creates a new image of trap
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/trap.png")).toURI().toString());
     }
