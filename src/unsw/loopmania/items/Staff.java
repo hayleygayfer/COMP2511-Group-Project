@@ -31,8 +31,8 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
         Random random = new Random();
         int chance = random.nextInt(100);
         if (applyTrance(chance)) {
+            // TODO
             // Destroy enemy 
-            
             // Turn enemy into allied soldier
             // Set how long a trance lasts for 
             // If that time has passed then turn allied soldier back into enemy
@@ -41,6 +41,13 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
         enemy.setDamage(enemy.getDamage() + baseDamage);
     }
 
+    /**
+     * Checks if the random number is above 60 - then puts the returns true to put enemy
+     * into trance
+     * If below 60 then does not put enemy into trance
+     * @param chance
+     * @return boolean
+     */
     private boolean applyTrance(int chance) {
         if (chance >= 60) {
             return true;
