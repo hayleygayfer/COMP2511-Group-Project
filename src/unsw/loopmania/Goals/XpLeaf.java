@@ -13,6 +13,11 @@ public class XpLeaf implements Goal {
         this.goalXp = goalXp;
     }
     
+     /**
+     * Checks if the current xp in game cycle is greater than the goal xp
+     * @param world the current world
+     * @return boolean 
+     */
     @Override
     public boolean metGoal(LoopManiaWorld world) { 
         if (world.getCharacter().getXpProperty().get() > goalXp) {

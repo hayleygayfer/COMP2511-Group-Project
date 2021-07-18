@@ -48,7 +48,7 @@ public class LoopManiaWorldControllerLoader extends LoopManiaWorldLoader {
         ImageView view = new ImageView(characterImage);
         addEntity(character, view);
     }
-
+    
     @Override
     public void onLoad(HerosCastleBuilding herosCastle) {
         ImageView view = new ImageView(herosCastleImage);

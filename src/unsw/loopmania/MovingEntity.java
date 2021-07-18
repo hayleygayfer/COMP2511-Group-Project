@@ -35,22 +35,42 @@ public abstract class MovingEntity extends Entity {
         position.moveUpPath();
     }
 
+    /**
+     * x display getter
+     * @return SimpleIntegerProperty
+     */
     public SimpleIntegerProperty x() {
         return position.getX();
     }
 
+    /**
+     * y display getter
+     * @return SimpleIntegerProperty
+     */
     public SimpleIntegerProperty y() {
         return position.getY();
     }
 
+    /**
+     * Gets the value of x
+     * @return int
+     */
     public int getX() {
         return x().get();
     }
 
+    /**
+     * Gets the value of y
+     * @return int 
+     */
     public int getY() {
         return y().get();
     }
 
+    /**
+     * Gets the path position
+     * @return PathPosition
+     */
     public PathPosition getPosition() { 
         return this.position;
     }

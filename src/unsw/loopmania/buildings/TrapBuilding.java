@@ -14,7 +14,7 @@ public class TrapBuilding extends Building implements EnemyPositionObserver {
 
     /**
      * Deducts 3 health from any enemy that steps on this trap
-     * @param enemy
+     * @param enemy The current enemy that the building has encounted
      * @pre enemy != NULL and enemy does exist
      */
     public void encounter(BasicEnemy enemy) {
@@ -24,6 +24,10 @@ public class TrapBuilding extends Building implements EnemyPositionObserver {
         }
     }
 
+    /**
+     * Creates a new image of trap
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/trap.png")).toURI().toString());
     }

@@ -155,7 +155,10 @@ public abstract class LoopManiaWorldLoader {
         onLoad(starting, connections.get(connections.size() - 1), connections.get(0));
         return orderedPath;
     }
-
+    /**
+     * Goes through and extracts the various goals from the json file
+     * @param world The current world
+     */
     public void loadGoal(LoopManiaWorld world) {
         JSONObject goal = json.getJSONObject("goal-condition");
         Goal goalObject;

@@ -14,6 +14,12 @@ public class GoalAND implements Goal {
         this.goal2 = parseJson(subgoals.getJSONObject(1));
     }
 
+    /**
+     * Takes in an array of objects 
+     * recusivley gets the quantity of each array element/ goal
+     * @param json an array of AND json objects
+     * @return Goal
+     */
     public Goal parseJson(JSONObject json) {
         Goal goalObject;
         switch (json.getString("goal")) {
@@ -44,6 +50,11 @@ public class GoalAND implements Goal {
         return goalObject;
     }
 
+    /**
+     * Recursively gets the and of two types of gaols
+     * @param world the current world
+     * @return boolean 
+     */
     @Override
     public boolean metGoal(LoopManiaWorld world) {
         return goal1.metGoal(world) && goal2.metGoal(world);

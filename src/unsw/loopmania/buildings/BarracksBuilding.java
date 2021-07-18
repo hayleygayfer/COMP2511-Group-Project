@@ -15,7 +15,7 @@ public class BarracksBuilding extends Building implements CharacterPositionObser
 
     /**
      * When a character steps on the same tile, an allied soldier is spawned
-     * @param character
+     * @param character The current character
      * @pre the character is not null
      * @post the character has not been modified in any other way except with gaining a soldier
      */
@@ -26,6 +26,10 @@ public class BarracksBuilding extends Building implements CharacterPositionObser
         }
     }
 
+    /**
+     * Creates a new image of barracks
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/barracks.png")).toURI().toString());
     }
