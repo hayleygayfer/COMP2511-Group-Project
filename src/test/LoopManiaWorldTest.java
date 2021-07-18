@@ -8,7 +8,6 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,11 +17,8 @@ import unsw.loopmania.Character;
 import unsw.loopmania.Gold;
 import unsw.loopmania.HerosCastleMenu;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.StaticEntity;
-import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
-import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.Stake;
@@ -33,7 +29,6 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.Goals.CycleLeaf;
 import unsw.loopmania.Goals.XpLeaf;
-import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.Goals.GoldLeaf;
 import unsw.loopmania.Goals.GoalAND;
 import unsw.loopmania.Entity;
@@ -42,13 +37,9 @@ import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.TowerCard;
-import unsw.loopmania.cards.VampireCastleCard;
-import unsw.loopmania.cards.ZombiePitCard;
 
-import org.javatuples.Triplet;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.Random;
 
 public class LoopManiaWorldTest {
     private SimpleIntegerProperty x = new SimpleIntegerProperty(0);

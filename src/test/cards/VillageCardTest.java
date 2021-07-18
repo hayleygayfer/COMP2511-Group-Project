@@ -15,7 +15,6 @@ import java.util.List;
 import unsw.loopmania.Building;
 import unsw.loopmania.Card;
 import unsw.loopmania.Entity;
-import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.buildings.VillageBuilding;
