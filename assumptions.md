@@ -1,6 +1,6 @@
 # Assumptions
 ### Starting state
-- A player starts with 50 health and can deal 2 damage
+- A player starts with 50 health and can deal 1 damage
 
 ### Spawning Enemies
 - Only 2 Slugs may be spawned at any one time, if the Character kills one of two spawned then another may spawn elsewhere in the path in the same cycle.
@@ -38,6 +38,7 @@
 - Buildings that are on path tiles are activated when the character/enemy steps on the same tile
 - A campfire has a battle radius of 2
 - When a Card is discarded due to the max number of Cards being exceeded, the Character is awarded 5 XP and 5 Gold
+- If a building already exists on a tile then another building cannot be placed on top of it
 
 ### Enemy Item and Cards Drops
 - Slugs have a 50% chance to drop a Sword, and a 50% chance to drop a BarracksCard
@@ -74,5 +75,11 @@
 | Armour | Enemy attacks are halved | 20 |
 | Shield | Vampire critical attack chance decreases by 60% | 10 |
 | Helmet | Enemy attacks are reduced by 2, Damage to enemies is reduced by 2 | 15 |
+
+### Misc item stats
+| Type | Defence | Cost (gold) |
+|------|---------|-------------|
+| Health Potion | Character's Health is restored | 30 |
+| TheOneRing | Character respawns with full Health upon being killed one time | Cannot be bought, but can be sold for 50 Gold |
 
 
