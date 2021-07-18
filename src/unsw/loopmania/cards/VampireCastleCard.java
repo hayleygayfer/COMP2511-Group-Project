@@ -23,6 +23,7 @@ public class VampireCastleCard extends Card {
      * Position is valid if it is adjacent to a path tile and is not a path tile itself
      * @param x x coordinate of position
      * @param y y coordinate of position
+     * @param the current path
      * @return whether the card can be placed at the given position
      */
     public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
@@ -41,13 +42,17 @@ public class VampireCastleCard extends Card {
      * Generates a vampire castle building from this card at the supplied position
      * @param x x coordinate of spawn position
      * @param y y coordinate of spawn position
-     * @return the generated building
      * @pre the supplied position is a valid spawn position
+     * @return the generated building
      */
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new VampireCastleBuilding(x, y);
     }   
 
+    /**
+     * Creates a new image of vampire castle card
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/vampire_castle_card.png")).toURI().toString());
     }
