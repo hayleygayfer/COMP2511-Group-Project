@@ -49,6 +49,15 @@ public class Vampire extends BasicEnemy {
     }
 
     /**
+     * Will reset the damage if is hit
+     */
+    @Override
+    public void setDamage(int damage) {
+        // TODO Auto-generated method stub
+        super.setDamage(damage);
+    }
+
+    /**
      * Sets critical hit chance
      * @param criticalHitChance The new critical hit chance
      */
