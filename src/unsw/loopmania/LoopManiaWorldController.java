@@ -395,7 +395,6 @@ public class LoopManiaWorldController {
 
             if (evaluate(world.getGameGoal())) {
                 terminate();
-                System.out.println("hello");
             }
             // check if character is at heros castle
             if (this.world.characterAtHerosCastle()) {
