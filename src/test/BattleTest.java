@@ -165,7 +165,7 @@ public class BattleTest {
 
         List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
 
-        assertEquals(frames.size(), 21);
-        assertFalse(newBattle.wonBattle());
+        assertEquals(frames.size(), 20);
+        assertTrue(newBattle.wonBattle());
     }
 }
