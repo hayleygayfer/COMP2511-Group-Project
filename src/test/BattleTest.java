@@ -76,7 +76,7 @@ public class BattleTest {
 
         BasicEnemy slug = new Slug(newPosition);
 
-        character.setModifiedHealth(4);
+        character.setCurrentHealth(4);
 
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
@@ -136,7 +136,7 @@ public class BattleTest {
 
         BasicEnemy vampire = new Vampire(newPosition);
 
-        character.setModifiedHealth(20);
+        character.setCurrentHealth(20);
 
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);

@@ -93,7 +93,7 @@ public class CharacterTest {
     public void testIsDead() {
         Character character = createCharacter();
 
-        character.setModifiedHealth(0);
+        character.setCurrentHealth(0);
         assertFalse(character.isAlive());
     }
 

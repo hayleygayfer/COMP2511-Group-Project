@@ -69,15 +69,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         return xp;
     }
 
-
-    /**
-     * Modified Health Getter (After Shields + Armour)
-     * @return baseHealth int
-     */
-    public int getModifiedHealth() {
-        return modifiedHealth.get();
-    }
-
     /**
      * Increases health by given amount, but without exceeding baseHealth
      * @param increase
@@ -124,7 +115,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @return boolean
      */
     public boolean isAlive() {
-        return getModifiedHealth() > 0;
+        return getCurrentHealth() > 0;
     }
 
     /**
@@ -136,31 +127,11 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Battle Health Setter
-     * @param damage
-     */
-    public void setModifiedHealth(int health) {
-        modifiedHealth.set(health);
-    }
-
-    /**
      * Current Health Setter
      * @param damage
      */
     public void setCurrentHealth(int health) {
         currentHealth.set(health);
-    }
-
-    /**
-     * Resets health after a battle
-     */
-    public void resetHealth() {
-        if (getModifiedHealth() < getCurrentHealth()) {
-            setCurrentHealth(getModifiedHealth());
-        } else {
-            setModifiedHealth(getCurrentHealth());
-        }
-        setModifiedDamage(getBaseDamage());
     }
 
     /**
