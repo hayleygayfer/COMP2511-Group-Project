@@ -8,11 +8,13 @@ public class Battle {
   private Character character;
   private List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
   private int initialHealth;
+  private int initialDamage;
 
   public Battle(Character character, List<BasicEnemy> enemies) {
     this.character = character;
     this.enemies = enemies;
     this.initialHealth = character.getCurrentHealth();
+    this.initialDamage = character.getDamage();
   }
 
   /**
@@ -50,6 +52,7 @@ public class Battle {
   public void resetCharacter() {
     if (initialHealth < character.getCurrentHealth()) {
       character.setCurrentHealth(initialHealth);
+      character.setDamage(initialDamage);
     }
   }
 
