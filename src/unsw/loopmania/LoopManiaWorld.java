@@ -366,6 +366,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
                 List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
                 enemiesEncountered.add(e);
+                for (BasicEnemy support : enemies) {
+                    if (Math.pow((e.getX()-support.getX()), 2) +  Math.pow((e.getY()-support.getY()), 2) < Math.pow(support.getSupportRadius(), 2)) {
+                        enemiesEncountered.add(support);
+                    }
+                }
                 setCurrentBattle(new Battle(character, enemiesEncountered));
                 if (character.isAlive()) {
                     defeatedEnemies.add(e);
