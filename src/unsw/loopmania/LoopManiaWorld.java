@@ -358,6 +358,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @return list of enemies which have been killed
      */
     public List<BasicEnemy> runBattles() {
+        if (characterAtHerosCastle()) { return enemies; }
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
         for (BasicEnemy e: enemies){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
