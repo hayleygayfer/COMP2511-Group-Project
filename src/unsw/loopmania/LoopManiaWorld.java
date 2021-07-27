@@ -47,6 +47,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     private SimpleIntegerProperty gameCycle;
 
+    // current tick
+    private int tick;
+
     private List<BasicEnemy> enemies;
 
     private List<Card> cardEntities;
@@ -91,6 +94,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         spawnEnemyStrategies = new ArrayList<>();
         shopMenu = new HerosCastleMenu();
         gameCycle = new SimpleIntegerProperty(0);
+        tick = 0;
     }
 
     /**
@@ -430,9 +434,16 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * run moves which occur with every tick without needing to spawn anything immediately
      */
     public void runTickMoves(){
+        // move characters
         character.moveDownPath();
         character.updateObservers();
-        moveBasicEnemies();
+
+        // move enemies
+        for (BasicEnemy e : enemies) {
+            e.move(tick);
+            e.updateObservers();
+        }
+        tick++;
     }
 
 
@@ -505,16 +516,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public boolean characterAtHerosCastle() {
         return character.isAtHerosCastle();
-    }
-
-    /**
-     * move all enemies
-     */
-    private void moveBasicEnemies() {
-        for (BasicEnemy e: enemies){
-            e.move();
-            e.updateObservers();
-        }
     }
 
     /**
