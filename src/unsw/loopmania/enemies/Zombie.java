@@ -13,14 +13,10 @@ import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.generateItems.StaffGenerateItem;
-import unsw.loopmania.EnemyPositionObserver;
 
 import org.javatuples.Pair;
 
 public class Zombie extends BasicEnemy {
-
-    //TODO: adjust the speed that zombies move
-    private double movementSpeed;
 
     public Zombie(PathPosition position) {
         super(position);
@@ -42,11 +38,13 @@ public class Zombie extends BasicEnemy {
     }
 
     /**
-     * Moves a basic enemy
+     * The zombie moves every two ticks
      */
     @Override
-    public void move() {
-        super.move();
+    public void move(int tick) {
+        if (tick % 2 == 0) {
+            super.move(tick);
+        }
     }
 
     /**

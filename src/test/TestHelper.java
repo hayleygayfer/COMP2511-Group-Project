@@ -16,19 +16,19 @@ public class TestHelper {
     public static List<Pair<Integer, Integer>> createPath() {
         List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
-        // add top horizontal
+        // add right side down
         for (int i = 0; i < 5; i++) {
             orderedPath.add(Pair.with(0, i));
         }
-        // add right side down
+        // add bottom horizontal ->
         for (int i = 1; i < 5; i++) {
             orderedPath.add(Pair.with(i, 4));
         }
-        // add bottom horizontal
+        // add left side up
         for (int i = 4; i >= 0; i--) {
             orderedPath.add(Pair.with(4, i));
         }
-        // add left side up
+        // add top horizontal <-
         for (int i = 4; i >= 0; i--) {
             orderedPath.add(Pair.with(i, 0));
         }
