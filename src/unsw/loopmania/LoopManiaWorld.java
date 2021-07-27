@@ -14,6 +14,8 @@ import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
+import unsw.loopmania.enemies.Doggie;
+import unsw.loopmania.enemies.ElanMuske;
 
 /**
  * A backend world.
@@ -55,6 +57,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     private List<Building> buildingEntities;
 
+    private List<BossEnemyType> defeatedBosses;
+
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
@@ -85,12 +89,13 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         nonSpecifiedEntities = new ArrayList<>();
         character = null;
         enemies = new ArrayList<>();
+        defeatedBosses = new ArrayList<>();
         cardEntities = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         spawnEnemyStrategies = new ArrayList<>();
         shopMenu = new HerosCastleMenu();
-        gameCycle = new SimpleIntegerProperty(0);
+        gameCycle = new SimpleIntegerProperty(19);
     }
 
     // excellent hero's castle method
@@ -146,6 +151,34 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public void addEntity(Entity entity) {
         // for adding non-specific entities (ones without another dedicated list)
         nonSpecifiedEntities.add(entity);
+    }
+
+    public BasicEnemy spawnBossEnemy() {
+        Pair<Integer, Integer> pos = getRandomSpawnPosition();
+        int indexInPath = orderedPath.indexOf(pos);
+
+        if (gameCycle.get() == 20) {
+            for (BasicEnemy enemy : enemies) {
+                if (enemy instanceof Doggie) return null;
+            }
+            for (BossEnemyType boss : defeatedBosses) {
+                if (boss instanceof Doggie) return null;
+            }
+            Doggie doggieBoss = new Doggie(new PathPosition(indexInPath, orderedPath));
+            enemies.add(doggieBoss);
+            return doggieBoss;
+        } else if (gameCycle.get() == 40 && character.getXpProperty().get() >= 10000) {
+            for (BasicEnemy enemy : enemies) {
+                if (enemy instanceof ElanMuske) return null;
+            }
+            for (BossEnemyType boss : defeatedBosses) {
+                if (boss instanceof ElanMuske) return null;
+            }
+            ElanMuske elanBoss = new ElanMuske(new PathPosition(indexInPath, orderedPath));
+            enemies.add(elanBoss);
+            return elanBoss;
+        }
+        return null;
     }
 
     /**
@@ -334,6 +367,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                 setCurrentBattle(new Battle(character, enemiesEncountered));
                 if (character.isAlive()) {
                     defeatedEnemies.add(e);
+                    // if defeated boss add to list
+                    if (e instanceof BossEnemyType) defeatedBosses.add((BossEnemyType) e);
                 } else {
                     // Finish Game
                 }
@@ -484,22 +519,27 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         int choice = rand.nextInt(2); // TODO = change based on spec... currently low value for dev purposes...
         // TODO = change based on spec
         if ((choice == 0) && (enemies.size() < 2)){
-            List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
-            int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
-            // inclusive start and exclusive end of range of positions not allowed
-            int startNotAllowed = (indexPosition - 2 + orderedPath.size())%orderedPath.size();
-            int endNotAllowed = (indexPosition + 3)%orderedPath.size();
-            // note terminating condition has to be != rather than < since wrap around...
-            for (int i=endNotAllowed; i!=startNotAllowed; i=(i+1)%orderedPath.size()){
-                orderedPathSpawnCandidates.add(orderedPath.get(i));
-            }
-
-            // choose random choice
-            Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates.get(rand.nextInt(orderedPathSpawnCandidates.size()));
-
-            return spawnPosition;
+            return getRandomSpawnPosition();
         }
         return null;
+    }
+
+    private Pair<Integer, Integer> getRandomSpawnPosition() {
+        Random rand = new Random(System.currentTimeMillis());
+        List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
+        int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
+        // inclusive start and exclusive end of range of positions not allowed
+        int startNotAllowed = (indexPosition - 2 + orderedPath.size())%orderedPath.size();
+        int endNotAllowed = (indexPosition + 3)%orderedPath.size();
+        // note terminating condition has to be != rather than < since wrap around...
+        for (int i=endNotAllowed; i!=startNotAllowed; i=(i+1)%orderedPath.size()){
+            orderedPathSpawnCandidates.add(orderedPath.get(i));
+        }
+
+        // choose random choice
+        Pair<Integer, Integer> spawnPosition = orderedPathSpawnCandidates.get(rand.nextInt(orderedPathSpawnCandidates.size()));
+
+        return spawnPosition;
     }
 
     /**

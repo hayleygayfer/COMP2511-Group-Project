@@ -444,6 +444,11 @@ public class LoopManiaWorldController {
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
             }
+            // spawn boss if applicable
+            BasicEnemy spawningBoss = world.spawnBossEnemy();
+            if (spawningBoss != null) {
+                onLoad(spawningBoss);
+            }
             List<Gold> newGold = world.possiblySpawnGold();
             for (Gold gold: newGold) {
                 onLoad(gold);
