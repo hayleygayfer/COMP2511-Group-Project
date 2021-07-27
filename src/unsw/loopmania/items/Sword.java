@@ -25,7 +25,7 @@ public class Sword extends EquippableItem implements WeaponType {
      */
     @Override
     public void affect(Character character) {
-        character.setModifiedDamage(character.getModifiedDamage() + damage);
+        character.setDamage(character.getDamage() + damage);
     }
 
     /**

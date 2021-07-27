@@ -76,7 +76,7 @@ public class BattleTest {
 
         BasicEnemy slug = new Slug(newPosition);
 
-        character.setModifiedHealth(4);
+        character.setCurrentHealth(4);
 
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
@@ -136,7 +136,7 @@ public class BattleTest {
 
         BasicEnemy vampire = new Vampire(newPosition);
 
-        character.setModifiedHealth(20);
+        character.setCurrentHealth(20);
 
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);
@@ -165,7 +165,7 @@ public class BattleTest {
 
         List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
 
-        assertEquals(frames.size(), 21);
-        assertFalse(newBattle.wonBattle());
+        assertEquals(frames.size(), 20);
+        assertTrue(newBattle.wonBattle());
     }
 }

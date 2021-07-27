@@ -19,11 +19,9 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private List<CharacterPositionObserver> observers = new ArrayList<CharacterPositionObserver>();
 
     // Base & Battle Damage & Health
-    private SimpleIntegerProperty baseDamage;
+    private SimpleIntegerProperty damage;
     private SimpleIntegerProperty baseHealth;
     private SimpleIntegerProperty currentHealth;
-    private SimpleIntegerProperty modifiedHealth;
-    private SimpleIntegerProperty modifiedDamage;
 
     // Initial position
     private Pair<Integer, Integer> initialPosition;
@@ -45,10 +43,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.inventory = new ArrayList<Item>();
         this.equippedItems = new ArrayList<EquippableItem>();
         this.alliedSoldiers = new ArrayList<AlliedSoldier>();
-        this.modifiedHealth = new SimpleIntegerProperty(50);
         this.currentHealth = new SimpleIntegerProperty(50);
-        this.baseDamage = new SimpleIntegerProperty(1);
-        this.modifiedDamage = new SimpleIntegerProperty(1);
+        this.damage = new SimpleIntegerProperty(1);
         this.inventory = new ArrayList<Item>();
         this.equippedItems = new ArrayList<EquippableItem>();
     }
@@ -67,15 +63,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public SimpleIntegerProperty getXpProperty() {
         return xp;
-    }
-
-
-    /**
-     * Modified Health Getter (After Shields + Armour)
-     * @return baseHealth int
-     */
-    public int getModifiedHealth() {
-        return modifiedHealth.get();
     }
 
     /**
@@ -124,7 +111,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @return boolean
      */
     public boolean isAlive() {
-        return getModifiedHealth() > 0;
+        return getCurrentHealth() > 0;
     }
 
     /**
@@ -136,14 +123,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Battle Health Setter
-     * @param damage
-     */
-    public void setModifiedHealth(int health) {
-        modifiedHealth.set(health);
-    }
-
-    /**
      * Current Health Setter
      * @param damage
      */
@@ -152,40 +131,19 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Resets health after a battle
-     */
-    public void resetHealth() {
-        if (getModifiedHealth() < getCurrentHealth()) {
-            setCurrentHealth(getModifiedHealth());
-        } else {
-            setModifiedHealth(getCurrentHealth());
-        }
-        setModifiedDamage(getBaseDamage());
-    }
-
-    /**
      * Base Damage Getter
      * @return int 
      */
-    public int getBaseDamage() {
-        return baseDamage.get();
+    public int getDamage() {
+        return damage.get();
     }
 
     /**
-     * Battle Damage Getter
-     * @param damage
-     * @return int 
+     * Base Damage Setter
+     * @param damage int 
      */
-    public int getModifiedDamage() {
-        return modifiedDamage.get();
-    }
-
-    /**
-     * Battle Damage Setter
-     * @param damage
-     */
-    public void setModifiedDamage(int damage) {
-        modifiedDamage.set(damage);
+    public void setDamage(int damage) {
+        this.damage.set(damage);
     }
 
     /**
@@ -347,6 +305,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
                 return;
             }
         }
-        enemy.setHealth(enemy.getHealth() - getModifiedDamage());
+        enemy.setHealth(enemy.getHealth() - getDamage());
     }
 }

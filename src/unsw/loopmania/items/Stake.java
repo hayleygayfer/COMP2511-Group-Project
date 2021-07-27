@@ -36,13 +36,12 @@ public class Stake extends EquippableItem implements WeaponType, CustomAttackStr
      * @pre enemy != null
      */
     public void attack(BasicEnemy enemy) {
-        System.out.println("inflict extra damage to vampires");
         if (enemy instanceof Vampire) {
             int vampireDamage = 10;
             Vampire vampire = (Vampire) enemy;
-            vampire.setDamage(getModifiedDamage(vampire, vampireDamage));
+            vampire.deductHealth(getModifiedDamage(vampire, vampireDamage));
         } else {
-            enemy.setDamage(getModifiedDamage(enemy, baseDamage));
+            enemy.deductHealth(getModifiedDamage(enemy, baseDamage));
         }
     }    
 

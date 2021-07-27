@@ -102,11 +102,11 @@ public class SwordTest {
         Character character = createCharacter();
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        int initialDamage = character.getModifiedDamage();
+        int initialDamage = character.getDamage();
 
         sword.affect(character);
 
-        assertEquals(initialDamage + 10, character.getModifiedDamage());
+        assertEquals(initialDamage + 10, character.getDamage());
     }
 
 }
