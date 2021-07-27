@@ -95,7 +95,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         buildingEntities = new ArrayList<>();
         spawnEnemyStrategies = new ArrayList<>();
         shopMenu = new HerosCastleMenu();
-        gameCycle = new SimpleIntegerProperty(19);
+        gameCycle = new SimpleIntegerProperty(0);
     }
 
     // excellent hero's castle method

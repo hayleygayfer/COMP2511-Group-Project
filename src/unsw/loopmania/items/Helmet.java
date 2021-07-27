@@ -2,6 +2,8 @@ package unsw.loopmania.items;
 
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.itemTypes.HelmetType;
@@ -10,11 +12,17 @@ import java.io.File;
 
 public class Helmet extends EquippableItem implements HelmetType {
     private int reducedEnemyDamage;
+    private GenerateItem itemInfo = new HelmetGenerateItem();
 
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         reducedEnemyDamage = 3;
         setSellPrice(15);
+    }
+
+    @Override
+    public GenerateItem getItemDetails() {
+        return itemInfo;
     }
 
     /**

@@ -39,7 +39,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     public Character(PathPosition position) {
         super(position);
         this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
-        this.gold = new SimpleIntegerProperty(0);
+        this.gold = new SimpleIntegerProperty(100);
         this.xp = new SimpleIntegerProperty(0);
         this.baseHealth = new SimpleIntegerProperty(50);
         this.inventory = new ArrayList<Item>();

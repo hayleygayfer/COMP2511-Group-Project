@@ -3,26 +3,26 @@ package unsw.loopmania.generateItems;
 import unsw.loopmania.Item;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.RareItem;
-import unsw.loopmania.items.TheOneRing;
+import unsw.loopmania.items.TreeStump;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class TheOneRingGenerateItem extends GenerateItem implements RareItem {
+public class TreeStumpGenerateItem extends GenerateItem implements RareItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
 
-    public TheOneRingGenerateItem() {
-        this.name = new SimpleStringProperty("The One Ring");
-        this.description = new SimpleStringProperty("Player Respawns with full health one time.");
+    public TreeStumpGenerateItem() {
+        this.name = new SimpleStringProperty("Tree Stump");
+        this.description = new SimpleStringProperty("An especially powerful shield, which provides higher defence against bosses.");
         this.price = new SimpleIntegerProperty(50);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        Item newTheOneRing = new TheOneRing(x, y);
-        return newTheOneRing;
+        Item newTreeStump = new TreeStump(x, y);
+        return newTreeStump;
     }
 
     public SimpleStringProperty description() {
@@ -38,6 +38,6 @@ public class TheOneRingGenerateItem extends GenerateItem implements RareItem {
     }
 
     public Image getImage() {
-        return new Image((new File("src/images/the_one_ring.png")).toURI().toString());
+        return new Image((new File("src/images/tree_stump.png")).toURI().toString());
     }
 }

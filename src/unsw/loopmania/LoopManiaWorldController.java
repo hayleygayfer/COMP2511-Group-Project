@@ -35,6 +35,8 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Popup;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
@@ -494,6 +496,72 @@ public class LoopManiaWorldController {
         }
     }
 
+    public Popup loadPopupInfo(Item item) {
+        Popup itemDetailsPopup = new Popup();
+
+        VBox itemInfo = new VBox();
+        itemInfo.setStyle("-fx-padding: 8;" + 
+        "-fx-border-style: solid inside;" + 
+        "-fx-border-width: 1;" +
+        "-fx-border-insets: 3;" + 
+        "-fx-border-color: grey;" +
+        "-fx-background-color: white;");
+
+        Button hide = new Button("X");
+        hide.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                itemDetailsPopup.hide();
+                try {
+                    pauseGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }); 
+
+        HBox closeButtonRow = new HBox();
+        closeButtonRow.getChildren().add(hide);
+
+        itemInfo.getChildren().add(closeButtonRow);
+
+        HBox imgRow = new HBox();
+        imgRow.setPadding(new Insets(3));
+        imgRow.setPrefHeight(110);
+
+        VBox nameDescription = new VBox();
+
+        HBox priceRow = new HBox();
+        priceRow.setPadding(new Insets(3));
+        // add name of item
+        Label name = new Label(item.getItemDetails().name().get());
+        name.setStyle("-fx-font-weight: bold");
+        nameDescription.getChildren().add(name);
+        // add item description
+        Label description = new Label(item.getItemDetails().description().get());
+        description.setWrapText(true);
+        description.setPrefWidth(100);
+        nameDescription.getChildren().add(description);
+        // add item image
+        ImageView itemView = new ImageView(item.getItemDetails().getImage());
+
+        // create image row
+        imgRow.getChildren().add(nameDescription);
+        imgRow.getChildren().add(itemView);
+
+        itemInfo.getChildren().add(imgRow);
+
+        // add item price
+        Label price = new Label("$" + item.getItemDetails().price().get());
+        price.setPrefWidth(95);
+        priceRow.getChildren().add(price);
+
+        itemInfo.getChildren().add(priceRow);
+
+        itemDetailsPopup.getContent().add(itemInfo);
+
+        return itemDetailsPopup;
+    }
+
     public VBox loadShopTag(GenerateItem item) {
         VBox GenerateItem = new VBox();
         GenerateItem.setStyle("-fx-padding: 8;" + 
@@ -632,6 +700,7 @@ public class LoopManiaWorldController {
                 }
             });
         } else  {
+            Popup itemDetails = loadPopupInfo(item);
             view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -640,6 +709,13 @@ public class LoopManiaWorldController {
                         view.setVisible(false);
                         view.setManaged(false);
                         event.consume();
+                    } else {
+                        itemDetails.show(anchorPaneRoot.getScene().getWindow());
+                        try {
+                            pauseGame();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });

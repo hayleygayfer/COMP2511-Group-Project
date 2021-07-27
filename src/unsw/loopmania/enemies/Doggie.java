@@ -12,6 +12,7 @@ import unsw.loopmania.PathPosition;
 import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.BossEnemyType;
+import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 
 import org.javatuples.Pair;
 
@@ -25,6 +26,7 @@ public class Doggie extends BasicEnemy implements BossEnemyType {
         setBattleRadius(2);
         setHealth(30);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
+        droppableItems.add(new Pair<GenerateItem, Double>(new DoggieCoinGenerateItem(), 1.0));
         setDroppableItems(droppableItems);
         // xp and gold
         setMaxGoldGained(50);
