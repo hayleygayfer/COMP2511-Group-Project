@@ -100,4 +100,19 @@ public class PathPosition{
         return new Pair<Integer, Integer>(getX().getValue(), getY().getValue());
     }
 
+    /**
+     * Gets the current position in path
+     * @return
+     */
+    public int getPositionInPath() {
+        return currentPositionInPath;
+    }
+
+    /**
+     * Gets the current position in path
+     * @return
+     */
+    public List<Pair<Integer, Integer>> getOrderedPath() {
+        return orderedPath;
+    }
 }

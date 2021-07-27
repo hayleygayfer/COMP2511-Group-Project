@@ -644,4 +644,27 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return this.gameCycle;
     }
 
+    /**
+     * Resets game to initial state
+     * @return void
+     */
+    public void resetGame() {
+        nonSpecifiedEntities = new ArrayList<>();
+        character.reset();
+        for (BasicEnemy enemy : enemies) {
+            enemy.destroy();
+        }
+        enemies.clear();
+        for (Card card : cardEntities) {
+            card.destroy();
+        }
+        cardEntities.clear();
+        for (Building building : buildingEntities) {
+            building.destroy();
+        }
+        buildingEntities.clear();
+        spawnEnemyStrategies.clear();
+        gameCycle.set(0);
+    }
+
 }

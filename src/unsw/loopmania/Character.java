@@ -24,7 +24,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private SimpleIntegerProperty currentHealth;
 
     // Initial position
-    private Pair<Integer, Integer> initialPosition;
+    private PathPosition initialPosition;
     // gold
     private SimpleIntegerProperty gold;
     // XP
@@ -36,7 +36,8 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     public Character(PathPosition position) {
         super(position);
-        this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
+
+        this.initialPosition = new PathPosition(position.getPositionInPath(), position.getOrderedPath());
         this.gold = new SimpleIntegerProperty(0);
         this.xp = new SimpleIntegerProperty(0);
         this.baseHealth = new SimpleIntegerProperty(50);
@@ -238,7 +239,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @return boolean indicating whether or not the character is at the castle.
      */
     public boolean isAtHerosCastle() {
-        return (getPosition().getPositionPair().equals(initialPosition));
+        return (getPosition().getPositionPair().equals(initialPosition.getPositionPair()));
     }
     
     /**
@@ -307,4 +308,25 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         }
         enemy.setHealth(enemy.getHealth() - getDamage());
     }
+
+    /**
+     * Resets character to initial state.
+     * @return void
+     */
+    public void reset() {
+        while (!isAtHerosCastle()) {
+            moveDownPath();
+        }
+        this.gold.set(0);
+        this.xp.set(0);
+        this.baseHealth.set(50);
+        this.inventory = new ArrayList<Item>();
+        this.equippedItems = new ArrayList<EquippableItem>();
+        this.alliedSoldiers = new ArrayList<AlliedSoldier>();
+        this.currentHealth.set(50);
+        this.damage.set(1);
+        this.inventory = new ArrayList<Item>();
+        this.equippedItems = new ArrayList<EquippableItem>();
+    }
+
 }
