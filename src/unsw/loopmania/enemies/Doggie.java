@@ -55,7 +55,7 @@ public class Doggie extends BasicEnemy implements BossEnemyType {
      * Renders the image of the vampire.
      */
     public Image render() {
-        return new Image((new File("src/images/image_just_black_tiny.png")).toURI().toString());
+        return new Image((new File("src/images/doggie.png")).toURI().toString());
     }
 
         /**
