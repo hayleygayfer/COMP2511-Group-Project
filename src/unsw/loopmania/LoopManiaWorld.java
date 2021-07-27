@@ -8,6 +8,7 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Goals.Goal;
+import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
@@ -367,16 +368,21 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         for (BasicEnemy e: enemies){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
-            if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
+            if (withinRadius(character, e, e.getBattleRadius())){
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
                 List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
                 enemiesEncountered.add(e);
                 for (BasicEnemy support : enemies) {
-                    if (Math.pow((e.getX()-support.getX()), 2) +  Math.pow((e.getY()-support.getY()), 2) < Math.pow(support.getSupportRadius(), 2)) {
+                    if (withinRadius(e, support, support.getSupportRadius())) {
                         enemiesEncountered.add(support);
                     }
                 }
-                setCurrentBattle(new Battle(character, enemiesEncountered));
+
+                // get all the buildings that can affect a battle
+                List<Building> battleBuildings = new ArrayList<>(buildingEntities);
+                battleBuildings.removeIf(b -> !(b instanceof CampfireBuilding));
+
+                setCurrentBattle(new Battle(character, enemiesEncountered, battleBuildings));
                 if (character.isAlive()) {
                     defeatedEnemies.add(e);
                 } else {
@@ -391,6 +397,19 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             killEnemy(e);
         }
         return defeatedEnemies;
+    }
+
+    
+
+    /**
+     * Returns whether the two objects are within the given radius of each other
+     * @param e1
+     * @param e2
+     * @param radius
+     * @return true if objects are within the radius of each other, false otherwise
+     */
+    private boolean withinRadius(Entity e1, Entity e2, int radius) {
+        return Math.pow((e1.getX() - e2.getX()), 2) + Math.pow((e1.getY() - e2.getY()), 2) < Math.pow(radius, 2);
     }
 
     /**

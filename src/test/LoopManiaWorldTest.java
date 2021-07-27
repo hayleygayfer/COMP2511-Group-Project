@@ -19,6 +19,7 @@ import unsw.loopmania.HerosCastleMenu;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
+import unsw.loopmania.Building;
 import unsw.loopmania.Item;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.Stake;
@@ -258,7 +259,9 @@ public class LoopManiaWorldTest {
         BasicEnemy slug = new Slug(newPosition);
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        List<Building> buildings = new ArrayList<>();
+
+        Battle newBattle = new Battle(character, enemies, buildings);
         world.setCurrentBattle(newBattle);
         
         assertEquals(world.getCurrentBattle(), newBattle);
