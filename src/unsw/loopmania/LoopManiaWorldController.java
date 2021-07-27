@@ -376,6 +376,8 @@ public class LoopManiaWorldController {
      */
     public void startTimer(){
         System.out.println("starting timer");
+        gameOver.setVisible(false);
+        heroCastle.setVisible(false);
         isPaused = false;
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
@@ -385,7 +387,7 @@ public class LoopManiaWorldController {
                 terminate();
             }
             // check if character is at heros castle
-            if (this.world.characterAtHerosCastle()) {
+            if (this.world.characterAtHerosCastle() && this.world.getGameCycle() != 0) {
                 heroCastle.setVisible(true);
                 gameMap.setVisible(false);
                 pauseButton.setText("Start");
@@ -456,13 +458,17 @@ public class LoopManiaWorldController {
         timeline.stop();
     }
 
+    public void endGame() {
+        timeline.stop();
+        world.resetGame();
+    }
+
     /**
-     * End the game 
+     * End the game due to success criteria / loss
      */
     public void terminate() {
-        System.out.println("end game");
         gameOver.setVisible(true);
-        pause();
+        endGame();
     }
 
     /**
@@ -997,7 +1003,7 @@ public class LoopManiaWorldController {
     @FXML
     private void switchToMainMenu() throws IOException {
         // TODO = possibly set other menu switchers
-        pause();
+        endGame();
         mainMenuSwitcher.switchMenu();
     }
 
