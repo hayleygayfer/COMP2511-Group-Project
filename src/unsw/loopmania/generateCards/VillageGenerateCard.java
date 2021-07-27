@@ -10,6 +10,11 @@ public class VillageGenerateCard extends GenerateCard {
         super();
     }
 
+    /**
+     * Creates a new village card on the board
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     */
     public Card createCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new VillageCard(x, y);
     }

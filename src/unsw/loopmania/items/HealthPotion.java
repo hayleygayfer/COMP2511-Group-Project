@@ -15,12 +15,18 @@ public class HealthPotion extends UsableItem {
 
     /**
      * Increases health
+     * @param character The character which its going increase the health for
+     * @pre character != null
      */
     @Override
     public void applyEffect(Character character) {
         character.setCurrentHealth(character.getBaseHealth());
     }
 
+    /**
+     * Gets the image of health potion for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());

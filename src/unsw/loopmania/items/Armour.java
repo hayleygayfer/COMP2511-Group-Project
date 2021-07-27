@@ -30,6 +30,7 @@ public class Armour extends EquippableItem implements ArmourType {
 
     /**
      * Can't equip if armour is already equipped
+     * @param equipped items a list of all already equipped items
      */
     @Override
     public boolean isEquippable(List<Item> equippedItems) {
@@ -46,14 +47,26 @@ public class Armour extends EquippableItem implements ArmourType {
         enemy.setDamage(enemy.getDamage() / 2);
     }
 
+    /**
+     * returns a prices of 5 
+     * @return SimpleIntegerProperty
+     */
     public SimpleIntegerProperty getPrice() {
         return new SimpleIntegerProperty(5);
     }
 
+    /**
+     * Gets the description of Armour
+     * @return SimpleStringProperty
+     */
     public SimpleStringProperty getDescription() {
         return new SimpleStringProperty("Armour");
     }
     
+    /**
+     * Gets the image of armour for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/armour.png")).toURI().toString());

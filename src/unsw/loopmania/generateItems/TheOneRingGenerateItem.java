@@ -20,23 +20,45 @@ public class TheOneRingGenerateItem extends GenerateItem implements RareItem {
         this.price = new SimpleIntegerProperty(50);
     }
 
+   /**
+     * Creates a new the one ring item based on its new position
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     * @return Item a new item
+     */
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         Item newTheOneRing = new TheOneRing(x, y);
         return newTheOneRing;
     }
 
+    /**
+     * Gets the description for the label
+     * @return SimpleStringProperty
+     */
     public SimpleStringProperty description() {
         return description;
     }
 
+    /**
+     * Gets the name for the label
+     * @return SimpleStringProperty
+     */
     public SimpleStringProperty name() {
         return name;
     }
 
+    /**
+     * Gets the price for the label
+     * @return SimpleStringProperty
+     */
     public SimpleIntegerProperty price() {
         return price;
     }
 
+    /**
+     * Gets the image of one ring for rendering
+     * @return Image
+     */
     public Image getImage() {
         return new Image((new File("src/images/the_one_ring.png")).toURI().toString());
     }

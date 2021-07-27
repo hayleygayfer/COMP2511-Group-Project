@@ -9,31 +9,18 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
-import unsw.loopmania.Gold;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.StaticEntity;
-import unsw.loopmania.generateItems.StakeGenerateItem;
 import unsw.loopmania.generateItems.SwordGenerateItem;
-import unsw.loopmania.generateItems.ShieldGenerateItem;
-import unsw.loopmania.generateItems.StaffGenerateItem;
-import unsw.loopmania.generateItems.ArmourGenerateItem;
-import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 import unsw.loopmania.generateItems.TheOneRingGenerateItem;
-import unsw.loopmania.generateItems.HelmetGenerateItem;
-import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.HerosCastleMenu;
 import unsw.loopmania.Item;
-import unsw.loopmania.items.Sword;
-import unsw.loopmania.items.HealthPotion;
-import unsw.loopmania.GenerateItem;
 
 public class HerosCastleMenuTest {
     public List<Pair<Integer, Integer>> createPath() {

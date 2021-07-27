@@ -7,7 +7,6 @@ import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.itemTypes.AccessoryType;
 import javafx.scene.image.Image;
 import java.io.File;
@@ -20,6 +19,10 @@ public class TheOneRing extends EquippableItem implements AccessoryType, RareIte
         setSellPrice(50);
     }
 
+    /**
+     * Gets the image of the one ring for rendering
+     * @return Image
+     */
     @Override
     public GenerateItem getItemDetails() {
         return itemInfo;

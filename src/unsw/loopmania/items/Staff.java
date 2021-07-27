@@ -1,6 +1,5 @@
 package unsw.loopmania.items;
 
-import unsw.loopmania.AlliedSoldier;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
@@ -34,13 +33,15 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
     /**
      * Applies damage to target
      * Also has a chance of applying trance
+     * @param enemy The enemy to affect
+     * @pre enemy != null
      */
     public void attack(BasicEnemy enemy) {
         System.out.println("inflict trance");
         Random random = new Random();
         int chance = random.nextInt(100);
         if (applyTrance(chance)) {
-            // TODO
+            // TODO: put enemy into trance
             // Destroy enemy 
             // Turn enemy into allied soldier
             // Set how long a trance lasts for 
@@ -54,7 +55,8 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
      * Checks if the random number is above 60 - then puts the returns true to put enemy
      * into trance
      * If below 60 then does not put enemy into trance
-     * @param chance
+     * @param chance A random number between 0-100
+     * @pre chance != null
      * @return boolean
      */
     private boolean applyTrance(int chance) {
@@ -66,6 +68,10 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
         return false;
     }
 
+    /**
+     * Gets the image of staff for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/staff.png")).toURI().toString());

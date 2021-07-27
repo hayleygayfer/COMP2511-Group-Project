@@ -30,21 +30,35 @@ public class Stake extends EquippableItem implements WeaponType, CustomAttackStr
         return itemInfo;
     }
 
+    /**
+     * @param target The moving entity to effect
+     * @param base damage The current damage 
+     * @return int the current damage plus the new damage
+     */
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
         return this.baseDamage + baseDamage;
     }
 
+    /**
+     * Adds damage to an enemy
+     * If a vampire has high damage else just base damage
+     * @param enemy the enemy to attack
+     * @pre enemy != null
+     */
     public void attack(BasicEnemy enemy) {
-        System.out.println("inflict extra damage to vampires");
         if (enemy instanceof Vampire) {
             int vampireDamage = 10;
             Vampire vampire = (Vampire) enemy;
-            vampire.setDamage(getModifiedDamage(vampire, vampireDamage));
+            vampire.deductHealth(getModifiedDamage(vampire, vampireDamage));
         } else {
-            enemy.setDamage(getModifiedDamage(enemy, baseDamage));
+            enemy.deductHealth(getModifiedDamage(enemy, baseDamage));
         }
     }    
 
+    /**
+     * Gets the image of stake for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/stake.png")).toURI().toString());

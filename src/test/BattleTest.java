@@ -8,26 +8,20 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
-import unsw.loopmania.Gold;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.StaticEntity;
-import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
 import unsw.loopmania.EquippableItem;
-import unsw.loopmania.Item;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
-import unsw.loopmania.enemies.Zombie;
 import org.javatuples.Triplet;
 
 
@@ -82,7 +76,7 @@ public class BattleTest {
 
         BasicEnemy slug = new Slug(newPosition);
 
-        character.setModifiedHealth(4);
+        character.setCurrentHealth(4);
 
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
@@ -142,7 +136,7 @@ public class BattleTest {
 
         BasicEnemy vampire = new Vampire(newPosition);
 
-        character.setModifiedHealth(20);
+        character.setCurrentHealth(20);
 
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);
@@ -171,7 +165,7 @@ public class BattleTest {
 
         List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
 
-        assertEquals(frames.size(), 21);
-        assertFalse(newBattle.wonBattle());
+        assertEquals(frames.size(), 20);
+        assertTrue(newBattle.wonBattle());
     }
 }

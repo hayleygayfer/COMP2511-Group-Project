@@ -24,6 +24,9 @@ public class VampireCastleBuilding extends Building implements SpawnEnemyStrateg
     /**
      * Spawns Vampire on an adjacent path tile
      * @pre character is currently at hero's castle 
+     * @param ordered path 
+     * @param game cycle The current game cycle
+     * @return a new Vampire 
      */
     public Vampire possiblySpawnEnemy(List<Pair<Integer, Integer>> orderedPath, int gameCycle) {
         if (gameCycle % 5 == 0) {
@@ -40,6 +43,10 @@ public class VampireCastleBuilding extends Building implements SpawnEnemyStrateg
         return null;
     }
 
+    /**
+     * Creates a new image of vampire castle building
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString());
     }

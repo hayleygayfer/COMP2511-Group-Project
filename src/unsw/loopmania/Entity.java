@@ -44,6 +44,7 @@ public abstract class Entity {
     /**
      * return the internally stored BooleanProperty
      * this method is used in the starter code so the LoopManiaWorldController and LoopManiaWorldControllerLoader can attach ChangeListeners
+     * @return BooleanProperty
      */
     public BooleanProperty shouldExist() {
         return shouldExist;
@@ -79,6 +80,9 @@ public abstract class Entity {
      */
     public abstract int getY();
 
-
+    /**
+     * Creates a new Image 
+     * @return Image
+     */
     public abstract Image render();
 }

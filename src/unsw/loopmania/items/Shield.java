@@ -16,7 +16,6 @@ public class Shield extends EquippableItem implements ShieldType {
 
     private GenerateItem itemInfo = new ShieldGenerateItem();
 
-    // TODO write shield
     public Shield(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         reducedEnemyCriticalChance = 0.04;
@@ -32,6 +31,7 @@ public class Shield extends EquippableItem implements ShieldType {
     /**
      * Reduces chance of critical vampire attacks by 60%
      * @param enemy The enemy to affect
+     * @pre enemy != null
      */
     public void affect(BasicEnemy enemy) {
         enemy.setDamage(enemy.getDamage() - reduceEnemyDamage);
@@ -41,14 +41,26 @@ public class Shield extends EquippableItem implements ShieldType {
         }
     }
 
+    /**
+     * returns a prices of 5 
+     * @return SimpleIntegerProperty
+     */
     public SimpleIntegerProperty getPrice() {
         return new SimpleIntegerProperty(5);
     }
 
+    /**
+     * Gets the description of shield
+     * @return SimpleStringProperty
+     */
     public SimpleStringProperty getDescription() {
         return new SimpleStringProperty("Shield");
     }
-    
+
+    /**
+     * Gets the image of shield for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/shield.png")).toURI().toString());

@@ -10,6 +10,11 @@ public class BarracksGenerateCard extends GenerateCard {
         super();
     }
 
+    /**
+     * Creates a new barracks card on the board
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     */
     public Card createCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new BarracksCard(x, y);
     }

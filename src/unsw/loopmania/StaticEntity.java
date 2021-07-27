@@ -22,18 +22,34 @@ public abstract class StaticEntity extends Entity {
         this.y = y;
     }
 
+    /**
+     * Gets x
+     * @return IntegerProperty
+     */
     public IntegerProperty x() {
         return x;
     }
 
+    /**
+     * Gets y
+     * @return IntegerProperty
+     */
     public IntegerProperty y() {
         return y;
     }
 
+    /**
+     * Gets the value of x
+     * @return IntegerProperty
+     */
     public int getX() {
         return x().get();
     }
 
+    /**
+     * Gets the value of y
+     * @return IntegerProperty
+     */
     public int getY() {
         return y().get();
     }

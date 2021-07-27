@@ -20,6 +20,10 @@ public class Gold extends StaticEntity implements CharacterPositionObserver {
         }
     }
 
+    /**
+     * Creates an image of gold for rendering
+     * @return Image
+     */
     public Image render() {
         return new Image((new File("src/images/gold_pile.png")).toURI().toString());
     }

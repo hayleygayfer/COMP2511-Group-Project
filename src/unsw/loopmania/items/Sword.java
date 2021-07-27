@@ -1,13 +1,11 @@
 package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.generateItems.*;
 import unsw.loopmania.Character;
-import unsw.loopmania.MovingEntity;
 import javafx.scene.image.Image;
 import java.io.File;
 
@@ -30,11 +28,19 @@ public class Sword extends EquippableItem implements WeaponType {
         return itemInfo;
     }
 
+    /**
+     * Increases character damage
+     * @param character the character to affect
+     */
     @Override
     public void affect(Character character) {
-        character.setModifiedDamage(character.getModifiedDamage() + damage);
+        character.setDamage(character.getDamage() + damage);
     }
 
+    /**
+     * Gets the image of sword for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/basic_sword.png")).toURI().toString());

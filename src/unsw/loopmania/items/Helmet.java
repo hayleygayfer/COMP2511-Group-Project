@@ -34,14 +34,26 @@ public class Helmet extends EquippableItem implements HelmetType {
         enemy.setDamage(enemy.getDamage() - reducedEnemyDamage);
     }
 
+    /**
+     * returns a prices of 5 
+     * @return SimpleIntegerProperty
+     */
     public SimpleIntegerProperty getPrice() {
         return new SimpleIntegerProperty(5);
     }
 
+    /**
+     * Gets the description of helemt
+     * @return SimpleStringProperty
+     */
     public SimpleStringProperty getDescription() {
         return new SimpleStringProperty("Helmet");
     }
 
+    /**
+     * Gets the image of helmet for rendering
+     * @return Image
+     */
     @Override
     public Image render() {
         return new Image((new File("src/images/helmet.png")).toURI().toString());

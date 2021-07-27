@@ -93,7 +93,7 @@ public class CharacterTest {
     public void testIsDead() {
         Character character = createCharacter();
 
-        character.setModifiedHealth(0);
+        character.setCurrentHealth(0);
         assertFalse(character.isAlive());
     }
 
@@ -101,16 +101,16 @@ public class CharacterTest {
     public void testBaseDamage() {
         Character character = createCharacter();
 
-        assertEquals(1, character.getBaseDamage());
+        assertEquals(1, character.getDamage());
     }
 
     @Test
     public void testModifyDamage() {
         Character character = createCharacter();
 
-        character.setModifiedDamage(10);
+        character.setDamage(10);
 
-        assertEquals(10, character.getModifiedDamage());
+        assertEquals(10, character.getDamage());
     }
 
     @Test

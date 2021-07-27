@@ -29,7 +29,7 @@ public class HerosCastleMenu {
 
     /**
      * return a list of all items in the shop
-     * @return
+     * @return List<GenerateItem>
      */
     public List<GenerateItem> getItems() {
         return items;
@@ -43,10 +43,25 @@ public class HerosCastleMenu {
         items.add(newItem);
     }
 
+    /**
+     * Checks if the shop items contains a specific item
+     * @param item a specified item
+     * @return boolean
+     */
     public boolean hasItem(GenerateItem item) {
         return items.contains(item);
     }
 
+    /**
+     * Based on the price nad characters gold 
+     * Makes a new item and adds it to inventory 
+     * Returns the new item
+     * @param character the current character
+     * @param item the item to purchase
+     * @param x x coordinate of position
+     * @param y y coordinate of position
+     * @return Item the new item
+     */
     public Item purchaseItem(Character character, GenerateItem item, SimpleIntegerProperty x, SimpleIntegerProperty y) {
         if (character.getGold() >= item.price().get()) {
             Item newItem = item.createItem(x, y);
@@ -57,6 +72,12 @@ public class HerosCastleMenu {
         return null;
     }
 
+    /**
+     * removes the item from the characters inventory 
+     * Increases the characters gold amount
+     * @param character The current character
+     * @param item A item to sell
+     */
     public void sellItem(Character character, Item item) {
         character.removeItemFromInventory(item);
         character.addGold(item.getSellPrice().get());

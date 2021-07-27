@@ -12,16 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import unsw.loopmania.items.Sword;
-import unsw.loopmania.items.Stake;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
-import unsw.loopmania.enemies.Slug;
-import unsw.loopmania.enemies.Vampire;
-import unsw.loopmania.enemies.Zombie;
 
 public class SwordTest {
     /**
@@ -106,11 +102,11 @@ public class SwordTest {
         Character character = createCharacter();
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        int initialDamage = character.getModifiedDamage();
+        int initialDamage = character.getDamage();
 
         sword.affect(character);
 
-        assertEquals(initialDamage + 10, character.getModifiedDamage());
+        assertEquals(initialDamage + 10, character.getDamage());
     }
 
 }
