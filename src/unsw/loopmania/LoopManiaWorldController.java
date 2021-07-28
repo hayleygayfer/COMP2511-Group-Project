@@ -22,6 +22,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ProgressBar;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -50,7 +51,7 @@ import unsw.loopmania.itemTypes.HelmetType;
 import unsw.loopmania.itemTypes.AccessoryType;
 
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
+import org.javatuples.Quartet;
 
 import java.util.EnumMap;
 
@@ -98,7 +99,7 @@ public class LoopManiaWorldController {
      * container for all battle interactions
      */
     @FXML
-    private HBox battle;
+    private VBox battle;
 
     @FXML
     private ImageView heroBattle;
@@ -110,10 +111,13 @@ public class LoopManiaWorldController {
     private Button finishBattleButton;
 
     @FXML
-    private Text enemyBattleHealth;
+    private ProgressBar enemyHealth;
 
     @FXML
-    private Text characterBattleHealth;
+    private ProgressBar characterHealth;
+
+    @FXML
+    private Text enemiesLeft;
 
     @FXML
     private HBox gameOver;
@@ -401,10 +405,10 @@ public class LoopManiaWorldController {
                 finishBattleButton.setVisible(false);
                 pause();
                 SequentialTransition battleSequence = new SequentialTransition();
-                List<Triplet<Integer, Integer, BasicEnemy>> frames = world.getCurrentBattle().runBattle();
+                List<Quartet<Double, Double, BasicEnemy, Integer>> frames = world.getCurrentBattle().runBattle();
                 enemyBattle.setImage(frames.get(0).getValue2().render());
-                characterBattleHealth.setText(frames.get(0).getValue0().toString());
-                enemyBattleHealth.setText(frames.get(0).getValue1().toString());
+                characterHealth.setProgress(frames.get(0).getValue0());
+                enemyHealth.setProgress(frames.get(0).getValue1());
                 for (int i = 1; i < (frames.size()); i++) {
                     battleSequence.getChildren().add(animateBattleFrame(frames.get(i)));
                 }
@@ -412,12 +416,13 @@ public class LoopManiaWorldController {
                 battleSequence.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        characterBattleHealth.setText(frames.get(frames.size() - 1).getValue0().toString());
-                        enemyBattleHealth.setText(frames.get(frames.size() - 1).getValue1().toString());
+                        characterHealth.setProgress(frames.get(frames.size() - 1).getValue0());
+                        enemyHealth.setProgress(frames.get(frames.size() - 1).getValue1());
                         world.getCurrentBattle().resetCharacter();
                         if (!world.getCurrentBattle().wonBattle()) {
                             mainMenuSwitcher.switchMenu();
                         } else {
+                            enemiesLeft.setText("You Won!");
                             finishBattleButton.setVisible(true);
                         }
                     }
@@ -1112,7 +1117,8 @@ public class LoopManiaWorldController {
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
-    public ParallelTransition animateBattleFrame(Triplet<Integer, Integer, BasicEnemy> frame) {
+    public ParallelTransition animateBattleFrame(Quartet<Double, Double, BasicEnemy, Integer> frame) {
+        enemiesLeft.setText(frame.getValue3() + " Enemies Left");
         ParallelTransition ptr = new ParallelTransition();
         //Duration = 2.5 seconds
         Duration duration = Duration.millis(250);
@@ -1138,8 +1144,8 @@ public class LoopManiaWorldController {
         ptr.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                characterBattleHealth.setText(frame.getValue0().toString());
-                enemyBattleHealth.setText(frame.getValue1().toString());
+                characterHealth.setProgress(frame.getValue0());
+                enemyHealth.setProgress(frame.getValue1());
                 enemyBattle.setImage(frame.getValue2().render());
             }
         });
