@@ -24,7 +24,7 @@ public class Doggie extends BasicEnemy implements BossEnemyType {
         super(position);
         setDamage(5);
         setBattleRadius(2);
-        setHealth(30);
+        setHealth(60);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new DoggieCoinGenerateItem(), 1.0));
         setDroppableItems(droppableItems);

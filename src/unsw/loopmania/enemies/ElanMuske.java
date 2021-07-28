@@ -24,7 +24,7 @@ public class ElanMuske extends BasicEnemy implements BossEnemyType {
         super(position);
         setDamage(10);
         setBattleRadius(2);
-        setHealth(50);
+        setHealth(120);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         setDroppableItems(droppableItems);
         // xp and gold

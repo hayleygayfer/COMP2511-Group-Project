@@ -28,7 +28,7 @@ public class Vampire extends BasicEnemy {
         super(position);
         setDamage(3);
         setBattleRadius(2);
-        setHealth(15);
+        setHealth(20);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new StakeGenerateItem(), 0.50));
         droppableItems.add(new Pair<GenerateItem, Double>(new ShieldGenerateItem(), 0.50));
