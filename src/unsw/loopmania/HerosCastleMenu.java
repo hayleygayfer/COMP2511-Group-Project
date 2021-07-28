@@ -62,10 +62,13 @@ public class HerosCastleMenu {
      * @param y y coordinate of position
      * @return Item the new item
      */
-    public Item purchaseItem(Character character, GenerateItem item, SimpleIntegerProperty x, SimpleIntegerProperty y) {
+    public Item purchaseItem(Character character, GenerateItem item, SimpleIntegerProperty x, SimpleIntegerProperty y, GameMode gameMode) {
+        if (gameMode.limitPurchase(character, item) == false) return null;
+        
         if (character.getGold() >= item.price().get()) {
             Item newItem = item.createItem(x, y);
             character.addItemToInventory(newItem);
+            character.addPurchase(item);
             character.deductGold(item.price().get());
             return newItem;
         }

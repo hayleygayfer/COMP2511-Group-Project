@@ -79,6 +79,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     private Goal gameGoal;
 
+    private GameMode gameMode;
+
     /**
      * create the world (constructor)
      * 
@@ -242,6 +244,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         }
 
         return spawningGold;
+    }
+
+    public Item purchaseItemFromHerosCastle(GenerateItem item) {
+        Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
+        Item purchasedItem = shopMenu.purchaseItem(character, item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()), gameMode);
+        if (!purchasedItem.equals(null)) {
+            return purchasedItem;
+        }
+        return null;
     }
 
     /**

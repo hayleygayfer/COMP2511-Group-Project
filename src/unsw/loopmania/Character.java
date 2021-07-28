@@ -3,6 +3,7 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.binding.BooleanBinding;
 import javafx.scene.image.Image;
 import java.io.File;
 import org.javatuples.Pair;
@@ -14,6 +15,9 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     // inventory > list of items
     private List<Item> inventory;
     private List<EquippableItem> equippedItems;
+
+    // this is for keeping track in different game modes
+    private List<GenerateItem> purchasedItems;
 
     // Position Observers
     private List<CharacterPositionObserver> observers = new ArrayList<CharacterPositionObserver>();
@@ -89,6 +93,18 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public int getCurrentHealth() {
         return currentHealth.get();
+    }
+
+    public BooleanBinding canPurchase(GenerateItem item) {
+        return this.getGoldProperty().lessThan(item.price());
+    }
+
+    public void addPurchase(GenerateItem item) {
+        purchasedItems.add(item);
+    }
+
+    public void resetPurchases() {
+        purchasedItems.clear();
     }
 
     /**

@@ -502,10 +502,10 @@ public class LoopManiaWorldController {
      * @param item An item to get from the shop
      */
     public void purchaseItemFromShop(GenerateItem item) {
-        Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
-        Item purchasedItem = world.getHerosCastleMenu().purchaseItem(world.getCharacter(), item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
-        if (!purchasedItem.equals(null)) {
-            onLoad(purchasedItem);
+        Item newItem = world.purchaseItemFromHerosCastle(item);
+
+        if (!(newItem != null)) {
+            onLoad(newItem);
         }
     }
 
@@ -624,7 +624,7 @@ public class LoopManiaWorldController {
         buyItem.setOnAction(e -> { 
             purchaseItemFromShop(item); 
         });
-        buyItem.disableProperty().bind(world.getCharacter().getGoldProperty().lessThan(item.price()));
+        buyItem.disableProperty().bind(world.getCharacter().canPurchase(item));
         priceRow.getChildren().add(buyItem);
 
         GenerateItem.getChildren().add(priceRow);
