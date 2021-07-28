@@ -221,6 +221,7 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
      * @pre character != null
      */
     public void attack(Character character) {
+        System.out.println(getDamage());
         character.setCurrentHealth(character.getCurrentHealth() - getDamage());
     }
 

@@ -7,13 +7,14 @@ import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.itemTypes.HelmetType;
 import javafx.scene.image.Image;
 import java.io.File;
+import java.lang.Math;
 
 public class Helmet extends EquippableItem implements HelmetType {
     private int reducedEnemyDamage;
 
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        reducedEnemyDamage = 3;
+        reducedEnemyDamage = 1;
         setSellPrice(15);
     }
 
@@ -23,7 +24,7 @@ public class Helmet extends EquippableItem implements HelmetType {
      */
     @Override
     public void affect(BasicEnemy enemy) {
-        enemy.setDamage(enemy.getDamage() - reducedEnemyDamage);
+        enemy.setDamage(Math.max(enemy.getDamage() - reducedEnemyDamage, 1));
     }
 
     /**
