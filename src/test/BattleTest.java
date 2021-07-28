@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
+import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
@@ -30,7 +31,7 @@ public class BattleTest {
     private SimpleIntegerProperty x = new SimpleIntegerProperty(0);
     private SimpleIntegerProperty y = new SimpleIntegerProperty(0);
     List<Pair<Integer, Integer>> path = TestHelper.createPath();
-    private List<Building> buildings = new ArrayList<>();
+    private List<CharacterEffect> buildings = new ArrayList<>();
 
     @Test
     public void testOneSlugNoItems() {

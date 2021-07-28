@@ -625,10 +625,11 @@ public class LoopManiaWorldController {
         }   
 
         if (item instanceof UsableItem) {
+            UsableItem usableItem = (UsableItem) item;
             view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    item.applyEffect(world.getCharacter());
+                    usableItem.affect(world.getCharacter());
                     world.removeItemWhenUsed(item);
                     view.setVisible(false);
                     view.setManaged(false);

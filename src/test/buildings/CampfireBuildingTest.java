@@ -18,6 +18,7 @@ import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
 import unsw.loopmania.Building;
 import unsw.loopmania.Character;
+import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.Entity;
 import unsw.loopmania.PathPosition;
@@ -45,13 +46,13 @@ public class CampfireBuildingTest {
     public void testCharacterDamage() {
         List<Pair<Integer, Integer>> path = TestHelper.createSquarePath(5, 0);
         CampfireBuilding campfire = new CampfireBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(2));
-        List<Building> battleBuildings = new ArrayList<>();
+        List<CharacterEffect> battleBuildings = new ArrayList<>();
         battleBuildings.add(campfire);
 
         // damage = 1, health = 50
-        Character character = new Character(new PathPosition(1, path));
+        Character character = new Character(new PathPosition(2, path));
         // damage = 1, health = 4
-        Slug slug = new Slug(new PathPosition(1, path));
+        Slug slug = new Slug(new PathPosition(2, path));
         List<BasicEnemy> enemies = new ArrayList<>();
         enemies.add(slug);
 
@@ -67,7 +68,7 @@ public class CampfireBuildingTest {
     public void testOutsideRadius() {
         List<Pair<Integer, Integer>> path = TestHelper.createSquarePath(6, 0);
         CampfireBuilding campfire = new CampfireBuilding(new SimpleIntegerProperty(3), new SimpleIntegerProperty(4));
-        List<Building> battleBuildings = new ArrayList<>();
+        List<CharacterEffect> battleBuildings = new ArrayList<>();
         battleBuildings.add(campfire);
 
         // damage = 1, health = 50

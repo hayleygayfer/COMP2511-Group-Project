@@ -11,9 +11,6 @@ import javafx.scene.image.Image;
 import java.io.File;
 
 public class CampfireCard extends Card {
-
-    // TODO: Create Campfire card
-
     public CampfireCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }

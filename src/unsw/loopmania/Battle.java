@@ -7,11 +7,11 @@ import org.javatuples.Triplet;
 public class Battle {
     private Character character;
     private List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
-    private List<Building> buildings;
+    private List<CharacterEffect> buildings;
     private int initialHealth;
     private int initialDamage;
 
-    public Battle(Character character, List<BasicEnemy> enemies, List<Building> buildings) {
+    public Battle(Character character, List<BasicEnemy> enemies, List<CharacterEffect> buildings) {
         this.character = character;
         this.enemies = enemies;
         this.buildings = buildings;
@@ -30,6 +30,10 @@ public class Battle {
         // Initial set up for character
         for (EquippableItem item : character.getEquippedItems()) {
             item.affect(character);
+        }
+
+        for (CharacterEffect building : buildings) {
+            building.affect(character);
         }
         
         frames.add(Triplet.with(character.getCurrentHealth(), enemies.get(0).getHealth(), enemies.get(0)));
