@@ -95,8 +95,11 @@ public class CampfireBuildingTest {
         CampfireBuilding campfire = new CampfireBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
         Vampire vampire = new Vampire(new PathPosition(4, path));
         vampire.attach(campfire);
+        // update observers as soon as you spawn
+        vampire.updateObservers();
 
         vampire.moveUpPath();
+        vampire.updateObservers();
 
         // vampire should be sent the other way
         assertEquals(5, vampire.getX());
@@ -109,10 +112,28 @@ public class CampfireBuildingTest {
 
         // campfire has effect radius = 2
         CampfireBuilding campfire = new CampfireBuilding(new SimpleIntegerProperty(5), new SimpleIntegerProperty(1));
-        Vampire vampire = new Vampire(new PathPosition(4, path));
+        Vampire vampire = new Vampire(new PathPosition(3, path));
         vampire.attach(campfire);
+        vampire.updateObservers();
 
         vampire.moveDownPath();
+        vampire.updateObservers();
+
+        // vampire should be sent the other way
+        assertEquals(2, vampire.getX());
+        assertEquals(0, vampire.getY());
+    }
+
+    @Test
+    public void testVampireSpawnInRadius() {
+        List<Pair<Integer, Integer>> path = TestHelper.createSquarePath(6, 0); 
+
+        // campfire has effect radius = 2
+        CampfireBuilding campfire = new CampfireBuilding(new SimpleIntegerProperty(5), new SimpleIntegerProperty(1));
+        // vampire spawns within the effect radius
+        Vampire vampire = new Vampire(new PathPosition(4, path));
+        vampire.attach(campfire);
+        vampire.updateObservers();
 
         // vampire should be sent the other way
         assertEquals(3, vampire.getX());
