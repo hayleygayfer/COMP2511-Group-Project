@@ -81,6 +81,13 @@
          <children>
             <VBox>
                <children>
+                  <Text fx:id="gameModeDisplay" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                     <font>
+                        <Font name="Avenir Book" size="14.0" />
+                     </font>
+                  </Text>
+               </children>
+               <children>
                   <HBox>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cycle: ">

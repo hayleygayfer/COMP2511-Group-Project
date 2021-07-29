@@ -51,6 +51,11 @@ import unsw.loopmania.itemTypes.ArmourType;
 import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.itemTypes.HelmetType;
 import unsw.loopmania.itemTypes.AccessoryType;
+import unsw.loopmania.GameMode;
+import unsw.loopmania.gameModes.StandardMode;
+import unsw.loopmania.gameModes.SurvivalMode;
+import unsw.loopmania.gameModes.BerserkerMode;
+import unsw.loopmania.gameModes.ConfusingMode;
 
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -185,6 +190,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private GridPane unequippedInventory;
+
+    @FXML
+    private Text gameModeDisplay;
 
     @FXML
     private Text cycleDisplay;
@@ -371,7 +379,31 @@ public class LoopManiaWorldController {
         baseHealthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
+    }
 
+    public void setLoopManiaGameMode(int gameMode) {
+        switch (gameMode) {
+            case 0:
+                GameMode standardMode = new StandardMode();
+                world.setGameMode(standardMode);
+                gameModeDisplay.setText("Standard Mode");
+            break;
+            case 1:
+                GameMode survivalMode = new SurvivalMode();
+                world.setGameMode(survivalMode);
+                gameModeDisplay.setText("Survival Mode");
+            break;
+            case 2:
+                GameMode berserkerMode = new BerserkerMode();
+                world.setGameMode(berserkerMode);
+                gameModeDisplay.setText("Berserker Mode");
+            break;
+            case 3:
+                GameMode confusingMode = new ConfusingMode();
+                world.setGameMode(confusingMode);
+                gameModeDisplay.setText("Confusing Mode");
+            break;
+        }
     }
 
     /**
@@ -391,6 +423,7 @@ public class LoopManiaWorldController {
             }
             // check if character is at heros castle
             if (this.world.characterAtHerosCastle() && this.world.getGameCycle() != 0) {
+                world.getCharacter().resetPurchases();
                 heroCastle.setVisible(true);
                 gameMap.setVisible(false);
                 pauseButton.setText("Start");

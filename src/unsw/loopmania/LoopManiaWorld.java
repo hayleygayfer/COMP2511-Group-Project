@@ -162,6 +162,10 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return character;
     }
 
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
     /**
      * add a generic entity (without it's own dedicated method for adding to the world)
      * @param entity
@@ -252,6 +256,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         if (!purchasedItem.equals(null)) {
             return purchasedItem;
         }
+
         return null;
     }
 

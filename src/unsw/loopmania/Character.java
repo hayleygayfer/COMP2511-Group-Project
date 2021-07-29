@@ -42,7 +42,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         super(position);
 
         this.initialPosition = new PathPosition(position.getPositionInPath(), position.getOrderedPath());
-        this.gold = new SimpleIntegerProperty(0);
+        this.gold = new SimpleIntegerProperty(50);
         this.xp = new SimpleIntegerProperty(0);
         this.baseHealth = new SimpleIntegerProperty(50);
         this.inventory = new ArrayList<Item>();
@@ -51,7 +51,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.currentHealth = new SimpleIntegerProperty(50);
         this.damage = new SimpleIntegerProperty(1);
         this.inventory = new ArrayList<Item>();
-        this.equippedItems = new ArrayList<EquippableItem>();
+        this.purchasedItems = new ArrayList<GenerateItem>();
     }
 
     /**
@@ -101,6 +101,10 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     public void addPurchase(GenerateItem item) {
         purchasedItems.add(item);
+    }
+
+    public List<GenerateItem> getPurchased() {
+        return purchasedItems;
     }
 
     public void resetPurchases() {
