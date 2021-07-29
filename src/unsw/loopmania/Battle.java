@@ -54,13 +54,13 @@ public class Battle {
     }
 
     /**
-     * Resets the characters health 
+     * Resets the characters health and damage to what it was before effects were applied
      */
     public void resetCharacter() {
         if (initialHealth < character.getCurrentHealth()) {
-        character.setCurrentHealth(initialHealth);
-        character.setDamage(initialDamage);
+            character.setCurrentHealth(initialHealth);
         }
+        character.setDamage(initialDamage);
     }
 
     /**

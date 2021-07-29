@@ -88,6 +88,44 @@ public class CampfireBuildingTest {
     }
 
     @Test
+    public void testEffectDisappears() {
+        List<Pair<Integer, Integer>> path = TestHelper.createSquarePath(5, 0);
+        CampfireBuilding campfire = new CampfireBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(2));
+        List<CharacterEffect> battleBuildings = new ArrayList<>();
+        battleBuildings.add(campfire);
+
+        // damage = 1, health = 50
+        Character character = new Character(new PathPosition(2, path));
+        // damage = 1, health = 4
+        Slug slug = new Slug(new PathPosition(2, path));
+        List<BasicEnemy> enemies = new ArrayList<>();
+        enemies.add(slug);
+
+        Battle battle = new Battle(character, enemies, battleBuildings);
+        battle.runBattle();
+        battle.resetCharacter();
+
+        // character should have killed slug in two hits, meaning slug would have done 2 damage on the character
+        assertFalse(slug.isAlive());
+        assertEquals(48, character.getCurrentHealth()); 
+
+        // move character down and battle again - now out of effect zone
+        character.moveDownPath();
+        Slug slug2 = new Slug(new PathPosition(3, path));
+        List<BasicEnemy> enemies2 = new ArrayList<>();
+        enemies2.add(slug2);
+
+        Battle battle2 = new Battle(character, enemies2, battleBuildings);
+        battle2.runBattle();
+        battle.resetCharacter();
+
+        // character should have killed slug in 4 hits
+        // the slug would have done 4 damage on the character
+        assertFalse(slug2.isAlive());
+        assertEquals(44, character.getCurrentHealth());
+    }
+
+    @Test
     public void testVampireEncounter() {
         List<Pair<Integer, Integer>> path = TestHelper.createSquarePath(6, 0); 
 

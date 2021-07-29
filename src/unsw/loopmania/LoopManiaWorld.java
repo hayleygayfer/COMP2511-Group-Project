@@ -9,6 +9,7 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
@@ -346,10 +347,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         // pick a random card
         List<Card> potentialCards = new ArrayList<>();
         potentialCards.add(new VampireCastleCard(posX, posY));
-        potentialCards.add(new ZombiePitCard(posX, posY));
-        potentialCards.add(new VillageCard(posX, posY));
-        potentialCards.add(new TrapCard(posX, posY));
-        potentialCards.add(new TowerCard(posX, posY));
+        // potentialCards.add(new ZombiePitCard(posX, posY));
+        // potentialCards.add(new VillageCard(posX, posY));
+        // potentialCards.add(new TrapCard(posX, posY));
+        // potentialCards.add(new TowerCard(posX, posY));
+        potentialCards.add(new CampfireCard(posX, posY));
 
         Random random = new Random();
         Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));

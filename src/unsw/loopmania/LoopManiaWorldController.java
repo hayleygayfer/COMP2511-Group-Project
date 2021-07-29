@@ -369,6 +369,12 @@ public class LoopManiaWorldController {
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+
     }
 
     /**
