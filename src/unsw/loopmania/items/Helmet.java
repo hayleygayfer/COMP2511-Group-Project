@@ -3,14 +3,15 @@ package unsw.loopmania.items;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.ItemType;
+import unsw.loopmania.ShopItem;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import unsw.loopmania.itemTypes.HelmetType;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class Helmet extends EquippableItem implements HelmetType {
+public class Helmet extends EquippableItem implements ShopItem {
     private int reducedEnemyDamage;
     private GenerateItem itemInfo = new HelmetGenerateItem();
 
@@ -18,6 +19,7 @@ public class Helmet extends EquippableItem implements HelmetType {
         super(x, y);
         reducedEnemyDamage = 3;
         setSellPrice(15);
+        setType(ItemType.HELMET);
     }
 
     @Override
@@ -33,6 +35,8 @@ public class Helmet extends EquippableItem implements HelmetType {
     public void affect(BasicEnemy enemy) {
         enemy.setDamage(enemy.getDamage() - reducedEnemyDamage);
     }
+
+    // TODO: shouldn't this affect character as well?
 
     /**
      * returns a prices of 5 

@@ -13,17 +13,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import unsw.loopmania.items.Sword;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.RareItem;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
 import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Doggie;
-import unsw.loopmania.enemies.ElanMuske;
 
 public class TreeStumpTest {
     /**
@@ -55,6 +55,29 @@ public class TreeStumpTest {
 
     public Character createCharacter() {
         return new Character(new PathPosition(0, createPath()));
+    }
+
+    @Test
+    public void testConstructor() {
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(2), new SimpleIntegerProperty(3));
+
+        assertTrue(treeStump instanceof TreeStump);
+        assertTrue(treeStump instanceof EquippableItem);
+        assertTrue(treeStump instanceof RareItem);
+    }
+
+    @Test
+    public void testSellPrice() {
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(2), new SimpleIntegerProperty(3)); 
+
+        assertEquals(50, treeStump.getSellPrice().get());
+    }
+
+    @Test
+    public void testType() {
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(2), new SimpleIntegerProperty(3));
+
+        assertEquals(ItemType.SHIELD, treeStump.getType());
     }
 
     @Test

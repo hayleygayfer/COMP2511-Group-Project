@@ -15,7 +15,9 @@ import unsw.loopmania.items.Armour;
 import unsw.loopmania.Character;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.ShopItem;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.Entity;
@@ -58,9 +60,38 @@ public class ArmourTest {
 
         assertTrue(armour instanceof Armour);
         assertTrue(armour instanceof EquippableItem);
+        assertTrue(armour instanceof ShopItem);
         assertTrue(armour instanceof Item);
         assertTrue(armour instanceof StaticEntity);
         assertTrue(armour instanceof Entity);
+    }
+
+    @Test
+    public void testType() {
+        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        assertEquals(ItemType.ARMOUR, armour.getType());
+    }
+
+    @Test
+    public void testSellPrice() {
+        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
+
+        assertEquals(20, armour.getSellPrice().get());
+    }
+
+    @Test
+    public void testPrice() {
+        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
+
+        assertEquals(5, armour.getPrice().get());
+    }
+
+    @Test
+    public void testDescription() {
+        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        assertEquals("Armour", armour.getDescription().get());
     }
 
     @Test

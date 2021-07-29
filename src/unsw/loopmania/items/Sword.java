@@ -1,9 +1,9 @@
 package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import unsw.loopmania.Character;
 import javafx.scene.image.Image;
@@ -12,7 +12,7 @@ import java.io.File;
 /**
  * represents an equipped or unequipped sword in the backend world
  */
-public class Sword extends EquippableItem implements WeaponType {
+public class Sword extends EquippableItem {
     private int damage;
 
     private GenerateItem itemInfo = new SwordGenerateItem();
@@ -21,7 +21,8 @@ public class Sword extends EquippableItem implements WeaponType {
         super(x, y);
         damage = 10;
         setSellPrice(10);
-    } 
+        setType(ItemType.WEAPON);
+    }
     
     @Override
     public GenerateItem getItemDetails() {

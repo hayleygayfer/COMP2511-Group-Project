@@ -2,7 +2,6 @@ package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
-import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.UsableItem;
 import javafx.scene.image.Image;
 import java.io.File;
