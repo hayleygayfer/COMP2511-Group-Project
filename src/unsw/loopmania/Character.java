@@ -1,6 +1,7 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
@@ -298,6 +299,16 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public List<AlliedSoldier> getAlliedSoldiers() {
         return alliedSoldiers;
+    }
+
+    /**
+     * Allied soldier list getter
+     * @return List<AlliedSoldier> 
+     */
+    public void cleanAlliedSoldiers() {
+        System.out.println(getNumOfAlliedSoldiers());
+        alliedSoldiers.removeIf(alliedSoldier -> alliedSoldier.isTranced());
+        System.out.println(getNumOfAlliedSoldiers());
     }
 
     /**

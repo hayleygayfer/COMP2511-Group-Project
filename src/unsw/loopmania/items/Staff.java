@@ -18,7 +18,7 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
     // TODO write staff
     public Staff(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        baseDamage = 2;
+        baseDamage = 1;
         setSellPrice(20);
     }
 
@@ -34,7 +34,7 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
         int chance = random.nextInt(100);
         if (applyTrance(chance)) {
             enemy.setHealth(0);
-            character.addSoldier(new AlliedSoldier(character));
+            character.addSoldier(new AlliedSoldier(character, true));
         }
         enemy.setDamage(enemy.getDamage() + baseDamage);
     }

@@ -8,11 +8,14 @@ public class AlliedSoldier {
     private SimpleIntegerProperty health;
     private SimpleIntegerProperty baseDamage;
     private Character character;
+    private boolean tranced;
 
-    public AlliedSoldier(Character character) {
+
+    public AlliedSoldier(Character character, boolean isTranced) {
         health = new SimpleIntegerProperty(10);
         baseDamage = new SimpleIntegerProperty(1);
         this.character = character;
+        this.tranced = isTranced;
     }
 
     /**
@@ -58,5 +61,13 @@ public class AlliedSoldier {
      */
     public void attack(BasicEnemy enemy) {
         enemy.deductHealth(getDamage());
+    }
+
+    /**
+     * Returns whether or not the allied soldier is tranced (and therefore dies at the end of a battle).
+     * @return
+     */
+    public boolean isTranced() {
+        return tranced;
     }
 }

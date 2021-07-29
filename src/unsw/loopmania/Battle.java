@@ -2,10 +2,7 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.javatuples.Quartet;
 import org.javatuples.Quintet;
-import org.javatuples.Triplet;
 
 public class Battle {
   private Character character;
@@ -60,13 +57,14 @@ public class Battle {
    * Resets the characters health 
    */
   public void resetCharacter() {
+    character.setDamage(initialCharacterDamage);
+    character.cleanAlliedSoldiers();
     if (initialCharacterHealth < character.getCurrentHealth()) {
       character.setCurrentHealth(initialCharacterHealth);
-      character.setDamage(initialCharacterDamage);
     }
   }
 
-  /**
+  /** 
    * Check if the character is still alive at the end of the battle
    * @return boolean
    */
