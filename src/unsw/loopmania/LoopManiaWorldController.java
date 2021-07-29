@@ -380,6 +380,12 @@ public class LoopManiaWorldController {
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+
     }
 
     /**
@@ -717,10 +723,11 @@ public class LoopManiaWorldController {
         }   
 
         if (item instanceof UsableItem) {
+            UsableItem usableItem = (UsableItem) item;
             view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    item.applyEffect(world.getCharacter());
+                    usableItem.affect(world.getCharacter());
                     world.removeItemWhenUsed(item);
                     view.setVisible(false);
                     view.setManaged(false);

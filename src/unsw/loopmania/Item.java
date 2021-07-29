@@ -26,14 +26,6 @@ public class Item extends StaticEntity {
     }
 
     /**
-     * Applies the effect of the specific item on the characters stats
-     * @param character Current character
-     */
-    public void applyEffect(Character character) {
-
-    }
-
-    /**
      * Sell item price setter
      * @param price The price to sell an item
      */

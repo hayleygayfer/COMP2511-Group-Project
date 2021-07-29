@@ -33,7 +33,6 @@ public class AlliedSoldier {
      */
     public void loseHealth(double damage) {
         this.health.set((int) (getHealth() - damage));
-        System.out.println(getHealth());
         if (!isAlive()) {
             character.loseSoldier(this);
         }

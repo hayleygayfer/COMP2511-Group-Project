@@ -8,6 +8,8 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Goals.Goal;
+import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
@@ -378,10 +380,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         // pick a random card
         List<Card> potentialCards = new ArrayList<>();
         potentialCards.add(new VampireCastleCard(posX, posY));
-        potentialCards.add(new ZombiePitCard(posX, posY));
-        potentialCards.add(new VillageCard(posX, posY));
-        potentialCards.add(new TrapCard(posX, posY));
-        potentialCards.add(new TowerCard(posX, posY));
+        // potentialCards.add(new ZombiePitCard(posX, posY));
+        // potentialCards.add(new VillageCard(posX, posY));
+        // potentialCards.add(new TrapCard(posX, posY));
+        // potentialCards.add(new TowerCard(posX, posY));
+        potentialCards.add(new CampfireCard(posX, posY));
 
         Random random = new Random();
         Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));
@@ -400,16 +403,25 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         for (BasicEnemy e: enemies){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
-            if (Math.pow((character.getX()-e.getX()), 2) +  Math.pow((character.getY()-e.getY()), 2) < Math.pow(e.getBattleRadius(), 2)){
+            if (Helper.withinRadius(character, e, e.getBattleRadius())){
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
                 List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
                 enemiesEncountered.add(e);
                 for (BasicEnemy support : enemies) {
-                    if (Math.pow((e.getX()-support.getX()), 2) +  Math.pow((e.getY()-support.getY()), 2) < Math.pow(support.getSupportRadius(), 2) && !support.equals(e)) {
+                    if (Helper.withinRadius(e, support, support.getSupportRadius()) && !support.equals(e)) {
                         enemiesEncountered.add(support);
                     }
                 }
-                setCurrentBattle(new Battle(character, enemiesEncountered));
+
+                // get all the buildings that can affect a battle
+                List<CharacterEffect> battleBuildings = new ArrayList<>();
+                for (Building b : buildingEntities) {
+                    if (b instanceof CharacterEffect) {
+                        battleBuildings.add((CharacterEffect) b);
+                    }
+                }
+
+                setCurrentBattle(new Battle(character, enemiesEncountered, battleBuildings));
                 if (character.isAlive()) {
                     defeatedEnemies.add(e);
                     // if defeated boss add to list

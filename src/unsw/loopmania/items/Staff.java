@@ -39,7 +39,6 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
      * @pre enemy != null
      */
     public void attack(BasicEnemy enemy, Character character) {
-        System.out.println("inflict trance");
         Random random = new Random();
         int chance = random.nextInt(100);
         if (applyTrance(chance)) {

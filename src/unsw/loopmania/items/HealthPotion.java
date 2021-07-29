@@ -2,6 +2,7 @@ package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
+import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.UsableItem;
 import javafx.scene.image.Image;
 import java.io.File;
@@ -18,8 +19,7 @@ public class HealthPotion extends UsableItem {
      * @param character The character which its going increase the health for
      * @pre character != null
      */
-    @Override
-    public void applyEffect(Character character) {
+    public void affect(Character character) {
         character.setCurrentHealth(character.getBaseHealth());
     }
 

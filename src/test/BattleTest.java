@@ -16,9 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
+import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
+import unsw.loopmania.Building;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.Stake;
@@ -30,6 +32,7 @@ public class BattleTest {
     private SimpleIntegerProperty x = new SimpleIntegerProperty(0);
     private SimpleIntegerProperty y = new SimpleIntegerProperty(0);
     List<Pair<Integer, Integer>> path = TestHelper.createPath();
+    private List<CharacterEffect> buildings = new ArrayList<>();
 
     @Test
     public void testOneSlugNoItems() {
@@ -41,7 +44,7 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings);
 
         newBattle.runBattle();
         assert(newBattle.wonBattle());
@@ -61,7 +64,7 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings);
 
         List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
@@ -82,7 +85,7 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings);
 
         List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
@@ -104,7 +107,7 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings);
 
         List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
@@ -122,7 +125,7 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings);
 
         List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
@@ -142,7 +145,7 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings);
 
         List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
@@ -162,7 +165,7 @@ public class BattleTest {
         enemies.add(vampire);
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings);
 
         List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 

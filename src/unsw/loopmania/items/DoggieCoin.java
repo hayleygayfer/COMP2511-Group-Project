@@ -5,15 +5,13 @@ import unsw.loopmania.MovingEntity;
 import unsw.loopmania.RareItem;
 import unsw.loopmania.UsableItem;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.Item;
 import unsw.loopmania.generateItems.*;
-import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import unsw.loopmania.itemTypes.WeaponType;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class DoggieCoin extends UsableItem implements RareItem {
+public class DoggieCoin extends Item implements RareItem {
     private GenerateItem itemInfo = new DoggieCoinGenerateItem();
 
     public DoggieCoin(SimpleIntegerProperty x, SimpleIntegerProperty y) {
