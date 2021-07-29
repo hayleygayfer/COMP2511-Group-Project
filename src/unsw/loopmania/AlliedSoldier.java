@@ -7,10 +7,10 @@ public class AlliedSoldier {
     // TODO: write allied solder
     private SimpleIntegerProperty health;
     private SimpleIntegerProperty baseDamage;
-    private SimpleIntegerProperty baseDefence;
 
     public AlliedSoldier() {
-
+        health = new SimpleIntegerProperty(10);
+        baseDamage = new SimpleIntegerProperty(1);
     }
 
     /**
@@ -47,10 +47,10 @@ public class AlliedSoldier {
     }
 
     /**
-     * Base defence getter
-     * @return int 
+     * Attacks enemy
+     * @param enemy
      */
-    public int getBaseDefence() {
-        return baseDefence.get();
+    public void attack(BasicEnemy enemy) {
+        enemy.deductHealth(getDamage());
     }
 }

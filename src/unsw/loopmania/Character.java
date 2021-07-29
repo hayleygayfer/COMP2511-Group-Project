@@ -299,6 +299,9 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @param enemy A current enemy that the character is attacking
      */
     public void attack(BasicEnemy enemy) {
+        for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+            alliedSoldier.attack(enemy);
+        }
         for (EquippableItem item : getEquippedItems()) {
             if (item instanceof CustomAttackStrategy) {
                 CustomAttackStrategy customAttackStrategy = (CustomAttackStrategy) item;
