@@ -42,8 +42,10 @@ public class Battle {
       }
       this.baseEnemyBattleHealth = enemy.getHealth();
       while (character.isAlive() && enemy.isAlive()) {
-        enemy.attack(character);
         character.attack(enemy);
+        if (enemy.isAlive()) {
+          enemy.attack(character);
+        }
         int enemyHealth = enemy.getHealth();
         if (enemyHealth < 0) enemyHealth = 0;
         frames.add(Quintet.with(((double) character.getCurrentHealth() / baseBattleCharacterHealth), enemyHealth / baseEnemyBattleHealth, enemy, enemies.size() - index, character.getNumOfAlliedSoldiers()));
