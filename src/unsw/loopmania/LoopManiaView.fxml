@@ -319,6 +319,7 @@
                   </font>
                </Text>
                <Text fx:id="enemiesLeft" layoutX="38.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="130.7476549324324" />
+               <Text fx:id="alliedSoldiersCount" layoutX="299.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have 3 allied soldiers!" />
             </children>
          </Pane>
          <HBox alignment="CENTER" prefHeight="554.0" prefWidth="470.0" styleClass="battle" stylesheets="@styles.css">

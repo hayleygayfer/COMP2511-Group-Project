@@ -7,10 +7,12 @@ public class AlliedSoldier {
     // TODO: write allied solder
     private SimpleIntegerProperty health;
     private SimpleIntegerProperty baseDamage;
+    private Character character;
 
-    public AlliedSoldier() {
+    public AlliedSoldier(Character character) {
         health = new SimpleIntegerProperty(10);
         baseDamage = new SimpleIntegerProperty(1);
+        this.character = character;
     }
 
     /**
@@ -27,7 +29,11 @@ public class AlliedSoldier {
      * @param damage
      */
     public void loseHealth(double damage) {
-        this.health.subtract(damage);
+        this.health.set((int) (getHealth() - damage));
+        System.out.println(getHealth());
+        if (!isAlive()) {
+            character.loseSoldier(this);
+        }
     }
 
     /**

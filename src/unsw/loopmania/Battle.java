@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.javatuples.Quartet;
+import org.javatuples.Quintet;
 import org.javatuples.Triplet;
 
 public class Battle {
@@ -27,8 +28,8 @@ public class Battle {
    * Updates both enemy and character stats during battle until one is dead
    * @return List<Triplet<Integer, Integer, BasicEnemy>>
    */
-  public List<Quartet<Double, Double, BasicEnemy, Integer>> runBattle() {
-    List<Quartet<Double, Double, BasicEnemy, Integer>> frames = new ArrayList<Quartet<Double, Double, BasicEnemy, Integer>>();
+  public List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> runBattle() {
+    List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = new ArrayList<Quintet<Double, Double, BasicEnemy, Integer, Integer>>();
     // Initial set up for character
     for (EquippableItem item : character.getEquippedItems()) {
       item.affect(character);
@@ -36,7 +37,7 @@ public class Battle {
     this.baseBattleCharacterHealth = character.getCurrentHealth() + (character.getBaseHealth() - initialCharacterHealth);
     // Add initial frame
     int index = 0;
-    frames.add(Quartet.with(character.getCurrentHealth() / baseBattleCharacterHealth, 1.0, enemies.get(0), enemies.size() - index));
+    frames.add(Quintet.with(character.getCurrentHealth() / baseBattleCharacterHealth, 1.0, enemies.get(0), enemies.size() - index, character.getNumOfAlliedSoldiers()));
     for (BasicEnemy enemy : enemies) {
       // Initial set up for each enemy
       for (EquippableItem item : character.getEquippedItems()) {
@@ -48,7 +49,7 @@ public class Battle {
         character.attack(enemy);
         int enemyHealth = enemy.getHealth();
         if (enemyHealth < 0) enemyHealth = 0;
-        frames.add(Quartet.with(((double) character.getCurrentHealth() / baseBattleCharacterHealth), enemyHealth / baseEnemyBattleHealth, enemy, enemies.size() - index));
+        frames.add(Quintet.with(((double) character.getCurrentHealth() / baseBattleCharacterHealth), enemyHealth / baseEnemyBattleHealth, enemy, enemies.size() - index, character.getNumOfAlliedSoldiers()));
       }
       index++;
     }

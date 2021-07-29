@@ -21,7 +21,7 @@ public class BarracksBuilding extends Building implements CharacterPositionObser
      */
     public void encounter(Character character) {
         if (character.getX() == getX() && character.getY() == getY()) {
-            AlliedSoldier soldier = new AlliedSoldier();
+            AlliedSoldier soldier = new AlliedSoldier(character);
             character.addSoldier(soldier);
         }
     }

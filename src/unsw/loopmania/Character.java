@@ -284,11 +284,28 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
+     * Removes an ally soldier due to death / vampire attack
+     * @param solider
+     * @pre newSoldier != NULL and is in the list
+     */
+    public void loseSoldier(AlliedSoldier soldier) {
+        alliedSoldiers.remove(soldier);
+    }
+
+    /**
      * Allied soldier list getter
      * @return List<AlliedSoldier> 
      */
     public List<AlliedSoldier> getAlliedSoldiers() {
         return alliedSoldiers;
+    }
+
+    /**
+     * Allied soldier list size getter
+     * @return integer
+     */
+    public int getNumOfAlliedSoldiers() {
+        return alliedSoldiers.size();
     }
 
     /**

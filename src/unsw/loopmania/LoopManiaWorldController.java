@@ -52,6 +52,7 @@ import unsw.loopmania.itemTypes.AccessoryType;
 
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
+import org.javatuples.Quintet;
 
 import java.util.EnumMap;
 
@@ -118,6 +119,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private Text enemiesLeft;
+
+    @FXML
+    private Text alliedSoldiersCount;
 
     @FXML
     private HBox gameOver;
@@ -405,7 +409,7 @@ public class LoopManiaWorldController {
                 finishBattleButton.setVisible(false);
                 pause();
                 SequentialTransition battleSequence = new SequentialTransition();
-                List<Quartet<Double, Double, BasicEnemy, Integer>> frames = world.getCurrentBattle().runBattle();
+                List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = world.getCurrentBattle().runBattle();
                 enemyBattle.setImage(frames.get(0).getValue2().render());
                 characterHealth.setProgress(frames.get(0).getValue0());
                 enemyHealth.setProgress(frames.get(0).getValue1());
@@ -1117,8 +1121,9 @@ public class LoopManiaWorldController {
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
-    public ParallelTransition animateBattleFrame(Quartet<Double, Double, BasicEnemy, Integer> frame) {
+    public ParallelTransition animateBattleFrame(Quintet<Double, Double, BasicEnemy, Integer, Integer> frame) {
         enemiesLeft.setText(frame.getValue3() + " Enemies Left");
+        alliedSoldiersCount.setText("You have " + frame.getValue4() + " allied soldiers.");
         ParallelTransition ptr = new ParallelTransition();
         //Duration = 2.5 seconds
         Duration duration = Duration.millis(250);
