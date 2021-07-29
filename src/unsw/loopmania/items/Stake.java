@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.itemTypes.WeaponType;
 import javafx.scene.image.Image;
 import java.io.File;
+import unsw.loopmania.Character;
 
 public class Stake extends EquippableItem implements WeaponType, CustomAttackStrategy {
     private int baseDamage;
@@ -35,7 +36,7 @@ public class Stake extends EquippableItem implements WeaponType, CustomAttackStr
      * @param enemy the enemy to attack
      * @pre enemy != null
      */
-    public void attack(BasicEnemy enemy) {
+    public void attack(BasicEnemy enemy, Character character) {
         if (enemy instanceof Vampire) {
             int vampireDamage = 10;
             Vampire vampire = (Vampire) enemy;

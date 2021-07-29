@@ -1,5 +1,7 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.AlliedSoldier;
+import unsw.loopmania.Character;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
@@ -26,17 +28,13 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
      * @param enemy The enemy to affect
      * @pre enemy != null
      */
-    public void attack(BasicEnemy enemy) {
+    public void attack(BasicEnemy enemy, Character character) {
         System.out.println("inflict trance");
         Random random = new Random();
         int chance = random.nextInt(100);
         if (applyTrance(chance)) {
-            // TODO: put enemy into trance
-            // Destroy enemy 
-            // Turn enemy into allied soldier
-            // Set how long a trance lasts for 
-            // If that time has passed then turn allied soldier back into enemy
-            // If the time is still going during the fight enemy dies
+            enemy.setHealth(0);
+            character.addSoldier(new AlliedSoldier(character));
         }
         enemy.setDamage(enemy.getDamage() + baseDamage);
     }

@@ -322,7 +322,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         for (EquippableItem item : getEquippedItems()) {
             if (item instanceof CustomAttackStrategy) {
                 CustomAttackStrategy customAttackStrategy = (CustomAttackStrategy) item;
-                customAttackStrategy.attack(enemy);
+                customAttackStrategy.attack(enemy, this);
                 return;
             }
         }
