@@ -21,6 +21,10 @@ public class Item extends StaticEntity {
         return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
 
+    public GenerateItem getItemDetails() {
+        return null;
+    }
+
     /**
      * Applies the effect of the specific item on the characters stats
      * @param character Current character

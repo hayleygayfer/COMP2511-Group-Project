@@ -4,6 +4,8 @@ import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.generateItems.*;
 import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.itemTypes.WeaponType;
@@ -13,11 +15,19 @@ import java.io.File;
 public class Stake extends EquippableItem implements WeaponType, CustomAttackStrategy {
     private int baseDamage;
 
+    private GenerateItem itemInfo = new StakeGenerateItem();
+
+    // TODO write stake
     public Stake(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         setSellPrice(15);
         // has low normal stats
         baseDamage = 5;
+    }
+
+    @Override
+    public GenerateItem getItemDetails() {
+        return itemInfo;
     }
 
     /**

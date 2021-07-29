@@ -3,6 +3,9 @@ package unsw.loopmania.items;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.generateItems.*;
+import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.itemTypes.WeaponType;
 import javafx.scene.image.Image;
@@ -13,11 +16,18 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
 
     private int baseDamage;
 
+    private GenerateItem itemInfo = new StaffGenerateItem();
+
     // TODO write staff
     public Staff(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         baseDamage = 2;
         setSellPrice(20);
+    }
+
+    @Override
+    public GenerateItem getItemDetails() {
+        return itemInfo;
     }
 
     /**
