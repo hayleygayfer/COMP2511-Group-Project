@@ -4,6 +4,8 @@ import java.util.List;
 
 import java.util.ArrayList;
 import org.javatuples.Pair;
+import org.javatuples.Quartet;
+import org.javatuples.Quintet;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -24,7 +26,6 @@ import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
-import org.javatuples.Triplet;
 
 
 public class BattleTest {
@@ -65,7 +66,7 @@ public class BattleTest {
 
         Battle newBattle = new Battle(character, enemies, buildings);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 2);
 
@@ -86,7 +87,7 @@ public class BattleTest {
 
         Battle newBattle = new Battle(character, enemies, buildings);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 5);
         assertFalse(newBattle.wonBattle());
@@ -108,7 +109,7 @@ public class BattleTest {
 
         Battle newBattle = new Battle(character, enemies, buildings);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 2);
         assertTrue(newBattle.wonBattle());
@@ -126,7 +127,7 @@ public class BattleTest {
 
         Battle newBattle = new Battle(character, enemies, buildings);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 16);
         assertTrue(newBattle.wonBattle());
@@ -146,7 +147,7 @@ public class BattleTest {
 
         Battle newBattle = new Battle(character, enemies, buildings);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 8);
         assertFalse(newBattle.wonBattle());
@@ -166,7 +167,7 @@ public class BattleTest {
 
         Battle newBattle = new Battle(character, enemies, buildings);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 20);
         assertTrue(newBattle.wonBattle());

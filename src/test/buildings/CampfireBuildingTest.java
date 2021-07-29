@@ -59,9 +59,9 @@ public class CampfireBuildingTest {
         Battle battle = new Battle(character, enemies, battleBuildings);
         battle.runBattle();
 
-        // character should have killed slug in two hits, meaning slug would have done 2 damage on the character
+        // character should have killed slug in two hits, meaning slug would have done 3 damage on the character
         assertFalse(slug.isAlive());
-        assertEquals(48, character.getCurrentHealth());
+        assertEquals(47, character.getCurrentHealth());
     }
 
     @Test
@@ -82,9 +82,9 @@ public class CampfireBuildingTest {
         battle.runBattle();
 
         // without campfire effect
-        // character should have killed slug in 4 hits, meaning slug would have done 4 damage on the character
+        // character should have killed slug in 4 hits, meaning slug would have done 9 damage on the character
         assertFalse(slug.isAlive());
-        assertEquals(46, character.getCurrentHealth()); 
+        assertEquals(41, character.getCurrentHealth()); 
     }
 
     @Test
@@ -105,9 +105,9 @@ public class CampfireBuildingTest {
         battle.runBattle();
         battle.resetCharacter();
 
-        // character should have killed slug in two hits, meaning slug would have done 2 damage on the character
+        // character should have killed slug in two hits, meaning slug would have done 3 damage on the character
         assertFalse(slug.isAlive());
-        assertEquals(48, character.getCurrentHealth()); 
+        assertEquals(47, character.getCurrentHealth()); 
 
         // move character down and battle again - now out of effect zone
         character.moveDownPath();
@@ -120,9 +120,9 @@ public class CampfireBuildingTest {
         battle.resetCharacter();
 
         // character should have killed slug in 4 hits
-        // the slug would have done 4 damage on the character
+        // the slug would have done 9 damage on the character
         assertFalse(slug2.isAlive());
-        assertEquals(44, character.getCurrentHealth());
+        assertEquals(38, character.getCurrentHealth());
     }
 
     @Test

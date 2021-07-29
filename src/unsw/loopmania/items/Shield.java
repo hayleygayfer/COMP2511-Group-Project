@@ -3,6 +3,8 @@ package unsw.loopmania.items;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.enemies.Vampire;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import unsw.loopmania.itemTypes.ShieldType;
@@ -12,11 +14,18 @@ public class Shield extends EquippableItem implements ShieldType {
     private double reducedEnemyCriticalChance;
     private int reduceEnemyDamage;
 
+    private GenerateItem itemInfo = new ShieldGenerateItem();
+
     public Shield(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         reducedEnemyCriticalChance = 0.04;
         reduceEnemyDamage = 4;
         setSellPrice(10);
+    }
+
+    @Override
+    public GenerateItem getItemDetails() {
+        return itemInfo;
     }
 
     /**

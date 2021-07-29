@@ -2,13 +2,14 @@ package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.RareItem;
 import unsw.loopmania.items.TheOneRing;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class TheOneRingGenerateItem extends GenerateItem {
+public class TheOneRingGenerateItem extends GenerateItem implements RareItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;

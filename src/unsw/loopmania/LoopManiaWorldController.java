@@ -22,6 +22,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ProgressBar;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -32,6 +33,9 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Popup;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -50,7 +54,8 @@ import unsw.loopmania.itemTypes.HelmetType;
 import unsw.loopmania.itemTypes.AccessoryType;
 
 import org.javatuples.Pair;
-import org.javatuples.Triplet;
+import org.javatuples.Quartet;
+import org.javatuples.Quintet;
 
 import java.util.EnumMap;
 
@@ -98,7 +103,7 @@ public class LoopManiaWorldController {
      * container for all battle interactions
      */
     @FXML
-    private HBox battle;
+    private VBox battle;
 
     @FXML
     private ImageView heroBattle;
@@ -110,10 +115,16 @@ public class LoopManiaWorldController {
     private Button finishBattleButton;
 
     @FXML
-    private Text enemyBattleHealth;
+    private ProgressBar enemyHealth;
 
     @FXML
-    private Text characterBattleHealth;
+    private ProgressBar characterHealth;
+
+    @FXML
+    private Text enemiesLeft;
+
+    @FXML
+    private Text alliedSoldiersCount;
 
     @FXML
     private HBox gameOver;
@@ -384,6 +395,7 @@ public class LoopManiaWorldController {
         System.out.println("starting timer");
         gameOver.setVisible(false);
         heroCastle.setVisible(false);
+        gameMap.setVisible(true);
         isPaused = false;
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
@@ -407,10 +419,12 @@ public class LoopManiaWorldController {
                 finishBattleButton.setVisible(false);
                 pause();
                 SequentialTransition battleSequence = new SequentialTransition();
-                List<Triplet<Integer, Integer, BasicEnemy>> frames = world.getCurrentBattle().runBattle();
+                List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = world.getCurrentBattle().runBattle();
                 enemyBattle.setImage(frames.get(0).getValue2().render());
-                characterBattleHealth.setText(frames.get(0).getValue0().toString());
-                enemyBattleHealth.setText(frames.get(0).getValue1().toString());
+                enemiesLeft.setText(frames.get(0).getValue3() + " Enemies Left");
+                alliedSoldiersCount.setText("You have " + frames.get(0).getValue4() + " allied soldiers.");
+                characterHealth.setProgress(frames.get(0).getValue0());
+                enemyHealth.setProgress(frames.get(0).getValue1());
                 for (int i = 1; i < (frames.size()); i++) {
                     battleSequence.getChildren().add(animateBattleFrame(frames.get(i)));
                 }
@@ -418,12 +432,16 @@ public class LoopManiaWorldController {
                 battleSequence.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        characterBattleHealth.setText(frames.get(frames.size() - 1).getValue0().toString());
-                        enemyBattleHealth.setText(frames.get(frames.size() - 1).getValue1().toString());
+                        characterHealth.setProgress(frames.get(frames.size() - 1).getValue0());
+                        enemyHealth.setProgress(frames.get(frames.size() - 1).getValue1());
                         world.getCurrentBattle().resetCharacter();
                         if (!world.getCurrentBattle().wonBattle()) {
-                            mainMenuSwitcher.switchMenu();
+                            terminate();
+
                         } else {
+                            enemiesLeft.setText("You Won!");
+                            enemiesLeft.setText("0 Enemies Left");
+                            alliedSoldiersCount.setText("You have " + world.getCharacter().getNumOfAlliedSoldiers() + " allied soldiers.");            
                             finishBattleButton.setVisible(true);
                         }
                     }
@@ -443,6 +461,11 @@ public class LoopManiaWorldController {
             List<BasicEnemy> newEnemies = world.possiblySpawnEnemies();
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
+            }
+            // spawn boss if applicable
+            BasicEnemy spawningBoss = world.spawnBossEnemy();
+            if (spawningBoss != null) {
+                onLoad(spawningBoss);
             }
             List<Gold> newGold = world.possiblySpawnGold();
             for (Gold gold: newGold) {
@@ -474,7 +497,10 @@ public class LoopManiaWorldController {
      */
     public void terminate() {
         gameOver.setVisible(true);
+        gameMap.setVisible(false);
+        battle.setVisible(false);
         endGame();
+        world.setCurrentBattle(null);
     }
 
     /**
@@ -505,6 +531,72 @@ public class LoopManiaWorldController {
         if (!purchasedItem.equals(null)) {
             onLoad(purchasedItem);
         }
+    }
+
+    public Popup loadPopupInfo(Item item) {
+        Popup itemDetailsPopup = new Popup();
+
+        VBox itemInfo = new VBox();
+        itemInfo.setStyle("-fx-padding: 8;" + 
+        "-fx-border-style: solid inside;" + 
+        "-fx-border-width: 1;" +
+        "-fx-border-insets: 3;" + 
+        "-fx-border-color: grey;" +
+        "-fx-background-color: white;");
+
+        Button hide = new Button("X");
+        hide.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                itemDetailsPopup.hide();
+                try {
+                    pauseGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }); 
+
+        HBox closeButtonRow = new HBox();
+        closeButtonRow.getChildren().add(hide);
+
+        itemInfo.getChildren().add(closeButtonRow);
+
+        HBox imgRow = new HBox();
+        imgRow.setPadding(new Insets(3));
+        imgRow.setPrefHeight(110);
+
+        VBox nameDescription = new VBox();
+
+        HBox priceRow = new HBox();
+        priceRow.setPadding(new Insets(3));
+        // add name of item
+        Label name = new Label(item.getItemDetails().name().get());
+        name.setStyle("-fx-font-weight: bold");
+        nameDescription.getChildren().add(name);
+        // add item description
+        Label description = new Label(item.getItemDetails().description().get());
+        description.setWrapText(true);
+        description.setPrefWidth(100);
+        nameDescription.getChildren().add(description);
+        // add item image
+        ImageView itemView = new ImageView(item.getItemDetails().getImage());
+
+        // create image row
+        imgRow.getChildren().add(nameDescription);
+        imgRow.getChildren().add(itemView);
+
+        itemInfo.getChildren().add(imgRow);
+
+        // add item price
+        Label price = new Label("$" + item.getItemDetails().price().get());
+        price.setPrefWidth(95);
+        priceRow.getChildren().add(price);
+
+        itemInfo.getChildren().add(priceRow);
+
+        itemDetailsPopup.getContent().add(itemInfo);
+
+        return itemDetailsPopup;
     }
 
     /**
@@ -643,6 +735,7 @@ public class LoopManiaWorldController {
                 }
             });
         } else  {
+            Popup itemDetails = loadPopupInfo(item);
             view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -651,6 +744,13 @@ public class LoopManiaWorldController {
                         view.setVisible(false);
                         view.setManaged(false);
                         event.consume();
+                    } else {
+                        itemDetails.show(anchorPaneRoot.getScene().getWindow());
+                        try {
+                            pauseGame();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
@@ -1119,7 +1219,7 @@ public class LoopManiaWorldController {
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
-    public ParallelTransition animateBattleFrame(Triplet<Integer, Integer, BasicEnemy> frame) {
+    public ParallelTransition animateBattleFrame(Quintet<Double, Double, BasicEnemy, Integer, Integer> frame) {
         ParallelTransition ptr = new ParallelTransition();
         //Duration = 2.5 seconds
         Duration duration = Duration.millis(250);
@@ -1145,8 +1245,10 @@ public class LoopManiaWorldController {
         ptr.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                characterBattleHealth.setText(frame.getValue0().toString());
-                enemyBattleHealth.setText(frame.getValue1().toString());
+                enemiesLeft.setText(frame.getValue3() + " Enemies Left");
+                alliedSoldiersCount.setText("You have " + frame.getValue4() + " allied soldiers.");        
+                characterHealth.setProgress(Math.max(frame.getValue0(), 0));
+                enemyHealth.setProgress(Math.max(frame.getValue1(), 0));
                 enemyBattle.setImage(frame.getValue2().render());
             }
         });

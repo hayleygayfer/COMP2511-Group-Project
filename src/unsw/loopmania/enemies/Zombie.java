@@ -10,6 +10,8 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
 import unsw.loopmania.generateCards.TowerGenerateCard;
 import unsw.loopmania.generateItems.TheOneRingGenerateItem;
+import unsw.loopmania.generateItems.AndurilGenerateItem;
+import unsw.loopmania.generateItems.TreeStumpGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.generateItems.StaffGenerateItem;
@@ -27,6 +29,8 @@ public class Zombie extends BasicEnemy {
         droppableItems.add(new Pair<GenerateItem, Double>(new StaffGenerateItem(), 0.50));
         droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.2));
         droppableItems.add(new Pair<GenerateItem, Double>(new TheOneRingGenerateItem(), 0.05));
+        droppableItems.add(new Pair<GenerateItem, Double>(new AndurilGenerateItem(), 0.05));
+        droppableItems.add(new Pair<GenerateItem, Double>(new TreeStumpGenerateItem(), 0.05));
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();

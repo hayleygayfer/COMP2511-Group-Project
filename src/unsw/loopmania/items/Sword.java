@@ -3,6 +3,8 @@ package unsw.loopmania.items;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
+import unsw.loopmania.generateItems.*;
 import unsw.loopmania.Character;
 import javafx.scene.image.Image;
 import java.io.File;
@@ -13,11 +15,18 @@ import java.io.File;
 public class Sword extends EquippableItem implements WeaponType {
     private int damage;
 
+    private GenerateItem itemInfo = new SwordGenerateItem();
+
     public Sword(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         damage = 10;
         setSellPrice(10);
-    }    
+    } 
+    
+    @Override
+    public GenerateItem getItemDetails() {
+        return itemInfo;
+    }
 
     /**
      * Increases character damage
