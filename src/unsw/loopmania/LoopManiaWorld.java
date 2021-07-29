@@ -421,7 +421,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                 List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
                 enemiesEncountered.add(e);
                 for (BasicEnemy support : enemies) {
-                    if (Math.pow((e.getX()-support.getX()), 2) +  Math.pow((e.getY()-support.getY()), 2) < Math.pow(support.getSupportRadius(), 2)) {
+                    if (Math.pow((e.getX()-support.getX()), 2) +  Math.pow((e.getY()-support.getY()), 2) < Math.pow(support.getSupportRadius(), 2) && !support.equals(e)) {
                         enemiesEncountered.add(support);
                     }
                 }

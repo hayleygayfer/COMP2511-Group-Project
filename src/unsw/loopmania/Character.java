@@ -1,6 +1,7 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.binding.BooleanBinding;
@@ -304,11 +305,38 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
+     * Removes an ally soldier due to death / vampire attack
+     * @param solider
+     * @pre newSoldier != NULL and is in the list
+     */
+    public void loseSoldier(AlliedSoldier soldier) {
+        alliedSoldiers.remove(soldier);
+    }
+
+    /**
      * Allied soldier list getter
      * @return List<AlliedSoldier> 
      */
     public List<AlliedSoldier> getAlliedSoldiers() {
         return alliedSoldiers;
+    }
+
+    /**
+     * Allied soldier list getter
+     * @return List<AlliedSoldier> 
+     */
+    public void cleanAlliedSoldiers() {
+        System.out.println(getNumOfAlliedSoldiers());
+        alliedSoldiers.removeIf(alliedSoldier -> alliedSoldier.isTranced());
+        System.out.println(getNumOfAlliedSoldiers());
+    }
+
+    /**
+     * Allied soldier list size getter
+     * @return integer
+     */
+    public int getNumOfAlliedSoldiers() {
+        return alliedSoldiers.size();
     }
 
     /**
@@ -319,10 +347,13 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @param enemy A current enemy that the character is attacking
      */
     public void attack(BasicEnemy enemy) {
+        for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+            alliedSoldier.attack(enemy);
+        }
         for (EquippableItem item : getEquippedItems()) {
             if (item instanceof CustomAttackStrategy) {
                 CustomAttackStrategy customAttackStrategy = (CustomAttackStrategy) item;
-                customAttackStrategy.attack(enemy);
+                customAttackStrategy.attack(enemy, this);
                 return;
             }
         }
