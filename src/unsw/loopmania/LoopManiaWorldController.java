@@ -6,6 +6,7 @@ import java.util.List;
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
@@ -56,6 +57,7 @@ import unsw.loopmania.gameModes.StandardMode;
 import unsw.loopmania.gameModes.SurvivalMode;
 import unsw.loopmania.gameModes.BerserkerMode;
 import unsw.loopmania.gameModes.ConfusingMode;
+import javafx.stage.Stage;
 
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -537,7 +539,7 @@ public class LoopManiaWorldController {
     public void purchaseItemFromShop(GenerateItem item) {
         Item newItem = world.purchaseItemFromHerosCastle(item);
 
-        if (!(newItem != null)) {
+        if (newItem != null) {
             onLoad(newItem);
         }
     }
@@ -655,7 +657,7 @@ public class LoopManiaWorldController {
         // add buy button
         Button buyItem = new Button("Buy");
         buyItem.setOnAction(e -> { 
-            purchaseItemFromShop(item); 
+            purchaseItemFromShop(item);
         });
         buyItem.disableProperty().bind(world.getCharacter().canPurchase(item));
         priceRow.getChildren().add(buyItem);
