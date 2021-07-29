@@ -55,6 +55,13 @@
 - Enemies move in an anti-clockwise direction
 - Speed is given relative to the character’s speed
 
+### Allied soldiers
+- The character can have a maximum of 2 allied soldiers
+
+### Rare items
+- The Tree Stump reduces normal enemy damage to 1/3, and Boss damage to 1/4
+- Anduril does 20 base damage, and 60 damage to bosses
+
 | Type | Health | Damage | Battle radius | Support radius | Speed |
 |------|--------|--------|---------------|----------------|-------|
 | Slug | 5 | 1 | 1 | 1 | 1 |
