@@ -1,9 +1,6 @@
 package unsw.loopmania.items;
 
-import unsw.loopmania.EquippableItem;
-import unsw.loopmania.MovingEntity;
 import unsw.loopmania.RareItem;
-import unsw.loopmania.UsableItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.generateItems.*;

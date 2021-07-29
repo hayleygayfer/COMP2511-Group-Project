@@ -34,8 +34,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -47,14 +45,9 @@ import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.Goals.Goal;
-import unsw.loopmania.itemTypes.ShieldType;
-import unsw.loopmania.itemTypes.ArmourType;
-import unsw.loopmania.itemTypes.WeaponType;
-import unsw.loopmania.itemTypes.HelmetType;
-import unsw.loopmania.itemTypes.AccessoryType;
+
 
 import org.javatuples.Pair;
-import org.javatuples.Quartet;
 import org.javatuples.Quintet;
 
 import java.util.EnumMap;
@@ -710,17 +703,25 @@ public class LoopManiaWorldController {
      */
     private void onLoad(Item item) {
         ImageView view = new ImageView(item.render());
-        if (item instanceof ArmourType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour);
-        } else if (item instanceof WeaponType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon);
-        } else if (item instanceof ShieldType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
-        } else if (item instanceof HelmetType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
-        } else if (item instanceof AccessoryType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedAccessory);
-        }   
+        switch (item.getType()) {
+            case ARMOUR:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour); 
+                break;
+            case WEAPON:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon); 
+                break;
+            case SHIELD:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield); 
+                break;
+            case HELMET:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet); 
+                break;
+            case ACCESSORY:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedAccessory); 
+                break;
+            default:
+                break;
+        }
 
         if (item instanceof UsableItem) {
             UsableItem usableItem = (UsableItem) item;

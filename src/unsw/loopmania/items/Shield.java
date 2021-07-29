@@ -4,13 +4,15 @@ import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.ItemType;
+import unsw.loopmania.ShopItem;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import unsw.loopmania.itemTypes.ShieldType;
 import javafx.scene.image.Image;
 import java.io.File;
-public class Shield extends EquippableItem implements ShieldType {
+
+public class Shield extends EquippableItem implements ShopItem {
     private double reducedEnemyCriticalChance;
     private int reduceEnemyDamage;
 
@@ -21,6 +23,7 @@ public class Shield extends EquippableItem implements ShieldType {
         reducedEnemyCriticalChance = 0.04;
         reduceEnemyDamage = 4;
         setSellPrice(10);
+        setType(ItemType.SHIELD);
     }
 
     @Override

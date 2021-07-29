@@ -2,10 +2,11 @@ package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
+import unsw.loopmania.ShopItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.generateItems.*;
 import unsw.loopmania.BasicEnemy;
-import unsw.loopmania.itemTypes.ArmourType;
 import javafx.scene.image.Image;
 import java.io.File;
 
@@ -14,13 +15,14 @@ import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Armour extends EquippableItem implements ArmourType {
+public class Armour extends EquippableItem implements ShopItem {
     private GenerateItem itemInfo = new ArmourGenerateItem();
 
     // TODO write armour
     public Armour(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         setSellPrice(20);
+        setType(ItemType.ARMOUR);
     }
 
     @Override
