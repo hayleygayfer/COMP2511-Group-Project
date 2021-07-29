@@ -103,6 +103,7 @@ public class StakeTest {
     public void testAttackRegularEnemy() {
         // damage on slugs and zombies is 6
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        Character character = createCharacter();
 
         Slug slug = new Slug(new PathPosition(0, createPath()));
         Zombie zombie = new Zombie(new PathPosition(0, createPath()));
@@ -110,8 +111,8 @@ public class StakeTest {
         int initialSlugHealth = slug.getHealth();
         int initialZombieHealth = slug.getHealth();
 
-        stake.attack(slug);
-        stake.attack(zombie);
+        stake.attack(slug, character);
+        stake.attack(zombie, character);
 
         assertEquals(initialSlugHealth - 1, slug.getHealth());
         assertEquals(initialZombieHealth - 1, zombie.getHealth());
@@ -122,10 +123,11 @@ public class StakeTest {
         // 20 points damage on vampires
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         Vampire vampire = new Vampire(new PathPosition(0, createPath()));
+        Character character = createCharacter();
 
         int initialVampireHealth = vampire.getHealth();
 
-        stake.attack(vampire);
+        stake.attack(vampire, character);
 
         assertEquals(initialVampireHealth - 20, vampire.getHealth());
     }

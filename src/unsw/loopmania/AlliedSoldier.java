@@ -7,10 +7,15 @@ public class AlliedSoldier {
     // TODO: write allied solder
     private SimpleIntegerProperty health;
     private SimpleIntegerProperty baseDamage;
-    private SimpleIntegerProperty baseDefence;
+    private Character character;
+    private boolean tranced;
 
-    public AlliedSoldier() {
 
+    public AlliedSoldier(Character character, boolean isTranced) {
+        health = new SimpleIntegerProperty(10);
+        baseDamage = new SimpleIntegerProperty(1);
+        this.character = character;
+        this.tranced = isTranced;
     }
 
     /**
@@ -27,7 +32,11 @@ public class AlliedSoldier {
      * @param damage
      */
     public void loseHealth(double damage) {
-        this.health.subtract(damage);
+        this.health.set((int) (getHealth() - damage));
+        System.out.println(getHealth());
+        if (!isAlive()) {
+            character.loseSoldier(this);
+        }
     }
 
     /**
@@ -47,10 +56,18 @@ public class AlliedSoldier {
     }
 
     /**
-     * Base defence getter
-     * @return int 
+     * Attacks enemy
+     * @param enemy
      */
-    public int getBaseDefence() {
-        return baseDefence.get();
+    public void attack(BasicEnemy enemy) {
+        enemy.deductHealth(getDamage());
+    }
+
+    /**
+     * Returns whether or not the allied soldier is tranced (and therefore dies at the end of a battle).
+     * @return
+     */
+    public boolean isTranced() {
+        return tranced;
     }
 }
