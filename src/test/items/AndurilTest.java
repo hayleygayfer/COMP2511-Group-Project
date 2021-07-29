@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import org.javatuples.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import unsw.loopmania.items.Anduril;
@@ -18,8 +17,6 @@ import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
-import unsw.loopmania.StaticEntity;
-import unsw.loopmania.Entity;
 import unsw.loopmania.enemies.Doggie;
 import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Vampire;
