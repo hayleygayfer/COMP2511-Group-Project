@@ -3,6 +3,8 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.EventListenerList;
+
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -51,6 +53,7 @@ import unsw.loopmania.Goals.Goal;
 
 import org.javatuples.Pair;
 import org.javatuples.Quintet;
+import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import java.util.EnumMap;
 
@@ -127,6 +130,9 @@ public class LoopManiaWorldController {
 
     @FXML
     Button pauseButton;
+
+    @FXML 
+    Button muteButton;
 
     /**
      * container for all hero castle menu components
@@ -213,7 +219,7 @@ public class LoopManiaWorldController {
     @FXML
     MediaPlayer goldCollectingPlayer;
 
-    SimpleIntegerProperty oldGoldAmount;
+    SimpleIntegerProperty oldGoldCount;
 
 
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
@@ -225,6 +231,7 @@ public class LoopManiaWorldController {
     private DragIcon draggedEntity;
 
     private boolean isPaused;
+    private boolean isMuted;
     private LoopManiaWorld world;
 
     /**
@@ -368,7 +375,6 @@ public class LoopManiaWorldController {
 
         Media goldCollecting = new Media(new File("src/sounds/goldCollecting.wav").toURI().toString());
         goldCollectingPlayer = new MediaPlayer(goldCollecting);
-        oldGoldAmount = new SimpleIntegerProperty(0);
 
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
@@ -398,6 +404,17 @@ public class LoopManiaWorldController {
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
+        // oldGoldCount = new SimpleIntegerProperty(1);
+        world.getCharacter().getGoldProperty().addListener(new ChangeListener<Number>()   {
+            @Override
+            public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
+                System.out.println("GoldCollected");
+                goldCollectingPlayer.seek(Duration.ZERO);
+                goldCollectingPlayer.play();
+            }
+
+        });
+
         onLoad(world.loadCard());
         onLoad(world.loadCard());
         onLoad(world.loadCard());
@@ -415,6 +432,7 @@ public class LoopManiaWorldController {
         heroCastle.setVisible(false);
         gameMap.setVisible(true);
         isPaused = false;
+        isMuted = false;
         backgroundMusicPlayer.play();
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
@@ -431,10 +449,16 @@ public class LoopManiaWorldController {
                 pause();
             }
 
-            if (oldGoldAmount.getValue() < world.getCharacter().getGoldProperty().getValue()) {
-                oldGoldAmount = world.getCharacter().getGoldProperty();
-                goldCollectingPlayer.play();
-            }   
+            // System.out.println("old" + oldGoldCount.doubleValue());
+            // System.out.println("gold" + world.getCharacter().getGoldProperty().getValue());
+
+            // if (world.getCharacter().getGoldProperty().getValue() == oldGoldCount.doubleValue()) {
+            //     goldCollectingPlayer.play();
+            //     oldGoldCount.add(1);
+            //     System.out.println("old after" + oldGoldCount.doubleValue());
+            //     System.out.println("gold after" + world.getCharacter().getGoldProperty().getValue());
+            // }
+
             
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
@@ -1126,7 +1150,7 @@ public class LoopManiaWorldController {
             }
             else{
                 pause();
-                pauseButton.setText("Start");
+                pauseButton.setText("Resume");
             }
             break;
         default:
@@ -1169,8 +1193,27 @@ public class LoopManiaWorldController {
             }
             startTimer();
         } else {
-            pauseButton.setText("Start");
+            pauseButton.setText("Resume");
             pause();
+        }
+    }
+
+    @FXML
+    private void muteGame() {
+        if (isMuted) {
+            muteButton.setText("Mute");
+            battleMusicPlayer.setMute(false);
+            backgroundMusicPlayer.setMute(false);
+            goldCollectingPlayer.setMute(false);
+            isMuted = false;
+            
+
+        } else {
+            muteButton.setText("Sound");
+            battleMusicPlayer.setMute(true);
+            backgroundMusicPlayer.setMute(true);
+            goldCollectingPlayer.setMute(true);
+            isMuted = true;
         }
     }
 

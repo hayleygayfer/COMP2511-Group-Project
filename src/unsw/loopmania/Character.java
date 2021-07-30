@@ -274,7 +274,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     public void addGold(int amount) {
         this.gold.set(this.gold.get() + amount);
     }
-
+ 
     /**
      * Adds an allied soldiier to the character
      * @param newSoldier
