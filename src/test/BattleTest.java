@@ -88,7 +88,7 @@ public class BattleTest {
         List<Frame> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 5);
-        assertFalse(newBattle.wonBattle());
+        assertTrue(newBattle.wonBattle());
     }
 
     @Test

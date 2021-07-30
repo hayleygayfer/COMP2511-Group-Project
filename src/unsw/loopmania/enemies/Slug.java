@@ -22,10 +22,10 @@ public class Slug extends BasicEnemy {
 
     public Slug(PathPosition position) {
         super(position);
-        setDamage(3);
+        setDamage(1);
         setBattleRadius(2);
         setHealth(4);
-        setSupportRadius(2);
+        setSupportRadius(1);
         // item drops
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new SwordGenerateItem(), 0.50));

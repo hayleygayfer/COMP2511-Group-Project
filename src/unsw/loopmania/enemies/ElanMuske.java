@@ -89,8 +89,8 @@ public class ElanMuske extends BasicEnemy implements BattleBehaviourContext {
     /**
      * Elon Musk Battle Behavviour
      */
-    public List<Frame> battleBehaviour(List<BasicEnemy> enemies,
-            List<CharacterEffect> buildings, BasicEnemy boss, Character character) {
+    public List<Frame> battleBehaviour(List<BasicEnemy> enemies, BasicEnemy boss, Character character,
+            int baseCharacterHealth) {
         // TODO Auto-generated method stub
         return null;
     }

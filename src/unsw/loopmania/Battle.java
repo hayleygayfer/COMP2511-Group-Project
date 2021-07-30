@@ -8,7 +8,6 @@ public class Battle implements BattleBehaviourContext {
     private List<BasicEnemy> enemies;
     private List<CharacterEffect> buildings;
     private int initialCharacterHealth;
-    private double baseBattleCharacterHealth;
     private int initialCharacterDamage;
     private double baseEnemyBattleHealth;
     private BasicEnemy boss;
@@ -35,19 +34,11 @@ public class Battle implements BattleBehaviourContext {
      * @param boss
      * @return frames to animate battle
      */
-    public List<Frame> battleBehaviour(List<BasicEnemy> enemies, List<CharacterEffect> buildings, BasicEnemy boss, Character character) {
+    public List<Frame> battleBehaviour(List<BasicEnemy> enemies,  BasicEnemy boss, Character character, int baseCharacterHealth) {
         List<Frame> frames = new ArrayList<>();
-        // Initial set up for character
-        for (EquippableItem item : character.getEquippedItems()) {
-            item.affect(character);
-        }
-        for (CharacterEffect building : buildings) {
-            building.affect(character);
-        }
-        this.baseBattleCharacterHealth = character.getCurrentHealth() + (character.getBaseHealth() - initialCharacterHealth);
         // Add initial frame
         int index = 0;
-        frames.add(new Frame(character.getCurrentHealth() / baseBattleCharacterHealth, 1.0, 0, enemies.get(0), null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
+        frames.add(new Frame(character.getCurrentHealth() / baseCharacterHealth, 1.0, 0, enemies.get(0), null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
         for (BasicEnemy enemy : enemies) {
         // Initial set up for each enemy
             for (EquippableItem item : character.getEquippedItems()) {
@@ -61,7 +52,7 @@ public class Battle implements BattleBehaviourContext {
                 }
                 int enemyHealth = enemy.getHealth();
                 if (enemyHealth < 0) enemyHealth = 0;
-                frames.add(new Frame(((double) character.getCurrentHealth() / baseBattleCharacterHealth), enemyHealth / baseEnemyBattleHealth, 0, enemy, null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
+                frames.add(new Frame(((double) character.getCurrentHealth() / baseCharacterHealth), enemyHealth / baseEnemyBattleHealth, 0, enemy, null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
             }
             index++;
         }
@@ -75,7 +66,15 @@ public class Battle implements BattleBehaviourContext {
      * @return List<Triplet<Integer, Integer, BasicEnemy>>
      */
     public List<Frame> runBattle() {
-        return battleBehaviourState.battleBehaviour(enemies, buildings, boss, character);
+        // Initial set up for character
+        for (EquippableItem item : character.getEquippedItems()) {
+            item.affect(character);
+        }
+        for (CharacterEffect building : buildings) {
+            building.affect(character);
+        }
+        int baseCharacterHealth = character.getCurrentHealth() + (character.getBaseHealth() - initialCharacterHealth);
+        return battleBehaviourState.battleBehaviour(enemies, boss, character, baseCharacterHealth);
     }
 
     /**
