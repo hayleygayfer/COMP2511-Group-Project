@@ -1,6 +1,7 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Staff;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -8,7 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class StaffGenerateItem extends GenerateItem {
+public class StaffGenerateItem extends GenerateItem implements WeaponType {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;

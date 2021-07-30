@@ -6,6 +6,7 @@ import java.util.List;
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
@@ -45,7 +46,17 @@ import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.Goals.Goal;
-
+import unsw.loopmania.itemTypes.ShieldType;
+import unsw.loopmania.itemTypes.ArmourType;
+import unsw.loopmania.itemTypes.WeaponType;
+import unsw.loopmania.itemTypes.HelmetType;
+import unsw.loopmania.itemTypes.AccessoryType;
+import unsw.loopmania.GameMode;
+import unsw.loopmania.gameModes.StandardMode;
+import unsw.loopmania.gameModes.SurvivalMode;
+import unsw.loopmania.gameModes.BerserkerMode;
+import unsw.loopmania.gameModes.ConfusingMode;
+import javafx.stage.Stage;
 
 import org.javatuples.Pair;
 import org.javatuples.Quintet;
@@ -186,6 +197,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private GridPane unequippedInventory;
+
+    @FXML
+    private Text gameModeDisplay;
 
     @FXML
     private Text cycleDisplay;
@@ -372,13 +386,31 @@ public class LoopManiaWorldController {
         baseHealthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
+    }
 
-        onLoad(world.loadCard());
-        onLoad(world.loadCard());
-        onLoad(world.loadCard());
-        onLoad(world.loadCard());
-        onLoad(world.loadCard());
-
+    public void setLoopManiaGameMode(int gameMode) {
+        switch (gameMode) {
+            case 0:
+                GameMode standardMode = new StandardMode();
+                world.setGameMode(standardMode);
+                gameModeDisplay.setText("Standard Mode");
+            break;
+            case 1:
+                GameMode survivalMode = new SurvivalMode();
+                world.setGameMode(survivalMode);
+                gameModeDisplay.setText("Survival Mode");
+            break;
+            case 2:
+                GameMode berserkerMode = new BerserkerMode();
+                world.setGameMode(berserkerMode);
+                gameModeDisplay.setText("Berserker Mode");
+            break;
+            case 3:
+                GameMode confusingMode = new ConfusingMode();
+                world.setGameMode(confusingMode);
+                gameModeDisplay.setText("Confusing Mode");
+            break;
+        }
     }
 
     /**
@@ -399,6 +431,7 @@ public class LoopManiaWorldController {
             }
             // check if character is at heros castle
             if (this.world.characterAtHerosCastle() && this.world.getGameCycle() != 0) {
+                world.getCharacter().resetPurchases();
                 heroCastle.setVisible(true);
                 gameMap.setVisible(false);
                 pauseButton.setText("Start");
@@ -519,10 +552,10 @@ public class LoopManiaWorldController {
      * @param item An item to get from the shop
      */
     public void purchaseItemFromShop(GenerateItem item) {
-        Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
-        Item purchasedItem = world.getHerosCastleMenu().purchaseItem(world.getCharacter(), item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
-        if (!purchasedItem.equals(null)) {
-            onLoad(purchasedItem);
+        Item newItem = world.purchaseItemFromHerosCastle(item);
+
+        if (newItem != null) {
+            onLoad(newItem);
         }
     }
 
@@ -639,9 +672,9 @@ public class LoopManiaWorldController {
         // add buy button
         Button buyItem = new Button("Buy");
         buyItem.setOnAction(e -> { 
-            purchaseItemFromShop(item); 
+            purchaseItemFromShop(item);
         });
-        buyItem.disableProperty().bind(world.getCharacter().getGoldProperty().lessThan(item.price()));
+        buyItem.disableProperty().bind(world.getCharacter().canPurchase(item));
         priceRow.getChildren().add(buyItem);
 
         GenerateItem.getChildren().add(priceRow);

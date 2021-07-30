@@ -3,13 +3,14 @@ package unsw.loopmania.generateItems;
 import unsw.loopmania.Item;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.RareItem;
+import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.items.TreeStump;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class TreeStumpGenerateItem extends GenerateItem implements RareItem {
+public class TreeStumpGenerateItem extends GenerateItem implements RareItem, ShieldType {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
