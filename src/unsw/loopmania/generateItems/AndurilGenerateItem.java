@@ -3,14 +3,13 @@ package unsw.loopmania.generateItems;
 import unsw.loopmania.Item;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.RareItem;
-import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.items.Anduril;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class AndurilGenerateItem extends GenerateItem implements RareItem, WeaponType {
+public class AndurilGenerateItem extends GenerateItem implements RareItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
