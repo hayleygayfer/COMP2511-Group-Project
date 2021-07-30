@@ -74,7 +74,7 @@ public class SwordTest {
     public void testSellPrice() {
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        assertEquals(15, sword.getSellPrice().get());
+        assertEquals(10, sword.getSellPrice().get());
     }
 
     @Test

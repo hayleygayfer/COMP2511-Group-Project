@@ -6,8 +6,6 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Stake;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class StakeGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
@@ -55,13 +53,4 @@ public class StakeGenerateItem extends GenerateItem {
     public SimpleStringProperty name() {
         return name;
     }
-
-    /**
-     * Gets the image of stake for rendering
-     * @return Image
-     */
-    public Image getImage() {
-        return new Image((new File("src/images/stake.png")).toURI().toString());
-    }
-
 }
