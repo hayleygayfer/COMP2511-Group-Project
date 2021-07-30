@@ -7,8 +7,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Card;
 import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.Building;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class CampfireCard extends Card {
     public CampfireCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -37,12 +35,4 @@ public class CampfireCard extends Card {
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new CampfireBuilding(x, y);
     }   
-
-    /**
-     * Creates a new image of campfire card
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/campfire_card.png")).toURI().toString());
-    }
 }

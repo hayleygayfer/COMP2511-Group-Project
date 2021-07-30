@@ -1,6 +1,7 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.HealthPotion;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -17,6 +18,7 @@ public class HealthPotionGenerateItem extends GenerateItem {
         this.name = new SimpleStringProperty("Health Potion");
         this.description = new SimpleStringProperty("Restores character health");
         this.price = new SimpleIntegerProperty(30);
+        setType(ItemType.NOT_EQUIPPABLE);
     }
 
     /**

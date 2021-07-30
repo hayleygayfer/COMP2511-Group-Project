@@ -1,16 +1,16 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.RareItem;
-import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.items.TreeStump;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class TreeStumpGenerateItem extends GenerateItem implements RareItem, ShieldType {
+public class TreeStumpGenerateItem extends GenerateItem implements RareItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
@@ -19,6 +19,7 @@ public class TreeStumpGenerateItem extends GenerateItem implements RareItem, Shi
         this.name = new SimpleStringProperty("Tree Stump");
         this.description = new SimpleStringProperty("An especially powerful shield, which provides higher defence against bosses.");
         this.price = new SimpleIntegerProperty(50);
+        setType(ItemType.SHIELD);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {

@@ -9,8 +9,6 @@ import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 import unsw.loopmania.Character;
 
 public class Stake extends EquippableItem implements CustomAttackStrategy {
@@ -56,13 +54,4 @@ public class Stake extends EquippableItem implements CustomAttackStrategy {
             enemy.deductHealth(baseDamage);
         }
     }    
-
-    /**
-     * Gets the image of stake for rendering
-     * @return Image
-     */
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/stake.png")).toURI().toString());
-    }
 }

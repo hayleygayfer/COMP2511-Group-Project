@@ -4,8 +4,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Building;
 import unsw.loopmania.EnemyPositionObserver;
-import javafx.scene.image.Image;
-import java.io.File;
 import java.util.List;
 
 import org.javatuples.Pair;
@@ -27,13 +25,5 @@ public class TowerBuilding extends Building implements EnemyPositionObserver {
                 enemy.deductHealth(2);
             }
         }
-    }
-
-    /**
-     * Creates a new image of tower
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/tower.png")).toURI().toString());
     }
 }

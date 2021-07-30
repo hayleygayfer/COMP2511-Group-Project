@@ -9,8 +9,6 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 import java.util.Random;
 
 public class Staff extends EquippableItem implements CustomAttackStrategy {
@@ -63,14 +61,5 @@ public class Staff extends EquippableItem implements CustomAttackStrategy {
             return false;
         }
         return false;
-    }
-
-    /**
-     * Gets the image of staff for rendering
-     * @return Image
-     */
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/staff.png")).toURI().toString());
     }
 }

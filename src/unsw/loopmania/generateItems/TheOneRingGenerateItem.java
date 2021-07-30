@@ -1,16 +1,16 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.RareItem;
-import unsw.loopmania.itemTypes.AccessoryType;
 import unsw.loopmania.items.TheOneRing;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class TheOneRingGenerateItem extends GenerateItem implements RareItem, AccessoryType {
+public class TheOneRingGenerateItem extends GenerateItem implements RareItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
@@ -19,6 +19,7 @@ public class TheOneRingGenerateItem extends GenerateItem implements RareItem, Ac
         this.name = new SimpleStringProperty("The One Ring");
         this.description = new SimpleStringProperty("Player Respawns with full health one time.");
         this.price = new SimpleIntegerProperty(50);
+        setType(ItemType.ACCESSORY);
     }
 
    /**

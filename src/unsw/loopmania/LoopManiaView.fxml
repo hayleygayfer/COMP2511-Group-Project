@@ -320,13 +320,16 @@
       <children>
          <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
             <children>
-               <Text layoutX="37.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BATTLE">
+               <Text layoutX="38.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BATTLE">
                   <font>
-                     <Font name="System Bold" size="30.0" />
+                     <Font name="Avenir Next Bold" size="30.0" />
                   </font>
                </Text>
                <Text fx:id="enemiesLeft" layoutX="38.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="130.7476549324324" />
-               <Text fx:id="alliedSoldiersCount" layoutX="299.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have 3 allied soldiers!" />
+               <Text fx:id="alliedSoldiersCount" layoutX="289.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have 3 allied soldiers!">
+                  <font>
+                     <Font name="Avenir Book" size="13.0" />
+                  </font></Text>
             </children>
          </Pane>
          <HBox alignment="CENTER" prefHeight="554.0" prefWidth="470.0" styleClass="battle" stylesheets="@styles.css">
