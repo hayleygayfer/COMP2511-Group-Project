@@ -3,6 +3,7 @@ package unsw.loopmania.enemies;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -19,11 +20,9 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 
 import org.javatuples.Pair;
-import org.javatuples.Quintet;
 
 public class Doggie extends BasicEnemy implements BattleBehaviourContext {
-    private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
-    private double criticalHitChance = 0.1;
+    private double stunChance = 0.1;
 
     public Doggie(PathPosition position) {
         super(position);
@@ -39,62 +38,59 @@ public class Doggie extends BasicEnemy implements BattleBehaviourContext {
     }
 
     /**
-     * Will reset the damage if is hit
-     */
-    @Override
-    public void setDamage(int damage) {
-        super.setDamage(damage);
-    }
-
-    /**
-     * Sets critical hit chance
-     * @param criticalHitChance The new critical hit chance
-     */
-    public void setCriticalHitChance(double criticalHitChance) {
-      this.criticalHitChance = criticalHitChance;
-    }
-
-    public double getCriticalHitChance() {
-        return this.criticalHitChance;
-    }
-
-    /**
      * Renders the image of the vampire.
      */
     public Image render() {
         return new Image((new File("src/images/doggie.png")).toURI().toString());
     }
 
-        /**
-     * Attaches an enemy position observer
-     * @param observer The observer to attach
-     */
-    public void attach(EnemyPositionObserver observer) {
-        observers.add(observer);
-    }
-
-    /**
-     * Detaches an emepy position observer
-     */
-    public void detach(EnemyPositionObserver observer) {
-        observers.remove(observer);
-    }
-
-    /**
-     * Updates all enemy position observers
-     */
-    public void updateObservers() {
-        for (EnemyPositionObserver observer : observers) {
-            observer.encounter(this);
-        }
-    }
-
     /**
      * Doggie Battle Behavviour
+     * @param enemies the list of supporting enemies
+     * @param boss the boss
+     * @param character the character
+     * @param baseCharacterHealth the health of the character after all items are taken into account.
      */
-    public List<Frame> battleBehaviour(List<BasicEnemy> enemies, BasicEnemy boss, Character character,
-            int baseCharacterHealth) {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Frame> battleBehaviour(List<BasicEnemy> enemies, BasicEnemy boss, Character character, int baseCharacterHealth) {
+        List<Frame> frames = new ArrayList<>();
+        int initialBossHealth = getHealth();
+        // Add initial frame
+        int index = 0;
+        if (enemies.size() > 0) {
+            frames.add(new Frame(((double) character.getCurrentHealth() / baseCharacterHealth), 1, ((double) getHealth() / initialBossHealth), enemies.get(0), this, enemies.size() - index, character.getNumOfAlliedSoldiers()));
+        }
+        for (BasicEnemy enemy : enemies) {
+        // Initial set up for each enemy
+            for (EquippableItem item : character.getEquippedItems()) {
+                item.affect(enemy);
+            }
+            double baseEnemyBattleHealth = enemy.getHealth();
+            while (character.isAlive() && enemy.isAlive()) {
+                Random rand = new Random();
+                if (rand.nextInt() > stunChance || !isAlive()) {
+                    character.attack(enemy);
+                    character.attack(this);
+                }
+                if (enemy.isAlive()) {
+                    enemy.attack(character);
+                }
+                if (isAlive()) {
+                    attack(character);
+                    frames.add(new Frame(((double) character.getCurrentHealth() / baseCharacterHealth), enemy.getHealth() / baseEnemyBattleHealth, ((double) getHealth() / initialBossHealth), enemy, this, enemies.size() - index, character.getNumOfAlliedSoldiers()));
+                } else {
+                    frames.add(new Frame(((double) character.getCurrentHealth() / baseCharacterHealth), enemy.getHealth() / baseEnemyBattleHealth, 0, enemy, null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
+                }
+            }
+            index++;
+        }
+        while (character.isAlive() && isAlive()) {
+            Random rand = new Random();
+            if (rand.nextInt() > stunChance || !isAlive()) {
+                character.attack(this);
+            }
+            attack(character);
+            frames.add(new Frame(((double) character.getCurrentHealth() / baseCharacterHealth), (double) getHealth() / initialBossHealth, 0, this, null, 1, character.getNumOfAlliedSoldiers()));
+        }
+        return frames;
     }
 }

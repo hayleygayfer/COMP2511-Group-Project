@@ -105,6 +105,9 @@ public class LoopManiaWorldController {
     private ImageView enemyBattle;
 
     @FXML
+    private ImageView bossBattle;
+
+    @FXML
     private Button finishBattleButton;
 
     @FXML
@@ -112,6 +115,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private ProgressBar characterHealth;
+
+    @FXML
+    private ProgressBar bossHealth;
 
     @FXML
     private Text enemiesLeft;
@@ -418,6 +424,15 @@ public class LoopManiaWorldController {
                 alliedSoldiersCount.setText("You have " + frames.get(0).getNumOfAlliedSoldiers() + " allied soldiers.");
                 characterHealth.setProgress(frames.get(0).getCharacterHealth());
                 enemyHealth.setProgress(frames.get(0).getEnemyHealth());
+                if (frames.get(0).getBossHealth() != 0) {
+                    bossHealth.setVisible(true);
+                    bossHealth.setProgress(frames.get(0).getBossHealth());
+                    bossBattle.setVisible(true);
+                    bossBattle.setImage(frames.get(0).renderBossImage());
+                } else {
+                    bossBattle.setVisible(false);
+                    bossHealth.setVisible(false);
+                }
                 for (int i = 1; i < (frames.size()); i++) {
                     battleSequence.getChildren().add(animateBattleFrame(frames.get(i)));
                 }
@@ -1241,7 +1256,15 @@ public class LoopManiaWorldController {
         SequentialTransition enemySequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionEnemy);
         enemySequence.setCycleCount(1);
 
-        ptr.getChildren().addAll(heroSequence, enemySequence);
+        TranslateTransition transitionBoss = new TranslateTransition(duration, bossBattle);
+        transitionBoss.setByX(-50);
+        transitionBoss.setAutoReverse(true);
+        transitionBoss.setCycleCount(2);
+
+        SequentialTransition bossSequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionBoss);
+        bossSequence.setCycleCount(1);
+
+        ptr.getChildren().addAll(heroSequence, enemySequence, bossSequence);
         ptr.setCycleCount(1);
         ptr.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
@@ -1251,6 +1274,14 @@ public class LoopManiaWorldController {
                 characterHealth.setProgress(Math.max(frame.getCharacterHealth(), 0));
                 enemyHealth.setProgress(Math.max(frame.getEnemyHealth(), 0));
                 enemyBattle.setImage(frame.renderEnemyImage());
+                System.out.println(frame.getBossHealth() + " vs " + frame.getEnemyHealth());
+                if (frame.renderBossImage() != null && frame.getBossHealth() != 0) {
+                    bossHealth.setProgress(frame.getBossHealth());
+                    bossBattle.setImage(frame.renderBossImage());
+                } else {
+                    bossHealth.setVisible(false);
+                    bossBattle.setVisible(false);
+                }
             }
         });
         return ptr;

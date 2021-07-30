@@ -175,7 +175,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         Pair<Integer, Integer> pos = getRandomSpawnPosition();
         int indexInPath = orderedPath.indexOf(pos);
 
-        if (gameCycle.get() == 2) {
+        if (gameCycle.get() == 20) {
             for (BasicEnemy enemy : enemies) {
                 if (enemy instanceof Doggie) return null;
             }

@@ -25,7 +25,7 @@ public class Slug extends BasicEnemy {
         setDamage(1);
         setBattleRadius(2);
         setHealth(4);
-        setSupportRadius(1);
+        setSupportRadius(10);
         // item drops
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new SwordGenerateItem(), 0.50));

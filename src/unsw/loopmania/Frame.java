@@ -37,6 +37,14 @@ public class Frame {
         return this.enemy.render();
     }
 
+    public Image renderBossImage() {
+        if (this.boss != null) {
+            return this.boss.render();
+        } else {
+            return null;
+        }
+    }
+
     public int getEnemiesLeft() {
         return this.enemiesLeft;
     }

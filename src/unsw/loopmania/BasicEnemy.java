@@ -20,8 +20,8 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
     private SimpleIntegerProperty supportRadius = new SimpleIntegerProperty();
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
-    private List<Pair<GenerateItem, Double>> dropItemChances;
-    private List<Pair<GenerateCard, Double>> dropCardChances;
+    private List<Pair<GenerateItem, Double>> dropItemChances = new ArrayList<>();
+    private List<Pair<GenerateCard, Double>> dropCardChances = new ArrayList<>();
 
     private SimpleIntegerProperty experienceGained = new SimpleIntegerProperty();
     private SimpleIntegerProperty maxGoldGained = new SimpleIntegerProperty();
