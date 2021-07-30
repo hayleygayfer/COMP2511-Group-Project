@@ -7,8 +7,6 @@ import unsw.loopmania.RareItem;
 import unsw.loopmania.items.TreeStump;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class AndurilGenerateItem extends GenerateItem implements RareItem {
     private SimpleStringProperty name;
@@ -37,9 +35,5 @@ public class AndurilGenerateItem extends GenerateItem implements RareItem {
 
     public SimpleIntegerProperty price() {
         return price;
-    }
-
-    public Image getImage() {
-        return new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString());
     }
 }

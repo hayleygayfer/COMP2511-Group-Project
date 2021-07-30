@@ -70,6 +70,17 @@ import unsw.loopmania.enemies.Zombie;
 import unsw.loopmania.GameMode;
 import unsw.loopmania.gameModes.StandardMode;
 import unsw.loopmania.gameModes.SurvivalMode;
+import unsw.loopmania.generateItems.AndurilGenerateItem;
+import unsw.loopmania.generateItems.ArmourGenerateItem;
+import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
+import unsw.loopmania.generateItems.HealthPotionGenerateItem;
+import unsw.loopmania.generateItems.HelmetGenerateItem;
+import unsw.loopmania.generateItems.ShieldGenerateItem;
+import unsw.loopmania.generateItems.StaffGenerateItem;
+import unsw.loopmania.generateItems.StakeGenerateItem;
+import unsw.loopmania.generateItems.SwordGenerateItem;
+import unsw.loopmania.generateItems.TheOneRingGenerateItem;
+import unsw.loopmania.generateItems.TreeStumpGenerateItem;
 import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Armour;
 import unsw.loopmania.items.DoggieCoin;
@@ -644,7 +655,7 @@ public class LoopManiaWorldController {
         description.setStyle("-fx-font-family: 'Avenir Book'");
         nameDescription.getChildren().add(description);
         // add item image
-        ImageView itemView = new ImageView(item.getItemDetails().getImage());
+        ImageView itemView = createImageView(item);
 
         // create image row
         imgRow.getChildren().add(nameDescription);
@@ -697,7 +708,7 @@ public class LoopManiaWorldController {
         description.setPrefWidth(100);
         nameDescription.getChildren().add(description);
         // add item image
-        ImageView itemView = new ImageView(item.getImage());
+        ImageView itemView = createImageView(item);
 
         // create image row
         imgRow.getChildren().add(nameDescription);
@@ -875,6 +886,15 @@ public class LoopManiaWorldController {
     }
 
     /**
+     * Given a GenerateItem object, creates the corresponding image view
+     * @param generateItem of the item to be rendered
+     * @pre generateItem has a corresponding image
+     */
+    private ImageView createImageView(GenerateItem generateItem) {
+        return new ImageView(imageMap.get(generateItem.getClass()));
+    }
+
+    /**
      * Creates a map that can use classes to look up the corresponding image
      */
     private HashMap<Class<?>, Image> createImageMap() {
@@ -918,6 +938,19 @@ public class LoopManiaWorldController {
         imageMap.put(Sword.class, new Image((new File("src/images/basic_sword.png")).toURI().toString()));
         imageMap.put(TheOneRing.class, new Image((new File("src/images/the_one_ring.png")).toURI().toString()));
         imageMap.put(TreeStump.class, new Image((new File("src/images/tree_stump.png")).toURI().toString()));
+
+        // generate items
+        imageMap.put(AndurilGenerateItem.class, new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()));
+        imageMap.put(ArmourGenerateItem.class, new Image((new File("src/images/armour.png")).toURI().toString()));
+        imageMap.put(DoggieCoinGenerateItem.class, new Image((new File("src/images/doggiecoin.png")).toURI().toString()));
+        imageMap.put(HealthPotionGenerateItem.class, new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()));
+        imageMap.put(HelmetGenerateItem.class, new Image((new File("src/images/helmet.png")).toURI().toString()));
+        imageMap.put(ShieldGenerateItem.class, new Image((new File("src/images/shield.png")).toURI().toString()));
+        imageMap.put(StaffGenerateItem.class, new Image((new File("src/images/staff.png")).toURI().toString()));
+        imageMap.put(StakeGenerateItem.class, new Image((new File("src/images/stake.png")).toURI().toString()));
+        imageMap.put(SwordGenerateItem.class, new Image((new File("src/images/basic_sword.png")).toURI().toString()));
+        imageMap.put(TheOneRingGenerateItem.class, new Image((new File("src/images/the_one_ring.png")).toURI().toString()));
+        imageMap.put(TreeStumpGenerateItem.class, new Image((new File("src/images/tree_stump.png")).toURI().toString())); 
 
         // other
         imageMap.put(Character.class, new Image((new File("src/images/human_new.png")).toURI().toString()));

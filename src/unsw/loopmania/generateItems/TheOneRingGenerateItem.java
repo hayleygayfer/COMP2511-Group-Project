@@ -7,8 +7,6 @@ import unsw.loopmania.RareItem;
 import unsw.loopmania.items.TheOneRing;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class TheOneRingGenerateItem extends GenerateItem implements RareItem {
     private SimpleStringProperty name;
@@ -55,13 +53,5 @@ public class TheOneRingGenerateItem extends GenerateItem implements RareItem {
      */
     public SimpleIntegerProperty price() {
         return price;
-    }
-
-    /**
-     * Gets the image of one ring for rendering
-     * @return Image
-     */
-    public Image getImage() {
-        return new Image((new File("src/images/the_one_ring.png")).toURI().toString());
     }
 }
