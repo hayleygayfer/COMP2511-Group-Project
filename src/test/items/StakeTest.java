@@ -124,7 +124,7 @@ public class StakeTest {
         Zombie zombie = new Zombie(new PathPosition(0, createPath()));
 
         int initialSlugHealth = slug.getHealth();
-        int initialZombieHealth = slug.getHealth();
+        int initialZombieHealth = zombie.getHealth();
 
         stake.attack(slug, character);
         stake.attack(zombie, character);
@@ -143,7 +143,7 @@ public class StakeTest {
         int initialVampireHealth = vampire.getHealth();
 
         stake.attack(vampire, character);
-
+        System.err.println(vampire.getHealth());
         assertEquals(initialVampireHealth - 10, vampire.getHealth());
     }
 }

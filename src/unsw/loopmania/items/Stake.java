@@ -51,9 +51,9 @@ public class Stake extends EquippableItem implements CustomAttackStrategy {
         if (enemy instanceof Vampire) {
             int vampireDamage = 10;
             Vampire vampire = (Vampire) enemy;
-            vampire.deductHealth(getModifiedDamage(vampire, vampireDamage));
+            vampire.deductHealth(vampireDamage);
         } else {
-            enemy.deductHealth(getModifiedDamage(enemy, baseDamage));
+            enemy.deductHealth(baseDamage);
         }
     }    
 
