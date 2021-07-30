@@ -10,16 +10,16 @@ import java.util.ArrayList;
 import org.javatuples.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import unsw.loopmania.items.Anduril;
 import unsw.loopmania.Character;
+import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.RareItem;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
-import unsw.loopmania.StaticEntity;
-import unsw.loopmania.Entity;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.enemies.Doggie;
 import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Vampire;
@@ -54,6 +54,30 @@ public class AndurilTest {
 
     public Character createCharacter() {
         return new Character(new PathPosition(0, createPath()));
+    }
+
+    @Test
+    public void testConstructor() {
+        Item item = new Anduril(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+
+        assertTrue(item instanceof Anduril);
+        assertTrue(item instanceof EquippableItem);
+        assertTrue(item instanceof RareItem);
+        assertTrue(item instanceof CustomAttackStrategy);
+    }
+
+    @Test
+    public void testType() {
+        Anduril anduril = new Anduril(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1)); 
+
+        assertEquals(ItemType.WEAPON, anduril.getType());
+    }
+
+    @Test
+    public void testSellPrice() {
+        Anduril anduril = new Anduril(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1)); 
+
+        assertEquals(50, anduril.getSellPrice().get());
     }
 
     @Test

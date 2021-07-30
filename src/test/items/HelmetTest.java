@@ -15,8 +15,10 @@ import org.javatuples.Pair;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.ShopItem;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
 import unsw.loopmania.enemies.Slug;
@@ -60,8 +62,37 @@ public class HelmetTest {
         assertTrue(helmet instanceof Helmet);
         assertTrue(helmet instanceof EquippableItem);
         assertTrue(helmet instanceof Item);
+        assertTrue(helmet instanceof ShopItem);
         assertTrue(helmet instanceof StaticEntity);
         assertTrue(helmet instanceof Entity);
+    }
+
+    @Test
+    public void testType() {
+        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        assertEquals(ItemType.HELMET, helmet.getType());
+    }
+
+    @Test
+    public void testSellPrice() {
+        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
+
+        assertEquals(15, helmet.getSellPrice().get());
+    }
+
+    @Test
+    public void testPrice() {
+        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));   
+
+        assertEquals(5, helmet.getPrice().get());
+    }
+
+    @Test
+    public void testDescription() {
+        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));   
+
+        assertEquals("Helmet", helmet.getDescription().get());
     }
 
     @Test

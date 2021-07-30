@@ -1,20 +1,17 @@
 package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
-import unsw.loopmania.MovingEntity;
 import unsw.loopmania.RareItem;
-import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import unsw.loopmania.itemTypes.ShieldType;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.BossEnemyType;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class TreeStump extends EquippableItem implements ShieldType, RareItem {
+public class TreeStump extends EquippableItem implements RareItem {
     private GenerateItem itemInfo = new TreeStumpGenerateItem();
     private int reduceDamageBy;
 
@@ -22,6 +19,7 @@ public class TreeStump extends EquippableItem implements ShieldType, RareItem {
         super(x, y);
         setSellPrice(50);
         this.reduceDamageBy = 3;
+        setType(ItemType.SHIELD);
     }
 
     @Override

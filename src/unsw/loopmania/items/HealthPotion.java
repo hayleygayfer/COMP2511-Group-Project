@@ -18,8 +18,7 @@ public class HealthPotion extends UsableItem {
      * @param character The character which its going increase the health for
      * @pre character != null
      */
-    @Override
-    public void applyEffect(Character character) {
+    public void affect(Character character) {
         character.setCurrentHealth(character.getBaseHealth());
     }
 

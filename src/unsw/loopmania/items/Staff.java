@@ -1,18 +1,19 @@
 package unsw.loopmania.items;
 
+import unsw.loopmania.AlliedSoldier;
+import unsw.loopmania.Character;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
-import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.itemTypes.WeaponType;
 import javafx.scene.image.Image;
 import java.io.File;
 import java.util.Random;
 
-public class Staff extends EquippableItem implements CustomAttackStrategy, WeaponType{
+public class Staff extends EquippableItem implements CustomAttackStrategy {
 
     private int baseDamage;
 
@@ -21,8 +22,9 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
     // TODO write staff
     public Staff(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        baseDamage = 2;
+        baseDamage = 1;
         setSellPrice(20);
+        setType(ItemType.WEAPON);
     }
 
     @Override
@@ -36,17 +38,12 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
      * @param enemy The enemy to affect
      * @pre enemy != null
      */
-    public void attack(BasicEnemy enemy) {
-        System.out.println("inflict trance");
+    public void attack(BasicEnemy enemy, Character character) {
         Random random = new Random();
         int chance = random.nextInt(100);
         if (applyTrance(chance)) {
-            // TODO: put enemy into trance
-            // Destroy enemy 
-            // Turn enemy into allied soldier
-            // Set how long a trance lasts for 
-            // If that time has passed then turn allied soldier back into enemy
-            // If the time is still going during the fight enemy dies
+            enemy.setHealth(0);
+            character.addSoldier(new AlliedSoldier(character, true));
         }
         enemy.setDamage(enemy.getDamage() + baseDamage);
     }

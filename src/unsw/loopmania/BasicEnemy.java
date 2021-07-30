@@ -222,6 +222,10 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
      */
     public void attack(Character character) {
         character.setCurrentHealth(character.getCurrentHealth() - getDamage());
+        List<AlliedSoldier> alliedSoldiers = character.getAlliedSoldiers();
+        for (int i = character.getNumOfAlliedSoldiers() - 1; i >= 0; i--) {
+            alliedSoldiers.get(i).loseHealth(getDamage());
+        }
     }
 
     /**

@@ -74,7 +74,7 @@ public class HealthPotionTest {
         assertEquals(10, character.getCurrentHealth()); 
 
          // character goes back up to 50 health points
-         potion.applyEffect(character);
+         potion.affect(character);
 
         assertEquals(50, character.getCurrentHealth()); 
     }
@@ -87,7 +87,7 @@ public class HealthPotionTest {
         assertEquals(50, character.getCurrentHealth());
 
         // drinking potion at full health means character stays at full health
-        potion.applyEffect(character);
+        potion.affect(character);
 
         assertEquals(50, character.getCurrentHealth());
     }

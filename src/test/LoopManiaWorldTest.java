@@ -14,11 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
+import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.Gold;
 import unsw.loopmania.HerosCastleMenu;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
+import unsw.loopmania.Building;
 import unsw.loopmania.Item;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.Stake;
@@ -258,7 +260,9 @@ public class LoopManiaWorldTest {
         BasicEnemy slug = new Slug(newPosition);
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        List<CharacterEffect> battleBuildings = new ArrayList<>();
+
+        Battle newBattle = new Battle(character, enemies, battleBuildings);
         world.setCurrentBattle(newBattle);
         
         assertEquals(world.getCurrentBattle(), newBattle);

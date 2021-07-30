@@ -16,6 +16,7 @@ import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
 
@@ -60,6 +61,20 @@ public class SwordTest {
         assertTrue(sword instanceof Item);
         assertTrue(sword instanceof StaticEntity);
         assertTrue(sword instanceof Entity);
+    }
+
+    @Test
+    public void testType() {
+        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        
+        assertEquals(ItemType.WEAPON, sword.getType());
+    }
+
+    @Test
+    public void testSellPrice() {
+        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        assertEquals(15, sword.getSellPrice().get());
     }
 
     @Test
