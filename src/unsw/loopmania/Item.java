@@ -12,12 +12,12 @@ public class Item extends StaticEntity {
         this.type = ItemType.NOT_EQUIPPABLE;
     }
 
-    public void setType(ItemType type) {
-        this.type = type;
-    }
-
     public ItemType getType() {
         return type;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
     }
 
     public GenerateItem getItemDetails() {
