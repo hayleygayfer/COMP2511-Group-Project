@@ -204,6 +204,18 @@ public class LoopManiaWorldController {
     @FXML
     private Text xpDisplay;
 
+    @FXML
+    MediaPlayer battleMusicPlayer;
+
+    @FXML
+    MediaPlayer backgroundMusicPlayer;
+
+    @FXML
+    MediaPlayer goldCollectingPlayer;
+
+    SimpleIntegerProperty oldGoldAmount;
+
+
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
 
@@ -289,13 +301,7 @@ public class LoopManiaWorldController {
      */
     @FXML
     public void initialize() {
-
-        Media sound = new Media(new File("src/unsw/loopmania/wavBattleMusic.wav").toURI().toString());
-        MediaPlayer mediaPlayer;
-        mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.setAutoPlay(true);
-        // mediaPlayer.play();
-        
+    
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
@@ -353,6 +359,17 @@ public class LoopManiaWorldController {
             }
         }
 
+        // Create all sounds and their respective media players
+        Media sound = new Media(new File("src/sounds/battle.wav").toURI().toString());
+        battleMusicPlayer = new MediaPlayer(sound);
+
+        Media backgroundSound = new Media(new File("src/sounds/backgroundMusic.wav").toURI().toString());
+        backgroundMusicPlayer = new MediaPlayer(backgroundSound);
+
+        Media goldCollecting = new Media(new File("src/sounds/goldCollecting.wav").toURI().toString());
+        goldCollectingPlayer = new MediaPlayer(goldCollecting);
+        oldGoldAmount = new SimpleIntegerProperty(0);
+
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
         heroCastle.setPrefWidth(320);
@@ -398,6 +415,7 @@ public class LoopManiaWorldController {
         heroCastle.setVisible(false);
         gameMap.setVisible(true);
         isPaused = false;
+        backgroundMusicPlayer.play();
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             world.runTickMoves();
@@ -412,9 +430,15 @@ public class LoopManiaWorldController {
                 pauseButton.setText("Start");
                 pause();
             }
+
+            if (oldGoldAmount.getValue() < world.getCharacter().getGoldProperty().getValue()) {
+                oldGoldAmount = world.getCharacter().getGoldProperty();
+                goldCollectingPlayer.play();
+            }   
             
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
+                backgroundMusicPlayer.pause();
                 battle.setVisible(true);
                 gameMap.setVisible(false);
                 finishBattleButton.setVisible(false);
@@ -433,6 +457,7 @@ public class LoopManiaWorldController {
                 battleSequence.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        battleMusicPlayer.stop();
                         characterHealth.setProgress(frames.get(frames.size() - 1).getValue0());
                         enemyHealth.setProgress(frames.get(frames.size() - 1).getValue1());
                         world.getCurrentBattle().resetCharacter();
@@ -448,6 +473,7 @@ public class LoopManiaWorldController {
                     }
                 });
                 battleSequence.play();
+                battleMusicPlayer.play();
             }
 
             List<BasicEnemy> defeatedEnemies = world.runBattles();
@@ -485,12 +511,17 @@ public class LoopManiaWorldController {
     public void pause(){
         isPaused = true;
         System.out.println("pausing");
+        // mediaPlayer.play();
         timeline.stop();
+        battleMusicPlayer.pause();
+        backgroundMusicPlayer.pause();
     }
 
     public void endGame() {
         timeline.stop();
         world.resetGame();
+        battleMusicPlayer.stop();
+        backgroundMusicPlayer.stop();
     }
 
     /**
@@ -1273,6 +1304,7 @@ public class LoopManiaWorldController {
         battle.setVisible(false);
         gameMap.setVisible(true);
         world.setCurrentBattle(null);
+        battleMusicPlayer.pause();
         startTimer();
     }
 }
