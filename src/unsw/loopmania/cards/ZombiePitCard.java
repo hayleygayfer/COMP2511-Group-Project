@@ -1,13 +1,11 @@
 package unsw.loopmania.cards;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
 import unsw.loopmania.Card;
 import unsw.loopmania.buildings.ZombiePitBuilding;
 import unsw.loopmania.Building;
 import java.util.List;
 import org.javatuples.Pair;
-import java.io.File;
 
 public class ZombiePitCard extends Card {
 
@@ -44,12 +42,4 @@ public class ZombiePitCard extends Card {
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new ZombiePitBuilding(x, y);
     }   
-
-     /**
-     * Creates a new image of zombie pit card
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/zombie_pit_card.png")).toURI().toString());
-    }
 }

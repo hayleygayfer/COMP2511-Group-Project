@@ -46,10 +46,5 @@ public class Anduril extends EquippableItem implements RareItem, CustomAttackStr
         character.setDamage(character.getDamage() + damage);
     }
 
-
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString());
-    }
 }
 

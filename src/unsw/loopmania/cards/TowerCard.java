@@ -6,8 +6,6 @@ import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.Building;
 import java.util.List;
 import org.javatuples.Pair;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class TowerCard extends Card {
 
@@ -44,12 +42,4 @@ public class TowerCard extends Card {
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new TowerBuilding(x, y);
     }   
-
-    /**
-     * Creates a new image of tower card
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/tower_card.png")).toURI().toString());
-    }
 }

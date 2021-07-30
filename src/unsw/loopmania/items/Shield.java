@@ -9,8 +9,6 @@ import unsw.loopmania.ShopItem;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class Shield extends EquippableItem implements ShopItem {
     private double reducedEnemyCriticalChance;
@@ -60,12 +58,4 @@ public class Shield extends EquippableItem implements ShopItem {
         return new SimpleStringProperty("Shield");
     }
 
-    /**
-     * Gets the image of shield for rendering
-     * @return Image
-     */
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/shield.png")).toURI().toString());
-    }
 }

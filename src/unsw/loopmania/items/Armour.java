@@ -7,8 +7,6 @@ import unsw.loopmania.ShopItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.generateItems.*;
 import unsw.loopmania.BasicEnemy;
-import javafx.scene.image.Image;
-import java.io.File;
 
 import java.util.List;
 
@@ -65,12 +63,4 @@ public class Armour extends EquippableItem implements ShopItem {
         return new SimpleStringProperty("Armour");
     }
     
-    /**
-     * Gets the image of armour for rendering
-     * @return Image
-     */
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/armour.png")).toURI().toString());
-    }
 }

@@ -6,8 +6,6 @@ import unsw.loopmania.buildings.VillageBuilding;
 import unsw.loopmania.Building;
 import java.util.List;
 import org.javatuples.Pair;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class VillageCard extends Card {
 
@@ -41,12 +39,4 @@ public class VillageCard extends Card {
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new VillageBuilding(x, y);
     }   
-
-    /**
-     * Creates a new image of village card
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/village_card.png")).toURI().toString());
-    }
 }

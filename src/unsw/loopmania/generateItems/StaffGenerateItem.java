@@ -1,7 +1,7 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
-import unsw.loopmania.itemTypes.WeaponType;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Staff;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class StaffGenerateItem extends GenerateItem implements WeaponType {
+public class StaffGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
     private SimpleStringProperty description;
     private SimpleIntegerProperty price;
@@ -18,6 +18,7 @@ public class StaffGenerateItem extends GenerateItem implements WeaponType {
         this.name = new SimpleStringProperty("Staff");
         this.description = new SimpleStringProperty("Very low damage, but can randomly inflict a trance on Enemies to turn them into Allied Soldiers");
         this.price = new SimpleIntegerProperty(20);
+        setType(ItemType.WEAPON);
     }
 
     /**
