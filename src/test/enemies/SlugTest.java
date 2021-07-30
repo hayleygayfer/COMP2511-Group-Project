@@ -36,7 +36,7 @@ public class SlugTest {
     @Test
     public void testBattleRadius() {
         Slug slug = new Slug(new PathPosition(0, TestHelper.createPath())); 
-        assertEquals(2, slug.getBattleRadius());
+        assertEquals(1, slug.getBattleRadius());
     }
 
     @Test
