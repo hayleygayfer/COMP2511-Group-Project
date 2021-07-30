@@ -8,15 +8,20 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
+import unsw.loopmania.BattleBehaviourContext;
+import unsw.loopmania.Character;
+import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EnemyPositionObserver;
+import unsw.loopmania.EquippableItem;
+import unsw.loopmania.Frame;
 import unsw.loopmania.GenerateItem;
-import unsw.loopmania.BossEnemyType;
 import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 
 import org.javatuples.Pair;
+import org.javatuples.Quintet;
 
-public class Doggie extends BasicEnemy implements BossEnemyType {
+public class Doggie extends BasicEnemy implements BattleBehaviourContext {
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
     private double criticalHitChance = 0.1;
 
@@ -82,5 +87,14 @@ public class Doggie extends BasicEnemy implements BossEnemyType {
         for (EnemyPositionObserver observer : observers) {
             observer.encounter(this);
         }
+    }
+
+    /**
+     * Doggie Battle Behavviour
+     */
+    public List<Frame> battleBehaviour(List<BasicEnemy> enemies,
+            List<CharacterEffect> buildings, BasicEnemy boss, Character character) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

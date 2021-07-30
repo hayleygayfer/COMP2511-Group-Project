@@ -7,8 +7,8 @@ import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.CustomAttackStrategy;
-import unsw.loopmania.BossEnemyType;
 import unsw.loopmania.BasicEnemy;
+import unsw.loopmania.BattleBehaviourContext;
 import unsw.loopmania.Character;
 import javafx.scene.image.Image;
 import java.io.File;
@@ -30,7 +30,7 @@ public class Anduril extends EquippableItem implements RareItem, CustomAttackStr
     }
 
     public void attack(BasicEnemy enemy, Character character) {
-        if (enemy instanceof BossEnemyType) {
+        if (enemy instanceof BattleBehaviourContext) {
             enemy.setHealth(enemy.getHealth() - damage * 3);
         } else {
             enemy.setHealth(enemy.getHealth() - damage);
