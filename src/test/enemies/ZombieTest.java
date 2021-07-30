@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
@@ -25,11 +24,24 @@ public class ZombieTest {
         assertTrue(enemy instanceof BasicEnemy);
         assertTrue(enemy instanceof MovingEntity);
         assertTrue(enemy instanceof Entity);
+    }
 
-        // check stats
-        assertEquals(2, enemy.getDamage());
-        assertEquals(2, enemy.getBattleRadius());
-        assertEquals(10, enemy.getHealth());
+    @Test
+    public void testDamage() {
+        Zombie zombie = new Zombie(new PathPosition(0, TestHelper.createPath()));
+        assertEquals(2, zombie.getDamage());
+    }
+
+    @Test
+    public void testBattleRadius() {
+        Zombie zombie = new Zombie(new PathPosition(0, TestHelper.createPath())); 
+        assertEquals(2, zombie.getBattleRadius());
+    }
+
+    @Test
+    public void testHealth() {
+        Zombie zombie = new Zombie(new PathPosition(0, TestHelper.createPath()));  
+        assertEquals(10, zombie.getHealth());
     }
 
     @Test
