@@ -618,6 +618,7 @@ public class LoopManiaWorldController {
                 }
             }
         }); 
+        hide.setStyle("-fx-font-family: 'Avenir Book'");
 
         HBox closeButtonRow = new HBox();
         closeButtonRow.getChildren().add(hide);
@@ -634,12 +635,13 @@ public class LoopManiaWorldController {
         priceRow.setPadding(new Insets(3));
         // add name of item
         Label name = new Label(item.getItemDetails().name().get());
-        name.setStyle("-fx-font-weight: bold");
+        name.setStyle("-fx-font-weight: bold; -fx-font-family: 'Avenir Next'");
         nameDescription.getChildren().add(name);
         // add item description
         Label description = new Label(item.getItemDetails().description().get());
         description.setWrapText(true);
         description.setPrefWidth(100);
+        description.setStyle("-fx-font-family: 'Avenir Book'");
         nameDescription.getChildren().add(description);
         // add item image
         ImageView itemView = new ImageView(item.getItemDetails().getImage());
@@ -653,6 +655,7 @@ public class LoopManiaWorldController {
         // add item price
         Label price = new Label("$" + item.getItemDetails().price().get());
         price.setPrefWidth(95);
+        price.setStyle("-fx-font-family: 'Avenir Book'");
         priceRow.getChildren().add(price);
 
         itemInfo.getChildren().add(priceRow);
