@@ -4,7 +4,7 @@ import unsw.loopmania.Item;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.RareItem;
 import unsw.loopmania.itemTypes.WeaponType;
-import unsw.loopmania.items.TreeStump;
+import unsw.loopmania.items.Anduril;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
@@ -22,8 +22,8 @@ public class AndurilGenerateItem extends GenerateItem implements RareItem, Weapo
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        Item newTreeStump = new TreeStump(x, y);
-        return newTreeStump;
+        Item newAnduril = new Anduril(x, y);
+        return newAnduril;
     }
 
     public SimpleStringProperty description() {

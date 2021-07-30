@@ -31,7 +31,7 @@ public class Anduril extends EquippableItem implements WeaponType, RareItem, Cus
         return itemInfo;
     }
 
-    public void attack(BasicEnemy enemy) {
+    public void attack(BasicEnemy enemy, Character character) {
         if (enemy instanceof BossEnemyType) {
             enemy.setHealth(enemy.getHealth() - damage * 3);
         } else {
