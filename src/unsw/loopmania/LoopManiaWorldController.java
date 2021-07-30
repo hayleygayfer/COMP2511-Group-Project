@@ -8,6 +8,8 @@ import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -287,6 +289,12 @@ public class LoopManiaWorldController {
      */
     @FXML
     public void initialize() {
+
+        Media sound = new Media(new File("src/unsw/loopmania/wavBattleMusic.wav").toURI().toString());
+        MediaPlayer mediaPlayer;
+        mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setAutoPlay(true);
+        // mediaPlayer.play();
         
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
