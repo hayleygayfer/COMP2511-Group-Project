@@ -17,11 +17,13 @@ import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.ShopItem;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
 import unsw.loopmania.enemies.Slug;
+import unsw.loopmania.generateItems.HelmetGenerateItem;
 
 public class HelmetTest {
     /**
@@ -141,4 +143,12 @@ public class HelmetTest {
 
         assertEquals(initialDamage - 3, slug.getDamage());
     } 
+
+    @Test
+    public void testGetItemDetails() {
+        Helmet helmet = new Helmet(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
+        GenerateItem generateItem = helmet.getItemDetails();
+
+        assertTrue(generateItem instanceof HelmetGenerateItem);
+    }
 }

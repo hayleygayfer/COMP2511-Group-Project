@@ -10,8 +10,6 @@ import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.BossEnemyType;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Character;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class Anduril extends EquippableItem implements RareItem, CustomAttackStrategy {
     private GenerateItem itemInfo = new AndurilGenerateItem();

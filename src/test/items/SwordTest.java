@@ -15,9 +15,11 @@ import unsw.loopmania.items.Sword;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
+import unsw.loopmania.generateItems.SwordGenerateItem;
 import unsw.loopmania.Entity;
 
 public class SwordTest {
@@ -124,4 +126,11 @@ public class SwordTest {
         assertEquals(initialDamage + 10, character.getDamage());
     }
 
+    @Test
+    public void testGetItemDetails() {
+        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        GenerateItem generateItem = sword.getItemDetails();
+
+        assertTrue(generateItem instanceof SwordGenerateItem);
+    }
 }

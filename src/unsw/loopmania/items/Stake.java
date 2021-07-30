@@ -35,6 +35,7 @@ public class Stake extends EquippableItem implements CustomAttackStrategy {
      * @param base damage The current damage 
      * @return int the current damage plus the new damage
      */
+    // TODO: possibly remove? this isn't being used
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
         return this.baseDamage + baseDamage;
     }
