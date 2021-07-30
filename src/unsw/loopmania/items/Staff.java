@@ -6,15 +6,14 @@ import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
-import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.itemTypes.WeaponType;
 import javafx.scene.image.Image;
 import java.io.File;
 import java.util.Random;
 
-public class Staff extends EquippableItem implements CustomAttackStrategy, WeaponType{
+public class Staff extends EquippableItem implements CustomAttackStrategy {
 
     private int baseDamage;
 
@@ -25,6 +24,7 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
         super(x, y);
         baseDamage = 1;
         setSellPrice(20);
+        setType(ItemType.WEAPON);
     }
 
     @Override
@@ -39,7 +39,6 @@ public class Staff extends EquippableItem implements CustomAttackStrategy, Weapo
      * @pre enemy != null
      */
     public void attack(BasicEnemy enemy, Character character) {
-        System.out.println("inflict trance");
         Random random = new Random();
         int chance = random.nextInt(100);
         if (applyTrance(chance)) {

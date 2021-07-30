@@ -35,8 +35,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -61,7 +59,6 @@ import unsw.loopmania.gameModes.ConfusingMode;
 import javafx.stage.Stage;
 
 import org.javatuples.Pair;
-import org.javatuples.Quartet;
 import org.javatuples.Quintet;
 
 import java.util.EnumMap;
@@ -739,23 +736,32 @@ public class LoopManiaWorldController {
      */
     private void onLoad(Item item) {
         ImageView view = new ImageView(item.render());
-        if (item instanceof ArmourType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour);
-        } else if (item instanceof WeaponType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon);
-        } else if (item instanceof ShieldType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
-        } else if (item instanceof HelmetType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
-        } else if (item instanceof AccessoryType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedAccessory);
-        }   
+        switch (item.getType()) {
+            case ARMOUR:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour); 
+                break;
+            case WEAPON:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon); 
+                break;
+            case SHIELD:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield); 
+                break;
+            case HELMET:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet); 
+                break;
+            case ACCESSORY:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedAccessory); 
+                break;
+            default:
+                break;
+        }
 
         if (item instanceof UsableItem) {
+            UsableItem usableItem = (UsableItem) item;
             view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    item.applyEffect(world.getCharacter());
+                    usableItem.affect(world.getCharacter());
                     world.removeItemWhenUsed(item);
                     view.setVisible(false);
                     view.setManaged(false);

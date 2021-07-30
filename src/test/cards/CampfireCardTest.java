@@ -9,63 +9,44 @@ import test.TestHelper;
 
 import org.junit.jupiter.api.Test;
 import org.javatuples.Pair;
-import java.util.ArrayList;
 import java.util.List;
-import unsw.loopmania.LoopManiaWorld;
 
+import unsw.loopmania.Building;
+import unsw.loopmania.Card;
+import unsw.loopmania.Entity;
+import unsw.loopmania.StaticEntity;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.buildings.CampfireBuilding;
 
 public class CampfireCardTest {
-    
-    /**
-     * @author Angeni
-     * Creates the path for testing
-     * just a 5x5 square loop
-     */
-    public List<Pair<Integer, Integer>> createSquarePath(int size, int start) {
-        List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+    @Test
+    public void testConstructor() {
+        Card card = new CampfireCard(new SimpleIntegerProperty(2), new SimpleIntegerProperty(3));
 
-        // add top horizontal
-        for (int i = start; i < size; i++) {
-        orderedPath.add(Pair.with(i, start));
-        }
-        // add right side down
-        for (int i = start + 1; i < size; i++) {
-        orderedPath.add(Pair.with(size - 1, i));
-        }
-        // add bottom horizontal
-        for (int i = (size-2); i >= start; i--) {
-        orderedPath.add(Pair.with(i, size-1));
-        }
-        // add left side up
-        for (int i = (size-2); i > start; i--) {
-        orderedPath.add(Pair.with(start, i));
-        }
-        return orderedPath;
-    }
+        assertTrue(card instanceof CampfireCard);
+        assertTrue(card instanceof Card);
+        assertTrue(card instanceof StaticEntity);
+        assertTrue(card instanceof Entity);
 
-    /**
-     * @author Angeni
-     * @return LoopManiaWorld object
-     */
-    public LoopManiaWorld createWorld() {
-        return new LoopManiaWorld(6, 6, createSquarePath(6, 0));
+        assertEquals(2, card.getX());
+        assertEquals(3, card.getY());
     }
 
     
     @Test
-    public void testGenerateBuilding(){
+    public void testGenerateBuilding() {
         CampfireCard card = new CampfireCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        CampfireBuilding building = new CampfireBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        
+        Building building = card.generateBuilding(new SimpleIntegerProperty(3), new SimpleIntegerProperty(4));
 
-        // Tests that the building is generated at the given coordinates.
-        assertEquals(card.generateBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1)), building);
+        assertTrue(building instanceof CampfireBuilding);
+        assertEquals(3, building.getX());
+        assertEquals(4, building.getY());
     }
 
     @Test
-    public void testValidPosition() {
-        List<Pair<Integer, Integer>> adjacentPath = createSquarePath(3, 1); // Valid Positions
+    public void testNonPathTiles() {
+        List<Pair<Integer, Integer>> adjacentPath = TestHelper.createSquarePath(3, 1); // Valid Positions
         List<Pair<Integer, Integer>> worldPath = TestHelper.createSquarePath(6, 0);
 
         CampfireCard card = new CampfireCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
@@ -76,8 +57,8 @@ public class CampfireCardTest {
         }
     }
 
-
-    public void testInvalidPosition() {
+    @Test
+    public void testPathTiles() {
         CampfireCard card = new CampfireCard(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         List<Pair<Integer, Integer>> worldPath = TestHelper.createSquarePath(6, 0);
 

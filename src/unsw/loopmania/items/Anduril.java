@@ -1,14 +1,11 @@
 package unsw.loopmania.items;
 
 import unsw.loopmania.EquippableItem;
-import unsw.loopmania.MovingEntity;
 import unsw.loopmania.RareItem;
 import unsw.loopmania.GenerateItem;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
-import unsw.loopmania.enemies.Vampire;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import unsw.loopmania.itemTypes.WeaponType;
 import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.BossEnemyType;
 import unsw.loopmania.BasicEnemy;
@@ -16,7 +13,7 @@ import unsw.loopmania.Character;
 import javafx.scene.image.Image;
 import java.io.File;
 
-public class Anduril extends EquippableItem implements WeaponType, RareItem, CustomAttackStrategy {
+public class Anduril extends EquippableItem implements RareItem, CustomAttackStrategy {
     private GenerateItem itemInfo = new AndurilGenerateItem();
     private int damage;
 
@@ -24,6 +21,7 @@ public class Anduril extends EquippableItem implements WeaponType, RareItem, Cus
         super(x, y);
         setSellPrice(50);
         this.damage = 20;
+        setType(ItemType.WEAPON);
     }
 
     @Override

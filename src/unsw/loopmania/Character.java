@@ -326,9 +326,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @return List<AlliedSoldier> 
      */
     public void cleanAlliedSoldiers() {
-        System.out.println(getNumOfAlliedSoldiers());
         alliedSoldiers.removeIf(alliedSoldier -> alliedSoldier.isTranced());
-        System.out.println(getNumOfAlliedSoldiers());
     }
 
     /**
