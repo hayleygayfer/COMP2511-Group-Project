@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
+import javax.swing.event.EventListenerList;
+
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -98,6 +102,7 @@ import javafx.stage.Stage;
 
 import org.javatuples.Pair;
 import org.javatuples.Quintet;
+import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import java.util.EnumMap;
 
@@ -174,6 +179,9 @@ public class LoopManiaWorldController {
 
     @FXML
     Button pauseButton;
+
+    @FXML 
+    Button muteButton;
 
     /**
      * container for all hero castle menu components
@@ -254,6 +262,18 @@ public class LoopManiaWorldController {
     @FXML
     private Text xpDisplay;
 
+    @FXML
+    MediaPlayer battleMusicPlayer;
+
+    @FXML
+    MediaPlayer backgroundMusicPlayer;
+
+    @FXML
+    MediaPlayer goldCollectingPlayer;
+
+    SimpleIntegerProperty oldGoldCount;
+
+
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
 
@@ -266,6 +286,7 @@ public class LoopManiaWorldController {
     private DragIcon draggedEntity;
 
     private boolean isPaused;
+    private boolean isMuted;
     private LoopManiaWorld world;
 
     /**
@@ -343,7 +364,7 @@ public class LoopManiaWorldController {
      */
     @FXML
     public void initialize() {
-        
+    
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
@@ -402,6 +423,16 @@ public class LoopManiaWorldController {
             }
         }
 
+        // Create all sounds and their respective media players
+        Media sound = new Media(new File("src/sounds/battle.wav").toURI().toString());
+        battleMusicPlayer = new MediaPlayer(sound);
+
+        Media backgroundSound = new Media(new File("src/sounds/backgroundMusic.wav").toURI().toString());
+        backgroundMusicPlayer = new MediaPlayer(backgroundSound);
+
+        Media goldCollecting = new Media(new File("src/sounds/goldCollecting.wav").toURI().toString());
+        goldCollectingPlayer = new MediaPlayer(goldCollecting);
+
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
         heroCastle.setPrefWidth(320);
@@ -429,6 +460,17 @@ public class LoopManiaWorldController {
         baseHealthDisplay.textProperty().bindBidirectional(world.getCharacter().getBaseHealthProperty(), new NumberStringConverter());
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
+
+        // oldGoldCount = new SimpleIntegerProperty(1);
+        world.getCharacter().getGoldProperty().addListener(new ChangeListener<Number>()   {
+            @Override
+            public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
+                System.out.println("GoldCollected");
+                goldCollectingPlayer.seek(Duration.ZERO);
+                goldCollectingPlayer.play();
+            }
+
+        });
 
         onLoad(world.loadCard());
         onLoad(world.loadCard());
@@ -470,6 +512,8 @@ public class LoopManiaWorldController {
         heroCastle.setVisible(false);
         gameMap.setVisible(true);
         isPaused = false;
+        isMuted = false;
+        backgroundMusicPlayer.play();
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             world.runTickMoves();
@@ -485,9 +529,21 @@ public class LoopManiaWorldController {
                 pauseButton.setText("Start");
                 pause();
             }
+
+            // System.out.println("old" + oldGoldCount.doubleValue());
+            // System.out.println("gold" + world.getCharacter().getGoldProperty().getValue());
+
+            // if (world.getCharacter().getGoldProperty().getValue() == oldGoldCount.doubleValue()) {
+            //     goldCollectingPlayer.play();
+            //     oldGoldCount.add(1);
+            //     System.out.println("old after" + oldGoldCount.doubleValue());
+            //     System.out.println("gold after" + world.getCharacter().getGoldProperty().getValue());
+            // }
+
             
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
+                backgroundMusicPlayer.pause();
                 battle.setVisible(true);
                 gameMap.setVisible(false);
                 finishBattleButton.setVisible(false);
@@ -506,6 +562,7 @@ public class LoopManiaWorldController {
                 battleSequence.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        battleMusicPlayer.stop();
                         characterHealth.setProgress(frames.get(frames.size() - 1).getValue0());
                         enemyHealth.setProgress(frames.get(frames.size() - 1).getValue1());
                         world.getCurrentBattle().resetCharacter();
@@ -521,6 +578,7 @@ public class LoopManiaWorldController {
                     }
                 });
                 battleSequence.play();
+                battleMusicPlayer.play();
             }
 
             List<BasicEnemy> defeatedEnemies = world.runBattles();
@@ -558,12 +616,17 @@ public class LoopManiaWorldController {
     public void pause(){
         isPaused = true;
         System.out.println("pausing");
+        // mediaPlayer.play();
         timeline.stop();
+        battleMusicPlayer.pause();
+        backgroundMusicPlayer.pause();
     }
 
     public void endGame() {
         timeline.stop();
         world.resetGame();
+        battleMusicPlayer.stop();
+        backgroundMusicPlayer.stop();
     }
 
     /**
@@ -1259,7 +1322,7 @@ public class LoopManiaWorldController {
             }
             else{
                 pause();
-                pauseButton.setText("Start");
+                pauseButton.setText("Resume");
             }
             break;
         default:
@@ -1302,8 +1365,27 @@ public class LoopManiaWorldController {
             }
             startTimer();
         } else {
-            pauseButton.setText("Start");
+            pauseButton.setText("Resume");
             pause();
+        }
+    }
+
+    @FXML
+    private void muteGame() {
+        if (isMuted) {
+            muteButton.setText("Mute");
+            battleMusicPlayer.setMute(false);
+            backgroundMusicPlayer.setMute(false);
+            goldCollectingPlayer.setMute(false);
+            isMuted = false;
+            
+
+        } else {
+            muteButton.setText("Sound");
+            battleMusicPlayer.setMute(true);
+            backgroundMusicPlayer.setMute(true);
+            goldCollectingPlayer.setMute(true);
+            isMuted = true;
         }
     }
 
@@ -1437,6 +1519,7 @@ public class LoopManiaWorldController {
         battle.setVisible(false);
         gameMap.setVisible(true);
         world.setCurrentBattle(null);
+        battleMusicPlayer.pause();
         startTimer();
     }
 }
