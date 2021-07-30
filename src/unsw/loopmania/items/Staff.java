@@ -42,8 +42,9 @@ public class Staff extends EquippableItem implements CustomAttackStrategy {
         if (applyTrance(chance)) {
             enemy.setHealth(0);
             character.addSoldier(new AlliedSoldier(character, true));
+        } else {
+            enemy.deductHealth(baseDamage);
         }
-        enemy.setDamage(enemy.getDamage() + baseDamage);
     }
 
     /**
