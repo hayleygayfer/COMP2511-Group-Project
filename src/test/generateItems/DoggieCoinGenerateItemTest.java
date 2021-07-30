@@ -5,12 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.GenerateItem;
-import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
-import unsw.loopmania.items.Armour;
 
 public class DoggieCoinGenerateItemTest {
     @Test
