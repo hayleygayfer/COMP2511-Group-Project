@@ -21,6 +21,8 @@ import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.HerosCastleMenu;
 import unsw.loopmania.Item;
+import unsw.loopmania.GameMode;
+import unsw.loopmania.gameModes.StandardMode;
 
 public class HerosCastleMenuTest {
     public List<Pair<Integer, Integer>> createPath() {
@@ -64,6 +66,7 @@ public class HerosCastleMenuTest {
     @Test 
     public void testPurchaseItem() {
         Character character = createCharacter();
+        GameMode mode = new StandardMode();
 
         HerosCastleMenu menu = new HerosCastleMenu();
 
@@ -71,7 +74,7 @@ public class HerosCastleMenuTest {
 
         SwordGenerateItem menuSword = new SwordGenerateItem();
     
-        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0), mode);
 
         assertTrue(character.getInventory().contains(purchasedItem));
         assertEquals(0, character.getGold());
@@ -81,13 +84,15 @@ public class HerosCastleMenuTest {
     public void testNotEnoughGoldForPurchase() {
         Character character = createCharacter();
 
+        GameMode mode = new StandardMode();
+
         HerosCastleMenu menu = new HerosCastleMenu();
 
         character.addGold(5);
         
         SwordGenerateItem menuSword = new SwordGenerateItem();
     
-        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0), mode);
 
         assertFalse(character.getInventory().contains(purchasedItem));
         assertEquals(5, character.getGold());
@@ -96,6 +101,7 @@ public class HerosCastleMenuTest {
     @Test
     public void testSellItem() {
         Character character = createCharacter();
+        GameMode mode = new StandardMode();
 
         HerosCastleMenu menu = new HerosCastleMenu();
 
@@ -103,7 +109,7 @@ public class HerosCastleMenuTest {
         
         SwordGenerateItem menuSword = new SwordGenerateItem();
     
-        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        Item purchasedItem = menu.purchaseItem(character, menuSword, new SimpleIntegerProperty(0), new SimpleIntegerProperty(0), mode);
 
         assertTrue(character.getInventory().contains(purchasedItem));
         assertEquals(0, character.getGold());

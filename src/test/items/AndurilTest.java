@@ -18,11 +18,13 @@ import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.RareItem;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.enemies.Doggie;
 import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Vampire;
+import unsw.loopmania.generateItems.AndurilGenerateItem;
 
 public class AndurilTest {
     /**
@@ -151,5 +153,13 @@ public class AndurilTest {
         character.attack(vampire);
 
         assertEquals(initialVampireHealth - 20, vampire.getHealth());
+    }
+
+    @Test
+    public void testGetItemDetails() {
+        Anduril anduril = new Anduril(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        GenerateItem generateItem = anduril.getItemDetails();
+
+        assertTrue(generateItem instanceof AndurilGenerateItem);
     }
 }

@@ -1,12 +1,11 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Helmet;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class HelmetGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
@@ -17,6 +16,7 @@ public class HelmetGenerateItem extends GenerateItem {
         this.name = new SimpleStringProperty("Helmet");
         this.description = new SimpleStringProperty("Enemy damage is reduced, but character damage is also reduced.");
         this.price = new SimpleIntegerProperty(15);
+        setType(ItemType.HELMET);
     }
 
      /**
@@ -53,13 +53,4 @@ public class HelmetGenerateItem extends GenerateItem {
     public SimpleIntegerProperty price() {
         return price;
     }
-
-    /**
-     * Gets the image of helemet for rendering
-     * @return Image
-     */
-    public Image getImage() {
-        return new Image((new File("src/images/helmet.png")).toURI().toString());
-    }
-
 }

@@ -1,10 +1,8 @@
 package unsw.loopmania.enemies;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.generateItems.StakeGenerateItem;
@@ -71,13 +69,4 @@ public class Vampire extends BasicEnemy {
     public double getCriticalHitChance() {
         return this.criticalHitChance;
     }
-
-    /**
-     * Renders the image of the vampire.
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/vampire.png")).toURI().toString());
-    }
-
 }

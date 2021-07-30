@@ -27,9 +27,6 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
     private SimpleIntegerProperty maxGoldGained = new SimpleIntegerProperty();
     private Random chance = new Random(System.currentTimeMillis());
 
-    // Abstract methods
-    public abstract Image render();
-
     public BasicEnemy(PathPosition position) {
         super(position);
     }

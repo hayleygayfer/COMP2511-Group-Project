@@ -1,10 +1,8 @@
 package unsw.loopmania.enemies;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
@@ -50,13 +48,4 @@ public class Zombie extends BasicEnemy {
             super.move(tick);
         }
     }
-
-    /**
-     * Renders the image of the zombie.
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/zombie.png")).toURI().toString());
-    }
-
 }

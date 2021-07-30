@@ -15,12 +15,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.items.Shield;
 import unsw.loopmania.Character;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.ShopItem;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.enemies.Vampire;
+import unsw.loopmania.generateItems.ShieldGenerateItem;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.Entity;
 
@@ -155,4 +157,12 @@ public class ShieldTest {
 
         assertEquals(0.04, vampire.getCriticalHitChance());
     } 
+
+    @Test
+    public void testGetItemDetails() {
+        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(1));
+        GenerateItem generateItem = shield.getItemDetails();
+
+        assertTrue(generateItem instanceof ShieldGenerateItem);
+    }
 }

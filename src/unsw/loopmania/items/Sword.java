@@ -6,8 +6,6 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import unsw.loopmania.Character;
-import javafx.scene.image.Image;
-import java.io.File;
 
 /**
  * represents an equipped or unequipped sword in the backend world
@@ -36,14 +34,5 @@ public class Sword extends EquippableItem {
     @Override
     public void affect(Character character) {
         character.setDamage(character.getDamage() + damage);
-    }
-
-    /**
-     * Gets the image of sword for rendering
-     * @return Image
-     */
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
 }

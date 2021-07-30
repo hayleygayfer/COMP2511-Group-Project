@@ -1,12 +1,8 @@
 package unsw.loopmania.enemies;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.SimpleIntegerProperty;
-
-import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.BossEnemyType;
 import unsw.loopmania.PathPosition;
@@ -53,13 +49,6 @@ public class ElanMuske extends BasicEnemy implements BossEnemyType {
     }
 
     /**
-     * Renders the image of the vampire.
-     */
-    public Image render() {
-        return new Image((new File("src/images/ElanMuske.png")).toURI().toString());
-    }
-
-        /**
      * Attaches an enemy position observer
      * @param observer The observer to attach
      */

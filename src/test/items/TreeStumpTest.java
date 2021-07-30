@@ -17,12 +17,14 @@ import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.RareItem;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
 import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.enemies.Vampire;
+import unsw.loopmania.generateItems.TreeStumpGenerateItem;
 import unsw.loopmania.enemies.Doggie;
 
 public class TreeStumpTest {
@@ -123,5 +125,13 @@ public class TreeStumpTest {
         treeStump.affect(vampire);
 
         assertEquals(vampireDamage / 3, vampire.getDamage());
+    }
+
+    @Test
+    public void testGetItemDetails() {
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        GenerateItem generateItem = treeStump.getItemDetails();
+
+        assertTrue(generateItem instanceof TreeStumpGenerateItem);
     }
 }

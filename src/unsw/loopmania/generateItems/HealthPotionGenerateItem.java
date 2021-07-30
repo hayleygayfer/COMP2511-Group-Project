@@ -1,12 +1,11 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.HealthPotion;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class HealthPotionGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
@@ -17,6 +16,7 @@ public class HealthPotionGenerateItem extends GenerateItem {
         this.name = new SimpleStringProperty("Health Potion");
         this.description = new SimpleStringProperty("Restores character health");
         this.price = new SimpleIntegerProperty(30);
+        setType(ItemType.NOT_EQUIPPABLE);
     }
 
     /**
@@ -53,13 +53,4 @@ public class HealthPotionGenerateItem extends GenerateItem {
     public SimpleIntegerProperty price() {
         return price;
     }
-
-    /**
-     * Gets the image of health potion for rendering
-     * @return Image
-     */
-    public Image getImage() {
-        return new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
-    }
-
 }
