@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-import javax.swing.event.EventListenerList;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -71,7 +69,6 @@ import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
-import unsw.loopmania.GameMode;
 import unsw.loopmania.gameModes.StandardMode;
 import unsw.loopmania.gameModes.SurvivalMode;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
@@ -98,11 +95,8 @@ import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.gameModes.BerserkerMode;
 import unsw.loopmania.gameModes.ConfusingMode;
-import javafx.stage.Stage;
 
-import org.javatuples.Pair;
 import org.javatuples.Quintet;
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import java.util.EnumMap;
 
@@ -271,6 +265,9 @@ public class LoopManiaWorldController {
     @FXML
     MediaPlayer goldCollectingPlayer;
 
+    @FXML
+    MediaPlayer goldLossPlayer;
+
     SimpleIntegerProperty oldGoldCount;
 
 
@@ -433,6 +430,9 @@ public class LoopManiaWorldController {
         Media goldCollecting = new Media(new File("src/sounds/goldCollecting.wav").toURI().toString());
         goldCollectingPlayer = new MediaPlayer(goldCollecting);
 
+        Media goldLoss = new Media(new File("src/sounds/goldLoss.wav").toURI().toString());
+        goldLossPlayer = new MediaPlayer(goldLoss);
+
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
         heroCastle.setPrefWidth(320);
@@ -461,13 +461,19 @@ public class LoopManiaWorldController {
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
-        // oldGoldCount = new SimpleIntegerProperty(1);
+        
         world.getCharacter().getGoldProperty().addListener(new ChangeListener<Number>()   {
             @Override
             public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
-                System.out.println("GoldCollected");
-                goldCollectingPlayer.seek(Duration.ZERO);
-                goldCollectingPlayer.play();
+                if (oldNumber.doubleValue() < newNumber.doubleValue()) {
+                    System.out.println("GoldCollected");
+                    goldCollectingPlayer.seek(Duration.ZERO);
+                    goldCollectingPlayer.play();
+                } else {
+                    goldLossPlayer.seek(Duration.ZERO);
+                    goldLossPlayer.play();
+                }
+                
             }
 
         });
@@ -530,17 +536,8 @@ public class LoopManiaWorldController {
                 pause();
             }
 
-            // System.out.println("old" + oldGoldCount.doubleValue());
-            // System.out.println("gold" + world.getCharacter().getGoldProperty().getValue());
+            List<BasicEnemy> defeatedEnemies = world.runBattles();
 
-            // if (world.getCharacter().getGoldProperty().getValue() == oldGoldCount.doubleValue()) {
-            //     goldCollectingPlayer.play();
-            //     oldGoldCount.add(1);
-            //     System.out.println("old after" + oldGoldCount.doubleValue());
-            //     System.out.println("gold after" + world.getCharacter().getGoldProperty().getValue());
-            // }
-
-            
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
                 backgroundMusicPlayer.pause();
@@ -570,6 +567,9 @@ public class LoopManiaWorldController {
                             terminate();
 
                         } else {
+                            for (BasicEnemy e: defeatedEnemies){
+                                reactToEnemyDefeat(e);
+                            }
                             enemiesLeft.setText("You Won!");
                             enemiesLeft.setText("0 Enemies Left");
                             alliedSoldiersCount.setText("You have " + world.getCharacter().getNumOfAlliedSoldiers() + " allied soldiers.");            
@@ -581,10 +581,6 @@ public class LoopManiaWorldController {
                 battleMusicPlayer.play();
             }
 
-            List<BasicEnemy> defeatedEnemies = world.runBattles();
-            for (BasicEnemy e: defeatedEnemies){
-                reactToEnemyDefeat(e);
-            }
             List<BasicEnemy> otherDefeatedEnemies = world.otherDefeatedEnemies();
             for (BasicEnemy e: otherDefeatedEnemies) {
                 reactToEnemyDefeat(e);
@@ -1379,6 +1375,7 @@ public class LoopManiaWorldController {
             battleMusicPlayer.setMute(false);
             backgroundMusicPlayer.setMute(false);
             goldCollectingPlayer.setMute(false);
+            goldLossPlayer.setMute(false);
             isMuted = false;
             
 
@@ -1387,6 +1384,7 @@ public class LoopManiaWorldController {
             battleMusicPlayer.setMute(true);
             backgroundMusicPlayer.setMute(true);
             goldCollectingPlayer.setMute(true);
+            goldLossPlayer.setMute(true);
             isMuted = true;
         }
     }
