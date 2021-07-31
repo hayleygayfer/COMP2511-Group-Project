@@ -249,7 +249,9 @@ public class LoopManiaWorldTest {
             world.setCharacter(newCharacter);
         }
         List<BasicEnemy> defeatedEnemies = world.runBattles();
-        assertTrue(defeatedEnemies.contains(spawnedEnemies.get(0)));
+        if (spawnedEnemies.size() > 0){
+            assertTrue(defeatedEnemies.contains(spawnedEnemies.get(0)));
+        }
     }
 
     @Test

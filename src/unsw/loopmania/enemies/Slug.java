@@ -21,7 +21,7 @@ public class Slug extends BasicEnemy {
 
     public Slug(PathPosition position) {
         super(position);
-        setDamage(3);
+        setDamage(1);
         setBattleRadius(1);
         setHealth(4);
         setSupportRadius(100);

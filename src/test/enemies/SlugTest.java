@@ -30,7 +30,7 @@ public class SlugTest {
     @Test
     public void testDamage() {
         Slug slug = new Slug(new PathPosition(0, TestHelper.createPath()));
-        assertEquals(3, slug.getDamage());
+        assertEquals(1, slug.getDamage());
     }
 
     @Test
