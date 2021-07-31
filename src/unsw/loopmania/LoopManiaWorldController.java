@@ -276,6 +276,9 @@ public class LoopManiaWorldController {
     @FXML
     MediaPlayer goldLossPlayer;
 
+    @FXML
+    MediaPlayer healthIncreasePlayer;
+
     SimpleIntegerProperty oldGoldCount;
 
 
@@ -441,6 +444,9 @@ public class LoopManiaWorldController {
         Media goldLoss = new Media(new File("src/sounds/goldLoss.wav").toURI().toString());
         goldLossPlayer = new MediaPlayer(goldLoss);
 
+        Media healthIncrease = new Media(new File("src/sounds/healthIncrease.wav").toURI().toString());
+        healthIncreasePlayer = new MediaPlayer(healthIncrease);
+
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
         heroCastle.setPrefWidth(320);
@@ -485,6 +491,18 @@ public class LoopManiaWorldController {
             }
 
         });
+
+        world.getCharacter().getCurrentHealthProperty().addListener(new ChangeListener<Number>()   {
+            @Override
+            public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
+                if (oldNumber.doubleValue() < newNumber.doubleValue()) {
+                    System.out.println("health increase");
+                    healthIncreasePlayer.seek(Duration.ZERO);
+                    healthIncreasePlayer.play();
+                }
+            }
+        });
+
 
         onLoad(world.loadCard());
         onLoad(world.loadCard());
@@ -1414,6 +1432,7 @@ public class LoopManiaWorldController {
             backgroundMusicPlayer.setMute(false);
             goldCollectingPlayer.setMute(false);
             goldLossPlayer.setMute(false);
+            healthIncreasePlayer.setMute(false);
             isMuted = false;
             
 
@@ -1423,6 +1442,7 @@ public class LoopManiaWorldController {
             backgroundMusicPlayer.setMute(true);
             goldCollectingPlayer.setMute(true);
             goldLossPlayer.setMute(true);
+            healthIncreasePlayer.setMute(true);
             isMuted = true;
         }
     }
