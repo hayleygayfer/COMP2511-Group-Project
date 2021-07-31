@@ -38,6 +38,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
+import javafx.stage.WindowEvent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -616,11 +617,18 @@ public class LoopManiaWorldController {
                 battleMusicPlayer.play();
             }
 
+            NPC encounteredNpc = world.getNPCEncounter();
+            if (encounteredNpc != null) {
+                pause();
+                Popup npcPopup = loadNPCPopup(encounteredNpc);
+                npcPopup.show(anchorPaneRoot.getScene().getWindow());
+            }
+
             List<BasicEnemy> otherDefeatedEnemies = world.otherDefeatedEnemies();
             for (BasicEnemy e: otherDefeatedEnemies) {
                 reactToEnemyDefeat(e);
             }
-            world.destroyBuildings();
+            world.removeDestroyedEntities();
             List<BasicEnemy> newEnemies = world.possiblySpawnEnemies();
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
@@ -633,6 +641,10 @@ public class LoopManiaWorldController {
             List<Gold> newGold = world.possiblySpawnGold();
             for (Gold gold: newGold) {
                 onLoad(gold);
+            }
+            List<NPC> newNPCs = world.possiblySpawnNPC();
+            for (NPC npc: newNPCs) {
+                onLoad(npc);
             }
             printThreadingNotes("HANDLED TIMER");
         }));
@@ -699,6 +711,107 @@ public class LoopManiaWorldController {
         if (newItem != null) {
             onLoad(newItem);
         }
+    }
+
+    public Popup loadNPCPopup(NPC npc) {
+
+        Popup npcPopup = new Popup();
+
+        /*
+        npcPopup.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, new EventHandler<WindowEvent>() {
+            @Override public void handle(WindowEvent event) {
+                if (itemWon != null) {
+                    onLoad(itemWon);
+                }
+            }
+        });
+        */
+
+        VBox popupBox = new VBox(10);
+        popupBox.setStyle("-fx-padding: 8;" + 
+        "-fx-border-style: solid inside;" + 
+        "-fx-border-width: 1;" +
+        "-fx-border-insets: 3;" + 
+        "-fx-border-color: grey;" +
+        "-fx-background-color: white;");
+
+        Button hide = new Button("X");
+        hide.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                npcPopup.hide();
+
+                try {
+                    pauseGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }); 
+        hide.setStyle("-fx-font-family: 'Avenir Book'");
+
+        HBox closeButtonRow = new HBox();
+        closeButtonRow.getChildren().add(hide);
+        popupBox.getChildren().add(closeButtonRow);
+
+        VBox chatBox = new VBox();
+        Label chatMsg = new Label("Greetings, I am a friendly inhabitant of this world. I would like to propose a trade offer. You give me 1 gold coin, and I will give you a chance to win an item. Will you try your luck?");
+        chatMsg.setStyle("-fx-font-family: 'Avenir Book'");
+        chatMsg.setWrapText(true);
+        chatMsg.setPrefWidth(300);
+        chatBox.getChildren().add(chatMsg);
+        popupBox.getChildren().add(chatBox);
+
+        HBox slotMachine = new HBox();
+
+        popupBox.getChildren().add(slotMachine);
+
+        HBox actionsRow = new HBox();
+        Button yesGamble = new Button("Yes! (1 gold)");
+        Button noThanks = new Button("No thanks");
+
+        yesGamble.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                // trigger gambling
+                Item itemWon = world.gambleWithNPC(world.getCharacter(), npc);
+
+                Label winLoseMsg;
+                if (itemWon == null) {
+                    winLoseMsg = new Label("You did not win anything :( Better luck next time.");
+                } else {
+                    winLoseMsg = new Label("You won a " + itemWon.toString());
+                    onLoad(itemWon);
+                }
+                winLoseMsg.setWrapText(true);
+                winLoseMsg.maxWidth(200);
+                winLoseMsg.setStyle("-fx-font-family: 'Avenir Next'");
+                slotMachine.getChildren().add(winLoseMsg);
+
+                actionsRow.getChildren().remove(noThanks);
+                actionsRow.getChildren().remove(yesGamble);
+            }
+        }); 
+        yesGamble.setStyle("-fx-font-family: 'Avenir Book'");
+        actionsRow.getChildren().add(yesGamble);
+
+        noThanks.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                npcPopup.hide();
+                try {
+                    pauseGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }); 
+        noThanks.setStyle("-fx-font-family: 'Avenir Book'");
+        actionsRow.getChildren().add(noThanks);
+
+        popupBox.getChildren().add(actionsRow);
+
+        npcPopup.getContent().add(popupBox);
+
+
+        return npcPopup;
     }
 
     public Popup loadPopupInfo(Item item) {
@@ -973,6 +1086,16 @@ public class LoopManiaWorldController {
     }
 
     /**
+     * load an NPC into the GUI
+     * @param npc the NPC to load to GUI
+     */
+    private void onLoad(NPC npc) {
+        ImageView view = createImageView(npc);
+        addEntity(npc, view);
+        squares.getChildren().add(view);
+    }
+
+    /**
      * Given an entity, creates the corresponding image view
      * @param entity of the item to be rendered
      * @pre entity has a corresponding image
@@ -1073,6 +1196,7 @@ public class LoopManiaWorldController {
         imageMap.put(Character.class, new Image((new File("src/images/human_new.png")).toURI().toString()));
         imageMap.put(Gold.class, new Image((new File("src/images/gold_pile.png")).toURI().toString()));
         imageMap.put(PathTile.class, new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString()));
+        imageMap.put(NPC.class, new Image((new File("src/images/npc.png")).toURI().toString()));
 
         //imageMap.put(, new Image((new File("src/images/empty_slot.png")).toURI().toString()));
 

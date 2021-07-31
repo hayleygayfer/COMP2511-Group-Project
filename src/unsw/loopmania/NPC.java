@@ -3,6 +3,8 @@ package unsw.loopmania;
 import java.util.List;
 import java.util.Random;
 
+import org.javatuples.Pair;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
 import unsw.loopmania.generateItems.ArmourGenerateItem;
@@ -33,14 +35,27 @@ public class NPC extends StaticEntity implements CharacterPositionObserver {
      * NPC dialog is triggered when character passes next to the NPC
      */
     public void encounter(Character character) {
-
+        if (!encountered && this.shouldExist().get()) {
+            List<Pair<Integer, Integer>> adjacentSquares = getAdjacentSquares(getX(), getY());
+            if (adjacentSquares.contains(Pair.with(character.getX(), character.getY()))) {
+                System.out.println("Encountered");
+                encountered = true;
+                this.destroy();
+            }
+        }
     }
 
     /**
      * When called, returns a random item or returns nothing at all
      * @return a GenerateItem object corresponding to the item won
      */
-    public GenerateItem gamble() {
+    public GenerateItem gamble(Character character) {
+        if (character.getGold() < 1) {
+            return null;
+        }
+
+        character.deductGold(1);
+
         // 40% chance success, 60% chance failure
         Random random = new Random();
         if (random.nextInt(100) < 60) {

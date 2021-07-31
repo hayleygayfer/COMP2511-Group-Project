@@ -70,6 +70,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     private List<BattleBehaviourContext> defeatedBosses;
 
+    private List<NPC> npcEntities;
+
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
@@ -106,6 +108,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         cardEntities = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        npcEntities = new ArrayList<>();
         spawnEnemyStrategies = new ArrayList<>();
         shopMenu = new HerosCastleMenu();
         gameCycle = new SimpleIntegerProperty(0);
@@ -264,6 +267,68 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return spawningGold;
     }
 
+    /**
+     * Returns an NPC if there is one currently being encountered
+     * @return NPC being encountered
+     */
+    public NPC getNPCEncounter() {
+        for (NPC n : npcEntities) {
+            if (n.getEncountered()) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * potentially spawns a friendly npc at a random position
+     * @return list of newly spawned NPCs
+     */
+    public List<NPC> possiblySpawnNPC() {
+        List<NPC> newNpcs = new ArrayList<>();
+        Random random = new Random();
+        // 10 % of the time for now
+        // bring this down to like 1%
+        if (random.nextInt(1000) < 400) {
+            List<Pair<Integer, Integer>> validTiles = new ArrayList<>();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (!orderedPath.contains(Pair.with(x, y))) {
+                        validTiles.add(Pair.with(x, y));
+                    }
+                }
+            }
+            // remove any tiles where an existing NPC is there
+            for (NPC n: npcEntities) {
+                validTiles.remove(Pair.with(n.getX(), n.getY()));
+            }
+
+            Pair<Integer, Integer> pos = validTiles.get(random.nextInt(validTiles.size()));
+
+            NPC npc = new NPC(new SimpleIntegerProperty(pos.getValue0()), new SimpleIntegerProperty(pos.getValue1()));
+            npcEntities.add(npc);
+            newNpcs.add(npc);
+            character.attach(npc);
+        }
+        return newNpcs;
+    }
+
+    /**
+     * Character gambles with an NPC. Gains an item if successful
+     * @param character
+     * @param npc
+     */
+    public Item gambleWithNPC(Character character, NPC npc) {
+        GenerateItem gItem = npc.gamble(character);
+        if (gItem != null) {
+            Pair<Integer, Integer> pos = getFirstAvailableSlotForItem();
+            Item item = gItem.createItem(new SimpleIntegerProperty(pos.getValue0()), new SimpleIntegerProperty(pos.getValue1()));
+            character.addItemToInventory(item);
+            return item;
+        }
+        return null;
+    }
+
     public Item purchaseItemFromHerosCastle(GenerateItem item) {
         Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
         Item purchasedItem = shopMenu.purchaseItem(character, item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()), gameMode);
@@ -328,10 +393,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
-     * Goes through buildings and removes those that shouldn't exist
+     * Goes through buildings and NPCs, and removes those that shouldn't exist
      */
-    public void destroyBuildings() {
+    public void removeDestroyedEntities() {
         buildingEntities.removeIf(b -> !b.shouldExist().get());
+        npcEntities.removeIf(n -> !n.shouldExist().get());
     }
 
     /**

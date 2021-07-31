@@ -1,5 +1,7 @@
 package test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,9 @@ public class NPCTest {
         character.attach(npc);
 
         character.moveDownPath();
+        character.updateObservers();
         character.moveDownPath();
+        character.updateObservers();
 
         assertTrue(npc.getEncountered());
     }
@@ -40,22 +44,36 @@ public class NPCTest {
         character.attach(npc);
 
         character.moveDownPath();
+        character.updateObservers();
 
-        assertTrue(npc.getEncountered());
+        assertFalse(npc.getEncountered());
     }
 
     @Test
     public void testGambleChance() {
         NPC npc = new NPC(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1)); 
+        Character character = TestHelper.createCharacter(TestHelper.createPath());
+        character.addGold(1001);
 
         int wins = 0;
         for (int i = 0; i < 1000; i++) {
-            GenerateItem gItem = npc.gamble();
+            GenerateItem gItem = npc.gamble(character);
             if (gItem != null) {
                 wins++;
             }
         }
 
         assertTrue(wins > 350 && wins < 450);
+    }
+
+    @Test
+    public void testGambleNotEnoughGold() {
+        NPC npc = new NPC(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1)); 
+        Character character = TestHelper.createCharacter(TestHelper.createPath());
+
+        for (int i = 0; i < 100; i++) {
+            assertEquals(null, npc.gamble(character));
+        }
+        assertEquals(0, character.getGold());
     }
 }
