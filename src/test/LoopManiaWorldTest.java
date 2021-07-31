@@ -31,6 +31,7 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.Goals.CycleLeaf;
 import unsw.loopmania.Goals.XpLeaf;
+import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.Goals.GoldLeaf;
 import unsw.loopmania.Goals.GoalAND;
 import unsw.loopmania.Entity;
@@ -39,6 +40,7 @@ import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.TowerCard;
+import unsw.loopmania.cards.VampireCastleCard;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -365,5 +367,30 @@ public class LoopManiaWorldTest {
         assertTrue(world.getGameCycleProperty() instanceof SimpleIntegerProperty);
     }
 
+    @Test
+    public void testCanBuildByCoordinatesValid() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        
+        VampireCastleCard cardToAdd = new VampireCastleCard(new SimpleIntegerProperty(3), new SimpleIntegerProperty(3));
+        world.addCard(cardToAdd);
+        assertTrue(world.canBuildByCoordinates(3, 3, 1, 2));
+    }
 
+    @Test
+    public void testCanBuildByCoordinatesNoCard() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0)); 
+        assertFalse(world.canBuildByCoordinates(2, 2, 3, 3));
+    }
+
+    @Test
+    public void TestCanBuildByCoordinatesDuplicate() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        
+        VampireCastleBuilding castle1 = new VampireCastleBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(2));
+        world.addBuilding(castle1);
+
+        VampireCastleCard cardToAdd = new VampireCastleCard(new SimpleIntegerProperty(3), new SimpleIntegerProperty(3));
+        world.addCard(cardToAdd);
+        assertFalse(world.canBuildByCoordinates(3, 3, 2, 2));
+    }
 }
