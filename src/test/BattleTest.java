@@ -109,7 +109,7 @@ public class BattleTest {
 
         List<Frame> frames = newBattle.runBattle();
 
-        assertEquals(frames.size(), 2);
+        assertEquals(frames.size(), 3);
         assertTrue(newBattle.wonBattle());
     }
 

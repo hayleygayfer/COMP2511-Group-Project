@@ -41,7 +41,7 @@ public class VampireTest {
     @Test
     public void testHealth() {
         Vampire vampire = new Vampire(new PathPosition(0, TestHelper.createPath()));  
-        assertEquals(20, vampire.getHealth());
+        assertEquals(15, vampire.getHealth());
     }
 
     @Test
