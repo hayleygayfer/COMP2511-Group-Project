@@ -131,7 +131,6 @@ public class StaffTest {
             } else {
                 assertEquals(zombieHealth - 1, zombie.getHealth());
             }
-            character.cleanAlliedSoldiers();
         }
     }
 }
