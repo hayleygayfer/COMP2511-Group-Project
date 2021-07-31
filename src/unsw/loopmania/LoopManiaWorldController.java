@@ -94,6 +94,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.items.TreeStump;
+import unsw.loopmania.items.ReversePathPotion;
 import unsw.loopmania.gameModes.BerserkerMode;
 import unsw.loopmania.gameModes.ConfusingMode;
 
@@ -1035,6 +1036,7 @@ public class LoopManiaWorldController {
         imageMap.put(Sword.class, new Image((new File("src/images/basic_sword.png")).toURI().toString()));
         imageMap.put(TheOneRing.class, new Image((new File("src/images/the_one_ring.png")).toURI().toString()));
         imageMap.put(TreeStump.class, new Image((new File("src/images/tree_stump.png")).toURI().toString()));
+        imageMap.put(ReversePathPotion.class, new Image((new File("src/images/reverse_path_potion.png")).toURI().toString()));
 
         // generate items
         imageMap.put(AndurilGenerateItem.class, new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()));

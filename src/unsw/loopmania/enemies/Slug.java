@@ -10,7 +10,7 @@ import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
 import unsw.loopmania.generateItems.TreeStumpGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
-import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
+import unsw.loopmania.generateItems.ReversePathPotionGenerateItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
 import unsw.loopmania.generateCards.BarracksGenerateCard;

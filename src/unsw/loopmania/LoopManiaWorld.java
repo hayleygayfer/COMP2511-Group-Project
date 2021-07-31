@@ -23,6 +23,7 @@ import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.items.DoggieCoin;
+import unsw.loopmania.items.ReversePathPotion;
 import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 /**
  * A backend world.
@@ -564,7 +565,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public void runTickMoves(){
         // move characters
-        character.moveDownPath();
+        character.moveInDirection();
         character.updateObservers();
 
         // move enemies

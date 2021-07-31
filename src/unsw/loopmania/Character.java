@@ -26,6 +26,10 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private SimpleIntegerProperty baseHealth;
     private SimpleIntegerProperty currentHealth;
 
+    // if the character is moving down direction = 0
+    // if the character is moving up direction = 1
+    private int direction;
+
     // Initial position
     private PathPosition initialPosition;
     // gold
@@ -51,6 +55,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.damage = new SimpleIntegerProperty(1);
         this.inventory = new ArrayList<Item>();
         this.purchasedItems = new ArrayList<GenerateItem>();
+        this.direction = 0;
     }
 
     /**
@@ -366,6 +371,22 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.damage.set(1);
         this.inventory = new ArrayList<Item>();
         this.equippedItems = new ArrayList<EquippableItem>();
+    }
+
+    public void moveInDirection() {
+        switch (direction) {
+            case 0:
+                moveDownPath();
+            break;
+            case 1:
+                moveUpPath();
+            break;
+        }
+    }
+
+    public void switchDirection() {
+        if (direction == 1) direction = 0;
+        else direction = 1;
     }
 
 }
