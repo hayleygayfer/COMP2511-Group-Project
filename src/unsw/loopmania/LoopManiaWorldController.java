@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-import javax.swing.event.EventListenerList;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -71,7 +69,6 @@ import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
-import unsw.loopmania.GameMode;
 import unsw.loopmania.gameModes.StandardMode;
 import unsw.loopmania.gameModes.SurvivalMode;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
@@ -98,11 +95,8 @@ import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.gameModes.BerserkerMode;
 import unsw.loopmania.gameModes.ConfusingMode;
-import javafx.stage.Stage;
 
-import org.javatuples.Pair;
 import org.javatuples.Quintet;
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import java.util.EnumMap;
 
@@ -467,7 +461,7 @@ public class LoopManiaWorldController {
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
-        // oldGoldCount = new SimpleIntegerProperty(1);
+        
         world.getCharacter().getGoldProperty().addListener(new ChangeListener<Number>()   {
             @Override
             public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
