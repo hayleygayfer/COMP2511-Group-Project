@@ -445,6 +445,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                 } else {
                     // Finish Game
                 }
+                break;
             }
         }
         for (BasicEnemy e: defeatedEnemies){

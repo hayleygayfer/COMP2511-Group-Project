@@ -465,9 +465,12 @@ public class LoopManiaWorldController {
         world.getCharacter().getGoldProperty().addListener(new ChangeListener<Number>()   {
             @Override
             public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
-                System.out.println("GoldCollected");
-                goldCollectingPlayer.seek(Duration.ZERO);
-                goldCollectingPlayer.play();
+                if (oldNumber.doubleValue() < newNumber.doubleValue()) {
+                    System.out.println("GoldCollected");
+                    goldCollectingPlayer.seek(Duration.ZERO);
+                    goldCollectingPlayer.play();
+                }
+                
             }
 
         });
@@ -530,17 +533,8 @@ public class LoopManiaWorldController {
                 pause();
             }
 
-            // System.out.println("old" + oldGoldCount.doubleValue());
-            // System.out.println("gold" + world.getCharacter().getGoldProperty().getValue());
+            List<BasicEnemy> defeatedEnemies = world.runBattles();
 
-            // if (world.getCharacter().getGoldProperty().getValue() == oldGoldCount.doubleValue()) {
-            //     goldCollectingPlayer.play();
-            //     oldGoldCount.add(1);
-            //     System.out.println("old after" + oldGoldCount.doubleValue());
-            //     System.out.println("gold after" + world.getCharacter().getGoldProperty().getValue());
-            // }
-
-            
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
                 backgroundMusicPlayer.pause();
@@ -570,6 +564,9 @@ public class LoopManiaWorldController {
                             terminate();
 
                         } else {
+                            for (BasicEnemy e: defeatedEnemies){
+                                reactToEnemyDefeat(e);
+                            }
                             enemiesLeft.setText("You Won!");
                             enemiesLeft.setText("0 Enemies Left");
                             alliedSoldiersCount.setText("You have " + world.getCharacter().getNumOfAlliedSoldiers() + " allied soldiers.");            
@@ -581,10 +578,6 @@ public class LoopManiaWorldController {
                 battleMusicPlayer.play();
             }
 
-            List<BasicEnemy> defeatedEnemies = world.runBattles();
-            for (BasicEnemy e: defeatedEnemies){
-                reactToEnemyDefeat(e);
-            }
             List<BasicEnemy> otherDefeatedEnemies = world.otherDefeatedEnemies();
             for (BasicEnemy e: otherDefeatedEnemies) {
                 reactToEnemyDefeat(e);
