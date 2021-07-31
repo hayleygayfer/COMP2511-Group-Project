@@ -4,8 +4,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Building;
 import unsw.loopmania.CharacterPositionObserver;
 import unsw.loopmania.Character;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class VillageBuilding extends Building implements CharacterPositionObserver {
     public VillageBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -22,13 +20,5 @@ public class VillageBuilding extends Building implements CharacterPositionObserv
         if (character.getX() == getX() && character.getY() == getY()) {
             character.gainHealth(10);
         }
-    }
-
-    /**
-     * Creates a new image of village
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/village.png")).toURI().toString());
     }
 }

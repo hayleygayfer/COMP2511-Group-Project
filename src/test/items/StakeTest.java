@@ -3,6 +3,8 @@ package test.items;
 import org.junit.jupiter.api.Test;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import test.TestHelper;
+
 import java.util.List;
 import java.util.ArrayList;
 import org.javatuples.Pair;
@@ -15,6 +17,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
@@ -22,6 +25,7 @@ import unsw.loopmania.Entity;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
+import unsw.loopmania.generateItems.StakeGenerateItem;
 
 public class StakeTest {
     /**
@@ -124,7 +128,7 @@ public class StakeTest {
         Zombie zombie = new Zombie(new PathPosition(0, createPath()));
 
         int initialSlugHealth = slug.getHealth();
-        int initialZombieHealth = slug.getHealth();
+        int initialZombieHealth = zombie.getHealth();
 
         stake.attack(slug, character);
         stake.attack(zombie, character);
@@ -143,7 +147,25 @@ public class StakeTest {
         int initialVampireHealth = vampire.getHealth();
 
         stake.attack(vampire, character);
-
+        System.err.println(vampire.getHealth());
         assertEquals(initialVampireHealth - 10, vampire.getHealth());
+    }
+
+    @Test
+    public void testGetModifiedDamage() {
+        // TODO: this test might become redundant
+        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        Zombie zombie = new Zombie(new PathPosition(0, TestHelper.createPath()));
+
+        assertEquals(10, stake.getModifiedDamage(zombie, 5));
+        assertEquals(12, stake.getModifiedDamage(zombie, 7));
+    }
+
+    @Test
+    public void testGetItemDetails() {
+        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        GenerateItem generateItem = stake.getItemDetails();
+
+        assertTrue(generateItem instanceof StakeGenerateItem);
     }
 }

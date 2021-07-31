@@ -1,12 +1,11 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Shield;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class ShieldGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
@@ -17,6 +16,7 @@ public class ShieldGenerateItem extends GenerateItem {
         this.name = new SimpleStringProperty("Shield");
         this.description = new SimpleStringProperty("Critical Vampire attacks have a 60% lower chance of occuring.");
         this.price = new SimpleIntegerProperty(10);
+        setType(ItemType.SHIELD);
     }
 
     /**
@@ -53,13 +53,4 @@ public class ShieldGenerateItem extends GenerateItem {
     public SimpleIntegerProperty price() {
         return price;
     }
-
-    /**
-     * Gets the image of shield for rendering
-     * @return Image
-     */
-    public Image getImage() {
-        return new Image((new File("src/images/shield.png")).toURI().toString());
-    }
-
 }

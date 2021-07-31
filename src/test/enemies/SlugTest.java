@@ -25,11 +25,24 @@ public class SlugTest {
         assertTrue(enemy instanceof BasicEnemy);
         assertTrue(enemy instanceof MovingEntity);
         assertTrue(enemy instanceof Entity);
+    }
 
-        // check stats
-        assertEquals(1, enemy.getDamage());
-        assertEquals(2, enemy.getBattleRadius());
-        assertEquals(4, enemy.getHealth());
+    @Test
+    public void testDamage() {
+        Slug slug = new Slug(new PathPosition(0, TestHelper.createPath()));
+        assertEquals(3, slug.getDamage());
+    }
+
+    @Test
+    public void testBattleRadius() {
+        Slug slug = new Slug(new PathPosition(0, TestHelper.createPath())); 
+        assertEquals(1, slug.getBattleRadius());
+    }
+
+    @Test
+    public void testHealth() {
+        Slug slug = new Slug(new PathPosition(0, TestHelper.createPath()));  
+        assertEquals(4, slug.getHealth());
     }
 
     @Test

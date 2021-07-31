@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.binding.BooleanBinding;
-import javafx.scene.image.Image;
-import java.io.File;
 import org.javatuples.Pair;
 
 /**
@@ -53,14 +51,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.damage = new SimpleIntegerProperty(1);
         this.inventory = new ArrayList<Item>();
         this.purchasedItems = new ArrayList<GenerateItem>();
-    }
-
-    /**
-     * Creates a new image of a human character
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/human_new.png")).toURI().toString());
     }
 
     /**
@@ -294,7 +284,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     public void addGold(int amount) {
         this.gold.set(this.gold.get() + amount);
     }
-
+ 
     /**
      * Adds an allied soldiier to the character
      * @param newSoldier

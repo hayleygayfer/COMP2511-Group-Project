@@ -1,6 +1,7 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.RareItem;
 import unsw.loopmania.items.DoggieCoin;
@@ -40,6 +41,7 @@ public class DoggieCoinGenerateItem extends GenerateItem {
                 });
             }
         }, 0, 1000);
+        setType(ItemType.NOT_EQUIPPABLE);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -69,9 +71,5 @@ public class DoggieCoinGenerateItem extends GenerateItem {
 
     public SimpleIntegerProperty price() {
         return price;
-    }
-
-    public Image getImage() {
-        return new Image((new File("src/images/doggiecoin.png")).toURI().toString());
     }
 }
