@@ -13,11 +13,12 @@ import java.util.TimerTask;
 
 
 public class DoggieCoin extends Item implements RareItem {
-    private GenerateItem itemInfo = new DoggieCoinGenerateItem();
+    private DoggieCoinGenerateItem itemInfo = new DoggieCoinGenerateItem();
+    private Random rand = new Random(System.currentTimeMillis());
 
     public DoggieCoin(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
-        setSellPrice(50);
+        setSellPrice(rand.nextInt(itemInfo.getUpperValue()));
     }
 
     @Override

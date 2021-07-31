@@ -46,11 +46,6 @@ import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.Goals.Goal;
-import unsw.loopmania.itemTypes.ShieldType;
-import unsw.loopmania.itemTypes.ArmourType;
-import unsw.loopmania.itemTypes.WeaponType;
-import unsw.loopmania.itemTypes.HelmetType;
-import unsw.loopmania.itemTypes.AccessoryType;
 import unsw.loopmania.GameMode;
 import unsw.loopmania.gameModes.StandardMode;
 import unsw.loopmania.gameModes.SurvivalMode;
@@ -614,7 +609,9 @@ public class LoopManiaWorldController {
         itemInfo.getChildren().add(imgRow);
 
         // add item price
-        Label price = new Label("$" + item.getItemDetails().price().get());
+        
+        Label price = new Label();
+        price.textProperty().bindBidirectional(item.getItemDetails().price(), new NumberStringConverter());
         price.setPrefWidth(95);
         priceRow.getChildren().add(price);
 

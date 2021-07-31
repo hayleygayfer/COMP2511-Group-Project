@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 
 import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
@@ -26,6 +27,19 @@ public class DoggieCoinGenerateItem extends GenerateItem {
         this.name = new SimpleStringProperty("DoggieCoin");
         this.description = new SimpleStringProperty("A revolutionary asset type, which randomly fluctuates in sellable price to an extraordinary extent. Can sell at shop.");
         this.upperValue = 10000;
+        this.price = new SimpleIntegerProperty(1);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+        @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                       randPrice();
+                    }
+                });
+            }
+        }, 0, 1000);
     }
 
     public Item createItem(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -37,8 +51,12 @@ public class DoggieCoinGenerateItem extends GenerateItem {
         upperValue = x;
     }
 
-    private void setPrice(int x) {
-        this.price.set(x);
+    public int getUpperValue() {
+        return upperValue;
+    }
+
+    private void randPrice() {
+        this.price.set(rand.nextInt(upperValue));
     }
 
     public SimpleStringProperty description() {
@@ -50,7 +68,6 @@ public class DoggieCoinGenerateItem extends GenerateItem {
     }
 
     public SimpleIntegerProperty price() {
-        setPrice(rand.nextInt(upperValue));
         return price;
     }
 
