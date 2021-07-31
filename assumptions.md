@@ -45,6 +45,7 @@
 - Vampires have a 50% chance to drop a Stake, a 50% chance to drop a shield, a 50% chance to drop a VillageCard and a 50% chance to drop a CampfireCard
 - Zombies have a 50% chance to drop a Staff and a 50% chance to drop a TowerCard
 - All enemies have a 20% chance to drop a Health Potion and a 5% chance to drop The One Ring
+- Zombies and Vampires also have a 2% chance to drop a Reverse Path Potion
 
 ### Enemy Xp and Gold Drops
 - Slugs can drop anywhere between 0 and 2 Gold, and give 5 XP when killed
@@ -62,6 +63,8 @@
 - The Tree Stump reduces normal enemy damage to 1/3, and Boss damage to 1/4
 - Anduril does 20 base damage, and 60 damage to bosses
 - The value of Doggie Coin will only be available outside of the shop, so the Player has no idea what price they are selling for.
+- The Value of Doggie Coin prior to Elan Muske appearing can be anywhere between 0 and 10000 Gold, after Elan Muske appears it can be anywhere between 0 and 10 Gold.
+- The Reverse Path Potion will reverse the direction the character is moving in on the path when used.
 
 | Type | Health | Damage | Battle radius | Support radius | Speed |
 |------|--------|--------|---------------|----------------|-------|
