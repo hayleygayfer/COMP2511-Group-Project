@@ -72,7 +72,6 @@ public class HerosCastleMenu {
             character.deductGold(item.price().get());
             return newItem;
         }
-        
         return null;
     }
 
