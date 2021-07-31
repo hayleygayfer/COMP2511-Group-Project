@@ -713,6 +713,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
+     * Gets Game mode
+     * @return cycle
+     */
+    public GameMode getGameMode() {
+        return this.gameMode;
+    }
+
+    /**
      * Resets game to initial state
      * @return void
      */

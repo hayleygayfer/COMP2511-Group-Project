@@ -6,15 +6,12 @@ import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
-<<<<<<< HEAD
 import javafx.scene.image.Image;
 import java.io.File;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-=======
->>>>>>> dev
 
 public class DoggieCoin extends Item implements RareItem {
     private DoggieCoinGenerateItem itemInfo = new DoggieCoinGenerateItem();
