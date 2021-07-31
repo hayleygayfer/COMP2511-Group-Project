@@ -61,6 +61,7 @@
 ### Rare items
 - The Tree Stump reduces normal enemy damage to 1/3, and Boss damage to 1/4
 - Anduril does 20 base damage, and 60 damage to bosses
+- The value of Doggie Coin will only be available outside of the shop, so the Player has no idea what price they are selling for.
 
 | Type | Health | Damage | Battle radius | Support radius | Speed |
 |------|--------|--------|---------------|----------------|-------|
