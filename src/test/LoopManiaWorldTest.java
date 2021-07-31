@@ -264,7 +264,7 @@ public class LoopManiaWorldTest {
 
         List<CharacterEffect> battleBuildings = new ArrayList<>();
 
-        Battle newBattle = new Battle(character, enemies, battleBuildings);
+        Battle newBattle = new Battle(character, enemies, battleBuildings, null);
         world.setCurrentBattle(newBattle);
         
         assertEquals(world.getCurrentBattle(), newBattle);

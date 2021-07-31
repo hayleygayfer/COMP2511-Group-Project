@@ -7,7 +7,7 @@ import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.BasicEnemy;
-import unsw.loopmania.BossEnemyType;
+import unsw.loopmania.BattleBehaviourContext;
 
 public class TreeStump extends EquippableItem implements RareItem {
     private GenerateItem itemInfo = new TreeStumpGenerateItem();
@@ -31,7 +31,7 @@ public class TreeStump extends EquippableItem implements RareItem {
      * @pre enemy != null
      */
     public void affect(BasicEnemy enemy) {
-        if (enemy instanceof BossEnemyType) {
+        if (enemy instanceof BattleBehaviourContext) {
             enemy.setDamage(enemy.getDamage() / 4);
         } else {
             enemy.setDamage(enemy.getDamage() / 3);
