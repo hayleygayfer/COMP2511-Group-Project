@@ -69,6 +69,7 @@ import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
+import unsw.loopmania.GameMode;
 import unsw.loopmania.gameModes.StandardMode;
 import unsw.loopmania.gameModes.SurvivalMode;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
@@ -958,6 +959,16 @@ public class LoopManiaWorldController {
      * @pre entity has a corresponding image
      */
     private ImageView createImageView(Entity entity) {
+        if (world.getGameMode() instanceof ConfusingMode) {
+            if (entity instanceof Anduril) {
+                return new ImageView(imageMap.get(Sword.class));
+            } else if (entity instanceof TreeStump) {
+                return new ImageView(imageMap.get(Shield.class));
+            } else if (entity instanceof TheOneRing) {
+                return new ImageView(imageMap.get(Helmet.class));
+            }
+        }
+
         return new ImageView(imageMap.get(entity.getClass()));
     }
 
@@ -967,6 +978,16 @@ public class LoopManiaWorldController {
      * @pre generateItem has a corresponding image
      */
     private ImageView createImageView(GenerateItem generateItem) {
+        if (world.getGameMode() instanceof ConfusingMode) {
+            if (generateItem instanceof AndurilGenerateItem) {
+                return new ImageView(imageMap.get(SwordGenerateItem.class));
+            } else if (generateItem instanceof TreeStumpGenerateItem) {
+                return new ImageView(imageMap.get(ShieldGenerateItem.class));
+            } else if (generateItem instanceof TheOneRingGenerateItem) {
+                return new ImageView(imageMap.get(HelmetGenerateItem.class));
+            }
+        }
+
         return new ImageView(imageMap.get(generateItem.getClass()));
     }
 

@@ -18,6 +18,10 @@ import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Doggie;
 import unsw.loopmania.enemies.ElanMuske;
+import unsw.loopmania.gameModes.ConfusingMode;
+import unsw.loopmania.items.Anduril;
+import unsw.loopmania.items.TreeStump;
+import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.items.DoggieCoin;
 import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 /**
@@ -528,6 +532,30 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         Item item = getUnequippedInventoryItemEntityByCoordinates(x, y);
         if (item instanceof EquippableItem) {
             character.equipItem((EquippableItem) item);
+            if (gameMode instanceof ConfusingMode) {
+                if (item instanceof RareItem) {
+                    List<EquippableItem> extraRareItemPossibility = new ArrayList<EquippableItem>();
+                    
+                    if (!(item instanceof Anduril)) {
+                        EquippableItem anduril = new Anduril(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+                        extraRareItemPossibility.add(anduril);
+                    }
+
+                    if (!(item instanceof TheOneRing)) {
+                        EquippableItem theOneRing = new TheOneRing(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+                        extraRareItemPossibility.add(theOneRing);
+                    }
+
+                    if (!(item instanceof TreeStump)) {
+                        EquippableItem treeStump = new TreeStump(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+                        extraRareItemPossibility.add(treeStump);
+                    }
+
+                    Random rand = new Random(System.currentTimeMillis());
+                    int rareNum = rand.nextInt(2);
+                    character.equipItem(extraRareItemPossibility.get(rareNum));
+                }
+            }
         }
     }
 
@@ -749,6 +777,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public SimpleIntegerProperty getGameCycleProperty() {
         return this.gameCycle;
+    }
+
+    /**
+     * Gets Game mode
+     * @return cycle
+     */
+    public GameMode getGameMode() {
+        return this.gameMode;
     }
 
     /**
