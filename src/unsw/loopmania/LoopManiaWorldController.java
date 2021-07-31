@@ -271,6 +271,9 @@ public class LoopManiaWorldController {
     @FXML
     MediaPlayer goldCollectingPlayer;
 
+    @FXML
+    MediaPlayer goldLossPlayer;
+
     SimpleIntegerProperty oldGoldCount;
 
 
@@ -433,6 +436,9 @@ public class LoopManiaWorldController {
         Media goldCollecting = new Media(new File("src/sounds/goldCollecting.wav").toURI().toString());
         goldCollectingPlayer = new MediaPlayer(goldCollecting);
 
+        Media goldLoss = new Media(new File("src/sounds/goldLoss.wav").toURI().toString());
+        goldLossPlayer = new MediaPlayer(goldLoss);
+
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
         heroCastle.setPrefWidth(320);
@@ -469,6 +475,9 @@ public class LoopManiaWorldController {
                     System.out.println("GoldCollected");
                     goldCollectingPlayer.seek(Duration.ZERO);
                     goldCollectingPlayer.play();
+                } else {
+                    goldLossPlayer.seek(Duration.ZERO);
+                    goldLossPlayer.play();
                 }
                 
             }
@@ -1370,6 +1379,7 @@ public class LoopManiaWorldController {
             battleMusicPlayer.setMute(false);
             backgroundMusicPlayer.setMute(false);
             goldCollectingPlayer.setMute(false);
+            goldLossPlayer.setMute(false);
             isMuted = false;
             
 
@@ -1378,6 +1388,7 @@ public class LoopManiaWorldController {
             battleMusicPlayer.setMute(true);
             backgroundMusicPlayer.setMute(true);
             goldCollectingPlayer.setMute(true);
+            goldLossPlayer.setMute(true);
             isMuted = true;
         }
     }
