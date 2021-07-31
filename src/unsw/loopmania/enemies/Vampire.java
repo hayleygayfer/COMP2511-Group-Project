@@ -11,6 +11,7 @@ import unsw.loopmania.generateItems.AndurilGenerateItem;
 import unsw.loopmania.generateItems.TreeStumpGenerateItem;
 import unsw.loopmania.generateItems.ShieldGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
+import unsw.loopmania.generateItems.ReversePathPotionGenerateItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
 import unsw.loopmania.generateCards.VillageGenerateCard;
@@ -26,7 +27,7 @@ public class Vampire extends BasicEnemy {
         super(position);
         setDamage(3);
         setBattleRadius(2);
-        setHealth(20);
+        setHealth(15);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new StakeGenerateItem(), 0.50));
         droppableItems.add(new Pair<GenerateItem, Double>(new ShieldGenerateItem(), 0.50));
@@ -34,6 +35,7 @@ public class Vampire extends BasicEnemy {
         droppableItems.add(new Pair<GenerateItem, Double>(new TheOneRingGenerateItem(), 0.05));
         droppableItems.add(new Pair<GenerateItem, Double>(new AndurilGenerateItem(), 0.05));
         droppableItems.add(new Pair<GenerateItem, Double>(new TreeStumpGenerateItem(), 0.05));
+        droppableItems.add(new Pair<GenerateItem, Double>(new ReversePathPotionGenerateItem(), 0.02));
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();

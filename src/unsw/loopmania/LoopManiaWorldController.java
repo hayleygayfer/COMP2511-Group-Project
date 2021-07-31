@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-import javax.swing.event.EventListenerList;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.BooleanProperty;
 
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -96,13 +94,11 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.items.TreeStump;
+import unsw.loopmania.items.ReversePathPotion;
 import unsw.loopmania.gameModes.BerserkerMode;
 import unsw.loopmania.gameModes.ConfusingMode;
-import javafx.stage.Stage;
 
-import org.javatuples.Pair;
 import org.javatuples.Quintet;
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import java.util.EnumMap;
 
@@ -159,6 +155,9 @@ public class LoopManiaWorldController {
     private ImageView enemyBattle;
 
     @FXML
+    private ImageView bossBattle;
+
+    @FXML
     private Button finishBattleButton;
 
     @FXML
@@ -166,6 +165,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private ProgressBar characterHealth;
+
+    @FXML
+    private ProgressBar bossHealth;
 
     @FXML
     private Text enemiesLeft;
@@ -270,6 +272,9 @@ public class LoopManiaWorldController {
 
     @FXML
     MediaPlayer goldCollectingPlayer;
+
+    @FXML
+    MediaPlayer goldLossPlayer;
 
     SimpleIntegerProperty oldGoldCount;
 
@@ -433,6 +438,9 @@ public class LoopManiaWorldController {
         Media goldCollecting = new Media(new File("src/sounds/goldCollecting.wav").toURI().toString());
         goldCollectingPlayer = new MediaPlayer(goldCollecting);
 
+        Media goldLoss = new Media(new File("src/sounds/goldLoss.wav").toURI().toString());
+        goldLossPlayer = new MediaPlayer(goldLoss);
+
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
         heroCastle.setPrefWidth(320);
@@ -461,13 +469,19 @@ public class LoopManiaWorldController {
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
-        // oldGoldCount = new SimpleIntegerProperty(1);
+        
         world.getCharacter().getGoldProperty().addListener(new ChangeListener<Number>()   {
             @Override
             public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
-                System.out.println("GoldCollected");
-                goldCollectingPlayer.seek(Duration.ZERO);
-                goldCollectingPlayer.play();
+                if (oldNumber.doubleValue() < newNumber.doubleValue()) {
+                    System.out.println("GoldCollected");
+                    goldCollectingPlayer.seek(Duration.ZERO);
+                    goldCollectingPlayer.play();
+                } else {
+                    goldLossPlayer.seek(Duration.ZERO);
+                    goldLossPlayer.play();
+                }
+                
             }
 
         });
@@ -530,17 +544,8 @@ public class LoopManiaWorldController {
                 pause();
             }
 
-            // System.out.println("old" + oldGoldCount.doubleValue());
-            // System.out.println("gold" + world.getCharacter().getGoldProperty().getValue());
+            List<BasicEnemy> defeatedEnemies = world.runBattles();
 
-            // if (world.getCharacter().getGoldProperty().getValue() == oldGoldCount.doubleValue()) {
-            //     goldCollectingPlayer.play();
-            //     oldGoldCount.add(1);
-            //     System.out.println("old after" + oldGoldCount.doubleValue());
-            //     System.out.println("gold after" + world.getCharacter().getGoldProperty().getValue());
-            // }
-
-            
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
                 backgroundMusicPlayer.pause();
@@ -549,12 +554,21 @@ public class LoopManiaWorldController {
                 finishBattleButton.setVisible(false);
                 pause();
                 SequentialTransition battleSequence = new SequentialTransition();
-                List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = world.getCurrentBattle().runBattle();
-                enemyBattle.setImage(imageMap.get(frames.get(0).getValue2().getClass()));
-                enemiesLeft.setText(frames.get(0).getValue3() + " Enemies Left");
-                alliedSoldiersCount.setText("You have " + frames.get(0).getValue4() + " allied soldiers.");
-                characterHealth.setProgress(frames.get(0).getValue0());
-                enemyHealth.setProgress(frames.get(0).getValue1());
+                List<Frame> frames = world.getCurrentBattle().runBattle();
+                enemyBattle.setImage(imageMap.get(frames.get(0).getEnemy().getClass()));
+                enemiesLeft.setText(frames.get(0).getEnemiesLeft() + " Enemies Left");
+                alliedSoldiersCount.setText("You have " + frames.get(0).getNumOfAlliedSoldiers() + " allied soldiers.");
+                characterHealth.setProgress(frames.get(0).getCharacterHealth());
+                enemyHealth.setProgress(frames.get(0).getEnemyHealth());
+                if (frames.get(0).getBossHealth() != 0) {
+                    bossHealth.setVisible(true);
+                    bossHealth.setProgress(frames.get(0).getBossHealth());
+                    bossBattle.setVisible(true);
+                    bossBattle.setImage(imageMap.get(frames.get(0).getBoss().getClass()));
+                } else {
+                    bossBattle.setVisible(false);
+                    bossHealth.setVisible(false);
+                }
                 for (int i = 1; i < (frames.size()); i++) {
                     battleSequence.getChildren().add(animateBattleFrame(frames.get(i)));
                 }
@@ -562,14 +576,17 @@ public class LoopManiaWorldController {
                 battleSequence.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        characterHealth.setProgress(frames.get(frames.size() - 1).getCharacterHealth());
+                        enemyHealth.setProgress(frames.get(frames.size() - 1).getEnemyHealth());
                         battleMusicPlayer.stop();
-                        characterHealth.setProgress(frames.get(frames.size() - 1).getValue0());
-                        enemyHealth.setProgress(frames.get(frames.size() - 1).getValue1());
                         world.getCurrentBattle().resetCharacter();
                         if (!world.getCurrentBattle().wonBattle()) {
                             terminate();
 
                         } else {
+                            for (BasicEnemy e: defeatedEnemies){
+                                reactToEnemyDefeat(e);
+                            }
                             enemiesLeft.setText("You Won!");
                             enemiesLeft.setText("0 Enemies Left");
                             alliedSoldiersCount.setText("You have " + world.getCharacter().getNumOfAlliedSoldiers() + " allied soldiers.");            
@@ -581,10 +598,6 @@ public class LoopManiaWorldController {
                 battleMusicPlayer.play();
             }
 
-            List<BasicEnemy> defeatedEnemies = world.runBattles();
-            for (BasicEnemy e: defeatedEnemies){
-                reactToEnemyDefeat(e);
-            }
             List<BasicEnemy> otherDefeatedEnemies = world.otherDefeatedEnemies();
             for (BasicEnemy e: otherDefeatedEnemies) {
                 reactToEnemyDefeat(e);
@@ -947,6 +960,16 @@ public class LoopManiaWorldController {
      * @pre entity has a corresponding image
      */
     private ImageView createImageView(Entity entity) {
+        if (world.getGameMode() instanceof ConfusingMode) {
+            if (entity instanceof Anduril) {
+                return new ImageView(imageMap.get(Sword.class));
+            } else if (entity instanceof TreeStump) {
+                return new ImageView(imageMap.get(Shield.class));
+            } else if (entity instanceof TheOneRing) {
+                return new ImageView(imageMap.get(Helmet.class));
+            }
+        }
+
         return new ImageView(imageMap.get(entity.getClass()));
     }
 
@@ -956,6 +979,16 @@ public class LoopManiaWorldController {
      * @pre generateItem has a corresponding image
      */
     private ImageView createImageView(GenerateItem generateItem) {
+        if (world.getGameMode() instanceof ConfusingMode) {
+            if (generateItem instanceof AndurilGenerateItem) {
+                return new ImageView(imageMap.get(SwordGenerateItem.class));
+            } else if (generateItem instanceof TreeStumpGenerateItem) {
+                return new ImageView(imageMap.get(ShieldGenerateItem.class));
+            } else if (generateItem instanceof TheOneRingGenerateItem) {
+                return new ImageView(imageMap.get(HelmetGenerateItem.class));
+            }
+        }
+
         return new ImageView(imageMap.get(generateItem.getClass()));
     }
 
@@ -1003,6 +1036,7 @@ public class LoopManiaWorldController {
         imageMap.put(Sword.class, new Image((new File("src/images/basic_sword.png")).toURI().toString()));
         imageMap.put(TheOneRing.class, new Image((new File("src/images/the_one_ring.png")).toURI().toString()));
         imageMap.put(TreeStump.class, new Image((new File("src/images/tree_stump.png")).toURI().toString()));
+        imageMap.put(ReversePathPotion.class, new Image((new File("src/images/reverse_path_potion.png")).toURI().toString()));
 
         // generate items
         imageMap.put(AndurilGenerateItem.class, new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()));
@@ -1379,6 +1413,7 @@ public class LoopManiaWorldController {
             battleMusicPlayer.setMute(false);
             backgroundMusicPlayer.setMute(false);
             goldCollectingPlayer.setMute(false);
+            goldLossPlayer.setMute(false);
             isMuted = false;
             
 
@@ -1387,6 +1422,7 @@ public class LoopManiaWorldController {
             battleMusicPlayer.setMute(true);
             backgroundMusicPlayer.setMute(true);
             goldCollectingPlayer.setMute(true);
+            goldLossPlayer.setMute(true);
             isMuted = true;
         }
     }
@@ -1476,7 +1512,7 @@ public class LoopManiaWorldController {
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
-    public ParallelTransition animateBattleFrame(Quintet<Double, Double, BasicEnemy, Integer, Integer> frame) {
+    public ParallelTransition animateBattleFrame(Frame frame) {
         ParallelTransition ptr = new ParallelTransition();
         //Duration = 2.5 seconds
         Duration duration = Duration.millis(250);
@@ -1497,16 +1533,32 @@ public class LoopManiaWorldController {
         SequentialTransition enemySequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionEnemy);
         enemySequence.setCycleCount(1);
 
-        ptr.getChildren().addAll(heroSequence, enemySequence);
+        TranslateTransition transitionBoss = new TranslateTransition(duration, bossBattle);
+        transitionBoss.setByX(-50);
+        transitionBoss.setAutoReverse(true);
+        transitionBoss.setCycleCount(2);
+
+        SequentialTransition bossSequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionBoss);
+        bossSequence.setCycleCount(1);
+
+        ptr.getChildren().addAll(heroSequence, enemySequence, bossSequence);
         ptr.setCycleCount(1);
         ptr.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                enemiesLeft.setText(frame.getValue3() + " Enemies Left");
-                alliedSoldiersCount.setText("You have " + frame.getValue4() + " allied soldiers.");        
-                characterHealth.setProgress(Math.max(frame.getValue0(), 0));
-                enemyHealth.setProgress(Math.max(frame.getValue1(), 0));
-                enemyBattle.setImage(imageMap.get(frame.getValue2().getClass()));
+                enemiesLeft.setText(frame.getEnemiesLeft() + " Enemies Left");
+                alliedSoldiersCount.setText("You have " + frame.getNumOfAlliedSoldiers() + " allied soldiers.");        
+                characterHealth.setProgress(Math.max(frame.getCharacterHealth(), 0));
+                enemyHealth.setProgress(Math.max(frame.getEnemyHealth(), 0));
+                enemyBattle.setImage(imageMap.get(frame.getEnemy().getClass()));
+                System.out.println(frame.getBossHealth() + " vs " + frame.getEnemyHealth());
+                if (frame.getBoss() != null && frame.getBossHealth() != 0) {
+                    bossHealth.setProgress(frame.getBossHealth());
+                    bossBattle.setImage(imageMap.get(frame.getBoss().getClass()));
+                } else {
+                    bossHealth.setVisible(false);
+                    bossBattle.setVisible(false);
+                }
             }
         });
         return ptr;

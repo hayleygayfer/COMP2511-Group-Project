@@ -2,44 +2,43 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.javatuples.Quintet;
 
-public class Battle {
+public class Battle implements BattleBehaviourContext {
     private Character character;
     private List<BasicEnemy> enemies;
     private List<CharacterEffect> buildings;
     private int initialCharacterHealth;
-    private double baseBattleCharacterHealth;
     private int initialCharacterDamage;
     private double baseEnemyBattleHealth;
+    private BasicEnemy boss;
+    private BattleBehaviourContext battleBehaviourState;
 
-    public Battle(Character character, List<BasicEnemy> enemies, List<CharacterEffect> buildings) {
+    public Battle(Character character, List<BasicEnemy> enemies, List<CharacterEffect> buildings, BasicEnemy boss) {
         this.character = character;
         this.enemies = enemies;
         this.buildings = buildings;
         this.initialCharacterHealth = character.getCurrentHealth();
         this.initialCharacterDamage = character.getDamage();
+        this.boss = boss;
+        if (boss != null) {
+            battleBehaviourState = (BattleBehaviourContext) boss;
+        } else {
+            battleBehaviourState = this;
+        }
     }
 
     /**
-     * Creates the frames to run the battle
-     * Sets up both the character and enemy
-     * Updates both enemy and character stats during battle until one is dead
-     * @return List<Triplet<Integer, Integer, BasicEnemy>>
+     * Default battle behaviour (ie no bosses)
+     * @param enemies
+     * @param buildings
+     * @param boss
+     * @return frames to animate battle
      */
-    public List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> runBattle() {
-        List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = new ArrayList<Quintet<Double, Double, BasicEnemy, Integer, Integer>>();
-        // Initial set up for character
-        for (EquippableItem item : character.getEquippedItems()) {
-            item.affect(character);
-        }
-        for (CharacterEffect building : buildings) {
-            building.affect(character);
-        }
-        this.baseBattleCharacterHealth = character.getCurrentHealth() + (character.getBaseHealth() - initialCharacterHealth);
+    public List<Frame> battleBehaviour(List<BasicEnemy> enemies,  BasicEnemy boss, Character character, int baseCharacterHealth) {
+        List<Frame> frames = new ArrayList<>();
         // Add initial frame
         int index = 0;
-        frames.add(Quintet.with(character.getCurrentHealth() / baseBattleCharacterHealth, 1.0, enemies.get(0), enemies.size() - index, character.getNumOfAlliedSoldiers()));
+        frames.add(new Frame(character.getCurrentHealth() / baseCharacterHealth, 1.0, 0, enemies.get(0), null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
         for (BasicEnemy enemy : enemies) {
         // Initial set up for each enemy
             for (EquippableItem item : character.getEquippedItems()) {
@@ -53,11 +52,29 @@ public class Battle {
                 }
                 int enemyHealth = enemy.getHealth();
                 if (enemyHealth < 0) enemyHealth = 0;
-                frames.add(Quintet.with(((double) character.getCurrentHealth() / baseBattleCharacterHealth), enemyHealth / baseEnemyBattleHealth, enemy, enemies.size() - index, character.getNumOfAlliedSoldiers()));
+                frames.add(new Frame(((double) character.getCurrentHealth() / baseCharacterHealth), enemyHealth / baseEnemyBattleHealth, 0, enemy, null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
             }
             index++;
         }
         return frames;
+    }
+
+    /**
+     * Creates the frames to run the battle
+     * Sets up both the character and enemy
+     * Updates both enemy and character stats during battle until one is dead
+     * @return List<Triplet<Integer, Integer, BasicEnemy>>
+     */
+    public List<Frame> runBattle() {
+        // Initial set up for character
+        for (EquippableItem item : character.getEquippedItems()) {
+            item.affect(character);
+        }
+        for (CharacterEffect building : buildings) {
+            building.affect(character);
+        }
+        int baseCharacterHealth = character.getCurrentHealth() + (character.getBaseHealth() - initialCharacterHealth);
+        return battleBehaviourState.battleBehaviour(enemies, boss, character, baseCharacterHealth);
     }
 
     /**

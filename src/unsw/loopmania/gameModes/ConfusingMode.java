@@ -11,4 +11,5 @@ public class ConfusingMode implements GameMode {
     public boolean limitPurchase(Character character, GenerateItem item) {
         return true;
     }
+
 }

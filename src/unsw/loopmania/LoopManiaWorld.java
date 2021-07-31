@@ -18,7 +18,13 @@ import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Doggie;
 import unsw.loopmania.enemies.ElanMuske;
-
+import unsw.loopmania.gameModes.ConfusingMode;
+import unsw.loopmania.items.Anduril;
+import unsw.loopmania.items.TreeStump;
+import unsw.loopmania.items.TheOneRing;
+import unsw.loopmania.items.DoggieCoin;
+import unsw.loopmania.items.ReversePathPotion;
+import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 /**
  * A backend world.
  *
@@ -62,7 +68,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     private List<Building> buildingEntities;
 
-    private List<BossEnemyType> defeatedBosses;
+    private List<BattleBehaviourContext> defeatedBosses;
 
 
     /**
@@ -185,7 +191,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             for (BasicEnemy enemy : enemies) {
                 if (enemy instanceof Doggie) return null;
             }
-            for (BossEnemyType boss : defeatedBosses) {
+            for (BattleBehaviourContext boss : defeatedBosses) {
                 if (boss instanceof Doggie) return null;
             }
             Doggie doggieBoss = new Doggie(new PathPosition(indexInPath, orderedPath));
@@ -195,11 +201,17 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             for (BasicEnemy enemy : enemies) {
                 if (enemy instanceof ElanMuske) return null;
             }
-            for (BossEnemyType boss : defeatedBosses) {
+            for (BattleBehaviourContext boss : defeatedBosses) {
                 if (boss instanceof ElanMuske) return null;
             }
             ElanMuske elanBoss = new ElanMuske(new PathPosition(indexInPath, orderedPath));
             enemies.add(elanBoss);
+            for (Item item : character.getInventory()) {
+                if (item instanceof DoggieCoin) {
+                    DoggieCoinGenerateItem doggieCoinItem = (DoggieCoinGenerateItem) item.getItemDetails();
+                    doggieCoinItem.setUpperValue(10);
+                }
+            }
             return elanBoss;
         }
         return null;
@@ -297,6 +309,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             enemies.remove(enemy);
         }
         return killedEnemies;
+    }
+
+    /**
+     * Add a new building
+     * @param building to add to the world
+     */
+    public void addBuilding(Building building) {
+        buildingEntities.add(building);
+    }
+
+    /**
+     * Add a new card
+     * @param card to add to the world
+     */
+    public void addCard(Card card) {
+        cardEntities.add(card);
     }
 
     /**
@@ -416,16 +444,25 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public List<BasicEnemy> runBattles() {
         if (characterAtHerosCastle()) { return enemies; }
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
+        BasicEnemy boss = null;
         for (BasicEnemy e: enemies){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
             if (Helper.withinRadius(character, e, e.getBattleRadius())){
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
                 List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
-                enemiesEncountered.add(e);
+                if (e instanceof BattleBehaviourContext) {
+                    boss = e;
+                } else {
+                    enemiesEncountered.add(e);
+                }
                 for (BasicEnemy support : enemies) {
                     if (Helper.withinRadius(e, support, support.getSupportRadius()) && !support.equals(e)) {
-                        enemiesEncountered.add(support);
+                        if (support instanceof BattleBehaviourContext) {
+                            boss = support;
+                        } else {
+                            enemiesEncountered.add(support);
+                        }
                     }
                 }
 
@@ -437,14 +474,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                     }
                 }
 
-                setCurrentBattle(new Battle(character, enemiesEncountered, battleBuildings));
+                setCurrentBattle(new Battle(character, enemiesEncountered, battleBuildings, boss));
                 if (character.isAlive()) {
                     defeatedEnemies.add(e);
                     // if defeated boss add to list
-                    if (e instanceof BossEnemyType) defeatedBosses.add((BossEnemyType) e);
+                    if (e instanceof BattleBehaviourContext) defeatedBosses.add((BattleBehaviourContext) e);
                 } else {
                     // Finish Game
                 }
+                break;
             }
         }
         for (BasicEnemy e: defeatedEnemies){
@@ -476,7 +514,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         shiftCardsDownFromXCoordinate(x);
     }
 
-
     /**
      * remove an item by x,y coordinates
      * @param x x coordinate from 0 to width-1
@@ -496,6 +533,30 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         Item item = getUnequippedInventoryItemEntityByCoordinates(x, y);
         if (item instanceof EquippableItem) {
             character.equipItem((EquippableItem) item);
+            if (gameMode instanceof ConfusingMode) {
+                if (item instanceof RareItem) {
+                    List<EquippableItem> extraRareItemPossibility = new ArrayList<EquippableItem>();
+                    
+                    if (!(item instanceof Anduril)) {
+                        EquippableItem anduril = new Anduril(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+                        extraRareItemPossibility.add(anduril);
+                    }
+
+                    if (!(item instanceof TheOneRing)) {
+                        EquippableItem theOneRing = new TheOneRing(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+                        extraRareItemPossibility.add(theOneRing);
+                    }
+
+                    if (!(item instanceof TreeStump)) {
+                        EquippableItem treeStump = new TreeStump(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+                        extraRareItemPossibility.add(treeStump);
+                    }
+
+                    Random rand = new Random(System.currentTimeMillis());
+                    int rareNum = rand.nextInt(2);
+                    character.equipItem(extraRareItemPossibility.get(rareNum));
+                }
+            }
         }
     }
 
@@ -504,7 +565,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public void runTickMoves(){
         // move characters
-        character.moveDownPath();
+        character.moveInDirection();
         character.updateObservers();
 
         // move enemies
@@ -675,8 +736,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @return boolean if the build can happen
      */
     public boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        // check that there is not an existing building at the position
+        for (Building b : buildingEntities) {
+            if ((b.getX() == buildingNodeX) && (b.getY() == buildingNodeY)) {
+                return false;
+            }
+        }
+
         Card card = null;
-        for (Card c: cardEntities){
+        for (Card c : cardEntities){
             if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)) { // Check placeable
                 card = c;
                 break;
@@ -710,6 +778,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      */
     public SimpleIntegerProperty getGameCycleProperty() {
         return this.gameCycle;
+    }
+
+    /**
+     * Gets Game mode
+     * @return cycle
+     */
+    public GameMode getGameMode() {
+        return this.gameMode;
     }
 
     /**

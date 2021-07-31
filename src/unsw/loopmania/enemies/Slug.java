@@ -10,7 +10,7 @@ import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
 import unsw.loopmania.generateItems.TreeStumpGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
-import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
+import unsw.loopmania.generateItems.ReversePathPotionGenerateItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
 import unsw.loopmania.generateCards.BarracksGenerateCard;
@@ -24,7 +24,7 @@ public class Slug extends BasicEnemy {
         setDamage(3);
         setBattleRadius(1);
         setHealth(4);
-        setSupportRadius(2);
+        setSupportRadius(100);
         // item drops
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new SwordGenerateItem(), 0.50));
@@ -32,7 +32,6 @@ public class Slug extends BasicEnemy {
         droppableItems.add(new Pair<GenerateItem, Double>(new TheOneRingGenerateItem(), 0.05));
         droppableItems.add(new Pair<GenerateItem, Double>(new AndurilGenerateItem(), 0.05));
         droppableItems.add(new Pair<GenerateItem, Double>(new TreeStumpGenerateItem(), 0.05));
-        droppableItems.add(new Pair<GenerateItem, Double>(new DoggieCoinGenerateItem(), 1.0));
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
