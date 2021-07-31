@@ -18,7 +18,8 @@ import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Doggie;
 import unsw.loopmania.enemies.ElanMuske;
-
+import unsw.loopmania.items.DoggieCoin;
+import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 /**
  * A backend world.
  *
@@ -200,6 +201,12 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             }
             ElanMuske elanBoss = new ElanMuske(new PathPosition(indexInPath, orderedPath));
             enemies.add(elanBoss);
+            for (Item item : character.getInventory()) {
+                if (item instanceof DoggieCoin) {
+                    DoggieCoinGenerateItem doggieCoinItem = (DoggieCoinGenerateItem) item.getItemDetails();
+                    doggieCoinItem.setUpperValue(10);
+                }
+            }
             return elanBoss;
         }
         return null;
