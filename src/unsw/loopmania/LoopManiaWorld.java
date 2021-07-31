@@ -304,6 +304,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
+     * Add a new building
+     * @param building to add to the world
+     */
+    public void addBuilding(Building building) {
+        buildingEntities.add(building);
+    }
+
+    /**
+     * Add a new card
+     * @param card to add to the world
+     */
+    public void addCard(Card card) {
+        cardEntities.add(card);
+    }
+
+    /**
      * Goes through buildings and removes those that shouldn't exist
      */
     public void destroyBuildings() {
@@ -449,6 +465,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                 } else {
                     // Finish Game
                 }
+                break;
             }
         }
         for (BasicEnemy e: defeatedEnemies){
@@ -479,7 +496,6 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         cardEntities.remove(index);
         shiftCardsDownFromXCoordinate(x);
     }
-
 
     /**
      * remove an item by x,y coordinates
@@ -703,8 +719,15 @@ public class LoopManiaWorld implements CharacterPositionObserver {
      * @return boolean if the build can happen
      */
     public boolean canBuildByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        // check that there is not an existing building at the position
+        for (Building b : buildingEntities) {
+            if ((b.getX() == buildingNodeX) && (b.getY() == buildingNodeY)) {
+                return false;
+            }
+        }
+
         Card card = null;
-        for (Card c: cardEntities){
+        for (Card c : cardEntities){
             if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)) { // Check placeable
                 card = c;
                 break;
