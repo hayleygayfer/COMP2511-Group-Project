@@ -154,6 +154,9 @@ public class LoopManiaWorldController {
     private ImageView enemyBattle;
 
     @FXML
+    private ImageView bossBattle;
+
+    @FXML
     private Button finishBattleButton;
 
     @FXML
@@ -161,6 +164,9 @@ public class LoopManiaWorldController {
 
     @FXML
     private ProgressBar characterHealth;
+
+    @FXML
+    private ProgressBar bossHealth;
 
     @FXML
     private Text enemiesLeft;
@@ -547,12 +553,21 @@ public class LoopManiaWorldController {
                 finishBattleButton.setVisible(false);
                 pause();
                 SequentialTransition battleSequence = new SequentialTransition();
-                List<Quintet<Double, Double, BasicEnemy, Integer, Integer>> frames = world.getCurrentBattle().runBattle();
-                enemyBattle.setImage(imageMap.get(frames.get(0).getValue2().getClass()));
-                enemiesLeft.setText(frames.get(0).getValue3() + " Enemies Left");
-                alliedSoldiersCount.setText("You have " + frames.get(0).getValue4() + " allied soldiers.");
-                characterHealth.setProgress(frames.get(0).getValue0());
-                enemyHealth.setProgress(frames.get(0).getValue1());
+                List<Frame> frames = world.getCurrentBattle().runBattle();
+                enemyBattle.setImage(imageMap.get(frames.get(0).getEnemy().getClass()));
+                enemiesLeft.setText(frames.get(0).getEnemiesLeft() + " Enemies Left");
+                alliedSoldiersCount.setText("You have " + frames.get(0).getNumOfAlliedSoldiers() + " allied soldiers.");
+                characterHealth.setProgress(frames.get(0).getCharacterHealth());
+                enemyHealth.setProgress(frames.get(0).getEnemyHealth());
+                if (frames.get(0).getBossHealth() != 0) {
+                    bossHealth.setVisible(true);
+                    bossHealth.setProgress(frames.get(0).getBossHealth());
+                    bossBattle.setVisible(true);
+                    bossBattle.setImage(imageMap.get(frames.get(0).getBoss().getClass()));
+                } else {
+                    bossBattle.setVisible(false);
+                    bossHealth.setVisible(false);
+                }
                 for (int i = 1; i < (frames.size()); i++) {
                     battleSequence.getChildren().add(animateBattleFrame(frames.get(i)));
                 }
@@ -560,9 +575,9 @@ public class LoopManiaWorldController {
                 battleSequence.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        characterHealth.setProgress(frames.get(frames.size() - 1).getCharacterHealth());
+                        enemyHealth.setProgress(frames.get(frames.size() - 1).getEnemyHealth());
                         battleMusicPlayer.stop();
-                        characterHealth.setProgress(frames.get(frames.size() - 1).getValue0());
-                        enemyHealth.setProgress(frames.get(frames.size() - 1).getValue1());
                         world.getCurrentBattle().resetCharacter();
                         if (!world.getCurrentBattle().wonBattle()) {
                             terminate();
@@ -1495,7 +1510,7 @@ public class LoopManiaWorldController {
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
-    public ParallelTransition animateBattleFrame(Quintet<Double, Double, BasicEnemy, Integer, Integer> frame) {
+    public ParallelTransition animateBattleFrame(Frame frame) {
         ParallelTransition ptr = new ParallelTransition();
         //Duration = 2.5 seconds
         Duration duration = Duration.millis(250);
@@ -1516,16 +1531,32 @@ public class LoopManiaWorldController {
         SequentialTransition enemySequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionEnemy);
         enemySequence.setCycleCount(1);
 
-        ptr.getChildren().addAll(heroSequence, enemySequence);
+        TranslateTransition transitionBoss = new TranslateTransition(duration, bossBattle);
+        transitionBoss.setByX(-50);
+        transitionBoss.setAutoReverse(true);
+        transitionBoss.setCycleCount(2);
+
+        SequentialTransition bossSequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionBoss);
+        bossSequence.setCycleCount(1);
+
+        ptr.getChildren().addAll(heroSequence, enemySequence, bossSequence);
         ptr.setCycleCount(1);
         ptr.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                enemiesLeft.setText(frame.getValue3() + " Enemies Left");
-                alliedSoldiersCount.setText("You have " + frame.getValue4() + " allied soldiers.");        
-                characterHealth.setProgress(Math.max(frame.getValue0(), 0));
-                enemyHealth.setProgress(Math.max(frame.getValue1(), 0));
-                enemyBattle.setImage(imageMap.get(frame.getValue2().getClass()));
+                enemiesLeft.setText(frame.getEnemiesLeft() + " Enemies Left");
+                alliedSoldiersCount.setText("You have " + frame.getNumOfAlliedSoldiers() + " allied soldiers.");        
+                characterHealth.setProgress(Math.max(frame.getCharacterHealth(), 0));
+                enemyHealth.setProgress(Math.max(frame.getEnemyHealth(), 0));
+                enemyBattle.setImage(imageMap.get(frame.getEnemy().getClass()));
+                System.out.println(frame.getBossHealth() + " vs " + frame.getEnemyHealth());
+                if (frame.getBoss() != null && frame.getBossHealth() != 0) {
+                    bossHealth.setProgress(frame.getBossHealth());
+                    bossBattle.setImage(imageMap.get(frame.getBoss().getClass()));
+                } else {
+                    bossHealth.setVisible(false);
+                    bossBattle.setVisible(false);
+                }
             }
         });
         return ptr;

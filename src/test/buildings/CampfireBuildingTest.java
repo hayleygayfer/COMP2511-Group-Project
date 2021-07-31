@@ -56,7 +56,7 @@ public class CampfireBuildingTest {
         List<BasicEnemy> enemies = new ArrayList<>();
         enemies.add(slug);
 
-        Battle battle = new Battle(character, enemies, battleBuildings);
+        Battle battle = new Battle(character, enemies, battleBuildings, null);
         battle.runBattle();
 
         // character should have killed slug in two hits, meaning slug would have done 3 damage on the character
@@ -78,7 +78,7 @@ public class CampfireBuildingTest {
         List<BasicEnemy> enemies = new ArrayList<>();
         enemies.add(slug);
 
-        Battle battle = new Battle(character, enemies, battleBuildings);
+        Battle battle = new Battle(character, enemies, battleBuildings, null);
         battle.runBattle();
 
         // without campfire effect
@@ -101,7 +101,7 @@ public class CampfireBuildingTest {
         List<BasicEnemy> enemies = new ArrayList<>();
         enemies.add(slug);
 
-        Battle battle = new Battle(character, enemies, battleBuildings);
+        Battle battle = new Battle(character, enemies, battleBuildings, null);
         battle.runBattle();
         battle.resetCharacter();
 
@@ -115,7 +115,7 @@ public class CampfireBuildingTest {
         List<BasicEnemy> enemies2 = new ArrayList<>();
         enemies2.add(slug2);
 
-        Battle battle2 = new Battle(character, enemies2, battleBuildings);
+        Battle battle2 = new Battle(character, enemies, battleBuildings, null);
         battle2.runBattle();
         battle.resetCharacter();
 

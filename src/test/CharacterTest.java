@@ -212,4 +212,25 @@ public class CharacterTest {
         expectedEquippedItems.remove(armour);
         expectedEquippedItems.equals(character.getEquippedItems());
     }
+
+    @Test
+    public void testReset() {
+        Character character = createCharacter();
+
+        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        character.equipItem(sword);
+        character.equipItem(armour);
+        character.setCurrentHealth(1);
+
+        // Resets character to initial stats
+        character.reset();
+
+        assertEquals(character.getCurrentHealth(), 50);
+        assertEquals(character.getEquippedItems().size(), 0);
+
+
+
+    }
 }

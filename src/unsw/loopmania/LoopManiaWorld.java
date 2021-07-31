@@ -22,7 +22,8 @@ import unsw.loopmania.gameModes.ConfusingMode;
 import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.items.TheOneRing;
-
+import unsw.loopmania.items.DoggieCoin;
+import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 /**
  * A backend world.
  *
@@ -66,7 +67,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     private List<Building> buildingEntities;
 
-    private List<BossEnemyType> defeatedBosses;
+    private List<BattleBehaviourContext> defeatedBosses;
 
 
     /**
@@ -189,7 +190,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             for (BasicEnemy enemy : enemies) {
                 if (enemy instanceof Doggie) return null;
             }
-            for (BossEnemyType boss : defeatedBosses) {
+            for (BattleBehaviourContext boss : defeatedBosses) {
                 if (boss instanceof Doggie) return null;
             }
             Doggie doggieBoss = new Doggie(new PathPosition(indexInPath, orderedPath));
@@ -199,11 +200,17 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             for (BasicEnemy enemy : enemies) {
                 if (enemy instanceof ElanMuske) return null;
             }
-            for (BossEnemyType boss : defeatedBosses) {
+            for (BattleBehaviourContext boss : defeatedBosses) {
                 if (boss instanceof ElanMuske) return null;
             }
             ElanMuske elanBoss = new ElanMuske(new PathPosition(indexInPath, orderedPath));
             enemies.add(elanBoss);
+            for (Item item : character.getInventory()) {
+                if (item instanceof DoggieCoin) {
+                    DoggieCoinGenerateItem doggieCoinItem = (DoggieCoinGenerateItem) item.getItemDetails();
+                    doggieCoinItem.setUpperValue(10);
+                }
+            }
             return elanBoss;
         }
         return null;
@@ -436,16 +443,25 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public List<BasicEnemy> runBattles() {
         if (characterAtHerosCastle()) { return enemies; }
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
+        BasicEnemy boss = null;
         for (BasicEnemy e: enemies){
             // Pythagoras: a^2+b^2 < radius^2 to see if within radius
             // TODO = you should implement different RHS on this inequality, based on influence radii and battle radii
             if (Helper.withinRadius(character, e, e.getBattleRadius())){
                 // Loop through enemies again, to see who is in the influence radius of the enemy, and add them to the battle.
                 List<BasicEnemy> enemiesEncountered = new ArrayList<BasicEnemy>();
-                enemiesEncountered.add(e);
+                if (e instanceof BattleBehaviourContext) {
+                    boss = e;
+                } else {
+                    enemiesEncountered.add(e);
+                }
                 for (BasicEnemy support : enemies) {
                     if (Helper.withinRadius(e, support, support.getSupportRadius()) && !support.equals(e)) {
-                        enemiesEncountered.add(support);
+                        if (support instanceof BattleBehaviourContext) {
+                            boss = support;
+                        } else {
+                            enemiesEncountered.add(support);
+                        }
                     }
                 }
 
@@ -457,11 +473,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                     }
                 }
 
-                setCurrentBattle(new Battle(character, enemiesEncountered, battleBuildings));
+                setCurrentBattle(new Battle(character, enemiesEncountered, battleBuildings, boss));
                 if (character.isAlive()) {
                     defeatedEnemies.add(e);
                     // if defeated boss add to list
-                    if (e instanceof BossEnemyType) defeatedBosses.add((BossEnemyType) e);
+                    if (e instanceof BattleBehaviourContext) defeatedBosses.add((BattleBehaviourContext) e);
                 } else {
                     // Finish Game
                 }
