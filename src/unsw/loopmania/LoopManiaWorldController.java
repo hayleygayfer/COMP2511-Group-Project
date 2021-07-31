@@ -51,8 +51,6 @@ import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.Goals.Goal;
-<<<<<<< HEAD
-=======
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.buildings.HerosCastleBuilding;
@@ -73,7 +71,6 @@ import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
->>>>>>> dev
 import unsw.loopmania.GameMode;
 import unsw.loopmania.gameModes.StandardMode;
 import unsw.loopmania.gameModes.SurvivalMode;
