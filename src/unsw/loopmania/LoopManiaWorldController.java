@@ -268,6 +268,9 @@ public class LoopManiaWorldController {
     MediaPlayer battleMusicPlayer;
 
     @FXML
+    Media backgroundMedia;
+
+    @FXML
     MediaPlayer backgroundMusicPlayer;
 
     @FXML
@@ -435,8 +438,8 @@ public class LoopManiaWorldController {
         Media sound = new Media(new File("src/sounds/battle.wav").toURI().toString());
         battleMusicPlayer = new MediaPlayer(sound);
 
-        Media backgroundSound = new Media(new File("src/sounds/backgroundMusic.wav").toURI().toString());
-        backgroundMusicPlayer = new MediaPlayer(backgroundSound);
+        // Media backgroundSound = new Media(new File("src/sounds/backgroundMusic.wav").toURI().toString());
+        // backgroundMusicPlayer = new MediaPlayer(backgroundSound);
 
         Media goldCollecting = new Media(new File("src/sounds/goldCollecting.wav").toURI().toString());
         goldCollectingPlayer = new MediaPlayer(goldCollecting);
@@ -487,7 +490,6 @@ public class LoopManiaWorldController {
                     goldLossPlayer.seek(Duration.ZERO);
                     goldLossPlayer.play();
                 }
-                
             }
 
         });
@@ -511,28 +513,35 @@ public class LoopManiaWorldController {
     }
 
     public void setLoopManiaGameMode(int gameMode) {
+        String path = "";
         switch (gameMode) {
             case 0:
                 GameMode standardMode = new StandardMode();
                 world.setGameMode(standardMode);
                 gameModeDisplay.setText("Standard Mode");
+                path = "src/sounds/backgroundMusic.wav";
             break;
             case 1:
                 GameMode survivalMode = new SurvivalMode();
                 world.setGameMode(survivalMode);
                 gameModeDisplay.setText("Survival Mode");
+                path = "src/sounds/pokemon.wav";
             break;
             case 2:
                 GameMode berserkerMode = new BerserkerMode();
                 world.setGameMode(berserkerMode);
                 gameModeDisplay.setText("Berserker Mode");
+                path = "src/sounds/backgroundMusic.wav";
             break;
             case 3:
                 GameMode confusingMode = new ConfusingMode();
                 world.setGameMode(confusingMode);
                 gameModeDisplay.setText("Confusing Mode");
+                path = "src/sounds/backgroundMusic.wav";
             break;
         }
+        backgroundMedia = new Media(new File(path).toURI().toString());
+        backgroundMusicPlayer = new MediaPlayer(backgroundMedia);
     }
 
     /**
@@ -546,6 +555,7 @@ public class LoopManiaWorldController {
         isPaused = false;
         isMuted = false;
         backgroundMusicPlayer.play();
+        System.out.println("game mode " + gameModeDisplay.getText());
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             world.runTickMoves();
@@ -638,6 +648,27 @@ public class LoopManiaWorldController {
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+    }
+
+    public String chooseBackgroundMusic(String gameMode) {
+        String path;
+        switch (gameMode) {
+            case "Standard Mode":
+                path = "";
+            break;
+            case "Survival Mode":
+                path = "";
+            break;
+            case "Berserker Mode":
+                path = "";
+            break;
+            case "Confusing Mode":
+                path = "";
+            break;
+            default:
+                path = "";
+        }
+        return path;
     }
 
     /**
