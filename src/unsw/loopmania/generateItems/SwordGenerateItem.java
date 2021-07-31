@@ -1,12 +1,11 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Sword;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class SwordGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
@@ -17,6 +16,7 @@ public class SwordGenerateItem extends GenerateItem {
         this.name = new SimpleStringProperty("Sword");
         this.description = new SimpleStringProperty("Increases damage dealt by the character.");
         this.price = new SimpleIntegerProperty(10);
+        setType(ItemType.WEAPON);
     }
 
     /**
@@ -53,13 +53,4 @@ public class SwordGenerateItem extends GenerateItem {
     public SimpleIntegerProperty price() {
         return price;
     }
-
-     /**
-     * Gets the image of sword for rendering
-     * @return Image
-     */
-    public Image getImage() {
-        return new Image((new File("src/images/basic_sword.png")).toURI().toString());
-    }
-
 }

@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
-import java.io.File;
+import javafx.beans.binding.BooleanBinding;
 import org.javatuples.Pair;
 
 /**
@@ -15,6 +14,9 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     // inventory > list of items
     private List<Item> inventory;
     private List<EquippableItem> equippedItems;
+
+    // this is for keeping track in different game modes
+    private List<GenerateItem> purchasedItems;
 
     // Position Observers
     private List<CharacterPositionObserver> observers = new ArrayList<CharacterPositionObserver>();
@@ -48,15 +50,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         this.currentHealth = new SimpleIntegerProperty(50);
         this.damage = new SimpleIntegerProperty(1);
         this.inventory = new ArrayList<Item>();
-        this.equippedItems = new ArrayList<EquippableItem>();
-    }
-
-    /**
-     * Creates a new image of a human character
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/human_new.png")).toURI().toString());
+        this.purchasedItems = new ArrayList<GenerateItem>();
     }
 
     /**
@@ -90,6 +84,22 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public int getCurrentHealth() {
         return currentHealth.get();
+    }
+
+    public BooleanBinding canPurchase(GenerateItem item) {
+        return this.getGoldProperty().lessThan(item.price());
+    }
+
+    public void addPurchase(GenerateItem item) {
+        purchasedItems.add(item);
+    }
+
+    public List<GenerateItem> getPurchased() {
+        return purchasedItems;
+    }
+
+    public void resetPurchases() {
+        purchasedItems.clear();
     }
 
     /**
@@ -274,7 +284,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     public void addGold(int amount) {
         this.gold.set(this.gold.get() + amount);
     }
-
+ 
     /**
      * Adds an allied soldiier to the character
      * @param newSoldier

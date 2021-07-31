@@ -1,13 +1,9 @@
 package unsw.loopmania.enemies;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javafx.beans.property.SimpleIntegerProperty;
-
-import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.BattleBehaviourContext;
 import unsw.loopmania.Character;
@@ -35,13 +31,6 @@ public class Doggie extends BasicEnemy implements BattleBehaviourContext {
         // xp and gold
         setMaxGoldGained(50);
         setExperienceGained(300);
-    }
-
-    /**
-     * Renders the image of the vampire.
-     */
-    public Image render() {
-        return new Image((new File("src/images/doggie.png")).toURI().toString());
     }
 
     /**

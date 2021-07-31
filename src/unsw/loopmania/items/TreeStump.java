@@ -8,8 +8,6 @@ import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.BattleBehaviourContext;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class TreeStump extends EquippableItem implements RareItem {
     private GenerateItem itemInfo = new TreeStumpGenerateItem();
@@ -38,10 +36,5 @@ public class TreeStump extends EquippableItem implements RareItem {
         } else {
             enemy.setDamage(enemy.getDamage() / 3);
         }
-    }
-
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/tree_stump.png")).toURI().toString());
     }
 }

@@ -48,14 +48,16 @@ public class LoopManiaApplication extends Application {
         // set functions which are activated when button click to switch menu is pressed
         // e.g. from main menu to start the game, or from the game to return to main menu
         mainController.setMainMenuSwitcher(() -> {switchToRoot(scene, mainMenuRoot, primaryStage);});
+
         mainMenuController.setGameSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
+            mainController.setLoopManiaGameMode(mainMenuController.getSelectedGameMode());
             mainController.startTimer();
         });
         
         // deploy the main onto the stage
         gameRoot.requestFocus();
-        scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getRoot().setStyle("-fx-font-family: 'Avenir'");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -72,7 +74,7 @@ public class LoopManiaApplication extends Application {
     private void switchToRoot(Scene scene, Parent root, Stage stage){
         scene.setRoot(root);
         root.requestFocus();
-        scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        scene.getRoot().setStyle("-fx-font-family: 'Avenir'");
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();

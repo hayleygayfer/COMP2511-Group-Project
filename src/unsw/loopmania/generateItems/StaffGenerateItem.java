@@ -1,12 +1,11 @@
 package unsw.loopmania.generateItems;
 
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.items.Staff;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class StaffGenerateItem extends GenerateItem {
     private SimpleStringProperty name;
@@ -17,6 +16,7 @@ public class StaffGenerateItem extends GenerateItem {
         this.name = new SimpleStringProperty("Staff");
         this.description = new SimpleStringProperty("Very low damage, but can randomly inflict a trance on Enemies to turn them into Allied Soldiers");
         this.price = new SimpleIntegerProperty(20);
+        setType(ItemType.WEAPON);
     }
 
     /**
@@ -53,13 +53,4 @@ public class StaffGenerateItem extends GenerateItem {
     public SimpleIntegerProperty price() {
         return price;
     }
-
-    /**
-     * Gets the image of staff for rendering
-     * @return Image
-     */
-    public Image getImage() {
-        return new Image((new File("src/images/staff.png")).toURI().toString());
-    }
-
 }

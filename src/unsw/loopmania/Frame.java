@@ -33,13 +33,13 @@ public class Frame {
         return this.bossHealth;
     }
 
-    public Image renderEnemyImage() {
-        return this.enemy.render();
+    public BasicEnemy getEnemy() {
+        return this.enemy;
     }
 
-    public Image renderBossImage() {
+    public BasicEnemy getBoss() {
         if (this.boss != null) {
-            return this.boss.render();
+            return this.boss;
         } else {
             return null;
         }

@@ -3,8 +3,6 @@ package unsw.loopmania;
 import java.util.List;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public abstract class EquippableItem extends Item implements CharacterEffect {
 
@@ -68,15 +66,5 @@ public abstract class EquippableItem extends Item implements CharacterEffect {
      */
     public void affect(Character character) {
         return;
-    }
-
-     /**
-     * TODO: change this to be generic
-     * Creates a new Image of a sword for rendering
-     * @return Image
-     */
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/basic_sword.png")).toURI().toString());
     }
 }

@@ -1,10 +1,8 @@
 package unsw.loopmania.enemies;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.generateItems.SwordGenerateItem;
@@ -22,10 +20,10 @@ public class Slug extends BasicEnemy {
 
     public Slug(PathPosition position) {
         super(position);
-        setDamage(1);
-        setBattleRadius(2);
+        setDamage(3);
+        setBattleRadius(1);
         setHealth(4);
-        setSupportRadius(10);
+        setSupportRadius(100);
         // item drops
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new SwordGenerateItem(), 0.50));
@@ -42,13 +40,4 @@ public class Slug extends BasicEnemy {
         setMaxGoldGained(2);
         setExperienceGained(5);
     }
-
-    /**
-     * Renders the image of the slug.
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/slug.png")).toURI().toString());
-    }
-
 }

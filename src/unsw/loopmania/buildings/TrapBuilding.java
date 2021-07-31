@@ -4,8 +4,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Building;
 import unsw.loopmania.EnemyPositionObserver;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class TrapBuilding extends Building implements EnemyPositionObserver {
     public TrapBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -22,13 +20,5 @@ public class TrapBuilding extends Building implements EnemyPositionObserver {
             enemy.deductHealth(3);
             this.destroy();
         }
-    }
-
-    /**
-     * Creates a new image of trap
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/trap.png")).toURI().toString());
     }
 }

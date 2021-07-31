@@ -10,8 +10,6 @@ import unsw.loopmania.CustomAttackStrategy;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.BattleBehaviourContext;
 import unsw.loopmania.Character;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class Anduril extends EquippableItem implements RareItem, CustomAttackStrategy {
     private GenerateItem itemInfo = new AndurilGenerateItem();
@@ -46,10 +44,5 @@ public class Anduril extends EquippableItem implements RareItem, CustomAttackStr
         character.setDamage(character.getDamage() + damage);
     }
 
-
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString());
-    }
 }
 

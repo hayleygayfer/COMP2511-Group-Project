@@ -8,8 +8,6 @@ import unsw.loopmania.Helper;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.Character;
 import unsw.loopmania.CharacterEffect;
-import javafx.scene.image.Image;
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,14 +69,5 @@ public class CampfireBuilding extends Building implements EnemyPositionObserver,
         }
 
         prevPositions.put(enemy, enemy.getPosition().getPositionPair());
-    }
-
-
-    /**
-     * Creates a new image of campfire
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/campfire.png")).toURI().toString());
     }
 }

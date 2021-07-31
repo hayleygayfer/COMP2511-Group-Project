@@ -1,10 +1,8 @@
 package unsw.loopmania.enemies;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.BattleBehaviourContext;
@@ -38,14 +36,7 @@ public class ElanMuske extends BasicEnemy implements BattleBehaviourContext {
     public void setDamage(int damage) {
         super.setDamage(damage);
     }
-
-    /**
-     * Renders the image of the vampire.
-     */
-    public Image render() {
-        return new Image((new File("src/images/ElanMuske.png")).toURI().toString());
-    }
-
+    
     /**
      * Elon Musk Battle Behavviour
      * @param enemies the list of supporting enemies

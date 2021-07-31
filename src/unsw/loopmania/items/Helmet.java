@@ -8,8 +8,6 @@ import unsw.loopmania.ShopItem;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class Helmet extends EquippableItem implements ShopItem {
     private int reducedEnemyDamage;
@@ -54,12 +52,4 @@ public class Helmet extends EquippableItem implements ShopItem {
         return new SimpleStringProperty("Helmet");
     }
 
-    /**
-     * Gets the image of helmet for rendering
-     * @return Image
-     */
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/helmet.png")).toURI().toString());
-    }
 }

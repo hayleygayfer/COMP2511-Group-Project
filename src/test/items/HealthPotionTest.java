@@ -15,9 +15,11 @@ import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.UsableItem;
+import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
+import unsw.loopmania.GenerateItem;
 
 public class HealthPotionTest {
     /**

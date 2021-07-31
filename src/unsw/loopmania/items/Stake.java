@@ -9,8 +9,6 @@ import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import unsw.loopmania.MovingEntity;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 import unsw.loopmania.Character;
 
 public class Stake extends EquippableItem implements CustomAttackStrategy {
@@ -37,6 +35,7 @@ public class Stake extends EquippableItem implements CustomAttackStrategy {
      * @param base damage The current damage 
      * @return int the current damage plus the new damage
      */
+    // TODO: possibly remove? this isn't being used
     public int getModifiedDamage(MovingEntity target, int baseDamage) {
         return this.baseDamage + baseDamage;
     }
@@ -51,18 +50,9 @@ public class Stake extends EquippableItem implements CustomAttackStrategy {
         if (enemy instanceof Vampire) {
             int vampireDamage = 10;
             Vampire vampire = (Vampire) enemy;
-            vampire.deductHealth(getModifiedDamage(vampire, vampireDamage));
+            vampire.deductHealth(vampireDamage);
         } else {
-            enemy.deductHealth(getModifiedDamage(enemy, baseDamage));
+            enemy.deductHealth(baseDamage);
         }
     }    
-
-    /**
-     * Gets the image of stake for rendering
-     * @return Image
-     */
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/stake.png")).toURI().toString());
-    }
 }

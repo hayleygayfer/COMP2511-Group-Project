@@ -6,8 +6,6 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class TheOneRing extends EquippableItem implements RareItem {
     private GenerateItem itemInfo = new TheOneRingGenerateItem();
@@ -25,10 +23,5 @@ public class TheOneRing extends EquippableItem implements RareItem {
     @Override
     public GenerateItem getItemDetails() {
         return itemInfo;
-    }
-
-    @Override
-    public Image render() {
-        return new Image((new File("src/images/the_one_ring.png")).toURI().toString());
     }
 }
