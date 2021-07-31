@@ -723,7 +723,9 @@ public class LoopManiaWorldController {
         itemInfo.getChildren().add(imgRow);
 
         // add item price
-        Label price = new Label("$" + item.getItemDetails().price().get());
+        
+        Label price = new Label();
+        price.textProperty().bindBidirectional(item.getItemDetails().price(), new NumberStringConverter());
         price.setPrefWidth(95);
         price.setStyle("-fx-font-family: 'Avenir Book'");
         priceRow.getChildren().add(price);
