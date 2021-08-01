@@ -2,6 +2,13 @@
 ### Starting state
 - A player starts with 50 health and can deal 1 damage
 
+### Map Selection
+- If the player does not select a map, then a default map is selected.
+- The player has a choice of 3 maps.
+
+### Game Mode Selection
+- If the player does not select a game mode, standard mode is selected as the default.
+
 ### Spawning Enemies
 - Only 2 Slugs may be spawned at any one time, if the Character kills one of two spawned then another may spawn elsewhere in the path in the same cycle.
 
@@ -31,6 +38,7 @@
 - Our character and our allied soldiers will inflict damage on the same enemy until it dies, and then move on to the next
 - Enemy characters inflict damage on allied soldiers first, and will only move onto the character after the allied soldiers die
 - An allied soldier has 20 health and can do 8 damage
+- When fighting a boss, the boss will appear seperate to other enemies and fight the character simultaneously with them.
 
 ### Buildings and cards
 - The player can have a maximum of 6 building cards
@@ -48,9 +56,6 @@
 | Slug | 0 | 0 | 0 | 0.2 | 0 | 0 | 0 | 0 | 0 | 0.5 | 0.05 | 0.05 |
 | Doggie | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ElanMuske | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 
-
-
-
 
 ### Enemy Cards Drops as percentage chance
 | Type | BarracksCard | CampfireCard | TowerCard | TrapCard | VampireCastleCard | VillageCard | ZombiePitCard |
@@ -70,6 +75,21 @@
 - Enemies move in an anti-clockwise direction
 - Speed is given relative to the character’s speed
 
+### Allied soldiers
+- The character can have a maximum of 2 allied soldiers
+- When the character has more 1 or more Allied Soldiers, then a soldier will appear behind the character in the path and follow 1 square behind them.
+
+### Rare items
+- The Tree Stump reduces normal enemy damage to 1/3, and Boss damage to 1/4
+- Anduril does 20 base damage, and 60 damage to bosses
+- The value of Doggie Coin will only be available outside of the shop, so the Player has no idea what price they are selling for.
+- The Value of Doggie Coin prior to Elan Muske appearing can be anywhere between 0 and 10000 Gold, after Elan Muske appears it can be anywhere between 0 and 10 Gold.
+- The Reverse Path Potion will reverse the direction the character is moving in on the path when used.
+
+### Inventory
+- When clicking a non-consumable item in the inventory a popup appears displaying the Name, Description and sell price of that item along with a picture of it.
+- Consumable items such as Health Potions and Reverse Path Potions can be used by clicking on them in the character's inventory.
+
 | Type | Health | Damage | Battle radius | Support radius | Speed |
 |------|--------|--------|---------------|----------------|-------|
 | Slug | 4 | 1 | 1 | 2 | 1 |
@@ -84,6 +104,7 @@
 | Sword | 10 | 10 |
 | Stake | Normal: 6, Vampires: 20 | 15 |
 | Staff | Normal: 3, Trance lasts 5 attack turns | 20 |
+| Anduril | Normal: 20, Bosses: 60 | Cannot be bought, but can be sold for 50 Gold |
 
 
 ### Defence item stats
@@ -92,11 +113,13 @@
 | Armour | Enemy attacks are halved | 20 |
 | Shield | Vampire critical attack chance decreases by 60% | 10 |
 | Helmet | Enemy attacks are reduced by 2, Damage to enemies is reduced by 2 | 15 |
+| Tree Stump | Normal enemy damage is cut to 1/3, Bosses damage 1/4 | Cannot be bought, but can be sold for 50 Gold |
 
 ### Misc item stats
-| Type | Defence | Cost (gold) |
+| Type | Effect | Cost (gold) |
 |------|---------|-------------|
 | Health Potion | Character's Health is restored | 30 |
 | TheOneRing | Character respawns with full Health upon being killed one time | Cannot be bought, but can be sold for 50 Gold |
+| DoggieCoin | Fluctuates in price | Cannot be bought, but can be sold for a random amount of Gold |
 
 
