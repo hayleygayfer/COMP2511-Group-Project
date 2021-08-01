@@ -23,8 +23,9 @@ public class Doggie extends BasicEnemy implements BattleBehaviourContext {
     public Doggie(PathPosition position) {
         super(position);
         setDamage(5);
-        setBattleRadius(2);
+        setBattleRadius(1);
         setHealth(60);
+        setSupportRadius(2);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new DoggieCoinGenerateItem(), 1.0));
         setDroppableItems(droppableItems);

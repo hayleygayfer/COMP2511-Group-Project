@@ -7,7 +7,6 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 public class Shield extends EquippableItem {
     private double reducedEnemyCriticalChance;

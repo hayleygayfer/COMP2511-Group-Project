@@ -3,7 +3,6 @@ package unsw.loopmania;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Stack;
 import java.util.HashMap;
 
 
@@ -17,7 +16,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -42,7 +40,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
-import javafx.stage.WindowEvent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -76,7 +73,6 @@ import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
-import unsw.loopmania.GameMode;
 import unsw.loopmania.gameModes.StandardMode;
 import unsw.loopmania.gameModes.SurvivalMode;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
@@ -106,7 +102,6 @@ import unsw.loopmania.items.ReversePathPotion;
 import unsw.loopmania.gameModes.BerserkerMode;
 import unsw.loopmania.gameModes.ConfusingMode;
 
-import org.javatuples.Quintet;
 
 import java.util.EnumMap;
 
@@ -393,12 +388,10 @@ public class LoopManiaWorldController {
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
 
-        // heroBattle = new ImageView(new Image((new File("src/images/human_new.png")).toURI().toString()));
-        // TODO: remove?
-        Image test = new Image((new File("src/images/basic_sword.png")).toURI().toString());
-        enemyBattle.setImage(test);
-        enemyBattle.setFitHeight(25);
-        enemyBattle.setFitWidth(25);
+        // Image test = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        // enemyBattle.setImage(test);
+        // enemyBattle.setFitHeight(25);
+        // enemyBattle.setFitWidth(25);
 
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {

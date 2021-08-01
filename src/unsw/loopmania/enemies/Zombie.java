@@ -6,7 +6,13 @@ import java.util.List;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
+import unsw.loopmania.generateCards.BarracksGenerateCard;
+import unsw.loopmania.generateCards.CampfireGenerateCard;
 import unsw.loopmania.generateCards.TowerGenerateCard;
+import unsw.loopmania.generateCards.TrapGenerateCard;
+import unsw.loopmania.generateCards.VampireCastleGenerateCard;
+import unsw.loopmania.generateCards.VillageGenerateCard;
+import unsw.loopmania.generateCards.ZombiePitGenerateCard;
 import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
 import unsw.loopmania.generateItems.TreeStumpGenerateItem;
@@ -24,17 +30,25 @@ public class Zombie extends BasicEnemy {
         setDamage(2);
         setBattleRadius(2);
         setHealth(10);
-        List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
-        droppableItems.add(new Pair<GenerateItem, Double>(new StaffGenerateItem(), 0.50));
-        droppableItems.add(new Pair<GenerateItem, Double>(new HealthPotionGenerateItem(), 0.2));
-        droppableItems.add(new Pair<GenerateItem, Double>(new TheOneRingGenerateItem(), 0.05));
-        droppableItems.add(new Pair<GenerateItem, Double>(new AndurilGenerateItem(), 0.05));
-        droppableItems.add(new Pair<GenerateItem, Double>(new TreeStumpGenerateItem(), 0.05));
-        droppableItems.add(new Pair<GenerateItem, Double>(new ReversePathPotionGenerateItem(), 0.02));
+        setSupportRadius(2);
+        List<Pair<GenerateItem, Double>> droppableItems = List.of(
+            Pair.with(new StaffGenerateItem(), 0.50),
+            Pair.with(new HealthPotionGenerateItem(), 0.2),
+            Pair.with(new TheOneRingGenerateItem(), 0.05),
+            Pair.with(new AndurilGenerateItem(), 0.05),
+            Pair.with(new TreeStumpGenerateItem(), 0.05),
+            Pair.with(new ReversePathPotionGenerateItem(), 0.02)
+        );
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
-        droppableCards.add(new Pair<GenerateCard, Double>(new TowerGenerateCard(), 0.50));
+        droppableCards.add(new Pair<GenerateCard, Double>(new BarracksGenerateCard(), 0.05));
+        droppableCards.add(new Pair<GenerateCard, Double>(new ZombiePitGenerateCard(), 0.30));
+        droppableCards.add(new Pair<GenerateCard, Double>(new CampfireGenerateCard(), 0.05));
+        droppableCards.add(new Pair<GenerateCard, Double>(new TowerGenerateCard(), 0.30));
+        droppableCards.add(new Pair<GenerateCard, Double>(new VillageGenerateCard(), 0.05));
+        droppableCards.add(new Pair<GenerateCard, Double>(new TrapGenerateCard(), 0.30));
+
         setDroppableCards(droppableCards);
         // xp and gold
         setMaxGoldGained(4);
