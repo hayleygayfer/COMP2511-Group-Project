@@ -23,7 +23,10 @@ import unsw.loopmania.Battle;
 import unsw.loopmania.Building;
 import unsw.loopmania.Item;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.DoggieCoin;
 import unsw.loopmania.items.Stake;
+import unsw.loopmania.enemies.Doggie;
+import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
@@ -241,17 +244,20 @@ public class LoopManiaWorldTest {
     @Test
     public void testRunBattles() {
         LoopManiaWorld world = TestHelper.createWorld(path);
+        Character character = world.getCharacter();
+        character.moveDownPath();
 
-        List<BasicEnemy> spawnedEnemies = world.possiblySpawnEnemies();
-        for (BasicEnemy enemy : spawnedEnemies) {
-            PathPosition position = enemy.getPosition();
-            Character newCharacter = new Character(position);
-            world.setCharacter(newCharacter);
-        }
-        List<BasicEnemy> defeatedEnemies = world.runBattles();
-        if (spawnedEnemies.size() > 0){
-            assertTrue(defeatedEnemies.contains(spawnedEnemies.get(0)));
-        }
+        // Checks battle is run against elon, and won.
+        ElanMuske musk = new ElanMuske(new PathPosition(2, path));
+        musk.setHealth(0);
+        world.addEnemy(musk);
+        assertEquals(world.runBattles().size(), 1);
+        character.moveDownPath();
+
+        // Checks battle is run against slug, and won.
+        Slug slug = new Slug(new PathPosition(3, path));
+        world.addEnemy(slug);
+        assertEquals(world.runBattles().size(), 1);
     }
 
     @Test
@@ -395,4 +401,56 @@ public class LoopManiaWorldTest {
         world.addCard(cardToAdd);
         assertFalse(world.canBuildByCoordinates(3, 3, 2, 2));
     }
+
+    @Test
+    public void testSpawnDoggie() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        Character character = world.getCharacter();
+
+        for (int i = 0; i < 20; i++) {
+            world.iterateGamecycle();
+        }
+        
+        assertTrue(world.spawnBossEnemy() instanceof Doggie);
+        assertTrue(world.spawnBossEnemy() == null);
+    }
+
+    @Test
+    public void testSpawnElanMuske() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        Character character = world.getCharacter();
+        character.addXp(10001);
+        for (int i = 0; i < 40; i++) {
+            world.iterateGamecycle();
+        }
+        assertTrue(world.spawnBossEnemy() instanceof ElanMuske);
+        assertTrue(world.spawnBossEnemy() == null);
+    }
+
+    @Test
+    public void testElanMuskeDoggieAffect() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        Character character = world.getCharacter();
+        character.addXp(10001);
+        DoggieCoin doggieCoin = new DoggieCoin(new SimpleIntegerProperty(0), new SimpleIntegerProperty(2));
+        character.addItemToInventory(doggieCoin);
+        for (int i = 0; i < 40; i++) {
+            world.iterateGamecycle();
+        }
+        world.spawnBossEnemy();
+        System.out.println(doggieCoin.getSellPrice());
+    }
+
+    @Test
+    public void resetGame() {
+        // Tests that the world properly resets
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        Character character = world.getCharacter();
+        character.setCurrentHealth(1);
+        character.moveDownPath();
+        world.resetGame();
+        assertEquals(character.getCurrentHealth(), 50);
+        assertTrue(character.isAtHerosCastle());
+    }
+
 }
