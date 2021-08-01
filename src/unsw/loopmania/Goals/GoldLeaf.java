@@ -13,6 +13,10 @@ public class GoldLeaf implements Goal {
         this.goalGold = goalGold;
     }
 
+    public int getGoalGold() {
+        return goalGold;
+    }
+
      /**
      * Checks if the current gold in game cycle is greater than the goal gold
      * @param world the current world
