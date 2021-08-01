@@ -293,8 +293,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
             List<Pair<Integer, Integer>> validTiles = new ArrayList<>();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    if (!orderedPath.contains(Pair.with(x, y))) {
-                        validTiles.add(Pair.with(x, y));
+                    // can't have path tiles
+                    if (orderedPath.contains(Pair.with(x, y))) {
+                        continue;
+                    }
+                    // must be adjacent to a path tile
+                    List<Pair<Integer, Integer>> adjacentSquares = List.of(
+                        Pair.with(x-1, y),
+                        Pair.with(x+1, y),
+                        Pair.with(x, y-1),
+                        Pair.with(x, y+1)
+                    );
+                    for (Pair<Integer, Integer> adjSquare : adjacentSquares) {
+                        if (orderedPath.contains(adjSquare)) {
+                            validTiles.add(Pair.with(x, y));
+                            break;
+                        }
                     }
                 }
             }

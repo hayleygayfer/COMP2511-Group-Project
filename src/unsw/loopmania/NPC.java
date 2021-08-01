@@ -38,7 +38,6 @@ public class NPC extends StaticEntity implements CharacterPositionObserver {
         if (!encountered && this.shouldExist().get()) {
             List<Pair<Integer, Integer>> adjacentSquares = getAdjacentSquares(getX(), getY());
             if (adjacentSquares.contains(Pair.with(character.getX(), character.getY()))) {
-                System.out.println("Encountered");
                 encountered = true;
                 this.destroy();
             }
