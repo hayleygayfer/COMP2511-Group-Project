@@ -71,8 +71,8 @@
 | Slug | 4 | 1 | 1 | 2 | 1 |
 | Zombie | 10 | 2,  For each attack on an allied soldier there is a 10% chance of a critical bite | 2 | 2 | 0.5 |
 | Vampire | 15 | Standard: 3, Critical: 6, for each attack there is a 20% chance of a critical attack occurring | 2 | 3 | 1 |
-| Doggie
-| ElanMuske
+| Doggie | 60 | 5 | 1 | 2 | 1 |
+| ElanMuske | 120 | 10 | 1 | 2 | 1| 
 
 ### Attack item stats
 | Type | Damage | Cost (gold) |
