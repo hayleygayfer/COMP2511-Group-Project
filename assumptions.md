@@ -4,6 +4,7 @@
 
 ### Map Selection
 - If the player does not select a map, then a default map is selected.
+- The player has a choice of 3 maps.
 
 ### Game Mode Selection
 - If the player does not select a game mode, standard mode is selected as the default.
@@ -37,6 +38,7 @@
 - Our character and our allied soldiers will inflict damage on the same enemy until it dies, and then move on to the next
 - Enemy characters inflict damage on allied soldiers first, and will only move onto the character after the allied soldiers die
 - An allied soldier has 20 health and can do 8 damage
+- When fighting a boss, the boss will appear seperate to other enemies and fight the character simultaneously with them.
 
 ### Buildings and cards
 - The player can have a maximum of 6 building cards
@@ -64,6 +66,7 @@
 
 ### Allied soldiers
 - The character can have a maximum of 2 allied soldiers
+- When the character has more 1 or more Allied Soldiers, then a soldier will appear behind the character in the path and follow 1 square behind them.
 
 ### Rare items
 - The Tree Stump reduces normal enemy damage to 1/3, and Boss damage to 1/4
