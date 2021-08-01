@@ -424,7 +424,7 @@ public class LoopManiaWorldTest {
             }
             world.removeDestroyedEntities();
         }
-        assertTrue(npcs > 5 && npcs < 35);
+        assertTrue(npcs > 1 && npcs < 15);
     }
 
     public void testSpawnDoggie() {

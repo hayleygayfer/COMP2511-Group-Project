@@ -84,6 +84,7 @@ import unsw.loopmania.generateItems.ArmourGenerateItem;
 import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 import unsw.loopmania.generateItems.HelmetGenerateItem;
+import unsw.loopmania.generateItems.ReversePathPotionGenerateItem;
 import unsw.loopmania.generateItems.ShieldGenerateItem;
 import unsw.loopmania.generateItems.StaffGenerateItem;
 import unsw.loopmania.generateItems.StakeGenerateItem;
@@ -520,8 +521,6 @@ public class LoopManiaWorldController {
 
         onLoad(world.loadCard());
         onLoad(world.loadCard());
-        onLoad(world.loadCard());
-        onLoad(world.loadCard());
     }
 
     public void setLoopManiaGameMode(int gameMode) {
@@ -584,7 +583,6 @@ public class LoopManiaWorldController {
                 pauseButton.setText("Start");
                 pause();
             }
-
 
             List<BasicEnemy> defeatedEnemies = world.runBattles();
             
@@ -673,6 +671,11 @@ public class LoopManiaWorldController {
             List<NPC> newNPCs = world.possiblySpawnNPC();
             for (NPC npc: newNPCs) {
                 onLoad(npc);
+            }
+
+            AlliedSoldier newSoldier = world.getAlliedSoldiers();
+            if (newSoldier != null) {
+                onLoad(newSoldier);
             }
             printThreadingNotes("HANDLED TIMER");
         }));
@@ -897,6 +900,12 @@ public class LoopManiaWorldController {
         return npcPopup;
     }
 
+    /**
+     * Creates a timeline which will cycle through item images
+     * @param grid the pane on which the images should be displayed
+     * @param cycleCount the number of cycles the animation will last for
+     * @return the animated timeline
+     */
     private Timeline createItemCycle(Pane grid, int cycleCount) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             Image newItem = getRandomItemImage();
@@ -909,6 +918,10 @@ public class LoopManiaWorldController {
         return timeline;
     }
 
+    /**
+     * Returns an image of an item at random
+     * @return the random image
+     */
     private Image getRandomItemImage() {
         Random random = new Random();
         List<Class<?>> itemKeys = new ArrayList<>(imageMap.keySet());
@@ -917,6 +930,11 @@ public class LoopManiaWorldController {
         return imageMap.get(itemKeys.get(random.nextInt(itemKeys.size())));
     }
 
+    /**
+     * Creates the popup with an item's information
+     * @param item which will be displayed
+     * @return popup displaying the item's info
+     */
     public Popup loadPopupInfo(Item item) {
         Popup itemDetailsPopup = new Popup();
 
@@ -1169,6 +1187,17 @@ public class LoopManiaWorldController {
     }
 
     /**
+     * load an allied soldier into the GUI
+     * @param alliedsoldier to load into the GUI
+     */
+    private void onLoad(AlliedSoldier alliedSoldier) {
+        // Determine which image to load in.
+        ImageView view = createImageView(alliedSoldier);
+        addEntity(alliedSoldier, view);
+        squares.getChildren().add(view);
+    }
+
+    /**
      * load a building into the GUI
      * @param building the building to load to GUI
      */
@@ -1294,14 +1323,14 @@ public class LoopManiaWorldController {
         imageMap.put(SwordGenerateItem.class, new Image((new File("src/images/basic_sword.png")).toURI().toString()));
         imageMap.put(TheOneRingGenerateItem.class, new Image((new File("src/images/the_one_ring.png")).toURI().toString()));
         imageMap.put(TreeStumpGenerateItem.class, new Image((new File("src/images/tree_stump.png")).toURI().toString())); 
+        imageMap.put(ReversePathPotionGenerateItem.class, new Image((new File("src/images/reverse_path_potion.png")).toURI().toString()));
 
         // other
         imageMap.put(Character.class, new Image((new File("src/images/human_new.png")).toURI().toString()));
         imageMap.put(Gold.class, new Image((new File("src/images/gold_pile.png")).toURI().toString()));
         imageMap.put(PathTile.class, new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString()));
         imageMap.put(NPC.class, new Image((new File("src/images/npc.png")).toURI().toString()));
-
-        //imageMap.put(, new Image((new File("src/images/empty_slot.png")).toURI().toString()));
+        imageMap.put(AlliedSoldier.class, new Image((new File("src/images/deep_elf_master_archer.png")).toURI().toString()));
 
         return imageMap;
     }

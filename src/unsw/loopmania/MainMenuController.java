@@ -14,7 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import java.io.File;
 import java.util.HashMap;
-
+import javafx.scene.Scene;
 
 
 /**
@@ -43,6 +43,7 @@ public class MainMenuController {
     private VBox mainMenuContainer;
 
     public MainMenuController() {
+
         VBox content = new VBox();
         content.setStyle("-fx-padding: 8;" + 
         "-fx-border-style: solid inside;" + 

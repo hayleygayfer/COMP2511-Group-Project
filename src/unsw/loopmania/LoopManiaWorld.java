@@ -1,19 +1,18 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Goals.Goal;
-import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.cards.CampfireCard;
-import unsw.loopmania.cards.TowerCard;
-import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
-import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Doggie;
@@ -23,7 +22,6 @@ import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.items.DoggieCoin;
-import unsw.loopmania.items.ReversePathPotion;
 import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 /**
  * A backend world.
@@ -71,6 +69,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     private List<BattleBehaviourContext> defeatedBosses;
 
     private List<NPC> npcEntities;
+
+    private Set<AlliedSoldier> alliedSoldiers = new HashSet<AlliedSoldier>();
 
 
     /**
@@ -295,8 +295,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public List<NPC> possiblySpawnNPC() {
         List<NPC> newNpcs = new ArrayList<>();
         Random random = new Random();
-        // 2% chance of spawning
-        if (random.nextInt(1000) < 20) {
+        // 1% chance of spawning
+        if (random.nextInt(1000) < 10) {
             List<Pair<Integer, Integer>> validTiles = new ArrayList<>();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
@@ -445,6 +445,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
         for (int i = 0; i < itemDrops.size(); i++) {
             Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
+            if (coords == null) {
+                return null;
+            }
             int x = coords.getValue0() + i;
             int y = coords.getValue1();
             if (x > 3) {
@@ -514,11 +517,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         // pick a random card
         List<Card> potentialCards = new ArrayList<>();
         potentialCards.add(new VampireCastleCard(posX, posY));
-        // potentialCards.add(new ZombiePitCard(posX, posY));
-        // potentialCards.add(new VillageCard(posX, posY));
-        // potentialCards.add(new TrapCard(posX, posY));
-        // potentialCards.add(new TowerCard(posX, posY));
-        potentialCards.add(new CampfireCard(posX, posY));
+        potentialCards.add(new ZombiePitCard(posX, posY));
 
         Random random = new Random();
         Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));
@@ -901,4 +900,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         gameCycle.set(0);
     }
 
+    /**
+     * Updates Allied Soldiers
+     * @returns a new allied soldier
+     */
+    public AlliedSoldier getAlliedSoldiers() {
+        // Gets new allied soldiers
+        Set<AlliedSoldier> currentAlliedSoldiers = new HashSet<AlliedSoldier>();
+        currentAlliedSoldiers.addAll(character.getAlliedSoldiers());
+
+        // Remove dead allied soldiers and add new ones
+        alliedSoldiers.retainAll(currentAlliedSoldiers);
+        currentAlliedSoldiers.removeAll(alliedSoldiers);
+        if (alliedSoldiers.size() == 0 && currentAlliedSoldiers.size() > 0) {
+            Iterator<AlliedSoldier> alliedSoldierIterator = currentAlliedSoldiers.iterator();
+            return alliedSoldierIterator.next();
+        }
+        return null;
+    }
 }
