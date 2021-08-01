@@ -32,9 +32,9 @@ public class TreeStump extends EquippableItem implements RareItem {
      */
     public void affect(BasicEnemy enemy) {
         if (enemy instanceof BattleBehaviourContext) {
-            enemy.setDamage(enemy.getDamage() / 4);
+            enemy.setDamage(enemy.getDamage() / this.reduceDamageBy + 1);
         } else {
-            enemy.setDamage(enemy.getDamage() / 3);
+            enemy.setDamage(enemy.getDamage() / this.reduceDamageBy);
         }
     }
 }
