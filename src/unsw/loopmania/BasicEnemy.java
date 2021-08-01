@@ -239,12 +239,18 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
      */
     public List<GenerateCard> getCardDrops() {
         List<GenerateCard> droppedCards = new ArrayList<GenerateCard>();
+        int drops = 0;
 
         // For each possible drop generate a random number to see if it actually drops
         for (int i = 0; i < dropCardChances.size(); i++) {
             Double percentChance = chance.nextDouble();
             if (percentChance <= dropCardChances.get(i).getValue1()) {
                 droppedCards.add(dropCardChances.get(i).getValue0());
+                drops += 1;
+            }
+            // maximum 2 drops
+            if (drops >= 2) {
+                break;
             }
         }
         

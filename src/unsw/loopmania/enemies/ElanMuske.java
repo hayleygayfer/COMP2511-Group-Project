@@ -3,12 +3,10 @@ package unsw.loopmania.enemies;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javafx.scene.image.Image;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.BattleBehaviourContext;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.EnemyPositionObserver;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Frame;
 import unsw.loopmania.GenerateItem;
@@ -20,8 +18,9 @@ public class ElanMuske extends BasicEnemy implements BattleBehaviourContext {
     public ElanMuske(PathPosition position) {
         super(position);
         setDamage(10);
-        setBattleRadius(2);
+        setBattleRadius(1);
         setHealth(120);
+        setSupportRadius(2);
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         setDroppableItems(droppableItems);
         // xp and gold

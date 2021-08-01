@@ -40,11 +40,22 @@
 - When a Card is discarded due to the max number of Cards being exceeded, the Character is awarded 5 XP and 5 Gold
 - If a building already exists on a tile then another building cannot be placed on top of it
 
-### Enemy Item and Cards Drops
-- Slugs have a 50% chance to drop a Sword, and a 50% chance to drop a BarracksCard
-- Vampires have a 50% chance to drop a Stake, a 50% chance to drop a shield, a 50% chance to drop a VillageCard and a 50% chance to drop a CampfireCard
-- Zombies have a 50% chance to drop a Staff and a 50% chance to drop a TowerCard
-- All enemies have a 20% chance to drop a Health Potion and a 5% chance to drop The One Ring
+### Enemy Item Drops as percentage chance
+| Type | Anduril | Armour | DoggieCoin | HealthPotion | Helmet | ReversePathPotion | Shield | Staff | Stake | Sword | TheOneRing | TreeStump |
+|------|---------|--------|------------|--------------|--------|-------------------|--------|-------|-------|-------|------------|----------|
+
+
+
+
+
+### Enemy Cards Drops as percentage chance
+| Type | BarracksCard | CampfireCard | TowerCard | TrapCard | VampireCastleCard | VillageCard | ZombiePitCard |
+|------|--------------|--------------|-----------|----------|-------------------|-------------|---------------|
+| Slug | 0.30 | 0.05 | 0.05 | 0.05 | 0.3 | 0.05 | 0.3 |
+| Vampire | 0.05 | 0.3 | 0.05 | 0.05 | 0.3 | 0.05 | 0 |
+| Zombie | 0.05 | 0.05 | 0.3 | 0.3 | 0 | 0.05 | 0.3 |
+
+- Note: enemies can only drop a maximum of 2 cards at a time
 
 ### Enemy Xp and Gold Drops
 - Slugs can drop anywhere between 0 and 2 Gold, and give 5 XP when killed
@@ -57,9 +68,11 @@
 
 | Type | Health | Damage | Battle radius | Support radius | Speed |
 |------|--------|--------|---------------|----------------|-------|
-| Slug | 5 | 1 | 1 | 1 | 1 |
+| Slug | 4 | 1 | 1 | 2 | 1 |
 | Zombie | 10 | 2,  For each attack on an allied soldier there is a 10% chance of a critical bite | 2 | 2 | 0.5 |
-| Vampire | 15 | Standard: 3, Critical: 6, for each attack there is a 20% chance of a critical attack occurring | 3 | 4 | 1 |
+| Vampire | 15 | Standard: 3, Critical: 6, for each attack there is a 20% chance of a critical attack occurring | 2 | 3 | 1 |
+| Doggie
+| ElanMuske
 
 ### Attack item stats
 | Type | Damage | Cost (gold) |

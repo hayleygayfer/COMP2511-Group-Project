@@ -10,10 +10,15 @@ import unsw.loopmania.generateItems.TheOneRingGenerateItem;
 import unsw.loopmania.generateItems.AndurilGenerateItem;
 import unsw.loopmania.generateItems.TreeStumpGenerateItem;
 import unsw.loopmania.generateItems.HealthPotionGenerateItem;
-import unsw.loopmania.generateItems.ReversePathPotionGenerateItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.GenerateCard;
 import unsw.loopmania.generateCards.BarracksGenerateCard;
+import unsw.loopmania.generateCards.CampfireGenerateCard;
+import unsw.loopmania.generateCards.TowerGenerateCard;
+import unsw.loopmania.generateCards.VampireCastleGenerateCard;
+import unsw.loopmania.generateCards.VillageGenerateCard;
+import unsw.loopmania.generateCards.ZombiePitGenerateCard;
+import unsw.loopmania.generateCards.TrapGenerateCard;
 
 import org.javatuples.Pair;
 
@@ -24,7 +29,7 @@ public class Slug extends BasicEnemy {
         setDamage(1);
         setBattleRadius(1);
         setHealth(4);
-        setSupportRadius(100);
+        setSupportRadius(2);
         // item drops
         List<Pair<GenerateItem, Double>> droppableItems = new ArrayList<Pair<GenerateItem, Double>>();
         droppableItems.add(new Pair<GenerateItem, Double>(new SwordGenerateItem(), 0.50));
@@ -35,7 +40,13 @@ public class Slug extends BasicEnemy {
         setDroppableItems(droppableItems);
         // card drops
         List<Pair<GenerateCard, Double>> droppableCards = new ArrayList<Pair<GenerateCard, Double>>();
-        droppableCards.add(new Pair<GenerateCard, Double>(new BarracksGenerateCard(), 0.50));
+        droppableCards.add(new Pair<GenerateCard, Double>(new BarracksGenerateCard(), 0.30));
+        droppableCards.add(new Pair<GenerateCard, Double>(new ZombiePitGenerateCard(), 0.30));
+        droppableCards.add(new Pair<GenerateCard, Double>(new VampireCastleGenerateCard(), 0.30));
+        droppableCards.add(new Pair<GenerateCard, Double>(new TrapGenerateCard(), 0.05));
+        droppableCards.add(new Pair<GenerateCard, Double>(new CampfireGenerateCard(), 0.05));
+        droppableCards.add(new Pair<GenerateCard, Double>(new TowerGenerateCard(), 0.05));
+        droppableCards.add(new Pair<GenerateCard, Double>(new VillageGenerateCard(), 0.05));
         setDroppableCards(droppableCards);
         // xp and gold
         setMaxGoldGained(2);
