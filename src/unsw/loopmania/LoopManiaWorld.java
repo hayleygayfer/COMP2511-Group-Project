@@ -186,6 +186,14 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         nonSpecifiedEntities.add(entity);
     }
 
+    /**
+     * Adds an enemy to the list of enemies
+     * @param enemy the enemy to add
+     */
+    public void addEnemy(BasicEnemy enemy) {
+        enemies.add(enemy);
+    }
+
     public BasicEnemy spawnBossEnemy() {
         Pair<Integer, Integer> pos = getRandomSpawnPosition();
         int indexInPath = orderedPath.indexOf(pos);

@@ -38,7 +38,7 @@ public class Battle implements BattleBehaviourContext {
         List<Frame> frames = new ArrayList<>();
         // Add initial frame
         int index = 0;
-        frames.add(new Frame(character.getCurrentHealth() / baseCharacterHealth, 1.0, 0, enemies.get(0), null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
+        frames.add(new Frame((double) character.getCurrentHealth() / baseCharacterHealth, 1.0, 0, enemies.get(0), null, enemies.size() - index, character.getNumOfAlliedSoldiers()));
         for (BasicEnemy enemy : enemies) {
         // Initial set up for each enemy
             for (EquippableItem item : character.getEquippedItems()) {

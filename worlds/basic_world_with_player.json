@@ -1,6 +1,6 @@
 {
-  "width": 3,
-  "height": 3,
+  "width": 10,
+  "height": 15,
   "rare_items": [],
   "goal-condition": {"goal": "experience", "quantity": 123456 },
   "entities": [

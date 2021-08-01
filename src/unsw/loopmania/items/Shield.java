@@ -5,12 +5,11 @@ import unsw.loopmania.EquippableItem;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.ItemType;
-import unsw.loopmania.ShopItem;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Shield extends EquippableItem implements ShopItem {
+public class Shield extends EquippableItem {
     private double reducedEnemyCriticalChance;
     private int reduceEnemyDamage;
 
@@ -40,22 +39,6 @@ public class Shield extends EquippableItem implements ShopItem {
             Vampire vampire = (Vampire) enemy;
             vampire.setCriticalHitChance(reducedEnemyCriticalChance);
         }
-    }
-
-    /**
-     * returns a prices of 5 
-     * @return SimpleIntegerProperty
-     */
-    public SimpleIntegerProperty getPrice() {
-        return new SimpleIntegerProperty(5);
-    }
-
-    /**
-     * Gets the description of shield
-     * @return SimpleStringProperty
-     */
-    public SimpleStringProperty getDescription() {
-        return new SimpleStringProperty("Shield");
     }
 
     @Override
