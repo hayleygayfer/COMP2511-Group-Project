@@ -66,6 +66,10 @@
 - The Value of Doggie Coin prior to Elan Muske appearing can be anywhere between 0 and 10000 Gold, after Elan Muske appears it can be anywhere between 0 and 10 Gold.
 - The Reverse Path Potion will reverse the direction the character is moving in on the path when used.
 
+### Inventory
+- When clicking a non-consumable item in the inventory a popup appears displaying the Name, Description and sell price of that item along with a picture of it.
+- Consumable items such as Health Potions and Reverse Path Potions can be used by clicking on them in the character's inventory.
+
 | Type | Health | Damage | Battle radius | Support radius | Speed |
 |------|--------|--------|---------------|----------------|-------|
 | Slug | 5 | 1 | 1 | 1 | 1 |
