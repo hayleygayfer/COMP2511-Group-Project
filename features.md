@@ -1,4 +1,3 @@
-
 Extension features:
 
 - Music/Sound effects
@@ -17,3 +16,12 @@ Extension features:
 
 - Allied Soldier
     - When a character has an allied soldier, the allies soldier will follow the character around on the path.
+
+- Item Info
+    - When clicking on a non-consumable item in the characters inventory a popup appears with the name, description and sell price of that item.
+
+- Map Selection
+    - In the main menu, when clicking the "Choose Map" button, a popup appears with 3 images of different map presets, the player can click on one of these to change the game map.
+
+- Reverse Path potion
+    - A new consumable potion item has been added that can be dropped by either vampires or zombies, which when used will reverse the direction in which the character is moving on the path. 
