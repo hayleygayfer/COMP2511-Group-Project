@@ -37,4 +37,9 @@ public class TreeStump extends EquippableItem implements RareItem {
             enemy.setDamage(enemy.getDamage() / this.reduceDamageBy);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Tree Stump";
+    }
 }

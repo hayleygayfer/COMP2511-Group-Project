@@ -40,4 +40,9 @@ public class Shield extends EquippableItem {
             vampire.setCriticalHitChance(reducedEnemyCriticalChance);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Shield";
+    }
 }

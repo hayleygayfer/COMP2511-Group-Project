@@ -11,12 +11,8 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Goals.Goal;
-import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.cards.CampfireCard;
-import unsw.loopmania.cards.TowerCard;
-import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
-import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Doggie;
@@ -26,7 +22,6 @@ import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.items.TheOneRing;
 import unsw.loopmania.items.DoggieCoin;
-import unsw.loopmania.items.ReversePathPotion;
 import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
 /**
  * A backend world.
@@ -73,6 +68,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
     private List<BattleBehaviourContext> defeatedBosses;
 
+    private List<NPC> npcEntities;
+
     private Set<AlliedSoldier> alliedSoldiers = new HashSet<AlliedSoldier>();
 
 
@@ -111,6 +108,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         cardEntities = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        npcEntities = new ArrayList<>();
         spawnEnemyStrategies = new ArrayList<>();
         shopMenu = new HerosCastleMenu();
         gameCycle = new SimpleIntegerProperty(0);
@@ -277,6 +275,84 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         return spawningGold;
     }
 
+    /**
+     * Returns an NPC if there is one currently being encountered
+     * @return NPC being encountered
+     */
+    public NPC getNPCEncounter() {
+        for (NPC n : npcEntities) {
+            if (n.getEncountered()) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * potentially spawns a friendly npc at a random position
+     * @return list of newly spawned NPCs
+     */
+    public List<NPC> possiblySpawnNPC() {
+        List<NPC> newNpcs = new ArrayList<>();
+        Random random = new Random();
+        // 1% chance of spawning
+        if (random.nextInt(1000) < 10) {
+            List<Pair<Integer, Integer>> validTiles = new ArrayList<>();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    // can't have path tiles
+                    if (orderedPath.contains(Pair.with(x, y))) {
+                        continue;
+                    }
+                    // must be adjacent to a path tile
+                    List<Pair<Integer, Integer>> adjacentSquares = List.of(
+                        Pair.with(x-1, y),
+                        Pair.with(x+1, y),
+                        Pair.with(x, y-1),
+                        Pair.with(x, y+1)
+                    );
+                    for (Pair<Integer, Integer> adjSquare : adjacentSquares) {
+                        if (orderedPath.contains(adjSquare)) {
+                            validTiles.add(Pair.with(x, y));
+                            break;
+                        }
+                    }
+                }
+            }
+            // remove any tiles where an existing NPC is there
+            for (NPC n: npcEntities) {
+                validTiles.remove(Pair.with(n.getX(), n.getY()));
+            }
+
+            if (validTiles.size() < 1) {
+                return null;
+            } 
+            Pair<Integer, Integer> pos = validTiles.get(random.nextInt(validTiles.size()));
+
+            NPC npc = new NPC(new SimpleIntegerProperty(pos.getValue0()), new SimpleIntegerProperty(pos.getValue1()));
+            npcEntities.add(npc);
+            newNpcs.add(npc);
+            character.attach(npc);
+        }
+        return newNpcs;
+    }
+
+    /**
+     * Character gambles with an NPC. Gains an item if successful
+     * @param character
+     * @param npc
+     */
+    public Item gambleWithNPC(Character character, NPC npc) {
+        GenerateItem gItem = npc.gamble(character);
+        if (gItem != null) {
+            Pair<Integer, Integer> pos = getFirstAvailableSlotForItem();
+            Item item = gItem.createItem(new SimpleIntegerProperty(pos.getValue0()), new SimpleIntegerProperty(pos.getValue1()));
+            character.addItemToInventory(item);
+            return item;
+        }
+        return null;
+    }
+
     public Item purchaseItemFromHerosCastle(GenerateItem item) {
         Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
         Item purchasedItem = shopMenu.purchaseItem(character, item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()), gameMode);
@@ -341,10 +417,11 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     }
 
     /**
-     * Goes through buildings and removes those that shouldn't exist
+     * Goes through buildings and NPCs, and removes those that shouldn't exist
      */
-    public void destroyBuildings() {
+    public void removeDestroyedEntities() {
         buildingEntities.removeIf(b -> !b.shouldExist().get());
+        npcEntities.removeIf(n -> !n.shouldExist().get());
     }
 
     /**
@@ -440,11 +517,7 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         // pick a random card
         List<Card> potentialCards = new ArrayList<>();
         potentialCards.add(new VampireCastleCard(posX, posY));
-        // potentialCards.add(new ZombiePitCard(posX, posY));
-        // potentialCards.add(new VillageCard(posX, posY));
-        // potentialCards.add(new TrapCard(posX, posY));
-        // potentialCards.add(new TowerCard(posX, posY));
-        potentialCards.add(new CampfireCard(posX, posY));
+        potentialCards.add(new ZombiePitCard(posX, posY));
 
         Random random = new Random();
         Card newCard = potentialCards.get(random.nextInt(potentialCards.size()));

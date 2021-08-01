@@ -24,4 +24,9 @@ public class TheOneRing extends EquippableItem implements RareItem {
     public GenerateItem getItemDetails() {
         return itemInfo;
     }
+
+    @Override
+    public String toString() {
+        return "The One Ring";
+    }
 }

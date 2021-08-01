@@ -23,4 +23,9 @@ public class DoggieCoin extends Item implements RareItem {
     public GenerateItem getItemDetails() {
         return itemInfo;
     }
+
+    @Override
+    public String toString() {
+        return "DoggieCoin";
+    }
 }

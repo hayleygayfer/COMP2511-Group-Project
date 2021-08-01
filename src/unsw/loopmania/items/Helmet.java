@@ -33,6 +33,8 @@ public class Helmet extends EquippableItem {
         enemy.setDamage(enemy.getDamage() - reducedEnemyDamage);
     }
 
-    // TODO: shouldn't this affect character as well?
-
+    @Override
+    public String toString() {
+        return "Helmet";
+    }
 }

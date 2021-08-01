@@ -31,6 +31,7 @@ import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
 import unsw.loopmania.LoopManiaWorld;
+import unsw.loopmania.NPC;
 import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.Goals.CycleLeaf;
 import unsw.loopmania.Goals.XpLeaf;
@@ -135,14 +136,21 @@ public class LoopManiaWorldTest {
     }
 
     @Test
-    public void testSpawnGold() {
+    public void testSpawnGoldFrequency() {
         LoopManiaWorld world = TestHelper.createWorld(path);
-        List<Gold> gold = world.possiblySpawnGold();
-        assertTrue(gold.size() == 0);
-        List<Gold> gold2 = world.possiblySpawnGold();
-        assertTrue(gold2.size() == 0);
-        List<Gold> gold3 = world.possiblySpawnGold();
-        assertTrue(gold3.size() == 0);
+        int goldSpawns = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            List<Gold> spawned = world.possiblySpawnGold();
+            goldSpawns += spawned.size();
+
+            // clean up
+            for (Gold g : spawned) {
+                g.destroy();
+            }
+            world.removeDestroyedEntities();
+        }
+        assertTrue(goldSpawns > 85 && goldSpawns < 115);
     }
 
     @Test
@@ -403,6 +411,22 @@ public class LoopManiaWorldTest {
     }
 
     @Test
+    public void testNPCSpawnFrequency() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        int npcs = 0;
+        for (int i = 0; i < 1000; i++) {
+            List<NPC> spawned = world.possiblySpawnNPC();
+            npcs += spawned.size();
+
+            // clean up
+            for (NPC npc : spawned) {
+                npc.destroy();
+            }
+            world.removeDestroyedEntities();
+        }
+        assertTrue(npcs > 1 && npcs < 15);
+    }
+
     public void testSpawnDoggie() {
         LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
         Character character = world.getCharacter();
@@ -452,5 +476,4 @@ public class LoopManiaWorldTest {
         assertEquals(character.getCurrentHealth(), 50);
         assertTrue(character.isAtHerosCastle());
     }
-
 }

@@ -33,7 +33,6 @@ public class Armour extends EquippableItem {
      */
     @Override
     public boolean isEquippable(List<Item> equippedItems) {
-        // TODO Auto-generated method stub
         return super.isEquippable(equippedItems);
     }
 
@@ -44,5 +43,10 @@ public class Armour extends EquippableItem {
     @Override
     public void affect(BasicEnemy enemy) {
         enemy.setDamage(enemy.getDamage() / 2);
+    }
+
+    @Override
+    public String toString() {
+        return "Armour";
     }
 }
