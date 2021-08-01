@@ -4,12 +4,11 @@ import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.ItemType;
-import unsw.loopmania.ShopItem;
 import unsw.loopmania.generateItems.*;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Helmet extends EquippableItem implements ShopItem {
+public class Helmet extends EquippableItem {
     private int reducedEnemyDamage;
     private GenerateItem itemInfo = new HelmetGenerateItem();
 
@@ -35,21 +34,5 @@ public class Helmet extends EquippableItem implements ShopItem {
     }
 
     // TODO: shouldn't this affect character as well?
-
-    /**
-     * returns a prices of 5 
-     * @return SimpleIntegerProperty
-     */
-    public SimpleIntegerProperty getPrice() {
-        return new SimpleIntegerProperty(5);
-    }
-
-    /**
-     * Gets the description of helemt
-     * @return SimpleStringProperty
-     */
-    public SimpleStringProperty getDescription() {
-        return new SimpleStringProperty("Helmet");
-    }
 
 }

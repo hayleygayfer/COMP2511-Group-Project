@@ -3,7 +3,6 @@ package unsw.loopmania.items;
 import unsw.loopmania.EquippableItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
-import unsw.loopmania.ShopItem;
 import unsw.loopmania.GenerateItem;
 import unsw.loopmania.generateItems.*;
 import unsw.loopmania.BasicEnemy;
@@ -13,7 +12,7 @@ import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Armour extends EquippableItem implements ShopItem {
+public class Armour extends EquippableItem {
     private GenerateItem itemInfo = new ArmourGenerateItem();
 
     // TODO write armour
@@ -46,21 +45,4 @@ public class Armour extends EquippableItem implements ShopItem {
     public void affect(BasicEnemy enemy) {
         enemy.setDamage(enemy.getDamage() / 2);
     }
-
-    /**
-     * returns a prices of 5 
-     * @return SimpleIntegerProperty
-     */
-    public SimpleIntegerProperty getPrice() {
-        return new SimpleIntegerProperty(5);
-    }
-
-    /**
-     * Gets the description of Armour
-     * @return SimpleStringProperty
-     */
-    public SimpleStringProperty getDescription() {
-        return new SimpleStringProperty("Armour");
-    }
-    
 }
