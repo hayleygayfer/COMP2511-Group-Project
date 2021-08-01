@@ -648,27 +648,6 @@ public class LoopManiaWorldController {
         timeline.play();
     }
 
-    public String chooseBackgroundMusic(String gameMode) {
-        String path;
-        switch (gameMode) {
-            case "Standard Mode":
-                path = "";
-            break;
-            case "Survival Mode":
-                path = "";
-            break;
-            case "Berserker Mode":
-                path = "";
-            break;
-            case "Confusing Mode":
-                path = "";
-            break;
-            default:
-                path = "";
-        }
-        return path;
-    }
-
     /**
      * pause the execution of the game loop
      * the human player can still drag and drop items during the game pause
