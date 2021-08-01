@@ -23,12 +23,6 @@ public class DoggieCoinTest {
     }
 
     @Test
-    public void testSellPrice() {
-        DoggieCoin ring = new DoggieCoin(new SimpleIntegerProperty(0), new SimpleIntegerProperty(2));
-        assertEquals(50, ring.getSellPrice().get());
-    }
-
-    @Test
     public void testType() {
         DoggieCoin ring = new DoggieCoin(new SimpleIntegerProperty(0), new SimpleIntegerProperty(2)); 
         assertEquals(ItemType.NOT_EQUIPPABLE, ring.getType());

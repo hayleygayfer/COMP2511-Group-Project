@@ -82,20 +82,6 @@ public class HelmetTest {
     }
 
     @Test
-    public void testPrice() {
-        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));   
-
-        assertEquals(5, helmet.getItemDetails().price().get());
-    }
-
-    @Test
-    public void testDescription() {
-        Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));   
-
-        assertEquals("Helmet", helmet.getItemDetails().description().get());
-    }
-
-    @Test
     public void testIsEquippable() {
         Character character = createCharacter();
         Helmet helmet = new Helmet(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 

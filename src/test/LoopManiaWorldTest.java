@@ -43,6 +43,7 @@ import unsw.loopmania.Card;
 import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.VillageCard;
+import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.cards.VampireCastleCard;
 
@@ -194,10 +195,6 @@ public class LoopManiaWorldTest {
         List<Item> vampireDrops = world.defeatedEnemyItemDrops(vampire);
         List<Item> zombieDrops = world.defeatedEnemyItemDrops(zombie);
 
-        assertEquals(0, slugDrops.size());
-        assertEquals(1, vampireDrops.size());
-        assertEquals(0, zombieDrops.size());
-
         assertTrue(world.getCharacter().getInventory().containsAll(slugDrops));
         assertTrue(world.getCharacter().getInventory().containsAll(vampireDrops));
         assertTrue(world.getCharacter().getInventory().containsAll(zombieDrops));
@@ -213,15 +210,15 @@ public class LoopManiaWorldTest {
 
         world.getGoldAndXpDrops(slug);
         assertEquals(5, world.getCharacter().getXpProperty().get());
-        assertEquals(1, world.getCharacter().getGold());
+        assertTrue(world.getCharacter().getGold() <= 2);
 
         world.getGoldAndXpDrops(vampire);
         assertEquals(25, world.getCharacter().getXpProperty().get());
-        assertEquals(6, world.getCharacter().getGold());
+        assertTrue(world.getCharacter().getGold() <= 8);
 
         world.getGoldAndXpDrops(zombie);
         assertEquals(35, world.getCharacter().getXpProperty().get());
-        assertEquals(8, world.getCharacter().getGold());
+        assertTrue(world.getCharacter().getGold() <= 4);
     }
 
     @Test 
@@ -232,21 +229,31 @@ public class LoopManiaWorldTest {
         BasicEnemy vampire = new Vampire(newPosition);
         BasicEnemy zombie = new Zombie(newPosition);
 
-        List<Card> slugCards = world.defeatedEnemyCardDrops(slug);
-        List<Card> vampireCards = world.defeatedEnemyCardDrops(vampire);
-        List<Card> zombieCards = world.defeatedEnemyCardDrops(zombie);
+        int slugDropped = 0;
+        int vampireDropped = 0;
+        int zombieDropped = 0;
 
-        assertEquals(0, slugCards.size());
-        assertTrue(vampireCards.get(0) instanceof CampfireCard);
-        assertEquals(0, zombieCards.size());
+        for (int i = 0; i < 100; i++) {
+            List<Card> slugCards = world.defeatedEnemyCardDrops(slug);
+            List<Card> vampireCards = world.defeatedEnemyCardDrops(vampire);
+            List<Card> zombieCards = world.defeatedEnemyCardDrops(zombie);
 
-        List<Card> slugCards2 = world.defeatedEnemyCardDrops(slug);
-        List<Card> vampireCards2 = world.defeatedEnemyCardDrops(vampire);
-        List<Card> zombieCards2 = world.defeatedEnemyCardDrops(zombie);
+            slugDropped += slugCards.size();
+            vampireDropped += vampireCards.size();
+            zombieDropped += zombieCards.size();
+    
+            for (Card c : vampireCards) {
+                assertFalse(c instanceof ZombiePitCard);
+            }
+    
+            for (Card c : zombieCards) {
+                assertFalse(c instanceof VampireCastleCard);
+            }
+        }
 
-        assertTrue(slugCards2.get(0) instanceof BarracksCard);
-        assertTrue(vampireCards2.get(0) instanceof VillageCard);
-        assertTrue(zombieCards2.get(0) instanceof TowerCard);
+        assertTrue(slugDropped > 0);
+        assertTrue(vampireDropped > 0);
+        assertTrue(zombieDropped > 0);
     }
 
     @Test

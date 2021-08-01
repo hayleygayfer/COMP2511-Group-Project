@@ -76,27 +76,6 @@ public class ShieldTest {
     }
 
     @Test
-    public void testSellPrice() {
-        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
-
-        assertEquals(10, shield.getSellPrice().get());
-    }
-
-    @Test
-    public void testPrice() {
-        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
-
-        assertEquals(5, shield.getItemDetails().price().get());
-    }
-
-    @Test
-    public void testDescription() {
-        Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-
-        assertEquals("Shield", shield.getItemDetails().description().get());
-    }
-
-    @Test
     public void testIsEquippable() {
         Character character = createCharacter();
         Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));

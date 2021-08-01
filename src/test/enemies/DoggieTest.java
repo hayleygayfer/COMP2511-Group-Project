@@ -36,8 +36,9 @@ public class DoggieTest {
 
         // check stats
         assertEquals(5, enemy.getDamage());
-        assertEquals(2, enemy.getBattleRadius());
+        assertEquals(1, enemy.getBattleRadius());
         assertEquals(60, enemy.getHealth());
+        assertEquals(2, enemy.getSupportRadius());
     }
 
     @Test

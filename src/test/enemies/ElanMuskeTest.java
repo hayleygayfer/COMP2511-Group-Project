@@ -15,7 +15,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import test.TestHelper;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
-import unsw.loopmania.Building;
 import unsw.loopmania.Entity;
 import unsw.loopmania.Character;
 import unsw.loopmania.CharacterEffect;
@@ -37,8 +36,9 @@ public class ElanMuskeTest {
 
         // check stats
         assertEquals(10, enemy.getDamage());
-        assertEquals(2, enemy.getBattleRadius());
+        assertEquals(1, enemy.getBattleRadius());
         assertEquals(120, enemy.getHealth());
+        assertEquals(2, enemy.getSupportRadius());
     }
 
     @Test
