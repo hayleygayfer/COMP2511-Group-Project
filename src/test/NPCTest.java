@@ -53,7 +53,7 @@ public class NPCTest {
     public void testGambleChance() {
         NPC npc = new NPC(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1)); 
         Character character = TestHelper.createCharacter(TestHelper.createPath());
-        character.addGold(1001);
+        character.addGold(5 * 1001);
 
         int wins = 0;
         for (int i = 0; i < 1000; i++) {
@@ -70,10 +70,29 @@ public class NPCTest {
     public void testGambleNotEnoughGold() {
         NPC npc = new NPC(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1)); 
         Character character = TestHelper.createCharacter(TestHelper.createPath());
+        character.addGold(4);
 
         for (int i = 0; i < 100; i++) {
             assertEquals(null, npc.gamble(character));
         }
-        assertEquals(0, character.getGold());
+        assertEquals(4, character.getGold());
+    }
+
+    @Test
+    public void testCannotGamble() {
+        NPC npc = new NPC(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1)); 
+        Character character = TestHelper.createCharacter(TestHelper.createPath());
+        for (int i = 0; i < 4; i++) {
+            assertFalse(npc.canGamble(character));
+            character.addGold(1);
+        }
+    }
+
+    @Test
+    public void testCanGamble() {
+        NPC npc = new NPC(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1)); 
+        Character character = TestHelper.createCharacter(TestHelper.createPath());
+        character.addGold(5);
+        assertTrue(npc.canGamble(character));
     }
 }

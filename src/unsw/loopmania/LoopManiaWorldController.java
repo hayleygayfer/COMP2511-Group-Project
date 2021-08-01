@@ -569,8 +569,9 @@ public class LoopManiaWorldController {
                 pause();
             }
 
-            List<BasicEnemy> defeatedEnemies = world.runBattles();
 
+            List<BasicEnemy> defeatedEnemies = world.runBattles();
+            
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
                 backgroundMusicPlayer.pause();
@@ -623,18 +624,21 @@ public class LoopManiaWorldController {
                 battleMusicPlayer.play();
             }
 
+            // check if there's any encounters with NPCs
             NPC encounteredNpc = world.getNPCEncounter();
-            if (encounteredNpc != null) {
+            // run popup if there's no battle in progress
+            if (encounteredNpc != null && world.getCurrentBattle() == null) {
                 pause();
                 Popup npcPopup = loadNPCPopup(encounteredNpc);
                 npcPopup.show(anchorPaneRoot.getScene().getWindow());
             }
-
+            
             List<BasicEnemy> otherDefeatedEnemies = world.otherDefeatedEnemies();
             for (BasicEnemy e: otherDefeatedEnemies) {
                 reactToEnemyDefeat(e);
             }
             world.removeDestroyedEntities();
+
             List<BasicEnemy> newEnemies = world.possiblySpawnEnemies();
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
@@ -644,10 +648,12 @@ public class LoopManiaWorldController {
             if (spawningBoss != null) {
                 onLoad(spawningBoss);
             }
+
             List<Gold> newGold = world.possiblySpawnGold();
             for (Gold gold: newGold) {
                 onLoad(gold);
             }
+
             List<NPC> newNPCs = world.possiblySpawnNPC();
             for (NPC npc: newNPCs) {
                 onLoad(npc);
@@ -719,7 +725,12 @@ public class LoopManiaWorldController {
         }
     }
 
-    public Popup loadNPCPopup(NPC npc) {
+    /**
+     * Loads the popup the handles interaction with an NPC
+     * @param npc being interacted with
+     * @return the popup panel to interact with the NPC
+     */
+    private Popup loadNPCPopup(NPC npc) {
         Popup npcPopup = new Popup();
 
         VBox popupBox = new VBox(10);
@@ -730,6 +741,7 @@ public class LoopManiaWorldController {
         "-fx-border-color: grey;" +
         "-fx-background-color: white;");
 
+        // close button
         Button hide = new Button("X");
         hide.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
@@ -748,14 +760,17 @@ public class LoopManiaWorldController {
         closeButtonRow.getChildren().add(hide);
         popupBox.getChildren().add(closeButtonRow);
 
+        // description
         VBox chatBox = new VBox();
-        Label chatMsg = new Label("Greetings, I am a friendly inhabitant of this world. I would like to propose a trade offer. You give me 1 gold coin, and I will give you a chance to win an item. Will you try your luck?");
+        Label chatMsg = new Label("Greetings, I am a friendly inhabitant of this world. I would like to propose a trade offer. You give me 5 gold coin, and I will give you a chance to win an item. Will you try your luck?");
         chatMsg.setStyle("-fx-font-family: 'Avenir Book'");
         chatMsg.setWrapText(true);
         chatMsg.setPrefWidth(300);
         chatBox.getChildren().add(chatMsg);
+
         popupBox.getChildren().add(chatBox);
 
+        // slot machine
         HBox slotMachine = new HBox();
         List<StackPane> slotGrids = new ArrayList<>();
 
@@ -768,12 +783,15 @@ public class LoopManiaWorldController {
         slotMachine.setAlignment(Pos.CENTER);
         popupBox.getChildren().add(slotMachine);
 
+        // where the text announcing the result will go
         VBox result = new VBox();
+        result.setAlignment(Pos.CENTER);
         popupBox.getChildren().add(result);
 
+        // buttons for actions
         HBox actionsRow = new HBox();
         actionsRow.setAlignment(Pos.CENTER);
-        Button yesGamble = new Button("Yes! (1 gold)");
+        Button yesGamble = new Button("Yes! (5 gold)");
         Button noThanks = new Button("No thanks");
 
         yesGamble.setOnAction(new EventHandler<ActionEvent>() {
@@ -781,13 +799,13 @@ public class LoopManiaWorldController {
                 actionsRow.getChildren().remove(noThanks);
                 actionsRow.getChildren().remove(yesGamble);
 
-                if (world.getCharacter().getGold() < 1) {
+                if (!npc.canGamble(world.getCharacter())) {
                     Label msg = new Label("Not enough gold :(");
                     msg.setWrapText(true);
                     msg.maxWidth(200);
                     msg.setStyle("-fx-font-family: 'Avenir Next'"); 
                     msg.setAlignment(Pos.CENTER);
-                    popupBox.getChildren().add(msg);
+                    result.getChildren().add(msg);
                     return;
                 }
 
@@ -822,7 +840,7 @@ public class LoopManiaWorldController {
                         if (itemWon != null) {
                             slotGrids.get(2).getChildren().remove(0);
                             slotGrids.get(2).getChildren().add(createImageView(itemWon));
-                            winLoseMsg = new Label("You won a " + itemWon.toString());
+                            winLoseMsg = new Label("You won a " + itemWon.toString() + "!");
                             onLoad(itemWon); 
                         } else {
                             winLoseMsg = new Label("You did not win anything :( Better luck next time."); 
@@ -831,7 +849,7 @@ public class LoopManiaWorldController {
                         winLoseMsg.maxWidth(200);
                         winLoseMsg.setStyle("-fx-font-family: 'Avenir Next'");
                         winLoseMsg.setAlignment(Pos.CENTER);
-                        popupBox.getChildren().add(winLoseMsg);
+                        result.getChildren().add(winLoseMsg);
                     }
                 });
         
@@ -855,11 +873,9 @@ public class LoopManiaWorldController {
         }); 
         noThanks.setStyle("-fx-font-family: 'Avenir Book'");
         actionsRow.getChildren().add(noThanks);
-
         popupBox.getChildren().add(actionsRow);
 
         npcPopup.getContent().add(popupBox);
-
 
         return npcPopup;
     }

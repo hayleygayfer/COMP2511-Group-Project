@@ -287,9 +287,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     public List<NPC> possiblySpawnNPC() {
         List<NPC> newNpcs = new ArrayList<>();
         Random random = new Random();
-        // 10 % of the time for now
-        // bring this down to like 1%
-        if (random.nextInt(1000) < 400) {
+        // 2% chance of spawning
+        if (random.nextInt(1000) < 20) {
             List<Pair<Integer, Integer>> validTiles = new ArrayList<>();
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
@@ -317,6 +316,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
                 validTiles.remove(Pair.with(n.getX(), n.getY()));
             }
 
+            if (validTiles.size() < 1) {
+                return null;
+            } 
             Pair<Integer, Integer> pos = validTiles.get(random.nextInt(validTiles.size()));
 
             NPC npc = new NPC(new SimpleIntegerProperty(pos.getValue0()), new SimpleIntegerProperty(pos.getValue1()));
