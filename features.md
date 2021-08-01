@@ -26,5 +26,7 @@ Extension features:
 - Reverse Path potion
     - A new consumable potion item has been added that can be dropped by either vampires or zombies, which when used will reverse the direction in which the character is moving on the path. 
 - Friendly NPC
-    - A friendly NPC has a 1% chance of spawning on the map
+    - A friendly NPC has a 1% chance of spawning on the map adjacent to a path-tile
+    - A character can encounter an NPC by moving to an adjacent tile
     - When the character encounters the NPC a popup will appear offering the player to spend 5 Gold to have a chance to win any item, which will be deposited in the characters inventory.
+    - Each time the character accepts, there is a 40% chance of winning an item
