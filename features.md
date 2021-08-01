@@ -11,7 +11,7 @@ Extension features:
     - Sound effect for game over 
 
 - Battle Animations
-    - Enemies will visibloy move forward and back to simulate a battle.
+    - Enemies will visibly move forward and back to simulate a battle.
     - Bosses will appear alongside other supporting enemies.
 
 - Allied Soldier
@@ -25,3 +25,6 @@ Extension features:
 
 - Reverse Path potion
     - A new consumable potion item has been added that can be dropped by either vampires or zombies, which when used will reverse the direction in which the character is moving on the path. 
+- Friendly NPC
+    - A friendly NPC has a 1% chance of spawning on the map
+    - When the character encounters the NPC a popup will appear offering the player to spend 5 Gold to have a chance to win any item, which will be deposited in the characters inventory.

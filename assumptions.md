@@ -2,6 +2,13 @@
 ### Starting state
 - A player starts with 50 health and can deal 1 damage
 
+### Map Selection
+- If the player does not select a map, then a default map is selected.
+- The player has a choice of 3 maps.
+
+### Game Mode Selection
+- If the player does not select a game mode, standard mode is selected as the default.
+
 ### Spawning Enemies
 - Only 2 Slugs may be spawned at any one time, if the Character kills one of two spawned then another may spawn elsewhere in the path in the same cycle.
 
@@ -31,6 +38,7 @@
 - Our character and our allied soldiers will inflict damage on the same enemy until it dies, and then move on to the next
 - Enemy characters inflict damage on allied soldiers first, and will only move onto the character after the allied soldiers die
 - An allied soldier has 20 health and can do 8 damage
+- When fighting a boss, the boss will appear seperate to other enemies and fight the character simultaneously with them.
 
 ### Buildings and cards
 - The player can have a maximum of 6 building cards
@@ -58,6 +66,7 @@
 
 ### Allied soldiers
 - The character can have a maximum of 2 allied soldiers
+- When the character has more 1 or more Allied Soldiers, then a soldier will appear behind the character in the path and follow 1 square behind them.
 
 ### Rare items
 - The Tree Stump reduces normal enemy damage to 1/3, and Boss damage to 1/4
@@ -82,6 +91,7 @@
 | Sword | 10 | 10 |
 | Stake | Normal: 6, Vampires: 20 | 15 |
 | Staff | Normal: 3, Trance lasts 5 attack turns | 20 |
+| Anduril | Normal: 20, Bosses: 60 | Cannot be bought, but can be sold for 50 Gold |
 
 
 ### Defence item stats
@@ -90,11 +100,13 @@
 | Armour | Enemy attacks are halved | 20 |
 | Shield | Vampire critical attack chance decreases by 60% | 10 |
 | Helmet | Enemy attacks are reduced by 2, Damage to enemies is reduced by 2 | 15 |
+| Tree Stump | Normal enemy damage is cut to 1/3, Bosses damage 1/4 | Cannot be bought, but can be sold for 50 Gold |
 
 ### Misc item stats
-| Type | Defence | Cost (gold) |
+| Type | Effect | Cost (gold) |
 |------|---------|-------------|
 | Health Potion | Character's Health is restored | 30 |
 | TheOneRing | Character respawns with full Health upon being killed one time | Cannot be bought, but can be sold for 50 Gold |
+| DoggieCoin | Fluctuates in price | Cannot be bought, but can be sold for a random amount of Gold |
 
 
