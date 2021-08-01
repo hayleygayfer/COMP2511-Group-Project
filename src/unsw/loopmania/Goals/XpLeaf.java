@@ -12,6 +12,10 @@ public class XpLeaf implements Goal {
     public void setGoalXp(int goalXp) {
         this.goalXp = goalXp;
     }
+
+    public int getGoalXp() {
+        return goalXp;
+    }
     
      /**
      * Checks if the current xp in game cycle is greater than the goal xp
