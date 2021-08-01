@@ -18,4 +18,9 @@ public class ReversePathPotion extends UsableItem {
     public void affect(Character character) {
         character.switchDirection();
     }
+
+    @Override
+    public String toString() {
+        return "Reverse Path Potion";
+    }
 }

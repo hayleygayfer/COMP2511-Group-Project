@@ -58,4 +58,8 @@ public class Shield extends EquippableItem implements ShopItem {
         return new SimpleStringProperty("Shield");
     }
 
+    @Override
+    public String toString() {
+        return "Shield";
+    }
 }

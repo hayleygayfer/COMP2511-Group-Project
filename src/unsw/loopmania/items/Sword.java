@@ -35,4 +35,9 @@ public class Sword extends EquippableItem {
     public void affect(Character character) {
         character.setDamage(character.getDamage() + damage);
     }
+
+    @Override
+    public String toString() {
+        return "Sword";
+    }
 }

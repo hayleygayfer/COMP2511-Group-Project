@@ -55,4 +55,9 @@ public class Stake extends EquippableItem implements CustomAttackStrategy {
             enemy.deductHealth(baseDamage);
         }
     }    
+
+    @Override
+    public String toString() {
+        return "Stake";
+    }
 }

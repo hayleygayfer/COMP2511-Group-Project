@@ -18,4 +18,9 @@ public class HealthPotion extends UsableItem {
     public void affect(Character character) {
         character.setCurrentHealth(character.getBaseHealth());
     }
+
+    @Override
+    public String toString() {
+        return "Health Potion";
+    }
 }

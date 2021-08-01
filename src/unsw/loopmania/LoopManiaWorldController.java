@@ -2,6 +2,8 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Stack;
 import java.util.HashMap;
 
 
@@ -15,6 +17,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
@@ -28,6 +31,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ProgressBar;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -46,6 +50,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
@@ -714,18 +720,7 @@ public class LoopManiaWorldController {
     }
 
     public Popup loadNPCPopup(NPC npc) {
-
         Popup npcPopup = new Popup();
-
-        /*
-        npcPopup.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, new EventHandler<WindowEvent>() {
-            @Override public void handle(WindowEvent event) {
-                if (itemWon != null) {
-                    onLoad(itemWon);
-                }
-            }
-        });
-        */
 
         VBox popupBox = new VBox(10);
         popupBox.setStyle("-fx-padding: 8;" + 
@@ -762,32 +757,87 @@ public class LoopManiaWorldController {
         popupBox.getChildren().add(chatBox);
 
         HBox slotMachine = new HBox();
+        List<StackPane> slotGrids = new ArrayList<>();
 
+        for (int i = 0; i < 3; i++) {
+            StackPane slot = new StackPane();
+            slotGrids.add(slot);
+            slotMachine.getChildren().add(slot);
+        }
+        
+        slotMachine.setAlignment(Pos.CENTER);
         popupBox.getChildren().add(slotMachine);
 
+        VBox result = new VBox();
+        popupBox.getChildren().add(result);
+
         HBox actionsRow = new HBox();
+        actionsRow.setAlignment(Pos.CENTER);
         Button yesGamble = new Button("Yes! (1 gold)");
         Button noThanks = new Button("No thanks");
 
         yesGamble.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
+                actionsRow.getChildren().remove(noThanks);
+                actionsRow.getChildren().remove(yesGamble);
+
+                if (world.getCharacter().getGold() < 1) {
+                    Label msg = new Label("Not enough gold :(");
+                    msg.setWrapText(true);
+                    msg.maxWidth(200);
+                    msg.setStyle("-fx-font-family: 'Avenir Next'"); 
+                    msg.setAlignment(Pos.CENTER);
+                    popupBox.getChildren().add(msg);
+                    return;
+                }
+
                 // trigger gambling
                 Item itemWon = world.gambleWithNPC(world.getCharacter(), npc);
 
-                Label winLoseMsg;
-                if (itemWon == null) {
-                    winLoseMsg = new Label("You did not win anything :( Better luck next time.");
-                } else {
-                    winLoseMsg = new Label("You won a " + itemWon.toString());
-                    onLoad(itemWon);
-                }
-                winLoseMsg.setWrapText(true);
-                winLoseMsg.maxWidth(200);
-                winLoseMsg.setStyle("-fx-font-family: 'Avenir Next'");
-                slotMachine.getChildren().add(winLoseMsg);
+                Timeline slot1 = createItemCycle(slotGrids.get(0), 30);
+                Timeline slot2 = createItemCycle(slotGrids.get(1), 40);
+                Timeline slot3 = createItemCycle(slotGrids.get(2), 50);
 
-                actionsRow.getChildren().remove(noThanks);
-                actionsRow.getChildren().remove(yesGamble);
+                slot1.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent event) {
+                        if (itemWon != null) {
+                            slotGrids.get(0).getChildren().remove(0);
+                            slotGrids.get(0).getChildren().add(createImageView(itemWon));
+                        }
+                    }
+                });
+
+                slot2.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent event) {
+                        if (itemWon != null) {
+                            slotGrids.get(1).getChildren().remove(0);
+                            slotGrids.get(1).getChildren().add(createImageView(itemWon));
+                        }
+                    }
+                }); 
+
+                slot3.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent event) {
+                        Label winLoseMsg;
+                        if (itemWon != null) {
+                            slotGrids.get(2).getChildren().remove(0);
+                            slotGrids.get(2).getChildren().add(createImageView(itemWon));
+                            winLoseMsg = new Label("You won a " + itemWon.toString());
+                            onLoad(itemWon); 
+                        } else {
+                            winLoseMsg = new Label("You did not win anything :( Better luck next time."); 
+                        }
+                        winLoseMsg.setWrapText(true);
+                        winLoseMsg.maxWidth(200);
+                        winLoseMsg.setStyle("-fx-font-family: 'Avenir Next'");
+                        winLoseMsg.setAlignment(Pos.CENTER);
+                        popupBox.getChildren().add(winLoseMsg);
+                    }
+                });
+        
+                slot1.play();
+                slot2.play();
+                slot3.play();
             }
         }); 
         yesGamble.setStyle("-fx-font-family: 'Avenir Book'");
@@ -812,6 +862,26 @@ public class LoopManiaWorldController {
 
 
         return npcPopup;
+    }
+
+    private Timeline createItemCycle(Pane grid, int cycleCount) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
+            Image newItem = getRandomItemImage();
+            if (grid.getChildren().size() > 0) {
+                grid.getChildren().remove(0);
+            }
+            grid.getChildren().add(new ImageView(newItem));
+        }));
+        timeline.setCycleCount(cycleCount);
+        return timeline;
+    }
+
+    private Image getRandomItemImage() {
+        Random random = new Random();
+        List<Class<?>> itemKeys = new ArrayList<>(imageMap.keySet());
+        itemKeys.removeIf(k -> !Item.class.isAssignableFrom(k));
+
+        return imageMap.get(itemKeys.get(random.nextInt(itemKeys.size())));
     }
 
     public Popup loadPopupInfo(Item item) {

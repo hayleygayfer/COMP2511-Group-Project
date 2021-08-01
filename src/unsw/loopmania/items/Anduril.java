@@ -44,5 +44,9 @@ public class Anduril extends EquippableItem implements RareItem, CustomAttackStr
         character.setDamage(character.getDamage() + damage);
     }
 
+    @Override
+    public String toString() {
+        return "Anduril";
+    }
 }
 

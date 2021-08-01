@@ -63,4 +63,8 @@ public class Armour extends EquippableItem implements ShopItem {
         return new SimpleStringProperty("Armour");
     }
     
+    @Override
+    public String toString() {
+        return "Armour";
+    }
 }

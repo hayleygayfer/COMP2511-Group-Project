@@ -63,4 +63,9 @@ public class Staff extends EquippableItem implements CustomAttackStrategy {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Staff";
+    }
 }

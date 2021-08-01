@@ -52,4 +52,8 @@ public class Helmet extends EquippableItem implements ShopItem {
         return new SimpleStringProperty("Helmet");
     }
 
+    @Override
+    public String toString() {
+        return "Helmet";
+    }
 }
