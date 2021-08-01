@@ -13,7 +13,7 @@ public class AlliedSoldier extends MovingEntity implements CharacterPositionObse
 
     public AlliedSoldier(Character character, boolean isTranced) {
         super(new PathPosition(character.getPositionInPath() - 1, character.getOrderedPath()));
-        health = new SimpleIntegerProperty(1);
+        health = new SimpleIntegerProperty(10);
         baseDamage = new SimpleIntegerProperty(1);
         this.character = character;
         this.tranced = isTranced;
