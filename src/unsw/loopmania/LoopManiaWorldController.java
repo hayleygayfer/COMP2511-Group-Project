@@ -284,6 +284,11 @@ public class LoopManiaWorldController {
     @FXML
     MediaPlayer healthIncreasePlayer;
 
+    @FXML
+    MediaPlayer gameOverPlayer;
+
+    SimpleIntegerProperty oldGoldCount;
+
 
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
@@ -446,6 +451,9 @@ public class LoopManiaWorldController {
 
         Media healthIncrease = new Media(new File("src/sounds/healthIncrease.wav").toURI().toString());
         healthIncreasePlayer = new MediaPlayer(healthIncrease);
+
+        Media gameOverSound = new Media(new File("src/sounds/gameOver.wav").toURI().toString());
+        gameOverPlayer = new MediaPlayer(gameOverSound);
 
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
@@ -673,6 +681,7 @@ public class LoopManiaWorldController {
      */
     public void terminate() {
         gameOver.setVisible(true);
+        gameOverPlayer.play();
         gameMap.setVisible(false);
         battle.setVisible(false);
         endGame();
