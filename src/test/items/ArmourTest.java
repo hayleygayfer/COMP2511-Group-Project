@@ -18,7 +18,6 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.ShopItem;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.generateItems.ArmourGenerateItem;
@@ -62,7 +61,6 @@ public class ArmourTest {
 
         assertTrue(armour instanceof Armour);
         assertTrue(armour instanceof EquippableItem);
-        assertTrue(armour instanceof ShopItem);
         assertTrue(armour instanceof Item);
         assertTrue(armour instanceof StaticEntity);
         assertTrue(armour instanceof Entity);
@@ -86,14 +84,14 @@ public class ArmourTest {
     public void testPrice() {
         Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
 
-        assertEquals(5, armour.getPrice().get());
+        assertEquals(5, armour.getItemDetails().price().get());
     }
 
     @Test
     public void testDescription() {
         Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
 
-        assertEquals("Armour", armour.getDescription().get());
+        assertEquals("Armour", armour.getItemDetails().description().get());
     }
 
     @Test

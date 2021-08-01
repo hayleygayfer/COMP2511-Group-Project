@@ -19,7 +19,6 @@ import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.ShopItem;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.generateItems.ShieldGenerateItem;
@@ -65,7 +64,6 @@ public class ShieldTest {
         assertTrue(shield instanceof Shield);
         assertTrue(shield instanceof EquippableItem);
         assertTrue(shield instanceof Item);
-        assertTrue(shield instanceof ShopItem);
         assertTrue(shield instanceof StaticEntity);
         assertTrue(shield instanceof Entity);
     }
@@ -88,14 +86,14 @@ public class ShieldTest {
     public void testPrice() {
         Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
 
-        assertEquals(5, shield.getPrice().get());
+        assertEquals(5, shield.getItemDetails().price().get());
     }
 
     @Test
     public void testDescription() {
         Shield shield = new Shield(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
 
-        assertEquals("Shield", shield.getDescription().get());
+        assertEquals("Shield", shield.getItemDetails().description().get());
     }
 
     @Test
