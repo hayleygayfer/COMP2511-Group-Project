@@ -1,5 +1,9 @@
 package unsw.loopmania;
 
+import java.util.List;
+
+import org.javatuples.Pair;
+
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
@@ -73,6 +77,22 @@ public abstract class MovingEntity extends Entity {
      */
     public PathPosition getPosition() { 
         return this.position;
+    }
+
+    /**
+     * Gets the ordered path
+     * @return ordered path
+     */
+    public List<Pair<Integer, Integer>> getOrderedPath() { 
+        return this.position.getOrderedPath();
+    }
+
+    /**
+     * Gets position in the ordered path
+     * @return int
+     */
+    public int getPositionInPath() { 
+        return this.position.getPositionInPath();
     }
 
 }

@@ -389,4 +389,12 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         else direction = 1;
     }
 
+    /**
+     * Gets direction
+     * @return direction int
+     */
+    public int getDirection() {
+        return this.direction;
+    }
+
 }

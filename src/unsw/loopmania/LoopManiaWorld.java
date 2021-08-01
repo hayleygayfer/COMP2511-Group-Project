@@ -1,8 +1,11 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.javatuples.Pair;
 
@@ -69,6 +72,8 @@ public class LoopManiaWorld implements CharacterPositionObserver {
     private List<Building> buildingEntities;
 
     private List<BattleBehaviourContext> defeatedBosses;
+
+    private Set<AlliedSoldier> alliedSoldiers = new HashSet<AlliedSoldier>();
 
 
     /**
@@ -363,6 +368,9 @@ public class LoopManiaWorld implements CharacterPositionObserver {
 
         for (int i = 0; i < itemDrops.size(); i++) {
             Pair<Integer, Integer> coords = getFirstAvailableSlotForItem();
+            if (coords == null) {
+                return null;
+            }
             int x = coords.getValue0() + i;
             int y = coords.getValue1();
             if (x > 3) {
@@ -819,4 +827,22 @@ public class LoopManiaWorld implements CharacterPositionObserver {
         gameCycle.set(0);
     }
 
+    /**
+     * Updates Allied Soldiers
+     * @returns a new allied soldier
+     */
+    public AlliedSoldier getAlliedSoldiers() {
+        // Gets new allied soldiers
+        Set<AlliedSoldier> currentAlliedSoldiers = new HashSet<AlliedSoldier>();
+        currentAlliedSoldiers.addAll(character.getAlliedSoldiers());
+
+        // Remove dead allied soldiers and add new ones
+        alliedSoldiers.retainAll(currentAlliedSoldiers);
+        currentAlliedSoldiers.removeAll(alliedSoldiers);
+        if (alliedSoldiers.size() == 0 && currentAlliedSoldiers.size() > 0) {
+            Iterator<AlliedSoldier> alliedSoldierIterator = currentAlliedSoldiers.iterator();
+            return alliedSoldierIterator.next();
+        }
+        return null;
+    }
 }
