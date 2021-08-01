@@ -3,17 +3,12 @@ package unsw.loopmania.generateItems;
 import unsw.loopmania.Item;
 import unsw.loopmania.ItemType;
 import unsw.loopmania.GenerateItem;
-import unsw.loopmania.RareItem;
 import unsw.loopmania.items.DoggieCoin;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
-
-import org.junit.jupiter.api.DisplayNameGenerator.Simple;
 
 import java.util.Random;
 

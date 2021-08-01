@@ -33,13 +33,6 @@ public class DoggieCoinGenerateItemTest {
     }
 
     @Test
-    public void testPrice() {
-        DoggieCoinGenerateItem generateItem = new DoggieCoinGenerateItem(); 
-
-        assertEquals(50, generateItem.price().get());
-    }
-
-    @Test
     public void testType() {
         DoggieCoinGenerateItem generateItem = new DoggieCoinGenerateItem();
 

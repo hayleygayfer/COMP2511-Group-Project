@@ -74,27 +74,6 @@ public class ArmourTest {
     }
 
     @Test
-    public void testSellPrice() {
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
-
-        assertEquals(20, armour.getSellPrice().get());
-    }
-
-    @Test
-    public void testPrice() {
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
-
-        assertEquals(5, armour.getItemDetails().price().get());
-    }
-
-    @Test
-    public void testDescription() {
-        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
-
-        assertEquals("Armour", armour.getItemDetails().description().get());
-    }
-
-    @Test
     public void testIsEquippable() {
         Character character = createCharacter();
         Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
