@@ -43,7 +43,7 @@
 ### Enemy Item Drops as percentage chance
 | Type | Anduril | Armour | DoggieCoin | HealthPotion | Helmet | ReversePathPotion | Shield | Staff | Stake | Sword | TheOneRing | TreeStump |
 |------|---------|--------|------------|--------------|--------|-------------------|--------|-------|-------|-------|------------|----------|
-
+| Zombie | 0.05 | 0 | 0 | 0.2 | 0 | 0.02 | 0 | 0.5 | 0 | 0 | 0.05 | 0.05 |
 
 
 
