@@ -1,9 +1,9 @@
 package unsw.loopmania;
-
+import java.lang.Math;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class AlliedSoldier {
+public class AlliedSoldier extends MovingEntity implements CharacterPositionObserver {
     // TODO: write allied solder
     private SimpleIntegerProperty health;
     private SimpleIntegerProperty baseDamage;
@@ -12,10 +12,12 @@ public class AlliedSoldier {
 
 
     public AlliedSoldier(Character character, boolean isTranced) {
-        health = new SimpleIntegerProperty(10);
+        super(new PathPosition(character.getPositionInPath() - 1, character.getOrderedPath()));
+        health = new SimpleIntegerProperty(1);
         baseDamage = new SimpleIntegerProperty(1);
         this.character = character;
         this.tranced = isTranced;
+        character.attach(this);
     }
 
     /**
@@ -35,6 +37,7 @@ public class AlliedSoldier {
         this.health.set((int) (getHealth() - damage));
         if (!isAlive()) {
             character.loseSoldier(this);
+            destroy();
         }
     }
 
@@ -68,5 +71,19 @@ public class AlliedSoldier {
      */
     public boolean isTranced() {
         return tranced;
+    }
+
+    @Override
+    public void encounter(Character character) {
+        while (Math.abs(getPositionInPath() - character.getPositionInPath()) > 1) {
+            switch (character.getDirection()) {
+                case 0:
+                    moveDownPath();
+                break;
+                case 1:
+                    moveUpPath();
+                break;
+            }
+        }
     }
 }

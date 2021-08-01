@@ -616,6 +616,10 @@ public class LoopManiaWorldController {
             for (Gold gold: newGold) {
                 onLoad(gold);
             }
+            AlliedSoldier newSoldier = world.getAlliedSoldiers();
+            if (newSoldier != null) {
+                onLoad(newSoldier);
+            }
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -935,6 +939,17 @@ public class LoopManiaWorldController {
     }
 
     /**
+     * load an allied soldier into the GUI
+     * @param alliedsoldier to load into the GUI
+     */
+    private void onLoad(AlliedSoldier alliedSoldier) {
+        // Determine which image to load in.
+        ImageView view = createImageView(alliedSoldier);
+        addEntity(alliedSoldier, view);
+        squares.getChildren().add(view);
+    }
+
+    /**
      * load a building into the GUI
      * @param building the building to load to GUI
      */
@@ -1055,6 +1070,7 @@ public class LoopManiaWorldController {
         imageMap.put(Character.class, new Image((new File("src/images/human_new.png")).toURI().toString()));
         imageMap.put(Gold.class, new Image((new File("src/images/gold_pile.png")).toURI().toString()));
         imageMap.put(PathTile.class, new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString()));
+        imageMap.put(AlliedSoldier.class, new Image((new File("src/images/deep_elf_master_archer.png")).toURI().toString()));
 
         //imageMap.put(, new Image((new File("src/images/empty_slot.png")).toURI().toString()));
 
