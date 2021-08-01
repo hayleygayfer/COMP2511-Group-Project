@@ -1,5 +1,4 @@
 
-
 Extension features:
 
 - Music/Sound effects
@@ -12,3 +11,9 @@ Extension features:
     - Sound effect for health increased - health potion
     - Sound effect for game over 
 
+- Battle Animations
+    - Enemies will visibloy move forward and back to simulate a battle.
+    - Bosses will appear alongside other supporting enemies.
+
+- Allied Soldier
+    - When a character has an allied soldier, the allies soldier will follow the character around on the path.
