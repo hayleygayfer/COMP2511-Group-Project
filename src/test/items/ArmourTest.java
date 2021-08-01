@@ -14,10 +14,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.items.Armour;
 import unsw.loopmania.Character;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.enemies.Slug;
+import unsw.loopmania.generateItems.ArmourGenerateItem;
 import unsw.loopmania.Entity;
 
 public class ArmourTest {
@@ -61,6 +64,13 @@ public class ArmourTest {
         assertTrue(armour instanceof Item);
         assertTrue(armour instanceof StaticEntity);
         assertTrue(armour instanceof Entity);
+    }
+
+    @Test
+    public void testType() {
+        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        assertEquals(ItemType.ARMOUR, armour.getType());
     }
 
     @Test
@@ -108,5 +118,13 @@ public class ArmourTest {
         armour.affect(slug);
 
         assertEquals(initialDamage / 2, slug.getDamage());
+    }
+
+    @Test
+    public void testGetItemDetails() {
+        Armour armour = new Armour(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        GenerateItem generateItem = armour.getItemDetails();
+
+        assertTrue(generateItem instanceof ArmourGenerateItem);
     }
 }

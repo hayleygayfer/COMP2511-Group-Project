@@ -20,15 +20,12 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
     private SimpleIntegerProperty supportRadius = new SimpleIntegerProperty();
 
     private List<EnemyPositionObserver> observers = new ArrayList<EnemyPositionObserver>();
-    private List<Pair<GenerateItem, Double>> dropItemChances;
-    private List<Pair<GenerateCard, Double>> dropCardChances;
+    private List<Pair<GenerateItem, Double>> dropItemChances = new ArrayList<>();
+    private List<Pair<GenerateCard, Double>> dropCardChances = new ArrayList<>();
 
     private SimpleIntegerProperty experienceGained = new SimpleIntegerProperty();
     private SimpleIntegerProperty maxGoldGained = new SimpleIntegerProperty();
     private Random chance = new Random(System.currentTimeMillis());
-
-    // Abstract methods
-    public abstract Image render();
 
     public BasicEnemy(PathPosition position) {
         super(position);
@@ -37,8 +34,8 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
     /**
      * Move the enemy in random direction
      */
-    public void move() {
-        // this basic enemy moves in a random direction... 25% chance up or down, 50% chance not at all...
+    public void move(int tick) {
+        // this basic enemy moves in a random direction... 25% chance up or down
         int directionChoice = (new Random()).nextInt(2);
         if (directionChoice == 0){
             moveUpPath();
@@ -221,7 +218,11 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
      * @pre character != null
      */
     public void attack(Character character) {
-        character.setModifiedHealth(character.getModifiedHealth() - getDamage());
+        character.setCurrentHealth(character.getCurrentHealth() - getDamage());
+        List<AlliedSoldier> alliedSoldiers = character.getAlliedSoldiers();
+        for (int i = character.getNumOfAlliedSoldiers() - 1; i >= 0; i--) {
+            alliedSoldiers.get(i).loseHealth(getDamage());
+        }
     }
 
     /**
@@ -238,12 +239,18 @@ public abstract class BasicEnemy extends MovingEntity implements EnemyPositionSu
      */
     public List<GenerateCard> getCardDrops() {
         List<GenerateCard> droppedCards = new ArrayList<GenerateCard>();
+        int drops = 0;
 
         // For each possible drop generate a random number to see if it actually drops
         for (int i = 0; i < dropCardChances.size(); i++) {
             Double percentChance = chance.nextDouble();
             if (percentChance <= dropCardChances.get(i).getValue1()) {
                 droppedCards.add(dropCardChances.get(i).getValue0());
+                drops += 1;
+            }
+            // maximum 2 drops
+            if (drops >= 2) {
+                break;
             }
         }
         

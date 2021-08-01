@@ -1,16 +1,23 @@
 package unsw.loopmania;
-
+import java.lang.Math;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class AlliedSoldier {
+public class AlliedSoldier extends MovingEntity implements CharacterPositionObserver {
     // TODO: write allied solder
     private SimpleIntegerProperty health;
     private SimpleIntegerProperty baseDamage;
-    private SimpleIntegerProperty baseDefence;
+    private Character character;
+    private boolean tranced;
 
-    public AlliedSoldier() {
 
+    public AlliedSoldier(Character character, boolean isTranced) {
+        super(new PathPosition(character.getPositionInPath() - 1, character.getOrderedPath()));
+        health = new SimpleIntegerProperty(10);
+        baseDamage = new SimpleIntegerProperty(1);
+        this.character = character;
+        this.tranced = isTranced;
+        character.attach(this);
     }
 
     /**
@@ -27,7 +34,11 @@ public class AlliedSoldier {
      * @param damage
      */
     public void loseHealth(double damage) {
-        this.health.subtract(damage);
+        this.health.set((int) (getHealth() - damage));
+        if (!isAlive()) {
+            character.loseSoldier(this);
+            destroy();
+        }
     }
 
     /**
@@ -47,10 +58,32 @@ public class AlliedSoldier {
     }
 
     /**
-     * Base defence getter
-     * @return int 
+     * Attacks enemy
+     * @param enemy
      */
-    public int getBaseDefence() {
-        return baseDefence.get();
+    public void attack(BasicEnemy enemy) {
+        enemy.deductHealth(getDamage());
+    }
+
+    /**
+     * Returns whether or not the allied soldier is tranced (and therefore dies at the end of a battle).
+     * @return
+     */
+    public boolean isTranced() {
+        return tranced;
+    }
+
+    @Override
+    public void encounter(Character character) {
+        while (Math.abs(getPositionInPath() - character.getPositionInPath()) > 1) {
+            switch (character.getDirection()) {
+                case 0:
+                    moveDownPath();
+                break;
+                case 1:
+                    moveUpPath();
+                break;
+            }
+        }
     }
 }

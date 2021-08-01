@@ -40,7 +40,7 @@ public class GoldTest {
             }
         }
 
-        assertTrue(spawns > 90 && spawns < 110);
+        assertTrue(spawns > 85 && spawns < 115);
     }
 
     @Test

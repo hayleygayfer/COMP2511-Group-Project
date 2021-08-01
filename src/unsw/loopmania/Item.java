@@ -1,32 +1,27 @@
 package unsw.loopmania;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class Item extends StaticEntity {
     private SimpleIntegerProperty sellPrice;
+    private ItemType type;
 
     public Item(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         this.sellPrice = new SimpleIntegerProperty(1);
+        this.type = ItemType.NOT_EQUIPPABLE;
     }
 
-    /**
-     * TODO: change to make generic for all item types
-     * Creates a new image of a sword for rendering 
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/basic_sword.png")).toURI().toString());
+    public ItemType getType() {
+        return type;
     }
 
-    /**
-     * Applies the effect of the specific item on the characters stats
-     * @param character Current character
-     */
-    public void applyEffect(Character character) {
+    public void setType(ItemType type) {
+        this.type = type;
+    }
 
+    public GenerateItem getItemDetails() {
+        return null;
     }
 
     /**

@@ -15,8 +15,11 @@ import unsw.loopmania.items.Sword;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
+import unsw.loopmania.generateItems.SwordGenerateItem;
 import unsw.loopmania.Entity;
 
 public class SwordTest {
@@ -63,6 +66,20 @@ public class SwordTest {
     }
 
     @Test
+    public void testType() {
+        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        
+        assertEquals(ItemType.WEAPON, sword.getType());
+    }
+
+    @Test
+    public void testSellPrice() {
+        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+
+        assertEquals(10, sword.getSellPrice().get());
+    }
+
+    @Test
     public void testIsEquippable() {
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Character character = createCharacter();
@@ -102,11 +119,18 @@ public class SwordTest {
         Character character = createCharacter();
         Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
-        int initialDamage = character.getModifiedDamage();
+        int initialDamage = character.getDamage();
 
         sword.affect(character);
 
-        assertEquals(initialDamage + 10, character.getModifiedDamage());
+        assertEquals(initialDamage + 10, character.getDamage());
     }
 
+    @Test
+    public void testGetItemDetails() {
+        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        GenerateItem generateItem = sword.getItemDetails();
+
+        assertTrue(generateItem instanceof SwordGenerateItem);
+    }
 }

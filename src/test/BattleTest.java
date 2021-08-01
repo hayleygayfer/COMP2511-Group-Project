@@ -14,21 +14,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
+import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.Frame;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
-import org.javatuples.Triplet;
 
 
 public class BattleTest {
     private SimpleIntegerProperty x = new SimpleIntegerProperty(0);
     private SimpleIntegerProperty y = new SimpleIntegerProperty(0);
     List<Pair<Integer, Integer>> path = TestHelper.createPath();
+    private List<CharacterEffect> buildings = new ArrayList<>();
 
     @Test
     public void testOneSlugNoItems() {
@@ -40,7 +42,7 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings, null);
 
         newBattle.runBattle();
         assert(newBattle.wonBattle());
@@ -60,9 +62,9 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings, null);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Frame> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 2);
 
@@ -76,17 +78,17 @@ public class BattleTest {
 
         BasicEnemy slug = new Slug(newPosition);
 
-        character.setModifiedHealth(4);
+        character.setCurrentHealth(4);
 
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings, null);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Frame> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 5);
-        assertFalse(newBattle.wonBattle());
+        assertTrue(newBattle.wonBattle());
     }
 
     @Test
@@ -103,11 +105,11 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings, null);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Frame> frames = newBattle.runBattle();
 
-        assertEquals(frames.size(), 2);
+        assertEquals(frames.size(), 3);
         assertTrue(newBattle.wonBattle());
     }
 
@@ -121,9 +123,9 @@ public class BattleTest {
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings, null);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Frame> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 16);
         assertTrue(newBattle.wonBattle());
@@ -136,14 +138,14 @@ public class BattleTest {
 
         BasicEnemy vampire = new Vampire(newPosition);
 
-        character.setModifiedHealth(20);
+        character.setCurrentHealth(20);
 
         List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
         enemies.add(vampire);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings, null);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Frame> frames = newBattle.runBattle();
 
         assertEquals(frames.size(), 8);
         assertFalse(newBattle.wonBattle());
@@ -161,11 +163,11 @@ public class BattleTest {
         enemies.add(vampire);
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        Battle newBattle = new Battle(character, enemies, buildings, null);
 
-        List<Triplet<Integer, Integer, BasicEnemy>> frames = newBattle.runBattle();
+        List<Frame> frames = newBattle.runBattle();
 
-        assertEquals(frames.size(), 21);
-        assertFalse(newBattle.wonBattle());
+        assertEquals(frames.size(), 20);
+        assertTrue(newBattle.wonBattle());
     }
 }

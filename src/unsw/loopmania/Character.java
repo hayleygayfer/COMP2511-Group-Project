@@ -1,10 +1,10 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
-import java.io.File;
+import javafx.beans.binding.BooleanBinding;
 import org.javatuples.Pair;
 
 /**
@@ -15,18 +15,23 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     private List<Item> inventory;
     private List<EquippableItem> equippedItems;
 
+    // this is for keeping track in different game modes
+    private List<GenerateItem> purchasedItems;
+
     // Position Observers
     private List<CharacterPositionObserver> observers = new ArrayList<CharacterPositionObserver>();
 
     // Base & Battle Damage & Health
-    private SimpleIntegerProperty baseDamage;
+    private SimpleIntegerProperty damage;
     private SimpleIntegerProperty baseHealth;
     private SimpleIntegerProperty currentHealth;
-    private SimpleIntegerProperty modifiedHealth;
-    private SimpleIntegerProperty modifiedDamage;
+
+    // if the character is moving down direction = 0
+    // if the character is moving up direction = 1
+    private int direction;
 
     // Initial position
-    private Pair<Integer, Integer> initialPosition;
+    private PathPosition initialPosition;
     // gold
     private SimpleIntegerProperty gold;
     // XP
@@ -38,27 +43,19 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
 
     public Character(PathPosition position) {
         super(position);
-        this.initialPosition = new Pair<Integer, Integer>(position.getX().getValue(), position.getY().getValue());
+
+        this.initialPosition = new PathPosition(position.getPositionInPath(), position.getOrderedPath());
         this.gold = new SimpleIntegerProperty(0);
         this.xp = new SimpleIntegerProperty(0);
         this.baseHealth = new SimpleIntegerProperty(50);
         this.inventory = new ArrayList<Item>();
         this.equippedItems = new ArrayList<EquippableItem>();
         this.alliedSoldiers = new ArrayList<AlliedSoldier>();
-        this.modifiedHealth = new SimpleIntegerProperty(50);
         this.currentHealth = new SimpleIntegerProperty(50);
-        this.baseDamage = new SimpleIntegerProperty(1);
-        this.modifiedDamage = new SimpleIntegerProperty(1);
+        this.damage = new SimpleIntegerProperty(1);
         this.inventory = new ArrayList<Item>();
-        this.equippedItems = new ArrayList<EquippableItem>();
-    }
-
-    /**
-     * Creates a new image of a human character
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/human_new.png")).toURI().toString());
+        this.purchasedItems = new ArrayList<GenerateItem>();
+        this.direction = 0;
     }
 
     /**
@@ -67,15 +64,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public SimpleIntegerProperty getXpProperty() {
         return xp;
-    }
-
-
-    /**
-     * Modified Health Getter (After Shields + Armour)
-     * @return baseHealth int
-     */
-    public int getModifiedHealth() {
-        return modifiedHealth.get();
     }
 
     /**
@@ -103,6 +91,22 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
         return currentHealth.get();
     }
 
+    public BooleanBinding canPurchase(GenerateItem item) {
+        return this.getGoldProperty().lessThan(item.price());
+    }
+
+    public void addPurchase(GenerateItem item) {
+        purchasedItems.add(item);
+    }
+
+    public List<GenerateItem> getPurchased() {
+        return purchasedItems;
+    }
+
+    public void resetPurchases() {
+        purchasedItems.clear();
+    }
+
     /**
      * Base Health Property Getter
      * @return SimpleIntegerProperty
@@ -124,7 +128,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @return boolean
      */
     public boolean isAlive() {
-        return getModifiedHealth() > 0;
+        return getCurrentHealth() > 0;
     }
 
     /**
@@ -136,14 +140,6 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Battle Health Setter
-     * @param damage
-     */
-    public void setModifiedHealth(int health) {
-        modifiedHealth.set(health);
-    }
-
-    /**
      * Current Health Setter
      * @param damage
      */
@@ -152,40 +148,19 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
-     * Resets health after a battle
-     */
-    public void resetHealth() {
-        if (getModifiedHealth() < getCurrentHealth()) {
-            setCurrentHealth(getModifiedHealth());
-        } else {
-            setModifiedHealth(getCurrentHealth());
-        }
-        setModifiedDamage(getBaseDamage());
-    }
-
-    /**
      * Base Damage Getter
      * @return int 
      */
-    public int getBaseDamage() {
-        return baseDamage.get();
+    public int getDamage() {
+        return damage.get();
     }
 
     /**
-     * Battle Damage Getter
-     * @param damage
-     * @return int 
+     * Base Damage Setter
+     * @param damage int 
      */
-    public int getModifiedDamage() {
-        return modifiedDamage.get();
-    }
-
-    /**
-     * Battle Damage Setter
-     * @param damage
-     */
-    public void setModifiedDamage(int damage) {
-        modifiedDamage.set(damage);
+    public void setDamage(int damage) {
+        this.damage.set(damage);
     }
 
     /**
@@ -280,7 +255,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @return boolean indicating whether or not the character is at the castle.
      */
     public boolean isAtHerosCastle() {
-        return (getPosition().getPositionPair().equals(initialPosition));
+        return (getPosition().getPositionPair().equals(initialPosition.getPositionPair()));
     }
     
     /**
@@ -314,7 +289,7 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     public void addGold(int amount) {
         this.gold.set(this.gold.get() + amount);
     }
-
+ 
     /**
      * Adds an allied soldiier to the character
      * @param newSoldier
@@ -322,6 +297,15 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      */
     public void addSoldier(AlliedSoldier newSoldier) {
         alliedSoldiers.add(newSoldier);
+    }
+
+    /**
+     * Removes an ally soldier due to death / vampire attack
+     * @param solider
+     * @pre newSoldier != NULL and is in the list
+     */
+    public void loseSoldier(AlliedSoldier soldier) {
+        alliedSoldiers.remove(soldier);
     }
 
     /**
@@ -333,6 +317,22 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
     }
 
     /**
+     * Allied soldier list getter
+     * @return List<AlliedSoldier> 
+     */
+    public void cleanAlliedSoldiers() {
+        alliedSoldiers.removeIf(alliedSoldier -> alliedSoldier.isTranced());
+    }
+
+    /**
+     * Allied soldier list size getter
+     * @return integer
+     */
+    public int getNumOfAlliedSoldiers() {
+        return alliedSoldiers.size();
+    }
+
+    /**
      * Attacks an enemy 
      * Goes through and equips item 
      * Applys custom attacks if nesissary
@@ -340,13 +340,61 @@ public class Character extends MovingEntity implements CharacterPositionSubject 
      * @param enemy A current enemy that the character is attacking
      */
     public void attack(BasicEnemy enemy) {
+        for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+            alliedSoldier.attack(enemy);
+        }
         for (EquippableItem item : getEquippedItems()) {
             if (item instanceof CustomAttackStrategy) {
                 CustomAttackStrategy customAttackStrategy = (CustomAttackStrategy) item;
-                customAttackStrategy.attack(enemy);
+                customAttackStrategy.attack(enemy, this);
                 return;
             }
         }
-        enemy.setHealth(enemy.getHealth() - getModifiedDamage());
+        enemy.setHealth(enemy.getHealth() - getDamage());
     }
+
+    /**
+     * Resets character to initial state.
+     * @return void
+     */
+    public void reset() {
+        while (!isAtHerosCastle()) {
+            moveDownPath();
+        }
+        this.gold.set(0);
+        this.xp.set(0);
+        this.baseHealth.set(50);
+        this.inventory = new ArrayList<Item>();
+        this.equippedItems = new ArrayList<EquippableItem>();
+        this.alliedSoldiers = new ArrayList<AlliedSoldier>();
+        this.currentHealth.set(50);
+        this.damage.set(1);
+        this.inventory = new ArrayList<Item>();
+        this.equippedItems = new ArrayList<EquippableItem>();
+    }
+
+    public void moveInDirection() {
+        switch (direction) {
+            case 0:
+                moveDownPath();
+            break;
+            case 1:
+                moveUpPath();
+            break;
+        }
+    }
+
+    public void switchDirection() {
+        if (direction == 1) direction = 0;
+        else direction = 1;
+    }
+
+    /**
+     * Gets direction
+     * @return direction int
+     */
+    public int getDirection() {
+        return this.direction;
+    }
+
 }

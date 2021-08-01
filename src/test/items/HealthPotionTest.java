@@ -15,9 +15,11 @@ import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.UsableItem;
+import unsw.loopmania.generateItems.HealthPotionGenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
+import unsw.loopmania.GenerateItem;
 
 public class HealthPotionTest {
     /**
@@ -74,7 +76,7 @@ public class HealthPotionTest {
         assertEquals(10, character.getCurrentHealth()); 
 
          // character goes back up to 50 health points
-         potion.applyEffect(character);
+         potion.affect(character);
 
         assertEquals(50, character.getCurrentHealth()); 
     }
@@ -87,7 +89,7 @@ public class HealthPotionTest {
         assertEquals(50, character.getCurrentHealth());
 
         // drinking potion at full health means character stays at full health
-        potion.applyEffect(character);
+        potion.affect(character);
 
         assertEquals(50, character.getCurrentHealth());
     }

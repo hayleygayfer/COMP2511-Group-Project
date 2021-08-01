@@ -3,6 +3,8 @@ package test.items;
 import org.junit.jupiter.api.Test;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import test.TestHelper;
+
 import java.util.List;
 import java.util.ArrayList;
 import org.javatuples.Pair;
@@ -15,12 +17,15 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
+import unsw.loopmania.ItemType;
 import unsw.loopmania.StaticEntity;
 import unsw.loopmania.Entity;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
+import unsw.loopmania.generateItems.StakeGenerateItem;
 
 public class StakeTest {
     /**
@@ -66,6 +71,20 @@ public class StakeTest {
     }
 
     @Test
+    public void testType() {
+        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+
+        assertEquals(ItemType.WEAPON, stake.getType());
+    }
+
+    @Test
+    public void testSellPrice() {
+        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));  
+
+        assertEquals(15, stake.getSellPrice().get());
+    }
+
+    @Test
     public void testIsEquippable() {
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
         Character character = createCharacter();
@@ -101,32 +120,52 @@ public class StakeTest {
 
     @Test
     public void testAttackRegularEnemy() {
-        // damage on slugs and zombies is 6
+        // damage on slugs and zombies is 5
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        Character character = createCharacter();
 
         Slug slug = new Slug(new PathPosition(0, createPath()));
         Zombie zombie = new Zombie(new PathPosition(0, createPath()));
 
         int initialSlugHealth = slug.getHealth();
-        int initialZombieHealth = slug.getHealth();
+        int initialZombieHealth = zombie.getHealth();
 
-        stake.attack(slug);
-        stake.attack(zombie);
+        stake.attack(slug, character);
+        stake.attack(zombie, character);
 
-        assertEquals(initialSlugHealth - 1, slug.getHealth());
-        assertEquals(initialZombieHealth - 1, zombie.getHealth());
+        assertEquals(initialSlugHealth - 5, slug.getHealth());
+        assertEquals(initialZombieHealth - 5, zombie.getHealth());
     }
 
     @Test
     public void testAttackVampire() {
-        // 20 points damage on vampires
+        // 10 points damage on vampires
         Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
         Vampire vampire = new Vampire(new PathPosition(0, createPath()));
+        Character character = createCharacter();
 
         int initialVampireHealth = vampire.getHealth();
 
-        stake.attack(vampire);
+        stake.attack(vampire, character);
+        System.err.println(vampire.getHealth());
+        assertEquals(initialVampireHealth - 10, vampire.getHealth());
+    }
 
-        assertEquals(initialVampireHealth - 20, vampire.getHealth());
+    @Test
+    public void testGetModifiedDamage() {
+        // TODO: this test might become redundant
+        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        Zombie zombie = new Zombie(new PathPosition(0, TestHelper.createPath()));
+
+        assertEquals(10, stake.getModifiedDamage(zombie, 5));
+        assertEquals(12, stake.getModifiedDamage(zombie, 7));
+    }
+
+    @Test
+    public void testGetItemDetails() {
+        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        GenerateItem generateItem = stake.getItemDetails();
+
+        assertTrue(generateItem instanceof StakeGenerateItem);
     }
 }

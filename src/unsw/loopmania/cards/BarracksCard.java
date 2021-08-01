@@ -6,8 +6,6 @@ import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.Building;
 import java.util.List;
 import org.javatuples.Pair;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class BarracksCard extends Card {
 
@@ -41,12 +39,4 @@ public class BarracksCard extends Card {
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new BarracksBuilding(x, y);
     }   
-
-    /**
-     * Creates a new image of barracks card
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/barracks_card.png")).toURI().toString());
-    }
 }

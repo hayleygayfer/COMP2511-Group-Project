@@ -14,21 +14,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.Character;
+import unsw.loopmania.CharacterEffect;
 import unsw.loopmania.Gold;
 import unsw.loopmania.HerosCastleMenu;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.BasicEnemy;
 import unsw.loopmania.Battle;
+import unsw.loopmania.Building;
 import unsw.loopmania.Item;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.DoggieCoin;
 import unsw.loopmania.items.Stake;
+import unsw.loopmania.enemies.Doggie;
+import unsw.loopmania.enemies.ElanMuske;
 import unsw.loopmania.enemies.Slug;
 import unsw.loopmania.enemies.Vampire;
 import unsw.loopmania.enemies.Zombie;
 import unsw.loopmania.LoopManiaWorld;
+import unsw.loopmania.NPC;
 import unsw.loopmania.Goals.Goal;
 import unsw.loopmania.Goals.CycleLeaf;
 import unsw.loopmania.Goals.XpLeaf;
+import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.Goals.GoldLeaf;
 import unsw.loopmania.Goals.GoalAND;
 import unsw.loopmania.Entity;
@@ -36,7 +43,9 @@ import unsw.loopmania.Card;
 import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.VillageCard;
+import unsw.loopmania.cards.ZombiePitCard;
 import unsw.loopmania.cards.TowerCard;
+import unsw.loopmania.cards.VampireCastleCard;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -128,14 +137,21 @@ public class LoopManiaWorldTest {
     }
 
     @Test
-    public void testSpawnGold() {
+    public void testSpawnGoldFrequency() {
         LoopManiaWorld world = TestHelper.createWorld(path);
-        List<Gold> gold = world.possiblySpawnGold();
-        assertTrue(gold.size() == 0);
-        List<Gold> gold2 = world.possiblySpawnGold();
-        assertTrue(gold2.size() == 0);
-        List<Gold> gold3 = world.possiblySpawnGold();
-        assertTrue(gold3.size() == 0);
+        int goldSpawns = 0;
+
+        for (int i = 0; i < 1000; i++) {
+            List<Gold> spawned = world.possiblySpawnGold();
+            goldSpawns += spawned.size();
+
+            // clean up
+            for (Gold g : spawned) {
+                g.destroy();
+            }
+            world.removeDestroyedEntities();
+        }
+        assertTrue(goldSpawns > 85 && goldSpawns < 115);
     }
 
     @Test
@@ -179,10 +195,6 @@ public class LoopManiaWorldTest {
         List<Item> vampireDrops = world.defeatedEnemyItemDrops(vampire);
         List<Item> zombieDrops = world.defeatedEnemyItemDrops(zombie);
 
-        assertEquals(0, slugDrops.size());
-        assertEquals(1, vampireDrops.size());
-        assertEquals(0, zombieDrops.size());
-
         assertTrue(world.getCharacter().getInventory().containsAll(slugDrops));
         assertTrue(world.getCharacter().getInventory().containsAll(vampireDrops));
         assertTrue(world.getCharacter().getInventory().containsAll(zombieDrops));
@@ -198,15 +210,15 @@ public class LoopManiaWorldTest {
 
         world.getGoldAndXpDrops(slug);
         assertEquals(5, world.getCharacter().getXpProperty().get());
-        assertEquals(1, world.getCharacter().getGold());
+        assertTrue(world.getCharacter().getGold() <= 2);
 
         world.getGoldAndXpDrops(vampire);
         assertEquals(25, world.getCharacter().getXpProperty().get());
-        assertEquals(6, world.getCharacter().getGold());
+        assertTrue(world.getCharacter().getGold() <= 8);
 
         world.getGoldAndXpDrops(zombie);
         assertEquals(35, world.getCharacter().getXpProperty().get());
-        assertEquals(8, world.getCharacter().getGold());
+        assertTrue(world.getCharacter().getGold() <= 4);
     }
 
     @Test 
@@ -217,35 +229,50 @@ public class LoopManiaWorldTest {
         BasicEnemy vampire = new Vampire(newPosition);
         BasicEnemy zombie = new Zombie(newPosition);
 
-        List<Card> slugCards = world.defeatedEnemyCardDrops(slug);
-        List<Card> vampireCards = world.defeatedEnemyCardDrops(vampire);
-        List<Card> zombieCards = world.defeatedEnemyCardDrops(zombie);
+        int slugDropped = 0;
+        int vampireDropped = 0;
+        int zombieDropped = 0;
 
-        assertEquals(0, slugCards.size());
-        assertTrue(vampireCards.get(0) instanceof CampfireCard);
-        assertEquals(0, zombieCards.size());
+        for (int i = 0; i < 100; i++) {
+            List<Card> slugCards = world.defeatedEnemyCardDrops(slug);
+            List<Card> vampireCards = world.defeatedEnemyCardDrops(vampire);
+            List<Card> zombieCards = world.defeatedEnemyCardDrops(zombie);
 
-        List<Card> slugCards2 = world.defeatedEnemyCardDrops(slug);
-        List<Card> vampireCards2 = world.defeatedEnemyCardDrops(vampire);
-        List<Card> zombieCards2 = world.defeatedEnemyCardDrops(zombie);
+            slugDropped += slugCards.size();
+            vampireDropped += vampireCards.size();
+            zombieDropped += zombieCards.size();
+    
+            for (Card c : vampireCards) {
+                assertFalse(c instanceof ZombiePitCard);
+            }
+    
+            for (Card c : zombieCards) {
+                assertFalse(c instanceof VampireCastleCard);
+            }
+        }
 
-        assertTrue(slugCards2.get(0) instanceof BarracksCard);
-        assertTrue(vampireCards2.get(0) instanceof VillageCard);
-        assertTrue(zombieCards2.get(0) instanceof TowerCard);
+        assertTrue(slugDropped > 0);
+        assertTrue(vampireDropped > 0);
+        assertTrue(zombieDropped > 0);
     }
 
     @Test
     public void testRunBattles() {
         LoopManiaWorld world = TestHelper.createWorld(path);
+        Character character = world.getCharacter();
+        character.moveDownPath();
 
-        List<BasicEnemy> spawnedEnemies = world.possiblySpawnEnemies();
-        for (BasicEnemy enemy : spawnedEnemies) {
-            PathPosition position = enemy.getPosition();
-            Character newCharacter = new Character(position);
-            world.setCharacter(newCharacter);
-        }
-        List<BasicEnemy> defeatedEnemies = world.runBattles();
-        assertTrue(defeatedEnemies.contains(spawnedEnemies.get(0)));
+        // Checks battle is run against elon, and won.
+        ElanMuske musk = new ElanMuske(new PathPosition(2, path));
+        musk.setHealth(0);
+        world.addEnemy(musk);
+        assertEquals(world.runBattles().size(), 1);
+        character.moveDownPath();
+
+        // Checks battle is run against slug, and won.
+        Slug slug = new Slug(new PathPosition(3, path));
+        world.addEnemy(slug);
+        assertEquals(world.runBattles().size(), 1);
     }
 
     @Test
@@ -258,7 +285,9 @@ public class LoopManiaWorldTest {
         BasicEnemy slug = new Slug(newPosition);
         enemies.add(slug);
 
-        Battle newBattle = new Battle(character, enemies);
+        List<CharacterEffect> battleBuildings = new ArrayList<>();
+
+        Battle newBattle = new Battle(character, enemies, battleBuildings, null);
         world.setCurrentBattle(newBattle);
         
         assertEquals(world.getCurrentBattle(), newBattle);
@@ -361,5 +390,97 @@ public class LoopManiaWorldTest {
         assertTrue(world.getGameCycleProperty() instanceof SimpleIntegerProperty);
     }
 
+    @Test
+    public void testCanBuildByCoordinatesValid() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        
+        VampireCastleCard cardToAdd = new VampireCastleCard(new SimpleIntegerProperty(3), new SimpleIntegerProperty(3));
+        world.addCard(cardToAdd);
+        assertTrue(world.canBuildByCoordinates(3, 3, 1, 2));
+    }
 
+    @Test
+    public void testCanBuildByCoordinatesNoCard() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0)); 
+        assertFalse(world.canBuildByCoordinates(2, 2, 3, 3));
+    }
+
+    @Test
+    public void TestCanBuildByCoordinatesDuplicate() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        
+        VampireCastleBuilding castle1 = new VampireCastleBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(2));
+        world.addBuilding(castle1);
+
+        VampireCastleCard cardToAdd = new VampireCastleCard(new SimpleIntegerProperty(3), new SimpleIntegerProperty(3));
+        world.addCard(cardToAdd);
+        assertFalse(world.canBuildByCoordinates(3, 3, 2, 2));
+    }
+
+    @Test
+    public void testNPCSpawnFrequency() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        int npcs = 0;
+        for (int i = 0; i < 1000; i++) {
+            List<NPC> spawned = world.possiblySpawnNPC();
+            npcs += spawned.size();
+
+            // clean up
+            for (NPC npc : spawned) {
+                npc.destroy();
+            }
+            world.removeDestroyedEntities();
+        }
+        assertTrue(npcs > 1 && npcs < 15);
+    }
+
+    public void testSpawnDoggie() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        Character character = world.getCharacter();
+
+        for (int i = 0; i < 20; i++) {
+            world.iterateGamecycle();
+        }
+        
+        assertTrue(world.spawnBossEnemy() instanceof Doggie);
+        assertTrue(world.spawnBossEnemy() == null);
+    }
+
+    @Test
+    public void testSpawnElanMuske() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        Character character = world.getCharacter();
+        character.addXp(10001);
+        for (int i = 0; i < 40; i++) {
+            world.iterateGamecycle();
+        }
+        assertTrue(world.spawnBossEnemy() instanceof ElanMuske);
+        assertTrue(world.spawnBossEnemy() == null);
+    }
+
+    @Test
+    public void testElanMuskeDoggieAffect() {
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        Character character = world.getCharacter();
+        character.addXp(10001);
+        DoggieCoin doggieCoin = new DoggieCoin(new SimpleIntegerProperty(0), new SimpleIntegerProperty(2));
+        character.addItemToInventory(doggieCoin);
+        for (int i = 0; i < 40; i++) {
+            world.iterateGamecycle();
+        }
+        world.spawnBossEnemy();
+        System.out.println(doggieCoin.getSellPrice());
+    }
+
+    @Test
+    public void resetGame() {
+        // Tests that the world properly resets
+        LoopManiaWorld world = TestHelper.createWorld(TestHelper.createSquarePath(6, 0));
+        Character character = world.getCharacter();
+        character.setCurrentHealth(1);
+        character.moveDownPath();
+        world.resetGame();
+        assertEquals(character.getCurrentHealth(), 50);
+        assertTrue(character.isAtHerosCastle());
+    }
 }

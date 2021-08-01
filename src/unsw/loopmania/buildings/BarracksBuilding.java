@@ -5,8 +5,6 @@ import unsw.loopmania.AlliedSoldier;
 import unsw.loopmania.Building;
 import unsw.loopmania.CharacterPositionObserver;
 import unsw.loopmania.Character;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class BarracksBuilding extends Building implements CharacterPositionObserver {
     public BarracksBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
@@ -21,16 +19,8 @@ public class BarracksBuilding extends Building implements CharacterPositionObser
      */
     public void encounter(Character character) {
         if (character.getX() == getX() && character.getY() == getY()) {
-            AlliedSoldier soldier = new AlliedSoldier();
+            AlliedSoldier soldier = new AlliedSoldier(character, false);
             character.addSoldier(soldier);
         }
-    }
-
-    /**
-     * Creates a new image of barracks
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/barracks.png")).toURI().toString());
     }
 }

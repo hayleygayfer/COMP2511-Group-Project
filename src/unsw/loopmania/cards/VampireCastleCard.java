@@ -7,8 +7,6 @@ import unsw.loopmania.buildings.VampireCastleBuilding;
 
 import java.util.List;
 import org.javatuples.Pair;
-import javafx.scene.image.Image;
-import java.io.File;
 
 /**
  * represents a vampire castle card in the backend game world
@@ -48,13 +46,4 @@ public class VampireCastleCard extends Card {
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         return new VampireCastleBuilding(x, y);
     }   
-
-    /**
-     * Creates a new image of vampire castle card
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/vampire_castle_card.png")).toURI().toString());
-    }
-     
 }

@@ -5,28 +5,24 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Card;
+import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.Building;
-import javafx.scene.image.Image;
-import java.io.File;
 
 public class CampfireCard extends Card {
-
-    // TODO: Create Campfire card
-
     public CampfireCard(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
     }
     
     /**
-     * Position is valid if it is a path tile, and not hero's castle
+     * Position is valid if it is not a path tile
      * @param x x coordinate of position
      * @param y y coordinate of position
      * @param path the current path on the board
      * @return whether the card can be placed at the given position
      */
     public boolean isValidPosition(SimpleIntegerProperty x, SimpleIntegerProperty y, List<Pair<Integer, Integer>> path) {
-        // TODO Auto-generated method stub
-        return false;
+        Pair<Integer, Integer> position = Pair.with(x.get(), y.get());
+        return (!path.contains(position));
     }
 
     /**
@@ -37,15 +33,6 @@ public class CampfireCard extends Card {
      * @return the generated building
      */
     public Building generateBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        // TODO Auto-generated method stub
-        return null;
+        return new CampfireBuilding(x, y);
     }   
-
-    /**
-     * Creates a new image of campfire card
-     * @return Image
-     */
-    public Image render() {
-        return new Image((new File("src/images/campfire_card.png")).toURI().toString());
-    }
 }

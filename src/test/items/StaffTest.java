@@ -3,19 +3,25 @@ package test.items;
 import org.junit.jupiter.api.Test;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import test.TestHelper;
+
 import java.util.List;
 import java.util.ArrayList;
 import org.javatuples.Pair;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.EquippableItem;
+import unsw.loopmania.GenerateItem;
 import unsw.loopmania.Item;
 import unsw.loopmania.StaticEntity;
+import unsw.loopmania.enemies.Zombie;
+import unsw.loopmania.generateItems.StaffGenerateItem;
 import unsw.loopmania.Entity;
 
 public class StaffTest {
@@ -99,5 +105,33 @@ public class StaffTest {
         // doesn't modify critical chance
         Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
 
+    }
+
+    @Test
+    public void testGetItemDetails() {
+        Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+        GenerateItem generateItem = staff.getItemDetails();
+
+        assertTrue(generateItem instanceof StaffGenerateItem);
+    }
+
+    @Test
+    public void testAttack() {
+        // TODO: this test is failing
+        Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0)); 
+        Character character = TestHelper.createCharacter(TestHelper.createPath());
+        
+        for (int i = 0; i < 20; i++) {
+            Zombie zombie = new Zombie(new PathPosition(1, TestHelper.createPath()));
+            int zombieHealth = zombie.getHealth();
+            staff.attack(zombie, character);
+
+            if (zombie.getHealth() == 0) {
+                assertEquals(1, character.getAlliedSoldiers().size());
+            } else {
+                assertEquals(zombieHealth - 1, zombie.getHealth());
+            }
+            character.cleanAlliedSoldiers();
+        }
     }
 }

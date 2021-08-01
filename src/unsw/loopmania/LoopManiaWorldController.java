@@ -2,12 +2,17 @@ package unsw.loopmania;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.HashMap;
+
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -22,7 +27,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ProgressBar;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -32,6 +39,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Popup;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
@@ -39,18 +47,61 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
 import javafx.util.converter.NumberStringConverter;
 import unsw.loopmania.Goals.Goal;
-import unsw.loopmania.itemTypes.ShieldType;
-import unsw.loopmania.itemTypes.ArmourType;
-import unsw.loopmania.itemTypes.WeaponType;
-import unsw.loopmania.itemTypes.HelmetType;
-import unsw.loopmania.itemTypes.AccessoryType;
+import unsw.loopmania.buildings.BarracksBuilding;
+import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.HerosCastleBuilding;
+import unsw.loopmania.buildings.TowerBuilding;
+import unsw.loopmania.buildings.TrapBuilding;
+import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.buildings.VillageBuilding;
+import unsw.loopmania.buildings.ZombiePitBuilding;
+import unsw.loopmania.cards.BarracksCard;
+import unsw.loopmania.cards.CampfireCard;
+import unsw.loopmania.cards.TowerCard;
+import unsw.loopmania.cards.TrapCard;
+import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.cards.VillageCard;
+import unsw.loopmania.cards.ZombiePitCard;
+import unsw.loopmania.enemies.Doggie;
+import unsw.loopmania.enemies.ElanMuske;
+import unsw.loopmania.enemies.Slug;
+import unsw.loopmania.enemies.Vampire;
+import unsw.loopmania.enemies.Zombie;
+import unsw.loopmania.gameModes.StandardMode;
+import unsw.loopmania.gameModes.SurvivalMode;
+import unsw.loopmania.generateItems.AndurilGenerateItem;
+import unsw.loopmania.generateItems.ArmourGenerateItem;
+import unsw.loopmania.generateItems.DoggieCoinGenerateItem;
+import unsw.loopmania.generateItems.HealthPotionGenerateItem;
+import unsw.loopmania.generateItems.HelmetGenerateItem;
+import unsw.loopmania.generateItems.ReversePathPotionGenerateItem;
+import unsw.loopmania.generateItems.ShieldGenerateItem;
+import unsw.loopmania.generateItems.StaffGenerateItem;
+import unsw.loopmania.generateItems.StakeGenerateItem;
+import unsw.loopmania.generateItems.SwordGenerateItem;
+import unsw.loopmania.generateItems.TheOneRingGenerateItem;
+import unsw.loopmania.generateItems.TreeStumpGenerateItem;
+import unsw.loopmania.items.Anduril;
+import unsw.loopmania.items.Armour;
+import unsw.loopmania.items.DoggieCoin;
+import unsw.loopmania.items.HealthPotion;
+import unsw.loopmania.items.Helmet;
+import unsw.loopmania.items.Shield;
+import unsw.loopmania.items.Staff;
+import unsw.loopmania.items.Stake;
+import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TheOneRing;
+import unsw.loopmania.items.TreeStump;
+import unsw.loopmania.items.ReversePathPotion;
+import unsw.loopmania.gameModes.BerserkerMode;
+import unsw.loopmania.gameModes.ConfusingMode;
 
-import org.javatuples.Pair;
-import org.javatuples.Triplet;
 
 import java.util.EnumMap;
 
@@ -98,7 +149,7 @@ public class LoopManiaWorldController {
      * container for all battle interactions
      */
     @FXML
-    private HBox battle;
+    private VBox battle;
 
     @FXML
     private ImageView heroBattle;
@@ -107,13 +158,25 @@ public class LoopManiaWorldController {
     private ImageView enemyBattle;
 
     @FXML
+    private ImageView bossBattle;
+
+    @FXML
     private Button finishBattleButton;
 
     @FXML
-    private Text enemyBattleHealth;
+    private ProgressBar enemyHealth;
 
     @FXML
-    private Text characterBattleHealth;
+    private ProgressBar characterHealth;
+
+    @FXML
+    private ProgressBar bossHealth;
+
+    @FXML
+    private Text enemiesLeft;
+
+    @FXML
+    private Text alliedSoldiersCount;
 
     @FXML
     private HBox gameOver;
@@ -121,6 +184,9 @@ public class LoopManiaWorldController {
 
     @FXML
     Button pauseButton;
+
+    @FXML 
+    Button muteButton;
 
     /**
      * container for all hero castle menu components
@@ -184,6 +250,9 @@ public class LoopManiaWorldController {
     private GridPane unequippedInventory;
 
     @FXML
+    private Text gameModeDisplay;
+
+    @FXML
     private Text cycleDisplay;
 
     @FXML
@@ -198,8 +267,37 @@ public class LoopManiaWorldController {
     @FXML
     private Text xpDisplay;
 
+    // All the media players
+
+    @FXML
+    MediaPlayer battleMusicPlayer;
+
+    @FXML
+    Media backgroundMedia;
+
+    @FXML
+    MediaPlayer backgroundMusicPlayer;
+
+    @FXML
+    MediaPlayer goldCollectingPlayer;
+
+    @FXML
+    MediaPlayer goldLossPlayer;
+
+    @FXML
+    MediaPlayer healthIncreasePlayer;
+
+    @FXML
+    MediaPlayer gameOverPlayer;
+
+    SimpleIntegerProperty oldGoldCount;
+
+
     // all image views including tiles, character, enemies, cards... even though cards in separate gridpane...
     private List<ImageView> entityImages;
+
+    // maps objects to images
+    private HashMap<Class<?>, Image> imageMap;
 
     /**
      * when we drag a card/item, the picture for whatever we're dragging is set here and we actually drag this node
@@ -207,6 +305,7 @@ public class LoopManiaWorldController {
     private DragIcon draggedEntity;
 
     private boolean isPaused;
+    private boolean isMuted;
     private LoopManiaWorld world;
 
     /**
@@ -259,6 +358,7 @@ public class LoopManiaWorldController {
     public LoopManiaWorldController(LoopManiaWorld world, List<ImageView> initialEntities) {
         this.world = world;
         entityImages = new ArrayList<>(initialEntities);
+        imageMap = createImageMap();
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
 
@@ -283,16 +383,15 @@ public class LoopManiaWorldController {
      */
     @FXML
     public void initialize() {
-        
+    
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
 
-        // heroBattle = new ImageView(new Image((new File("src/images/human_new.png")).toURI().toString()));
-        Image test = new Image((new File("src/images/basic_sword.png")).toURI().toString());
-        enemyBattle.setImage(test);
-        enemyBattle.setFitHeight(25);
-        enemyBattle.setFitWidth(25);
+        // Image test = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        // enemyBattle.setImage(test);
+        // enemyBattle.setFitHeight(25);
+        // enemyBattle.setFitWidth(25);
 
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {
@@ -341,6 +440,22 @@ public class LoopManiaWorldController {
             }
         }
 
+        // Create all sounds and their respective media players
+        Media sound = new Media(new File("src/sounds/battle.wav").toURI().toString());
+        battleMusicPlayer = new MediaPlayer(sound);
+
+        Media goldCollecting = new Media(new File("src/sounds/goldCollecting.wav").toURI().toString());
+        goldCollectingPlayer = new MediaPlayer(goldCollecting);
+
+        Media goldLoss = new Media(new File("src/sounds/goldLoss.wav").toURI().toString());
+        goldLossPlayer = new MediaPlayer(goldLoss);
+
+        Media healthIncrease = new Media(new File("src/sounds/healthIncrease.wav").toURI().toString());
+        healthIncreasePlayer = new MediaPlayer(healthIncrease);
+
+        Media gameOverSound = new Media(new File("src/sounds/gameOver.wav").toURI().toString());
+        gameOverPlayer = new MediaPlayer(gameOverSound);
+
         battle.prefWidthProperty().bind(anchorPaneRoot.widthProperty());
         battle.prefHeightProperty().bind(anchorPaneRoot.heightProperty());
         heroCastle.setPrefWidth(320);
@@ -369,6 +484,69 @@ public class LoopManiaWorldController {
         goldDisplay.textProperty().bindBidirectional(world.getCharacter().getGoldProperty(), new NumberStringConverter());
         xpDisplay.textProperty().bindBidirectional(world.getCharacter().getXpProperty(), new NumberStringConverter());
 
+        
+        world.getCharacter().getGoldProperty().addListener(new ChangeListener<Number>()   {
+            @Override
+            public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
+                if (oldNumber.doubleValue() < newNumber.doubleValue()) {
+                    System.out.println("GoldCollected");
+                    goldCollectingPlayer.seek(Duration.ZERO);
+                    goldCollectingPlayer.play();
+                } else {
+                    goldLossPlayer.seek(Duration.ZERO);
+                    goldLossPlayer.play();
+                }
+            }
+
+        });
+
+        world.getCharacter().getCurrentHealthProperty().addListener(new ChangeListener<Number>()   {
+            @Override
+            public void changed(ObservableValue<? extends Number> observalbe, Number oldNumber, Number newNumber) {
+                if (oldNumber.doubleValue() < newNumber.doubleValue()) {
+                    System.out.println("health increase");
+                    healthIncreasePlayer.seek(Duration.ZERO);
+                    healthIncreasePlayer.play();
+                }
+            }
+        });
+
+
+        onLoad(world.loadCard());
+        onLoad(world.loadCard());
+    }
+
+    public void setLoopManiaGameMode(int gameMode) {
+        String path = "";
+        switch (gameMode) {
+            case 0:
+                GameMode standardMode = new StandardMode();
+                world.setGameMode(standardMode);
+                gameModeDisplay.setText("Standard Mode");
+                path = "src/sounds/standardModeMusic.wav";
+            break;
+            case 1:
+                GameMode survivalMode = new SurvivalMode();
+                world.setGameMode(survivalMode);
+                gameModeDisplay.setText("Survival Mode");
+                path = "src/sounds/survivalModeMusic.wav";
+            break;
+            case 2:
+                GameMode berserkerMode = new BerserkerMode();
+                world.setGameMode(berserkerMode);
+                gameModeDisplay.setText("Berserker Mode");
+                path = "src/sounds/berserkerModeMusic.wav";
+            break;
+            case 3:
+                GameMode confusingMode = new ConfusingMode();
+                world.setGameMode(confusingMode);
+                gameModeDisplay.setText("Confusing Mode");
+                path = "src/sounds/confusingModeMusic.wav";
+            break;
+        }
+        // Create background music media player
+        backgroundMedia = new Media(new File(path).toURI().toString());
+        backgroundMusicPlayer = new MediaPlayer(backgroundMedia);
     }
 
     /**
@@ -376,7 +554,13 @@ public class LoopManiaWorldController {
      */
     public void startTimer(){
         System.out.println("starting timer");
+        gameOver.setVisible(false);
+        heroCastle.setVisible(false);
+        gameMap.setVisible(true);
         isPaused = false;
+        isMuted = false;
+        backgroundMusicPlayer.play();
+        System.out.println("game mode " + gameModeDisplay.getText());
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
             world.runTickMoves();
@@ -385,24 +569,39 @@ public class LoopManiaWorldController {
                 terminate();
             }
             // check if character is at heros castle
-            if (this.world.characterAtHerosCastle()) {
+            if (this.world.characterAtHerosCastle() && this.world.getGameCycle() != 0) {
+                world.getCharacter().resetPurchases();
                 heroCastle.setVisible(true);
                 gameMap.setVisible(false);
                 pauseButton.setText("Start");
                 pause();
             }
+
+            List<BasicEnemy> defeatedEnemies = world.runBattles();
             
             // check if character is in a battle
             if (this.world.getCurrentBattle() != null) {
+                backgroundMusicPlayer.pause();
                 battle.setVisible(true);
                 gameMap.setVisible(false);
                 finishBattleButton.setVisible(false);
                 pause();
                 SequentialTransition battleSequence = new SequentialTransition();
-                List<Triplet<Integer, Integer, BasicEnemy>> frames = world.getCurrentBattle().runBattle();
-                enemyBattle.setImage(frames.get(0).getValue2().render());
-                characterBattleHealth.setText(frames.get(0).getValue0().toString());
-                enemyBattleHealth.setText(frames.get(0).getValue1().toString());
+                List<Frame> frames = world.getCurrentBattle().runBattle();
+                enemyBattle.setImage(imageMap.get(frames.get(0).getEnemy().getClass()));
+                enemiesLeft.setText(frames.get(0).getEnemiesLeft() + " Enemies Left");
+                alliedSoldiersCount.setText("You have " + frames.get(0).getNumOfAlliedSoldiers() + " allied soldiers.");
+                characterHealth.setProgress(frames.get(0).getCharacterHealth());
+                enemyHealth.setProgress(frames.get(0).getEnemyHealth());
+                if (frames.get(0).getBossHealth() != 0) {
+                    bossHealth.setVisible(true);
+                    bossHealth.setProgress(frames.get(0).getBossHealth());
+                    bossBattle.setVisible(true);
+                    bossBattle.setImage(imageMap.get(frames.get(0).getBoss().getClass()));
+                } else {
+                    bossBattle.setVisible(false);
+                    bossHealth.setVisible(false);
+                }
                 for (int i = 1; i < (frames.size()); i++) {
                     battleSequence.getChildren().add(animateBattleFrame(frames.get(i)));
                 }
@@ -410,35 +609,66 @@ public class LoopManiaWorldController {
                 battleSequence.setOnFinished(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        characterBattleHealth.setText(frames.get(frames.size() - 1).getValue0().toString());
-                        enemyBattleHealth.setText(frames.get(frames.size() - 1).getValue1().toString());
+                        characterHealth.setProgress(frames.get(frames.size() - 1).getCharacterHealth());
+                        enemyHealth.setProgress(frames.get(frames.size() - 1).getEnemyHealth());
+                        battleMusicPlayer.stop();
                         world.getCurrentBattle().resetCharacter();
                         if (!world.getCurrentBattle().wonBattle()) {
-                            mainMenuSwitcher.switchMenu();
+                            terminate();
+
                         } else {
+                            for (BasicEnemy e: defeatedEnemies){
+                                reactToEnemyDefeat(e);
+                            }
+                            enemiesLeft.setText("You Won!");
+                            enemiesLeft.setText("0 Enemies Left");
+                            alliedSoldiersCount.setText("You have " + world.getCharacter().getNumOfAlliedSoldiers() + " allied soldiers.");            
                             finishBattleButton.setVisible(true);
                         }
                     }
                 });
                 battleSequence.play();
+                battleMusicPlayer.play();
             }
 
-            List<BasicEnemy> defeatedEnemies = world.runBattles();
-            for (BasicEnemy e: defeatedEnemies){
-                reactToEnemyDefeat(e);
+            // check if there's any encounters with NPCs
+            NPC encounteredNpc = world.getNPCEncounter();
+            // run popup if there's no battle in progress
+            if (encounteredNpc != null && world.getCurrentBattle() == null) {
+                pause();
+                Popup npcPopup = loadNPCPopup(encounteredNpc);
+                npcPopup.show(anchorPaneRoot.getScene().getWindow());
             }
+            
             List<BasicEnemy> otherDefeatedEnemies = world.otherDefeatedEnemies();
             for (BasicEnemy e: otherDefeatedEnemies) {
                 reactToEnemyDefeat(e);
             }
-            world.destroyBuildings();
+            world.removeDestroyedEntities();
+
             List<BasicEnemy> newEnemies = world.possiblySpawnEnemies();
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
             }
+            // spawn boss if applicable
+            BasicEnemy spawningBoss = world.spawnBossEnemy();
+            if (spawningBoss != null) {
+                onLoad(spawningBoss);
+            }
+
             List<Gold> newGold = world.possiblySpawnGold();
             for (Gold gold: newGold) {
                 onLoad(gold);
+            }
+
+            List<NPC> newNPCs = world.possiblySpawnNPC();
+            for (NPC npc: newNPCs) {
+                onLoad(npc);
+            }
+
+            AlliedSoldier newSoldier = world.getAlliedSoldiers();
+            if (newSoldier != null) {
+                onLoad(newSoldier);
             }
             printThreadingNotes("HANDLED TIMER");
         }));
@@ -453,16 +683,29 @@ public class LoopManiaWorldController {
     public void pause(){
         isPaused = true;
         System.out.println("pausing");
+        // mediaPlayer.play();
         timeline.stop();
+        battleMusicPlayer.pause();
+        backgroundMusicPlayer.pause();
+    }
+
+    public void endGame() {
+        timeline.stop();
+        world.resetGame();
+        battleMusicPlayer.stop();
+        backgroundMusicPlayer.stop();
     }
 
     /**
-     * End the game 
+     * End the game due to success criteria / loss
      */
     public void terminate() {
-        System.out.println("end game");
         gameOver.setVisible(true);
-        pause();
+        gameOverPlayer.play();
+        gameMap.setVisible(false);
+        battle.setVisible(false);
+        endGame();
+        world.setCurrentBattle(null);
     }
 
     /**
@@ -488,11 +731,272 @@ public class LoopManiaWorldController {
      * @param item An item to get from the shop
      */
     public void purchaseItemFromShop(GenerateItem item) {
-        Pair<Integer, Integer> coords = world.getFirstAvailableSlotForItem();
-        Item purchasedItem = world.getHerosCastleMenu().purchaseItem(world.getCharacter(), item, new SimpleIntegerProperty(coords.getValue0()), new SimpleIntegerProperty(coords.getValue1()));
-        if (!purchasedItem.equals(null)) {
-            onLoad(purchasedItem);
+        Item newItem = world.purchaseItemFromHerosCastle(item);
+
+        if (newItem != null) {
+            onLoad(newItem);
         }
+    }
+
+    /**
+     * Loads the popup the handles interaction with an NPC
+     * @param npc being interacted with
+     * @return the popup panel to interact with the NPC
+     */
+    private Popup loadNPCPopup(NPC npc) {
+        Popup npcPopup = new Popup();
+
+        VBox popupBox = new VBox(10);
+        popupBox.setStyle("-fx-padding: 8;" + 
+        "-fx-border-style: solid inside;" + 
+        "-fx-border-width: 1;" +
+        "-fx-border-insets: 3;" + 
+        "-fx-border-color: grey;" +
+        "-fx-background-color: white;");
+
+        // close button
+        Button hide = new Button("X");
+        hide.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                npcPopup.hide();
+
+                try {
+                    pauseGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }); 
+        hide.setStyle("-fx-font-family: 'Avenir Book'");
+
+        HBox closeButtonRow = new HBox();
+        closeButtonRow.getChildren().add(hide);
+        popupBox.getChildren().add(closeButtonRow);
+
+        // description
+        VBox chatBox = new VBox();
+        Label chatMsg = new Label("Greetings, I am a friendly inhabitant of this world. I would like to propose a trade offer. You give me 5 gold coin, and I will give you a chance to win an item. Will you try your luck?");
+        chatMsg.setStyle("-fx-font-family: 'Avenir Book'");
+        chatMsg.setWrapText(true);
+        chatMsg.setPrefWidth(300);
+        chatBox.getChildren().add(chatMsg);
+
+        popupBox.getChildren().add(chatBox);
+
+        // slot machine
+        HBox slotMachine = new HBox();
+        List<StackPane> slotGrids = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            StackPane slot = new StackPane();
+            slotGrids.add(slot);
+            slotMachine.getChildren().add(slot);
+        }
+        
+        slotMachine.setAlignment(Pos.CENTER);
+        popupBox.getChildren().add(slotMachine);
+
+        // where the text announcing the result will go
+        VBox result = new VBox();
+        result.setAlignment(Pos.CENTER);
+        popupBox.getChildren().add(result);
+
+        // buttons for actions
+        HBox actionsRow = new HBox();
+        actionsRow.setAlignment(Pos.CENTER);
+        Button yesGamble = new Button("Yes! (5 gold)");
+        Button noThanks = new Button("No thanks");
+
+        yesGamble.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                actionsRow.getChildren().remove(noThanks);
+                actionsRow.getChildren().remove(yesGamble);
+
+                if (!npc.canGamble(world.getCharacter())) {
+                    Label msg = new Label("Not enough gold :(");
+                    msg.setWrapText(true);
+                    msg.maxWidth(200);
+                    msg.setStyle("-fx-font-family: 'Avenir Next'"); 
+                    msg.setAlignment(Pos.CENTER);
+                    result.getChildren().add(msg);
+                    return;
+                }
+
+                // trigger gambling
+                Item itemWon = world.gambleWithNPC(world.getCharacter(), npc);
+
+                Timeline slot1 = createItemCycle(slotGrids.get(0), 30);
+                Timeline slot2 = createItemCycle(slotGrids.get(1), 40);
+                Timeline slot3 = createItemCycle(slotGrids.get(2), 50);
+
+                slot1.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent event) {
+                        if (itemWon != null) {
+                            slotGrids.get(0).getChildren().remove(0);
+                            slotGrids.get(0).getChildren().add(createImageView(itemWon));
+                        }
+                    }
+                });
+
+                slot2.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent event) {
+                        if (itemWon != null) {
+                            slotGrids.get(1).getChildren().remove(0);
+                            slotGrids.get(1).getChildren().add(createImageView(itemWon));
+                        }
+                    }
+                }); 
+
+                slot3.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent event) {
+                        Label winLoseMsg;
+                        if (itemWon != null) {
+                            slotGrids.get(2).getChildren().remove(0);
+                            slotGrids.get(2).getChildren().add(createImageView(itemWon));
+                            winLoseMsg = new Label("You won a " + itemWon.toString() + "!");
+                            onLoad(itemWon); 
+                        } else {
+                            winLoseMsg = new Label("You did not win anything :( Better luck next time."); 
+                        }
+                        winLoseMsg.setWrapText(true);
+                        winLoseMsg.maxWidth(200);
+                        winLoseMsg.setStyle("-fx-font-family: 'Avenir Next'");
+                        winLoseMsg.setAlignment(Pos.CENTER);
+                        result.getChildren().add(winLoseMsg);
+                    }
+                });
+        
+                slot1.play();
+                slot2.play();
+                slot3.play();
+            }
+        }); 
+        yesGamble.setStyle("-fx-font-family: 'Avenir Book'");
+        actionsRow.getChildren().add(yesGamble);
+
+        noThanks.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                npcPopup.hide();
+                try {
+                    pauseGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }); 
+        noThanks.setStyle("-fx-font-family: 'Avenir Book'");
+        actionsRow.getChildren().add(noThanks);
+        popupBox.getChildren().add(actionsRow);
+
+        npcPopup.getContent().add(popupBox);
+
+        return npcPopup;
+    }
+
+    /**
+     * Creates a timeline which will cycle through item images
+     * @param grid the pane on which the images should be displayed
+     * @param cycleCount the number of cycles the animation will last for
+     * @return the animated timeline
+     */
+    private Timeline createItemCycle(Pane grid, int cycleCount) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
+            Image newItem = getRandomItemImage();
+            if (grid.getChildren().size() > 0) {
+                grid.getChildren().remove(0);
+            }
+            grid.getChildren().add(new ImageView(newItem));
+        }));
+        timeline.setCycleCount(cycleCount);
+        return timeline;
+    }
+
+    /**
+     * Returns an image of an item at random
+     * @return the random image
+     */
+    private Image getRandomItemImage() {
+        Random random = new Random();
+        List<Class<?>> itemKeys = new ArrayList<>(imageMap.keySet());
+        itemKeys.removeIf(k -> !Item.class.isAssignableFrom(k));
+
+        return imageMap.get(itemKeys.get(random.nextInt(itemKeys.size())));
+    }
+
+    /**
+     * Creates the popup with an item's information
+     * @param item which will be displayed
+     * @return popup displaying the item's info
+     */
+    public Popup loadPopupInfo(Item item) {
+        Popup itemDetailsPopup = new Popup();
+
+        VBox itemInfo = new VBox();
+        itemInfo.setStyle("-fx-padding: 8;" + 
+        "-fx-border-style: solid inside;" + 
+        "-fx-border-width: 1;" +
+        "-fx-border-insets: 3;" + 
+        "-fx-border-color: grey;" +
+        "-fx-background-color: white;");
+
+        Button hide = new Button("X");
+        hide.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                itemDetailsPopup.hide();
+                try {
+                    pauseGame();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }); 
+        hide.setStyle("-fx-font-family: 'Avenir Book'");
+
+        HBox closeButtonRow = new HBox();
+        closeButtonRow.getChildren().add(hide);
+
+        itemInfo.getChildren().add(closeButtonRow);
+
+        HBox imgRow = new HBox();
+        imgRow.setPadding(new Insets(3));
+        imgRow.setPrefHeight(110);
+
+        VBox nameDescription = new VBox();
+
+        HBox priceRow = new HBox();
+        priceRow.setPadding(new Insets(3));
+        // add name of item
+        Label name = new Label(item.getItemDetails().name().get());
+        name.setStyle("-fx-font-weight: bold; -fx-font-family: 'Avenir Next'");
+        nameDescription.getChildren().add(name);
+        // add item description
+        Label description = new Label(item.getItemDetails().description().get());
+        description.setWrapText(true);
+        description.setPrefWidth(100);
+        description.setStyle("-fx-font-family: 'Avenir Book'");
+        nameDescription.getChildren().add(description);
+        // add item image
+        ImageView itemView = createImageView(item);
+
+        // create image row
+        imgRow.getChildren().add(nameDescription);
+        imgRow.getChildren().add(itemView);
+
+        itemInfo.getChildren().add(imgRow);
+
+        // add item price
+        
+        Label price = new Label();
+        price.textProperty().bindBidirectional(item.getItemDetails().price(), new NumberStringConverter());
+        price.setPrefWidth(95);
+        price.setStyle("-fx-font-family: 'Avenir Book'");
+        priceRow.getChildren().add(price);
+
+        itemInfo.getChildren().add(priceRow);
+
+        itemDetailsPopup.getContent().add(itemInfo);
+
+        return itemDetailsPopup;
     }
 
     /**
@@ -527,7 +1031,7 @@ public class LoopManiaWorldController {
         description.setPrefWidth(100);
         nameDescription.getChildren().add(description);
         // add item image
-        ImageView itemView = new ImageView(item.getImage());
+        ImageView itemView = createImageView(item);
 
         // create image row
         imgRow.getChildren().add(nameDescription);
@@ -542,9 +1046,9 @@ public class LoopManiaWorldController {
         // add buy button
         Button buyItem = new Button("Buy");
         buyItem.setOnAction(e -> { 
-            purchaseItemFromShop(item); 
+            purchaseItemFromShop(item);
         });
-        buyItem.disableProperty().bind(world.getCharacter().getGoldProperty().lessThan(item.price()));
+        buyItem.disableProperty().bind(world.getCharacter().canPurchase(item));
         priceRow.getChildren().add(buyItem);
 
         GenerateItem.getChildren().add(priceRow);
@@ -588,7 +1092,7 @@ public class LoopManiaWorldController {
      * @param Card to load to GUI 
      */
     private void onLoad(Card card) {
-        ImageView view = new ImageView(card.render());
+        ImageView view = createImageView(card);
 
         // FROM https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
         // note target setOnDragOver and setOnDragEntered defined in initialize method
@@ -605,24 +1109,34 @@ public class LoopManiaWorldController {
      * @param item an item to load to GUI
      */
     private void onLoad(Item item) {
-        ImageView view = new ImageView(item.render());
-        if (item instanceof ArmourType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour);
-        } else if (item instanceof WeaponType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon);
-        } else if (item instanceof ShieldType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield);
-        } else if (item instanceof HelmetType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet);
-        } else if (item instanceof AccessoryType) {
-            addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedAccessory);
-        }   
+        ImageView view = createImageView(item);
+
+        switch (item.getType()) {
+            case ARMOUR:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedArmour); 
+                break;
+            case WEAPON:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedWeapon); 
+                break;
+            case SHIELD:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedShield); 
+                break;
+            case HELMET:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedHelmet); 
+                break;
+            case ACCESSORY:
+                addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedAccessory); 
+                break;
+            default:
+                break;
+        }
 
         if (item instanceof UsableItem) {
+            UsableItem usableItem = (UsableItem) item;
             view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    item.applyEffect(world.getCharacter());
+                    usableItem.affect(world.getCharacter());
                     world.removeItemWhenUsed(item);
                     view.setVisible(false);
                     view.setManaged(false);
@@ -630,6 +1144,7 @@ public class LoopManiaWorldController {
                 }
             });
         } else  {
+            Popup itemDetails = loadPopupInfo(item);
             view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -638,6 +1153,13 @@ public class LoopManiaWorldController {
                         view.setVisible(false);
                         view.setManaged(false);
                         event.consume();
+                    } else {
+                        itemDetails.show(anchorPaneRoot.getScene().getWindow());
+                        try {
+                            pauseGame();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
@@ -652,8 +1174,19 @@ public class LoopManiaWorldController {
      */
     private void onLoad(BasicEnemy enemy) {
         // Determine which image to load in.
-        ImageView view = new ImageView(enemy.render());
+        ImageView view = createImageView(enemy);
         addEntity(enemy, view);
+        squares.getChildren().add(view);
+    }
+
+    /**
+     * load an allied soldier into the GUI
+     * @param alliedsoldier to load into the GUI
+     */
+    private void onLoad(AlliedSoldier alliedSoldier) {
+        // Determine which image to load in.
+        ImageView view = createImageView(alliedSoldier);
+        addEntity(alliedSoldier, view);
         squares.getChildren().add(view);
     }
 
@@ -662,7 +1195,7 @@ public class LoopManiaWorldController {
      * @param building the building to load to GUI
      */
     private void onLoad(Building building) {
-        ImageView view = new ImageView(building.render());
+        ImageView view = createImageView(building);
         addEntity(building, view);
         squares.getChildren().add(view);
     }
@@ -672,10 +1205,129 @@ public class LoopManiaWorldController {
      * @param gold The gold to load to GUI
      */
     private void onLoad(Gold gold) {
-        ImageView view = new ImageView(gold.render());
+        ImageView view = createImageView(gold);
         addEntity(gold, view);
         squares.getChildren().add(view);
     }
+
+    /**
+     * load an NPC into the GUI
+     * @param npc the NPC to load to GUI
+     */
+    private void onLoad(NPC npc) {
+        ImageView view = createImageView(npc);
+        addEntity(npc, view);
+        squares.getChildren().add(view);
+    }
+
+    /**
+     * Given an entity, creates the corresponding image view
+     * @param entity of the item to be rendered
+     * @pre entity has a corresponding image
+     */
+    private ImageView createImageView(Entity entity) {
+        if (world.getGameMode() instanceof ConfusingMode) {
+            if (entity instanceof Anduril) {
+                return new ImageView(imageMap.get(Sword.class));
+            } else if (entity instanceof TreeStump) {
+                return new ImageView(imageMap.get(Shield.class));
+            } else if (entity instanceof TheOneRing) {
+                return new ImageView(imageMap.get(Helmet.class));
+            }
+        }
+
+        return new ImageView(imageMap.get(entity.getClass()));
+    }
+
+    /**
+     * Given a GenerateItem object, creates the corresponding image view
+     * @param generateItem of the item to be rendered
+     * @pre generateItem has a corresponding image
+     */
+    private ImageView createImageView(GenerateItem generateItem) {
+        if (world.getGameMode() instanceof ConfusingMode) {
+            if (generateItem instanceof AndurilGenerateItem) {
+                return new ImageView(imageMap.get(SwordGenerateItem.class));
+            } else if (generateItem instanceof TreeStumpGenerateItem) {
+                return new ImageView(imageMap.get(ShieldGenerateItem.class));
+            } else if (generateItem instanceof TheOneRingGenerateItem) {
+                return new ImageView(imageMap.get(HelmetGenerateItem.class));
+            }
+        }
+
+        return new ImageView(imageMap.get(generateItem.getClass()));
+    }
+
+    /**
+     * Creates a map that can use classes to look up the corresponding image
+     */
+    private HashMap<Class<?>, Image> createImageMap() {
+        HashMap<Class<?>, Image> imageMap = new HashMap<>();
+
+        // buildings
+        imageMap.put(BarracksBuilding.class, new Image((new File("src/images/barracks.png")).toURI().toString()));
+        imageMap.put(CampfireBuilding.class, new Image((new File("src/images/campfire.png")).toURI().toString()));
+        imageMap.put(HerosCastleBuilding.class, new Image((new File("src/images/heros_castle.png")).toURI().toString()));
+        imageMap.put(TowerBuilding.class, new Image((new File("src/images/tower.png")).toURI().toString()));
+        imageMap.put(TrapBuilding.class, new Image((new File("src/images/trap.png")).toURI().toString()));
+        imageMap.put(VampireCastleBuilding.class, new Image((new File("src/images/vampire_castle_building_purple_background.png")).toURI().toString()));
+        imageMap.put(VillageBuilding.class, new Image((new File("src/images/village.png")).toURI().toString()));
+        imageMap.put(ZombiePitBuilding.class, new Image((new File("src/images/zombie_pit.png")).toURI().toString()));
+
+        // cards
+        imageMap.put(BarracksCard.class, new Image((new File("src/images/barracks_card.png")).toURI().toString()));
+        imageMap.put(CampfireCard.class, new Image((new File("src/images/campfire_card.png")).toURI().toString()));
+        imageMap.put(TowerCard.class, new Image((new File("src/images/tower_card.png")).toURI().toString()));
+        imageMap.put(TrapCard.class, new Image((new File("src/images/trap_card.png")).toURI().toString()));
+        imageMap.put(VampireCastleCard.class, new Image((new File("src/images/vampire_castle_card.png")).toURI().toString()));
+        imageMap.put(VillageCard.class, new Image((new File("src/images/village_card.png")).toURI().toString()));
+        imageMap.put(ZombiePitCard.class, new Image((new File("src/images/zombie_pit_card.png")).toURI().toString()));
+
+        // enemies
+        imageMap.put(Doggie.class, new Image((new File("src/images/doggie.png")).toURI().toString()));
+        imageMap.put(ElanMuske.class, new Image((new File("src/images/ElanMuske.png")).toURI().toString()));
+        imageMap.put(Slug.class, new Image((new File("src/images/slug.png")).toURI().toString()));
+        imageMap.put(Vampire.class, new Image((new File("src/images/vampire.png")).toURI().toString()));
+        imageMap.put(Zombie.class, new Image((new File("src/images/zombie.png")).toURI().toString()));
+
+        // items
+        imageMap.put(Anduril.class, new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()));
+        imageMap.put(Armour.class, new Image((new File("src/images/armour.png")).toURI().toString()));
+        imageMap.put(DoggieCoin.class, new Image((new File("src/images/doggiecoin.png")).toURI().toString()));
+        imageMap.put(HealthPotion.class, new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()));
+        imageMap.put(Helmet.class, new Image((new File("src/images/helmet.png")).toURI().toString()));
+        imageMap.put(Shield.class, new Image((new File("src/images/shield.png")).toURI().toString()));
+        imageMap.put(Staff.class, new Image((new File("src/images/staff.png")).toURI().toString()));
+        imageMap.put(Stake.class, new Image((new File("src/images/stake.png")).toURI().toString()));
+        imageMap.put(Sword.class, new Image((new File("src/images/basic_sword.png")).toURI().toString()));
+        imageMap.put(TheOneRing.class, new Image((new File("src/images/the_one_ring.png")).toURI().toString()));
+        imageMap.put(TreeStump.class, new Image((new File("src/images/tree_stump.png")).toURI().toString()));
+        imageMap.put(ReversePathPotion.class, new Image((new File("src/images/reverse_path_potion.png")).toURI().toString()));
+
+        // generate items
+        imageMap.put(AndurilGenerateItem.class, new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString()));
+        imageMap.put(ArmourGenerateItem.class, new Image((new File("src/images/armour.png")).toURI().toString()));
+        imageMap.put(DoggieCoinGenerateItem.class, new Image((new File("src/images/doggiecoin.png")).toURI().toString()));
+        imageMap.put(HealthPotionGenerateItem.class, new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString()));
+        imageMap.put(HelmetGenerateItem.class, new Image((new File("src/images/helmet.png")).toURI().toString()));
+        imageMap.put(ShieldGenerateItem.class, new Image((new File("src/images/shield.png")).toURI().toString()));
+        imageMap.put(StaffGenerateItem.class, new Image((new File("src/images/staff.png")).toURI().toString()));
+        imageMap.put(StakeGenerateItem.class, new Image((new File("src/images/stake.png")).toURI().toString()));
+        imageMap.put(SwordGenerateItem.class, new Image((new File("src/images/basic_sword.png")).toURI().toString()));
+        imageMap.put(TheOneRingGenerateItem.class, new Image((new File("src/images/the_one_ring.png")).toURI().toString()));
+        imageMap.put(TreeStumpGenerateItem.class, new Image((new File("src/images/tree_stump.png")).toURI().toString())); 
+        imageMap.put(ReversePathPotionGenerateItem.class, new Image((new File("src/images/reverse_path_potion.png")).toURI().toString()));
+
+        // other
+        imageMap.put(Character.class, new Image((new File("src/images/human_new.png")).toURI().toString()));
+        imageMap.put(Gold.class, new Image((new File("src/images/gold_pile.png")).toURI().toString()));
+        imageMap.put(PathTile.class, new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString()));
+        imageMap.put(NPC.class, new Image((new File("src/images/npc.png")).toURI().toString()));
+        imageMap.put(AlliedSoldier.class, new Image((new File("src/images/deep_elf_master_archer.png")).toURI().toString()));
+
+        return imageMap;
+    }
+
 
     /**
      * add drag event handlers for dropping into gridpanes, dragging over the background, dropping over the background.
@@ -973,7 +1625,7 @@ public class LoopManiaWorldController {
             }
             else{
                 pause();
-                pauseButton.setText("Start");
+                pauseButton.setText("Resume");
             }
             break;
         default:
@@ -997,7 +1649,7 @@ public class LoopManiaWorldController {
     @FXML
     private void switchToMainMenu() throws IOException {
         // TODO = possibly set other menu switchers
-        pause();
+        endGame();
         mainMenuSwitcher.switchMenu();
     }
 
@@ -1016,8 +1668,31 @@ public class LoopManiaWorldController {
             }
             startTimer();
         } else {
-            pauseButton.setText("Start");
+            pauseButton.setText("Resume");
             pause();
+        }
+    }
+
+    @FXML
+    private void muteGame() {
+        if (isMuted) {
+            muteButton.setText("Mute");
+            battleMusicPlayer.setMute(false);
+            backgroundMusicPlayer.setMute(false);
+            goldCollectingPlayer.setMute(false);
+            goldLossPlayer.setMute(false);
+            healthIncreasePlayer.setMute(false);
+            isMuted = false;
+            
+
+        } else {
+            muteButton.setText("Sound");
+            battleMusicPlayer.setMute(true);
+            backgroundMusicPlayer.setMute(true);
+            goldCollectingPlayer.setMute(true);
+            goldLossPlayer.setMute(true);
+            healthIncreasePlayer.setMute(true);
+            isMuted = true;
         }
     }
 
@@ -1106,7 +1781,7 @@ public class LoopManiaWorldController {
         System.out.println("Current system time = "+java.time.LocalDateTime.now().toString().replace('T', ' '));
     }
 
-    public ParallelTransition animateBattleFrame(Triplet<Integer, Integer, BasicEnemy> frame) {
+    public ParallelTransition animateBattleFrame(Frame frame) {
         ParallelTransition ptr = new ParallelTransition();
         //Duration = 2.5 seconds
         Duration duration = Duration.millis(250);
@@ -1127,14 +1802,32 @@ public class LoopManiaWorldController {
         SequentialTransition enemySequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionEnemy);
         enemySequence.setCycleCount(1);
 
-        ptr.getChildren().addAll(heroSequence, enemySequence);
+        TranslateTransition transitionBoss = new TranslateTransition(duration, bossBattle);
+        transitionBoss.setByX(-50);
+        transitionBoss.setAutoReverse(true);
+        transitionBoss.setCycleCount(2);
+
+        SequentialTransition bossSequence = new SequentialTransition(new PauseTransition(Duration.millis(350)), transitionBoss);
+        bossSequence.setCycleCount(1);
+
+        ptr.getChildren().addAll(heroSequence, enemySequence, bossSequence);
         ptr.setCycleCount(1);
         ptr.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                characterBattleHealth.setText(frame.getValue0().toString());
-                enemyBattleHealth.setText(frame.getValue1().toString());
-                enemyBattle.setImage(frame.getValue2().render());
+                enemiesLeft.setText(frame.getEnemiesLeft() + " Enemies Left");
+                alliedSoldiersCount.setText("You have " + frame.getNumOfAlliedSoldiers() + " allied soldiers.");        
+                characterHealth.setProgress(Math.max(frame.getCharacterHealth(), 0));
+                enemyHealth.setProgress(Math.max(frame.getEnemyHealth(), 0));
+                enemyBattle.setImage(imageMap.get(frame.getEnemy().getClass()));
+                System.out.println(frame.getBossHealth() + " vs " + frame.getEnemyHealth());
+                if (frame.getBoss() != null && frame.getBossHealth() != 0) {
+                    bossHealth.setProgress(frame.getBossHealth());
+                    bossBattle.setImage(imageMap.get(frame.getBoss().getClass()));
+                } else {
+                    bossHealth.setVisible(false);
+                    bossBattle.setVisible(false);
+                }
             }
         });
         return ptr;
@@ -1149,6 +1842,7 @@ public class LoopManiaWorldController {
         battle.setVisible(false);
         gameMap.setVisible(true);
         world.setCurrentBattle(null);
+        battleMusicPlayer.pause();
         startTimer();
     }
 }
