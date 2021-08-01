@@ -2,6 +2,12 @@
 ### Starting state
 - A player starts with 50 health and can deal 1 damage
 
+### Map Selection
+- If the player does not select a map, then a default map is selected.
+
+### Game Mode Selection
+- If the player does not select a game mode, standard mode is selected as the default.
+
 ### Spawning Enemies
 - Only 2 Slugs may be spawned at any one time, if the Character kills one of two spawned then another may spawn elsewhere in the path in the same cycle.
 
